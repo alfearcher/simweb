@@ -163,15 +163,22 @@
 		 * }
 		 * @return array.
 		 */
-		public function getListaBancoRelacionadaCuentaReceptora()
+		public function getListaBancoRelacionadaCuentaReceptora($soloActivos = true)
 		{
 			$lista = null;
-			$findModel = BancoCuentaReceptora::find()->alias('R')
+			if ( $soloActivos ) {
+				$findModel = BancoCuentaReceptora::find()->alias('R')
+			                          				 ->joinWith('banco', true, 'INNER JOIN');
+
+			} else {
+				$findModel = BancoCuentaReceptora::find()->alias('R')
 			                          				 ->joinWith('banco', true, 'INNER JOIN')
 			                          				 ->where('status =:status',
 			                          				 			[':status' => 1])
 			                          				 ->andWhere('R.inactivo =:inactivo',
 			                          				 			[':inactivo' => 0]);
+			}
+
 			$registers = $findModel->all();
 			if ( count($registers) > 0 ) {
 				foreach ( $registers as $register ) {
@@ -195,25 +202,38 @@
 		 * }
 		 * Este arreglo contiene las cuentas recaudadoras asociadas a un banco.
 		 * @param integer $idBanco identificador del banco.
+		 * @param integer $soloActivo si su valor es uno (1), solo se buscan los registros activos.
+		 * En caso contrario se buscan todos los registros.
 		 * @return array
 		 */
-		public function getListaCuentaRecaudadora($idBanco = 0)
+		public function getListaCuentaRecaudadora($idBanco = 0, $soloActivo = 1)
 		{
 			$lista = [];
 			$findModel = BancoCuentaReceptora::find()->alias('R');
 			if ( $idBanco > 0 ) {
-				$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
-			                           ->where('B.id_banco =:id_banco',
-			                          			[':id_banco' => $idBanco])
-			                           ->andWhere('R.inactivo =:inactivo',
-			                          			[':inactivo' => 0]);
+				if ( $soloActivo == 1 ) {
+					$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
+				                           ->where('B.id_banco =:id_banco',
+				                          			[':id_banco' => $idBanco])
+				                           ->andWhere('R.inactivo =:inactivo',
+				                          			[':inactivo' => 0]);
+				} else {
+					$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
+				                           ->where('B.id_banco =:id_banco',
+				                          			[':id_banco' => $idBanco]);
+				}
 
 			} else {
-				$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
+				if ( $soloActivo == 1 ) {
+					$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN')
 			                           ->where('status =:status',
 			                          			[':status' => 1])
 			                           ->andWhere('R.inactivo =:inactivo',
 			                          			[':inactivo' => 0]);
+				} else {
+					$findModel = $findModel->joinWith('banco B', true, 'INNER JOIN');
+				}
+
 			}
 
 			$registers = $findModel->all();
@@ -234,9 +254,9 @@
 
 
 		/***/
-		public function generarViewListaCuentaRecaudadora($idBanco = 0)
+		public function generarViewListaCuentaRecaudadora($idBanco = 0, $soloActivo = 1)
 	    {
-	    	$lista = self::getListaCuentaRecaudadora($idBanco);
+	    	$lista = self::getListaCuentaRecaudadora($idBanco, $soloActivo);
 
 	        if ( count($lista) > 0 ) {
 	        	echo "<option value='0'>" . "Seleccione..." . "</option>";
