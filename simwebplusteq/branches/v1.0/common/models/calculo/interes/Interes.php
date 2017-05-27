@@ -329,6 +329,8 @@
 			$dias = 0;
 			$añoActual = (int)date('Y');
 			$aplicoSancion = false;
+			$cantMeses = 0;
+			$cantA = 0;
 
 			if ( count($this->_configOrdAsignacion) > 0 ) {
 				if ( $this->_id_ordenanza > 0 && count($this->_exigibilidadLiq) > 0 ) {
@@ -348,17 +350,18 @@
 							$meses = (int)$this->_configOrdAsignacion['mes_aplicacion'];
 
 							// Cantidad de meses entre las fechas.
-							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
-							$cantMeses = $interval->{'m'};
-							$cantA = $interval->{'y'};
-							if ( $cantA > 0 ) {
-								$cantMeses = $cantA * 12;
-							}
+							if ( date_create($fechaInicioPeriodo) <= date_create($fechaActual) ) {
+								$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+								$cantMeses = $interval->{'m'};
+								$cantA = $interval->{'y'};
+								if ( $cantA > 0 ) {
+									$cantMeses = $cantA * 12;
+								}
 
-							if ( $cantMeses >= $meses ) {
-								$aplicoSancion = true;
+								if ( $cantMeses >= $meses ) {
+									$aplicoSancion = true;
+								}
 							}
-
 						}
 
 
