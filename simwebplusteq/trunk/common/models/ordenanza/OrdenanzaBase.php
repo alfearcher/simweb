@@ -757,6 +757,7 @@
 		{
 			$fechas = [];
 			$fecha = '';
+
 			if ( $exigibilidadLiquidacion ) {
 				$resto = fmod(12, $exigibilidadLiquidacion);
 
