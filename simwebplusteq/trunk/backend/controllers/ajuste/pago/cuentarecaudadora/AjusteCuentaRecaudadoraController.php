@@ -163,7 +163,7 @@
 
             // Listado de bancos relacionados a cuentas recaudadoras.
             $searchBanco = New BancoSearch();
-            $listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
+            $listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora(false);
 
             if ( $model->load($postData) ) {
 
@@ -488,7 +488,8 @@
 
         	$searchBanco = New BancoSearch();
         	$id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
-        	return $searchBanco->generarViewListaCuentaRecaudadora($id);
+            $soloActivo = isset($postGet['soloActivo']) ? (int)$postGet['soloActivo'] : 0;
+        	return $searchBanco->generarViewListaCuentaRecaudadora($id, $soloActivo);
 
         }
 
