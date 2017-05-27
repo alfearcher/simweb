@@ -431,7 +431,7 @@
 
 		/**
 	     * Metodo donde se fijan los usuario autorizados para utilizar esl modulo.
-	     * @return [type] [description]
+	     * @return array
 	     */
 	    private function getListaFuncionarioAutorizado()
 	    {
