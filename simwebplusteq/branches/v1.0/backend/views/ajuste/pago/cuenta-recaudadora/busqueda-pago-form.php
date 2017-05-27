@@ -172,7 +172,8 @@
                                                              'prompt' => Yii::t('backend', 'Select'),
                                                              'style' => 'width:100%;',
                                                              'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                   		           ->createUrl('/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/listar-cuenta-recaudadora') . '&id=' . '" + $(this).val(),
+                                                                                   		           ->createUrl('/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/listar-cuenta-recaudadora') . '&id=' . '" + $(this).val() +  "' .
+                                                                           		           															   												   '&soloActivo=' . '" + 0,
                                                                                    		           			 function( data ) {
                                                                                    		           			 	$( "select#id-cuenta-deposito" ).html( "" );
                                                                                                              	$( "select#id-cuenta-deposito" ).html( data );
