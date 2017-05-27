@@ -73,37 +73,37 @@
 	* ==============================================================================================================
 	* Campo 				Longitud 		Tipo 					Observacion
 	* ==============================================================================================================
-	* Numero de Recibo   		10 		  Numerico 		Numero del recibo de pago. Auto-incremental de la entidad
+	* 1.Numero de Recibo   		10 		  Numerico 		Numero del recibo de pago. Auto-incremental de la entidad
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto del Recibo 			19 		  numerico 		Monto total del recibo.
+	* 2.Monto del Recibo 			19 		  numerico 		Monto total del recibo.
 	* --------------------------------------------------------------------------------------------------------------
-	* Fecha de Pago 			08 		  Numerico 		Fecha de pago
+	* 3.Fecha de Pago 			08 		  Numerico 		Fecha de pago
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto Efectivo 			19 		  Numerico		Monto por concepto de Efectivo, forma de pago
+	* 4.Monto Efectivo 			19 		  Numerico		Monto por concepto de Efectivo, forma de pago
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto Cheque 				19		  Numerico 		Monto por concepto de Cheque, forma de pago
+	* 5.Monto Cheque 				19		  Numerico 		Monto por concepto de Cheque, forma de pago
 	* --------------------------------------------------------------------------------------------------------------
-	* Cta Cheque 				25 	      Numerico 		Numero de cuenta asociada al cheque.
+	* 6.Cta Cheque 				25 	      Numerico 		Numero de cuenta asociada al cheque.
 	* --------------------------------------------------------------------------------------------------------------
-	* Nro. Cheque 			    15		  Numerico 		Numero del cheque. Forma de Pago
+	* 7.Nro. Cheque 			    15		  Numerico 		Numero del cheque. Forma de Pago
 	* --------------------------------------------------------------------------------------------------------------
-	* Fecha Cheque  			08 		  Numerico 		Fecha de pago, registrado por el banco. ddmmyyyy
+	* 8.Fecha Cheque  			08 		  Numerico 		Fecha de pago, registrado por el banco. ddmmyyyy
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto TDD 			    19 		  Numerico 		Monto por concepto de tarjeto de debito. Forma de pago
+	* 9.Monto TDD 			    19 		  Numerico 		Monto por concepto de tarjeto de debito. Forma de pago
 	* --------------------------------------------------------------------------------------------------------------
-	* Nro. TDD 					19 		  Numerico 	    Numero de la tarjeta de debito
+	* 10.Nro. TDD 					19 		  Numerico 	    Numero de la tarjeta de debito
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto TDC                 19        Numerico 		Monto por concepto de tarjeta de credito. Forma de pago.
+	* 11.Monto TDC                 19        Numerico 		Monto por concepto de tarjeta de credito. Forma de pago.
 	* --------------------------------------------------------------------------------------------------------------
-	* Nro. TDC                  19		  Numerico 	    Numero de la tarjeta de credito.
+	* 12.Nro. TDC                  19		  Numerico 	    Numero de la tarjeta de credito.
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto Transferencia 		19 		  Numerico      Monto por concepto de transferencia. Forma de pago
+	* 13.Monto Transferencia 		19 		  Numerico      Monto por concepto de transferencia. Forma de pago
 	* --------------------------------------------------------------------------------------------------------------
-	* Nro. Transaccion          19        Numerico      Numero de la transferencia.
+	* 14.Nro. Transaccion          19        Numerico      Numero de la transferencia.
 	* --------------------------------------------------------------------------------------------------------------
-	* Monto Total               19        Numerico      Monto total del registro. Sumatoria de las formas de pago.
+	* 15.Monto Total               19        Numerico      Monto total del registro. Sumatoria de las formas de pago.
 	* --------------------------------------------------------------------------------------------------------------
-	* Nro. Cta. Recaudadora     25        Numerico 		Numero de la cuenta recaudadora asociada a la Alcaldia.
+	* 16.Nro. Cta. Recaudadora     25        Numerico 		Numero de la cuenta recaudadora asociada a la Alcaldia.
 	* --------------------------------------------------------------------------------------------------------------
 	*
 	*/
