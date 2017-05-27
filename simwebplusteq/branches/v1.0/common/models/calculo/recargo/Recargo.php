@@ -251,6 +251,8 @@
 			$meses = 0;
 			$dias = 0;
 			$añoActual = (int)date('Y');
+			$cantMeses = 0;
+			$cantA = 0;
 
 			if ( count($this->_configOrdAsignacion) > 0 ) {
 				if ( $this->_id_ordenanza > 0 && count($this->_exigibilidadLiq) > 0 ) {
@@ -271,18 +273,18 @@
 
 							// Cantidad de meses entre las fechas.
 							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
-							$cantMeses = $interval->{'m'};
-							$cantA = $interval->{'y'};
-							if ( $cantA > 0 ) {
-								$cantMeses = $cantA * 12;
-							}
 
-							if ( $cantMeses >= $meses ) {
-								$montoRecargo = self::determinarMontoRecargo();
+							if ( date_create($fechaInicioPeriodo) <= date_create($fechaActual) ) {
+								$cantMeses = $interval->{'m'};
+								$cantA = $interval->{'y'};
+								if ( $cantA > 0 ) {
+									$cantMeses = $cantA * 12;
+								}
+								if ( $cantMeses >= $meses ) {
+									$montoRecargo = self::determinarMontoRecargo();
+								}
 							}
-
 						}
-
 
 					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 2 ) {
 						// Al vencer el periodo.
@@ -339,21 +341,22 @@
 							// Cantidad de dias que se tienen para pagar el periodo.
 							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
 
-							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
-							$cantMeses = $interval->{'m'};
-							$cantDias = $interval->{'d'};
+							if ( date_create($fechaInicioPeriodo) <= date_create($fechaActual) ) {
+								$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+								$cantMeses = $interval->{'m'};
+								$cantDias = $interval->{'d'};
 
-							if ( $cantMeses >= $meses ) {
-								$montoRecargo = self::determinarMontoRecargo();
-
-							} elseif ( $cantMeses == $meses ) {
-								if ( $cantDias >= $dias ) {
+								if ( $cantMeses >= $meses ) {
 									$montoRecargo = self::determinarMontoRecargo();
 
+								} elseif ( $cantMeses == $meses ) {
+									if ( $cantDias >= $dias ) {
+										$montoRecargo = self::determinarMontoRecargo();
+
+									}
 								}
 							}
 						}
-
 
 					} elseif ( $this->_configOrdAsignacion['id_aplicacion'] == 5 ) {
 						// N meses a partir del 1er mes del periodo x N dias de todos
@@ -370,17 +373,19 @@
 							// Cantidad de dias que se tienen para pagar el periodo.
 							$dias = (int)$this->_configOrdAsignacion['dias_aplicacion'];
 
-							$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
-							$cantMeses = $interval->{'m'};
-							$cantDias = $interval->{'d'};
+							if ( date_create($fechaInicioPeriodo) <= date_create($fechaActual) ) {
+								$interval = date_diff(date_create($fechaInicioPeriodo), date_create($fechaActual));
+								$cantMeses = $interval->{'m'};
+								$cantDias = $interval->{'d'};
 
-							if ( $cantMeses >= $meses ) {
-								$montoRecargo = self::determinarMontoRecargo();
-
-							} elseif ( $cantMeses == $meses ) {
-								if ( $cantDias >= $dias ) {
+								if ( $cantMeses >= $meses ) {
 									$montoRecargo = self::determinarMontoRecargo();
 
+								} elseif ( $cantMeses == $meses ) {
+									if ( $cantDias >= $dias ) {
+										$montoRecargo = self::determinarMontoRecargo();
+
+									}
 								}
 							}
 						}
@@ -404,7 +409,6 @@
 							}
 						}
 					}
-
 				}
 			}
 
@@ -530,6 +534,7 @@
 				if ( $this->_id_ordenanza > 0 && count($this->_exigibilidadLiq) > 0 ) {
 
 					$fechaInicioPeriodo = self::getFechaInicioPeriodo();
+
 					$periodoActual = OrdenanzaBase::getPeriodoSegunFecha($this->_exigibilidadLiq['exigibilidad'], $fechaActual);
 
 					if ( $this->_configOrdAsignacion['id_aplicacion'] == 1 ) {
