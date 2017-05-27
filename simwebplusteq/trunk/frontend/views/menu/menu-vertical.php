@@ -74,7 +74,8 @@
 		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 81]],
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 85]],
 		        					   	['label' => 'Autorizar Ramo(s)', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index', 'id' => 96]],
-		        					   //	['label' => 'Licencias', 'url' => ['/aaee/licencia/licencia-base/index']],
+		        					    ['label' => 'Desincorporación', 'url' => ['/aaee/desincorporar/desincorporar-actividad-economica/index', 'id' => 122]],
+
 		        					   	['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
 		        					   		'items' => [
 	        					   				['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
