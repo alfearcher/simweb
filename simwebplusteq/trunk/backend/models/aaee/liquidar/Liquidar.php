@@ -384,11 +384,11 @@
 					if ( $idImpuesto > 0  ) {
 						$fechaVcto = OrdenanzaBase::getFechaVencimientoSegunFecha(date('Y-m-d'));
 
-						$recargo = New Recargo(self::IMPUESTO);
-						$interes = New Interes(self::IMPUESTO);
-
 						$j = 0;
 						for ( $i = $desdePeriodo; $i <= $hastaPeriodo; $i++) {
+
+							$recargo = New Recargo(self::IMPUESTO);
+							$interes = New Interes(self::IMPUESTO);
 
 							$montoRecargo = 0;
 							$recargo->calcularRecargo($año, $i, $montoPeriodo);
