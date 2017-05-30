@@ -137,7 +137,7 @@
 				DesincorporarRamo::className() => $label .  Yii::t('backend', 'Desincorporación de Ramo'),
 				AnexoRamo::className() => $label .  Yii::t('backend', 'Anexo de Ramo'),
 				AutorizarRamo::className() => $label .  Yii::t('backend', 'Autorización de Ramo'),
-				LicenciaSolicitud::className() => $label .  Yii::t('backend', 'Emisión de Licencia'),
+				//LicenciaSolicitud::className() => $label .  Yii::t('backend', 'Emisión de Licencia'),
 			];
 		}
 
@@ -218,7 +218,7 @@
 			$result = null;
 			$findModel = null;
 			if ( self::getSedePrincipal() ) {
-				$datos = self::getDatosContribuyente();
+				$datos = self::findContribuyente();
 				if ( count($datos) > 0 ) {
 					$findModel = Sucursal::find()->where('naturaleza =:naturaleza',
 															 [':naturaleza' => $datos['naturaleza']])
@@ -390,8 +390,13 @@
 	    	}
 
 	    	// Se verifica si es sede principal
-	    	if ( self::getSedePrincipal() ) {
-				$mensajes[] = Yii::t('backend', 'La razon social no esta registrada como sede principal');
+	    	$esSedePrincipal = self::getSedePrincipal();
+
+	    	// Cantidad de contribuyentes asociados al rif.
+	    	$cantidadSede = count(self::findSucursales()->all());
+
+	    	if ( $esSedePrincipal && $cantidadSede > 1 ) {
+				$mensajes[] = Yii::t('backend', 'La razon social esta registrada como sede principal');
 			}
 
 
@@ -471,7 +476,7 @@
 	    		          $ultimoPago['exigibilidad']['unidad'];
 	    	}
 
-	    	return $ultimoPago;
+	    	return $ultimo;
 	    }
 
 
