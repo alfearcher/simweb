@@ -244,7 +244,7 @@
 
             $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_pago);
             $listaArchivo->crearListaArchivo();
-die(var_dump($listaArchivo->getRutaArchivo()));
+//die(var_dump($listaArchivo->getRutaArchivo()));
             $provider = $listaArchivo->getDataProvider();
 
             $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
