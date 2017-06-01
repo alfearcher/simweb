@@ -221,6 +221,7 @@
             $postGet = $request->get();
             $postData = ( count($request->post()) > 0 ) ? $request->post() : $_SESSION['postEnviado'];
 
+die('jaj');
             if ( isset($postData['btn-quit']) ) {
                 if ( $postData['btn-quit'] == 1 ) {
                     $this->redirect(['quit']);
