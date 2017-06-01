@@ -5,7 +5,7 @@
 	// Para windows
 	// /lote/archivo/bod/
 	// /lote/archivo/banesco/
-	$rutaBase = dirname(__DIR__);
+	//$rutaBase = dirname(__DIR__);
 	$rutaBase = '';
 	return [
 		12 => $rutaBase . '/home/bod/',
