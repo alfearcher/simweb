@@ -2,9 +2,12 @@
 	// Para la ruta en linux
 	// /home/banesco
 	// /home/bod
+	// Para windows
+	// /lote/archivo/bod/
+	// /lote/archivo/banesco/
 	$rutaBase = dirname(__DIR__);
 	return [
-		12 => $rutaBase . '/lote/archivo/bod/',
-		14 => $rutaBase . '/lote/archivo/banesco/',
+		12 => $rutaBase . '/home/banesco',
+		14 => $rutaBase . '/home/bod',
 	];
  ?>
