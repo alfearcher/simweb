@@ -8,7 +8,7 @@
 	$rutaBase = dirname(__DIR__);
 	$rutaBase = '';
 	return [
-		12 => $rutaBase . '/home/banesco',
-		14 => $rutaBase . '/home/bod',
+		12 => $rutaBase . '/home/banesco/',
+		14 => $rutaBase . '/home/bod/',
 	];
  ?>
