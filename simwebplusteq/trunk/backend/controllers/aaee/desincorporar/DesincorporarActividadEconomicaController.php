@@ -43,7 +43,7 @@
  */
 
 
- 	namespace frontend\controllers\aaee\desincorporar;
+ 	namespace backend\controllers\aaee\desincorporar;
 
 
  	use Yii;
