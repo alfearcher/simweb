@@ -75,6 +75,7 @@
 	{
 
 		private $_id_contribuyente;
+		private $_datoContribuyente;
 
 
 		/**
@@ -85,6 +86,7 @@
 		public function __construct($idContribuyente)
 		{
 			$this->_id_contribuyente = $idContribuyente;
+			$this->_datoContribuyente = self::findContribuyente();
 		}
 
 
@@ -218,7 +220,7 @@
 			$result = null;
 			$findModel = null;
 			if ( self::getSedePrincipal() ) {
-				$datos = self::findContribuyente();
+				$datos = $this->_datoContribuyente;
 				if ( count($datos) > 0 ) {
 					$findModel = Sucursal::find()->where('naturaleza =:naturaleza',
 															 [':naturaleza' => $datos['naturaleza']])
@@ -340,8 +342,8 @@
 	     */
 	    public function findContribuyente()
 	    {
-	    	$findModel = ContribuyenteBase::findOne($this->_id_contribuyente);
-			return isset($findModel) ? $findModel : null;
+	    	return ContribuyenteBase::findOne($this->_id_contribuyente);
+
 	    }
 
 
@@ -396,9 +398,20 @@
 	    	$cantidadSede = count(self::findSucursales()->all());
 
 	    	if ( $esSedePrincipal && $cantidadSede > 1 ) {
-				$mensajes[] = Yii::t('backend', 'La razon social esta registrada como sede principal');
+				$mensajes[] = Yii::t('backend', 'La razon social esta registrada como sede principal de un grupo relacionado al mismo rif');
 			}
 
+			if ( !self::estaSolvente() ) {
+				$mensajes[] = Yii::t('backend', 'El contribuyente no se encuentra solvente') . '. ' . Yii::t('backend', 'Ultimo pago ') . self::armarDescripcionUltimoPago();
+			}
+
+			if ( !self::declaracionValida() ) {
+				$mensajes[] = Yii::t('backend', 'No se encontro la declaracion del año actual');
+			}
+
+			if ( $this->_datoContribuyente['no_declara'] == 1 ) {
+				$mensajes[] = Yii::t('backend', 'El contribuyente aparece como DESINCORPORADO para declarar');
+			}
 
 	    	return $mensajes;
 
@@ -413,16 +426,66 @@
 	     */
 	    public function getUltimaPeriodoDeclarado()
 	    {
-	    	return $registers = ActEcon::find()->joinWith('exigibilidad as E', true)
+	    	return $registers = ActEcon::find()->alias('A')
+	    									   ->joinWith('actividadDetalle D', true, 'INNER JOIN')
+	    									   ->joinWith('exigibilidad as E', true)
 	    	                                   ->where('id_contribuyente =:id_contribuyente',
 	    											[':id_contribuyente' => $this->_id_contribuyente])
-	    							 	       ->andWhere('estatus =:estatus',
+	    							 	       ->andWhere('A.estatus =:estatus',
 	    							 				[':estatus' => 0])
+	    							 	        ->andWhere('inactivo =:inactivo',
+	    							 				[':inactivo' => 0])
 	    							 	       ->orderBy([
 	    							 				'ano_impositivo' => SORT_DESC,
 	    							 			])
 	    							 		   ->asArray()
 	    							 		   ->one();
+	    }
+
+
+
+	    /**
+	     * Metodo que determina si el contribuyente posee una declaracion valida.
+	     * Segun la politica si el año de inicio de actividad es igual al año actual,
+	     * entonces se debe virificar que el periodo actual sea igual a uno para
+	     * considerar la declaracion como valida y asi poder permitir la creacion de la
+	     * solicitud.
+	     * Si el contribuyente que hace la solicitud no tiene fecha de inicio de actividad
+	     * se asumira que es un contribuyente que por migracion u otra causa (succesion)
+	     * que actualmente aparece relacionado como contribuyente de actividad economica
+	     * debe ser desincorporado como contribuyente de dicho impuesto.
+	     * @return boolean
+	     */
+	    private function declaracionValida()
+	    {
+	    	$periodoActual = self::determinarPeriodoActual();
+	    	$declaracionValida = false;
+	    	$datoContribuyente = $this->_datoContribuyente;
+	    	$fechaInicio = $datoContribuyente['fecha_inicio'];
+
+	    	if ( trim($fechaInicio) !== '' && $fechaInicio !== null ) {
+	    		if ( (int)date('Y', strtotime($fechaInicio)) == (int)date('Y') ) {
+	    			if ( $periodoActual['periodo'] == 1 ) {
+	    				$declaracionValida = true;
+	    			}
+	    		} else {
+		    		$declaracion = self::getUltimaPeriodoDeclarado();
+		    		if ( count($declaracion) > 0 ) {
+		    			if ( (int)$declaracion['ano_impositivo'] == (int)date('Y') ) {
+		    				$declaracionValida = true;
+		    			} elseif ( (int)$declaracion['ano_impositivo'] == (int)date('Y') - 1 ) {
+		    				if ( $periodoActual['periodo'] == 1 ) {
+		    					$declaracionValida = true;
+		    				}
+		    			}
+		    		}
+		    	}
+	    	} else {
+	    		$declaracionValida = true;
+	    	}
+
+	    	return $declaracionValida;
+
 	    }
 
 
@@ -495,6 +558,62 @@
 
 	    	return $solvente->estaSolventeActividadEconomica();
 	    }
+
+
+
+	    /**
+	     * Metodo que determina el period actual (año - periodo)
+	     * @return array
+	     */
+	    private function determinarPeriodoActual()
+	    {
+	    	$solvente = New Solvente();
+	    	$solvente->setImpuesto(1);
+
+	    	// Retorna un arreglo
+	    	// [
+	    	//		año => 9999,
+	    	//		periodo => 99,
+	    	// ]
+	    	return $solvente->getPeriodoActualSegunOrdenanza();
+	    }
+
+
+
+
+	    /**
+	     * Metodo que determina la condicion de solvente del contribuyente segun la siguiente politica:
+	     * - Si el año del ultimo pago es igual al año actual, entonces el periodo del ultimo pago debe
+	     * ser igual o superior al periodo actual.
+	     * - Si el año del ultimo pago es anterior al año actual, entonces el periodo del ultimo pago
+	     * debe ser igual a la exigibilidad del pago del año anterior, siempre y cuando el periodo actual
+	     * no sea superior a 1.
+	     * Esto aplica para el pago de la estimada.
+	     * @return boolean
+	     */
+	    private function estaSolvente()
+	    {
+	    	$estaSolvente = false;
+	    	$lapsoActual = self::determinarPeriodoActual();
+	    	if ( count($lapsoActual) > 0 ) {
+	    		$ultimoPago = self::getUltimoPago();
+	    		if ( count($ultimoPago) > 0 ) {
+	    			if ( (int)$lapsoActual['año'] == (int)$ultimoPago['ano_impositivo'] ) {
+	    				if ( (int)$lapsoActual['periodo'] <= (int)$ultimoPago['trimestre'] ) {
+	    					$estaSolvente = true;
+	    				}
+	    			} elseif ( ((int)$lapsoActual['año'] - 1) == (int)$ultimoPago['ano_impositivo'] ) {
+	    				if ( ( (int)$ultimoPago['exigibilidad_pago'] == (int)$ultimoPago['trimestre'] ) && ( $lapsoActual['periodo'] == 1 ) ) {
+	    					$estaSolvente = true;
+	    				}
+	    			}
+	    		}
+	    	}
+
+	    	return $estaSolvente;
+	    }
+
+
 
 	}
  ?>
