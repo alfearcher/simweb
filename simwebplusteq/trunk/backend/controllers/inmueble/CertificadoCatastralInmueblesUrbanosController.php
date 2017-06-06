@@ -1013,8 +1013,8 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
 
             // informacion del pie de pagina.
             $htmlPiePagina = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-piepagina-pdf',[
-                                                            'director'=> Yii::$app->oficina->getDirector(),
-                                                            'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
+                                                            'director'=> Yii::$app->oficina->getDirectorCatastro(),
+                                                            'nombreCargo' => Yii::$app->oficina->getDirectorCatastroCargo(),
                                                             'barcode' => $barcode,
                                     ]);          
 
