@@ -57,7 +57,8 @@
  		protected $nombre = 'Direccion de Hacienda Municipal';
  		protected $nombreCargo = 'Director(a) de Hacienda Municipal';
  		protected $director = 'Kelly Pérez';
-
+ 		protected $directorCatastro = 'Nombre del director de catastro';
+ 		protected $directorCatastroCargo = 'Director(a) de Catastro Municipal';
  		//	Inddentificador de la oficina
  		protected $id = 1;
  		protected $direccionLocalidad;
@@ -86,6 +87,15 @@
  		public function getNombreCargo()
  		{
  			return $this->nombreCargo;
+ 		}
+
+ 		public function	getDirectorCatastro()
+ 		{
+ 			return $this->directorCatastro;
+ 		}
+ 		public function getDirectorCatastroCargo()
+ 		{
+ 			return $this->directorCatastroCargo;
  		}
 
  		public function getDireccionLocalidad()
