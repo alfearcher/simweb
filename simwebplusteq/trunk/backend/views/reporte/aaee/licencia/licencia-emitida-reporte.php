@@ -177,6 +177,21 @@
 													},
 						            ],
 
+						            [
+						                'label' => Yii::t('backend', 'Condicion'),
+						                'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+						                'format' => 'raw',
+						                'value' => function($model) {
+														if ( $model->inactivo == 1 ) {
+															return 'INACTIVO';
+														} else {
+															return 'ACTIVO';
+														}
+													},
+						            ],
+
 						       //      [
 						       //          'label' => Yii::t('backend', 'Fecha'),
 						       //          'contentOptions' => [
