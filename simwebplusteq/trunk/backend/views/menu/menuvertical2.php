@@ -102,6 +102,7 @@
 		        						['label' => 'Inscripción de Actividades Economicas','url' => ['/aaee/inscripcionactecon/inscripcion-actividad-economica/index', 'id' => 81]],
 		        					   	['label' => 'Inscripción de Sucursales', 'url' => ['/aaee/inscripcionsucursal/inscripcion-sucursal/index', 'id' => 85]],
 		        					   	['label' => 'Autorizar Ramos', 'url' => ['/aaee/autorizarramo/autorizar-ramo/index', 'id' => 96]],
+		        					   	['label' => 'Desincorporación', 'url' => ['/aaee/desincorporar/desincorporar-actividad-economica/index', 'id' => 122]],
 		        					   	// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Licencia',
 		        					   	// 	'items' => [
 	        					   		// 		['label' => 'Solicitar Emision', 'url' => ['/aaee/licencia/licencia-solicitud/index', 'id' => 113]],
@@ -337,6 +338,21 @@
 
         			]
         		],
+
+
+        		//	REPORTES
+        		['label' => Icon::show('fa fa-bars',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
+        			'items' => [
+        				['label' => 'Contribuyentes', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        				['label' => 'Licencias',
+        					'items' => [
+        						['label' => 'Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-emitida/index']],
+        						//['label' => 'Emitidas', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        					],
+        				],
+        			]
+        		],
+
 
 
         		//PRESUPUESTOS
