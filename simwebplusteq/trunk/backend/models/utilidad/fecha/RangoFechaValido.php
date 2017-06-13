@@ -58,7 +58,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo constructor de la clase.
+		 * @param string $fechaDesde fecha inicio del rango.
+		 * @param string $fechaHasta fecha final del rango.
+		 */
 		public function __construct($fechaDesde, $fechaHasta)
 		{
 			$this->_fecha_desde = $fechaDesde;
