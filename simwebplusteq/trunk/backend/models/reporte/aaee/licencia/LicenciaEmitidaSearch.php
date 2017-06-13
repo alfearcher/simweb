@@ -180,8 +180,10 @@
 	    /***/
 	    public function armarConsultaHistoricoLicenciaModel()
 	    {
+
 	    	$findModel = self::findHistoricoLicencia();
-	    	if ( $this->validarRango($this->fecha_desde, $this->fecha_hasta) ) {
+	    	$this->validarRango($this->fecha_desde, $this->fecha_hasta);
+	    	if ( $this->getRangoValido() ) {
 	    		$findModel = self::findHistoricoLicencia()->where(['BETWEEN',
 	    												       'date(H.fecha_hora)',
 	    												        date('Y-m-d', strtotime($this->fecha_desde)), date('Y-m-d', strtotime($this->fecha_hasta))]);

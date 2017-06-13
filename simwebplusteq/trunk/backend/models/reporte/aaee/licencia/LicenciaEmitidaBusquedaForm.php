@@ -62,6 +62,8 @@
 		public $id_contribuyente;
 		public $licencia;
 
+		private $rangoValido;
+
 		const SCENARIO_FECHA = 'fecha';
 		const SCENARIO_CONTRIBUYENTE = 'contribuyente';
 		const SCENARIO_LICENCIA = 'licencia';
@@ -157,11 +159,25 @@
 	    /***/
 	    public function validarRango()
 	    {
+	    	$this->rangoValido = false;
 	    	$validarRango = New RangoFechaValido($this->fecha_desde, $this->fecha_hasta);
 	    	if ( !$validarRango->rangoValido() ) {
 	    		$this->addError('fecha_desde', Yii::t('backend', 'Rango de fecha no es valido'));
+	    	} else {
+	    		$this->rangoValido = true;
 	    	}
 	    }
+
+
+	    /**
+	     * Metodo que retorna una variable que indica si el rango de fechas evaluadas es valido.
+	     * @return boolean
+	     */
+	    public function getRangoValido()
+	    {
+	    	return $this->rangoValido;
+	    }
+
 
 
 	    /***/
