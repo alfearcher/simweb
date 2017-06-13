@@ -109,7 +109,7 @@
 
 		/**
 	     * Metodo donde se fijan los usuario autorizados para utilizar esl modulo.
-	     * @return [type] [description]
+	     * @return array
 	     */
 	    private function getListaFuncionarioAutorizado()
 	    {
@@ -177,7 +177,10 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que arma el modelo de consulta para el historico de licencias
+	     * @return HistoricoLicencia
+	     */
 	    public function armarConsultaHistoricoLicenciaModel()
 	    {
 
@@ -206,7 +209,10 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que ejecuta la consulta sobre el modelo de consulta creado.
+	     * @return array
+	     */
 	    public function findDataHistoricoLicencia()
 	    {
 	    	$findModel = self::armarConsultaHistoricoLicenciaModel();
@@ -215,7 +221,10 @@
 
 
 
-	    /***/
+	    /**
+	     * Metodo que crea el data provider del historico de licencia
+	     * @return ActiveDataProvider
+	     */
 	    public function getDataProvider()
 	    {
 	    	$query = self::armarConsultaHistoricoLicenciaModel();
