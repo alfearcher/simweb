@@ -45,6 +45,9 @@
  	use Yii;
 	use yii\db\ActiveRecord;
 	use common\models\contribuyente\ContribuyenteBase;
+	use common\models\solicitudescontribuyente\SolicitudesContribuyente;
+
+
 
 	/**
 	* 	Clase
@@ -80,7 +83,18 @@
 		 */
 		public function getContribuyente()
 		{
-			$this->hasOne(ContribuyenteBase::className(), ['id_contribuyente' => 'id_contribuyente']);
+			return $this->hasOne(ContribuyenteBase::className(), ['id_contribuyente' => 'id_contribuyente']);
+		}
+
+
+
+		/**
+		 * Relacion con la entidad "solicitudes-contribuyente"
+		 * @return [type] [description]
+		 */
+		public function getSolicitud()
+		{
+			return $this->hasOne(SolicitudesContribuyente::className(), ['nro_solicitud' => 'nro_solicitud']);
 		}
 
 
