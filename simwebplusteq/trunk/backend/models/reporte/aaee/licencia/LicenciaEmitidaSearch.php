@@ -60,8 +60,6 @@
 	class LicenciaEmitidaSearch extends LicenciaEmitidaBusquedaForm
 	{
 
-
-
 		/**
 		 * Metodo que genera el modelo de consulta basico.
 		 * @return HistoricoLicencia
@@ -71,39 +69,6 @@
 			return HistoricoLicencia::find()->alias('H');
 		}
 
-
-
-
-		/***/
-		public function searchLicenciaEmitida($params)
-		{
-			$query = self::findHistoricoLicencia();
-
-			$dataProvider = New ActiveDataProvider([
-				'query' => $query,
-				'pagination' => [
-        			'pageSize' => 50,
-    			],
-			]);
-			$this->load($params);
-			$query->filterWhere(['BETWEEN', 'date(H.fecha_hora)',
-								   		 	date('Y-m-d',strtotime($this->fecha_desde)),
-				    	      			 	date('Y-m-d',strtotime($this->fecha_hasta))]);
-
-			if ( strtoupper(trim($this->tipo_licencia)) == 'TODAS' ) {
-				$query->andFilterWhere(['IN', 'tipo', ['RENOVACION, NUEVA']]);
-			} else {
-				$query->andFilterWhere(['=', 'tipo', $this->tipo_licencia]);
-			}
-
-			$query->andFilterWhere('=', 'H.usuario', $this->usuario)
-			      ->andFilterWhere('=', 'H.id_contribuyente', $this->id_contribuyente);
-
-			$query->all();
-
-			return $dataProvider;
-
-		}
 
 
 
