@@ -135,7 +135,7 @@
 
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
-//die(var_dump($model));
+
 						$subCaption = Yii::t('backend', 'Resultado de la Consulta');
 		      			$dataProvider = $model->getDataProvider();
 		      			return $this->render('/reporte/aaee/licencia/licencia-emitida-reporte', [
