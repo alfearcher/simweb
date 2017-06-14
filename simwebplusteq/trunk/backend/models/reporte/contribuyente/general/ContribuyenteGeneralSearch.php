@@ -138,15 +138,13 @@
 	    	// Parametros adicionales
 	    	if ( trim($this->sin_licencia) !== '' ) {
 	    		if ( $this->sin_licencia > 0 ) {
-	    			$findModel = $findModel->andWhere(['=', 'LENGTH(TRIM(C.id_sim))', 0])
-	    								   ->orWhere(['=', 'LENGTH(TRIM(C.id_sim))', 1]);
+	    			$findModel = $findModel->andWhere(['<=', 'LENGTH(TRIM(C.id_sim))', 1]);
 	    		}
 	    	}
 
 			if ( trim($this->sin_email) !== '' ) {
 	    		if ( $this->sin_email > 0 ) {
-	    			$findModel = $findModel->andWhere(['=', 'LENGTH(TRIM(C.email))', 0])
-	    								   ->orWhere(['=', 'LENGTH(TRIM(C.email))', 1]);
+	    			$findModel = $findModel->andWhere(['<=', 'LENGTH(TRIM(C.email))', 1]);
 	    		}
 	    	}
 
