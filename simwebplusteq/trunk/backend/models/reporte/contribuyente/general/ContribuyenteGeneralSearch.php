@@ -149,7 +149,7 @@
 	    								   ->orWhere(['=', 'LENGTH(TRIM(C.email))', 1]);
 	    		}
 	    	}
-//die(var_dump($findModel));
+
 	    	return $findModel;
 	    }
 
@@ -176,6 +176,9 @@
 	    	$query = self::armarConsultaContribuyenteModel();
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
+	    		'pagination' => [
+	    			'pageSize' => 50,
+	    		],
 	    	]);
 	    	$query->all();
 	    	return $dataProvider;
