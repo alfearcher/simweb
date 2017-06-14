@@ -57,6 +57,7 @@
 	use common\models\session\Session;
 	use common\conexion\ConexionController;
 	use backend\models\reporte\contribuyente\general\ContribuyenteGeneralSearch;
+	use backend\models\buscargeneral\BuscarGeneral;
 
 
 
@@ -105,7 +106,6 @@
 					}
 				}
 
-//die(var_dump($postData));
 				$caption = Yii::t('backend', 'Busqueda de Contribuyentes');
 				$subCaption = Yii::t('backend', 'Parametros de consulta');
 
@@ -152,7 +152,23 @@
 
 
 
+		/**
+		 * Metodo que permite renderizar una vista con la informacion preliminar de
+		 * la licencia segun el numero de solicitud de la misma.
+		 * @return View
+		 */
+		public function actionViewContribuyenteModal()
+		{
+			$request = Yii::$app->request;
+			$postGet = $request->get();
 
+			// Identificador del contribuyente
+			$id = $postGet['id'];
+
+			return $this->renderAjax('@backend/views/buscar-general/view', [
+			            	'model' => $this->findModel($id),
+			       ]);
+		}
 
 
 
@@ -244,14 +260,32 @@
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-							'postData',
-							'conf',
-							'begin',
+						'postData',
+						'conf',
+						'begin',
 					];
 		}
 
 
+		/**
+    	 * [findModel description]
+    	 * @param  [type] $idContribuyente [description]
+    	 * @return [type]                  [description]
+    	 */
+    	protected function findModel($idContribuyente)
+    	{
+  			$model = BuscarGeneral::find()->alias('B')
+  			                              ->joinWith('afiliacion A', true, 'LEFT JOIN')
+  			                              ->where('B.id_contribuyente =:id_contribuyente',
+  			                          					[':id_contribuyente' => $idContribuyente])
+  			                              ->one();
 
+  			if ( $model !== null ) {
+  				return $model;
+  			} else {
+  				throw new NotFoundHttpException('The requested page does not exist.');
+  			}
+    	}
 
 
 	}

@@ -195,6 +195,9 @@
 			// Numero de solicitud
 			$nroSolicitud = $postGet['nro'];
 
+			// Identificador del historico
+			$historico = $postGet['historico'];
+
 			$licenciaSearch = New LicenciaSolicitudSearch($id);
 			$dataProvider = $licenciaSearch->getDataProviderRubroSegunSolicitud($nroSolicitud);
 
