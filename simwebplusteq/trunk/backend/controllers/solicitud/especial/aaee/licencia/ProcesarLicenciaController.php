@@ -336,7 +336,7 @@
 			// Se crea un ciclo para procesar el lote de solicitudes
 			// Cada solicitud se tratara por separado, es decir, tendran su
 			// instancia de Conexion y transaccion. Si se aborta un registro esto no
-			// afectara al resto que ta se haya guardado.
+			// afectara al resto que da las que se hayan guardado.
 			foreach ( $chkNroSolicituds as $key => $value ) {
 
 				self::actionAnularSession(['idContribuyente']);
