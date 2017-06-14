@@ -128,8 +128,6 @@
 
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
-		      			$_SESSION['postData'] = $postData;
-
 						$subCaption = Yii::t('backend', 'Resultado de la Consulta');
 		      			$dataProvider = $model->getDataProvider();
 		      			return $this->render('/reporte/contribuyente/general/contribuyente-existente-reporte', [
