@@ -200,16 +200,22 @@
 													},
 						            ],
 
-						       //      [
-						       //          'label' => Yii::t('backend', 'Usuario'),
-						       //          'contentOptions' => [
-						       //          	'style' => 'font-size:90%;',
-						       //          ],
-						       //          'format' => 'raw',
-						       //          'value' => function($model) {
-													// 	return $model->usuario;
-													// },
-						       //      ],
+						            [
+						                'label' => Yii::t('backend', 'Tipo'),
+						                'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+						                'format' => 'raw',
+						                'value' => function($model) {
+														if ( $model->tipo_naturaleza == 0 ) {
+						                					return 'NATURAL';
+						                				} elseif ( $model->tipo_naturaleza == 1 ) {
+						                					return 'JURIDICO';
+						                				} else {
+						                					return '';
+						                				}
+													},
+						            ],
 
 						       //      [
 						       //          'label' => Yii::t('frontend', 'Observacion'),
