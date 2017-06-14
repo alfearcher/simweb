@@ -343,7 +343,12 @@
         		//	REPORTES
         		['label' => Icon::show('fa fa-bars',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
         			'items' => [
-        				['label' => 'Contribuyentes', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        				['label' => 'Contribuyentes',
+        					'items' => [
+        						['label' => 'General', 'url' => ['/reporte/contribuyente/general/contribuyente-general/index']],
+        					],
+        				],
+
         				['label' => 'Licencias',
         					'items' => [
         						['label' => 'Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-emitida/index']],
