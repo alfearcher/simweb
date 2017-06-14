@@ -159,7 +159,7 @@
 	     */
 	    public function findDataContribuyente()
 	    {
-	    	$findModel = self::armarConsultaContribuyenteModel();
+	    	$findModel = self::armarConsultaContribuyenteModel()->orderBy(['C.id_contribuyente' => SORT_ASC]);
 	    	return $registers = $findModel->asArray()->all();
 	    }
 
