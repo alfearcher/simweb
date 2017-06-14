@@ -49,7 +49,9 @@
 
 
 
-	/***/
+	/**
+	 * Clase que permite consultas sobre la entidad "tipos-licencias"
+	 */
 	class TipoLicenciaSearch extends TipoLicencia
 	{
 
