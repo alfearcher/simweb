@@ -98,16 +98,27 @@
 			if ( $model->estaAutorizado($usuario) ) {
 
 				$request = Yii::$app->request;
-				$postData = $request->bodyParams;
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
+				if ( $request->post('btn-quit') !== null ) {
+					if ( $request->post('btn-quit') == 1 ) {
 						$this->redirect(['quit']);
 					}
-				} elseif ( isset($postData['btn-back']) ) {
-					if ( $postData['btn-back'] == 1 ) {
+				} elseif ( $request->post('btn-back') !== null ) {
+					if ( $request->post('btn-back') == 1 ) {
 						$this->redirect(['index']);
 					}
+				}
+
+				if ( $request->isGet ) {
+					$postData = $request->get();
+				} else {
+					$postData = $request->post() !== null ? $request->post() : $_SESSION['postData'];
+					$_SESSION['postData'] = $postData;
+				}
+
+				if ( isset($postData['page']) ) {
+					$postData = $_SESSION['postData'];
+					$model->load($postData);
 				}
 
 				if ( count($postData) == 0 ) {
@@ -135,7 +146,6 @@
 
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
-
 						$subCaption = Yii::t('backend', 'Resultado de la Consulta');
 		      			$dataProvider = $model->getDataProvider();
 		      			return $this->render('/reporte/aaee/licencia/licencia-emitida-reporte', [
@@ -158,7 +168,6 @@
 
 		      	// Lista usuario
 		      	$listaUsuario = $model->getListaUsuarioLicencia();
-
 
 		      	// Se muestra el formulario de busqueda.
 		      	return $this->render('/reporte/aaee/licencia/licencia-emitida-consulta-form', [
