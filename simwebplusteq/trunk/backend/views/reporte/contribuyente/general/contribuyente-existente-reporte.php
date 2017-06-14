@@ -186,6 +186,20 @@
 						            ],
 
 						            [
+						                'label' => Yii::t('backend', 'Licencia'),
+						                'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+						                'format' => 'raw',
+						                'value' => function($model) {
+														return $model->id_sim;
+													},
+										'visible' => function($model) {
+														return ( $model->tipo_naturaleza == 1 ) ? true : false;
+													}
+						            ],
+
+						            [
 						                'label' => Yii::t('backend', 'Condicion'),
 						                'contentOptions' => [
 						                	'style' => 'font-size:90%;',
@@ -274,7 +288,7 @@
 
 <?php
 $this->registerJs(
-    '$(document).on("click", "#link-id-historico", (function() {
+    '$(document).on("click", "#link-id-contribuyente", (function() {
         $.get(
             $(this).data("url"),
             function (data) {
