@@ -62,11 +62,30 @@
 		        	]
 		        ],
 
+		        // LISTADO
 		        ['label' => Icon::show('fa fa-list',['class' => $typeLong], $typeIcon) . '&nbsp; Listados',
 		        	'items' => [
 		        		['label' => 'Solicitudes de Declaracion', 'url' => ['/aaee/listado/listado-solicitud-declaracion/index']],
 		        	],
 		        ],
+
+		        //	REPORTES
+        		['label' => Icon::show('fa fa-bars',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
+        			'items' => [
+        				['label' => 'Contribuyentes',
+        					'items' => [
+        						['label' => 'General', 'url' => ['/reporte/contribuyente/general/contribuyente-general/index']],
+        					],
+        				],
+
+        				['label' => 'Licencias',
+        					'items' => [
+        						['label' => 'Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-emitida/index']],
+        						//['label' => 'Emitidas', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        					],
+        				],
+        			]
+        		],
 
 		        ['label' => Icon::show('fa fa-th-large',['class' => $typeLong], $typeIcon) . '&nbsp; Atención de Solicitudes Especiales',
 		        	'items' => [
@@ -338,26 +357,6 @@
 
         			]
         		],
-
-
-        		//	REPORTES
-        		['label' => Icon::show('fa fa-bars',['class' => $typeLong], $typeIcon) . '&nbsp; Reportes',
-        			'items' => [
-        				['label' => 'Contribuyentes',
-        					'items' => [
-        						['label' => 'General', 'url' => ['/reporte/contribuyente/general/contribuyente-general/index']],
-        					],
-        				],
-
-        				['label' => 'Licencias',
-        					'items' => [
-        						['label' => 'Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-emitida/index']],
-        						//['label' => 'Emitidas', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
-        					],
-        				],
-        			]
-        		],
-
 
 
         		//PRESUPUESTOS
