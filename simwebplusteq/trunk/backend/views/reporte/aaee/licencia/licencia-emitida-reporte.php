@@ -125,7 +125,8 @@
                 																'data-target' => '#modal',
                 																'data-url' => Url::to(['view-pre-licencia-modal',
                 																						'nro' => $model->nro_solicitud,
-                																						'id' => $model->id_contribuyente]),
+                																						'id' => $model->id_contribuyente,
+                																						'historico' => $model->id_historico]),
                 																'data-pjax' => 0,
                 													]);
 													},
