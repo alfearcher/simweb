@@ -62,6 +62,7 @@
 	use backend\models\aaee\licencia\LicenciaSolicitudSearch;
 
 
+
 	session_start();
 
 
@@ -77,8 +78,15 @@
 		const SCENARIO_DEFAULT = 'default';
 
 
+
+		/**
+		 * Metodo inicio de la clase.
+		 * @return none
+		 */
 		public function actionIndex()
 		{
+			$varSessions = self::actionGetListaSessions();
+			self::actionAnularSession($varSessions);
 			$_SESSION['begin'] = 1;
 			$this->redirect(['mostrar-form-consulta-licencia-emitida']);
 		}
@@ -193,7 +201,7 @@
 		 * la licencia segun el numero de solicitud de la misma.
 		 * @return View
 		 */
-		public function actionViewPreLicenciaModal()
+		public function actionViewLicenciaEmitidaModal()
 		{
 			$request = Yii::$app->request;
 			$postGet = $request->get();
@@ -207,23 +215,15 @@
 			// Identificador del historico
 			$historico = $postGet['historico'];
 
-			$licenciaSearch = New LicenciaSolicitudSearch($id);
-			$dataProvider = $licenciaSearch->getDataProviderRubroSegunSolicitud($nroSolicitud);
+			$licenciaEmitidaSearch = New LicenciaEmitidaSearch();
+			$model = $licenciaEmitidaSearch->findHistoricoLicenciaById($historico);
+			$caption = Yii::t('backend', 'Licencia Emitida, Nro. ') . $model->licencia . ' - ' . Yii::t('backend', 'Nro Control ') . $model->nro_control;
 
-			$models = $dataProvider->getModels();
-			$model = $models[0]['datosContribuyente'];
-
-			return $this->renderAjax('/aaee/licencia/pre-view-datos-licencia',[
-							'model' => $model,
-							'models' => $models,
-							'dataProvider' => $dataProvider,
+			return $this->renderAjax('/reporte/aaee/licencia/licencia-emitida', [
+												'model' => $model,
+												'caption' => $caption,
 					]);
-
 		}
-
-
-
-
 
 
 
