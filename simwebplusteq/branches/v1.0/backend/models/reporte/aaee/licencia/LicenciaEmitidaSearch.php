@@ -51,6 +51,7 @@
 
 
 
+
 	/**
 	* Clase que permite realizar la consulta a traves de los parametros indicado
 	* en el formulario de consulta de las licencias emitidas. La busqueda se realiza
@@ -67,6 +68,21 @@
 		public function findHistoricoLicencia()
 		{
 			return HistoricoLicencia::find()->alias('H');
+		}
+
+
+
+		/**
+		 * Metodo que realiza la consulta sobre la entidad respectiva a tarves del identificador
+		 * de la entidad. En este caso el id-historico.
+		 * @param integer $idHistorico identificador del registro o entidad.
+		 * @return array, retorna los datos del historico d ela licencia.
+		 */
+		public function findHistoricoLicenciaById($idHistorico)
+		{
+			return $registers = self::findHistoricoLicencia()->where('id_historico =:id_historico',
+			 															[':id_historico' => $idHistorico])
+												      		 ->one();
 		}
 
 
