@@ -123,7 +123,7 @@
                 																'id' => 'link-id-historico',
                 																'data-toggle' => 'modal',
                 																'data-target' => '#modal',
-                																'data-url' => Url::to(['view-pre-licencia-modal',
+                																'data-url' => Url::to(['view-licencia-emitida-modal',
                 																						'nro' => $model->nro_solicitud,
                 																						'id' => $model->id_contribuyente,
                 																						'historico' => $model->id_historico]),
@@ -144,7 +144,7 @@
 						            ],
 
 						            [
-						                'label' => Yii::t('backend', 'Licencia Generada'),
+						                'label' => Yii::t('backend', 'Lic. Generada'),
 						                'contentOptions' => [
 						                	'style' => 'font-size:90%;',
 						                ],
@@ -205,7 +205,7 @@
 						       //      ],
 
 						            [
-						                'label' => Yii::t('backend', 'Id. Contribuyente'),
+						                'label' => Yii::t('backend', 'ID.'),
 						                'contentOptions' => [
 						                	'style' => 'font-size:90%;',
 						                ],
@@ -216,7 +216,7 @@
 													},
 						            ],
 
-						            [
+						            /*[
 						                'label' => Yii::t('backend', 'RIF'),
 						                'contentOptions' => [
 						                	'style' => 'font-size:90%;',
@@ -226,7 +226,7 @@
 														$fuente = json_decode($model->fuente_json, true);
 														return $fuente['rif'];
 													},
-						            ],
+						            ],*/
 
 						            [
 						                'label' => Yii::t('backend', 'Contribuyente'),
@@ -237,6 +237,17 @@
 						                'value' => function($model) {
 														$fuente = json_decode($model->fuente_json, true);
 														return $fuente['descripcion'];
+													},
+						            ],
+
+						            [
+						                'label' => Yii::t('backend', 'Serial Control'),
+						                'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+						                'format' => 'raw',
+						                'value' => function($model) {
+														return $model->serial_control;
 													},
 						            ],
 
