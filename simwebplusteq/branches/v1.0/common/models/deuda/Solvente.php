@@ -147,7 +147,7 @@
 		 * aqui periodo actual se refiere al esquema Año-periodo, donde periodo puede ser mes, bimestre,
 		 * trimestre, etc. Sino encuentra nada retorna NULL.
 		 */
-		private function getPeriodoActualSegunOrdenanza()
+		public function getPeriodoActualSegunOrdenanza()
 		{
 			$lapso = null;
 			$año = date('Y');
