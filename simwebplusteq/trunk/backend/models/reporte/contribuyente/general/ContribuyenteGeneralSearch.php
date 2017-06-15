@@ -171,7 +171,7 @@
 	     */
 	    public function getDataProvider()
 	    {
-	    	$query = self::armarConsultaContribuyenteModel();
+	    	$query = self::armarConsultaContribuyenteModel()->orderBy(['C.id_contribuyente' => SORT_ASC]);
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
 	    		'pagination' => [
