@@ -67,6 +67,9 @@
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudLicencia;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudLicenciaRenovacion;
     use common\models\solicitudescontribuyente\aaee\ProcesarSolicitudSolvenciaActividadEconomica;
+    use common\models\solicitudescontribuyente\aaee\ProcesarDesincorporarActividadEconomica;
+
+
 
 
     /**
@@ -255,6 +258,12 @@
                                                                 $this->_conexion);
                     $result = $procesar->procesarSolicitud();
 
+                } elseif ( $this->_model->tipo_solicitud == 86 ) {
+                    $procesar = New ProcesarDesincorporarActividadEconomica($this->_model,
+                                                                            $this->_evento,
+                                                                            $this->_conn,
+                                                                            $this->_conexion);
+                    $result = $procesar->procesarSolicitud();
 
                 } elseif ( $this->_model->tipo_solicitud == 'c' ) {
                 }
