@@ -159,7 +159,7 @@
 	     */
 	    public function findDataContribuyente()
 	    {
-	    	$findModel = self::armarConsultaContribuyenteModel()->orderBy(['C.id_contribuyente' => SORT_ASC]);
+	    	$findModel = self::armarConsultaContribuyenteModel();
 	    	return $registers = $findModel->asArray()->all();
 	    }
 
@@ -171,7 +171,7 @@
 	     */
 	    public function getDataProvider()
 	    {
-	    	$query = self::armarConsultaContribuyenteModel();
+	    	$query = self::armarConsultaContribuyenteModel()->orderBy(['C.id_contribuyente' => SORT_ASC]);
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
 	    		'pagination' => [
