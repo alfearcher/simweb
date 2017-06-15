@@ -139,7 +139,7 @@
 				DesincorporarRamo::className() => $label .  Yii::t('backend', 'Desincorporación de Ramo'),
 				AnexoRamo::className() => $label .  Yii::t('backend', 'Anexo de Ramo'),
 				AutorizarRamo::className() => $label .  Yii::t('backend', 'Autorización de Ramo'),
-				//LicenciaSolicitud::className() => $label .  Yii::t('backend', 'Emisión de Licencia'),
+				LicenciaSolicitud::className() => $label .  Yii::t('backend', 'Emisión de Licencia'),
 			];
 		}
 
