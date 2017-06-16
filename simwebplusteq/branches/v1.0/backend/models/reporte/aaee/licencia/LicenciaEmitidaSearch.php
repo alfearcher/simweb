@@ -211,6 +211,9 @@
 	    	$query = self::armarConsultaHistoricoLicenciaModel();
 	    	$dataProvider = New ActiveDataProvider([
 	    		'query' => $query,
+	    		'pagination' => [
+	    			'pageSize' => 50,
+	    		],
 	    	]);
 	    	$query->all();
 	    	return $dataProvider;
