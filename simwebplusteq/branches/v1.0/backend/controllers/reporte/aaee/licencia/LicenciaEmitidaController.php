@@ -124,14 +124,14 @@
 					$_SESSION['postData'] = $postData;
 				}
 
-				if ( isset($postData['page']) ) {
-					$postData = $_SESSION['postData'];
-					$model->load($postData);
-				}
 
 				if ( count($postData) == 0 ) {
 					$model->scenario = self::SCENARIO_DEFAULT;
 				} else {
+
+					if ( isset($postData['page']) ) {
+						$postData = $_SESSION['postData'];
+					}
 
 					if ( isset($postData[$formName]) ) {
 						if ( $postData[$formName]['fecha_desde'] !== '' || $postData[$formName]['fecha_hasta'] !== '' ) {
@@ -143,6 +143,8 @@
 						}
 					}
 				}
+
+				$model->load($postData);
 
 				$caption = Yii::t('backend', 'Busqueda de Licencias Emitidas');
 				$subCaption = Yii::t('backend', 'Parametros de consulta');
