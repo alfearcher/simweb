@@ -234,7 +234,7 @@
 
 			// Modelo de datos de la solicitud maestro.
 			$viewMaestro = self::actionViewMaestroSolicitud($nroSolicitud);
-die(var_dump($viewMaestro));
+
 			$caption = Yii::t('backend', 'Detalle de la Solicitud Nro. ') . $nroSolicitud;
 			$subCaption = Yii::t('backend', 'Detalle');
 
@@ -261,7 +261,6 @@ die(var_dump($viewMaestro));
 	    	$historicoSolicitudSearch = New HistoricoSolicitudSearch();
 	    	$model = $historicoSolicitudSearch->findDataSolicitudMaestro($nroSolicitud);
 	    	if ( $model !== null ) {
-die('kaka');
 	    		return $this->renderPartial('@backend/views/solicitud/busqueda/view-maestro-solicitud', [
 	    												'model' => $model,
 	    			]);
