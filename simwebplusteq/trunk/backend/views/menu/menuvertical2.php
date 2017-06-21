@@ -84,6 +84,12 @@
         						//['label' => 'Emitidas', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
         					],
         				],
+
+        				['label' => 'Solicitudes',
+        					'items' => [
+        						['label' => 'Historico', 'url' => ['/reporte/solicitud/historico/historico-solicitud/index']],
+        					],
+        				],
         			]
         		],
 
