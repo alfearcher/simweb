@@ -103,7 +103,7 @@
 		 */
 		public function actionInicioView()
 		{
-			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
+			if ( isset($this->model) ) {
 // id de la configuracion tipo..
 				if ( $this->model->tipo_solicitud == 20 ) {
 
