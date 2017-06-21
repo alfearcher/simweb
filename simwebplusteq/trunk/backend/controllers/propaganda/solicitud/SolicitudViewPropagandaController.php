@@ -100,8 +100,7 @@
 		 */
 		public function actionInicioView()
 		{
-			//die('llego');
-			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
+			if ( isset($this->model) ) {
 
 				if ( $this->model->tipo_solicitud == 39 ) {
 
@@ -124,9 +123,7 @@
 					return self::actionMostrarSolicitudAnulacionPatrocinadorPropaganda();
 				}
 
-
-
-			 }
+			}
 
 
 			return false;
@@ -167,7 +164,7 @@
 			// }
 
 
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New InscripcionPropagandaSearch($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudInscripcionPropaganda($this->model->nro_solicitud);
 
@@ -205,7 +202,7 @@
 		 */
 		private function actionMostarSolicitudCambioDatosPropaganda()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcionPropaganda($this->model->nro_solicitud);
 					//die(var_dump($model));
@@ -247,7 +244,7 @@
 		 */
 		private function actionMostarSolicitudDesincorporacionPropaganda()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findDesincorporacionPropaganda($this->model->nro_solicitud);
 					$datosPropaganda = Propaganda::find()->where(['id_impuesto' => $model['id_impuesto'] ])->one();
@@ -287,7 +284,7 @@
 		 */
 		private function actionMostarSolicitudAsignacionPatrocinadorPropaganda()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findPatrocinadorPropaganda($this->model->nro_solicitud);
 					$idPatrocinador = self::busquedaIdPatrocinador($this->model->nro_solicitud);
@@ -325,7 +322,7 @@
 		 */
 		private function actionMostrarSolicitudAnulacionPatrocinadorPropaganda()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlPropagandasForm($this->model->id_contribuyente);
 					$model = $modelSearch->findAnularPatrocinadorPropaganda($this->model->nro_solicitud);
 					$idPatrocinador = self::busquedaIdPatrocinadorAnulaciones($this->model->nro_solicitud);
