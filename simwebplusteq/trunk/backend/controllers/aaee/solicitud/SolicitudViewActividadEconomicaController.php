@@ -106,7 +106,6 @@
 		 */
 		public function actionInicioView()
 		{
-			//&& isset($_SESSION['idContribuyente'])
 			if ( isset($this->_model) ) {
 
 				if ( $this->_model->tipo_solicitud == 1 ) {
@@ -212,7 +211,7 @@
 		 */
 		private function actionMostarSolicitudInscripcionActividadEconomica()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New InscripcionActividadEconomicaSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->_model->nro_solicitud);
 					if ( isset($model) ) {
@@ -250,7 +249,7 @@
 		 */
 		private function actionMostarSolicitudInscripcionSucursal()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New InscripcionSucursalSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->_model->nro_solicitud);
 					if ( isset($model) ) {
@@ -288,7 +287,7 @@
 		 */
 		private function actionMostarSolicitudCorreccionDomicilioFiscal()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New CorreccionDomicilioFiscalSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionDomicilio($this->_model->nro_solicitud);
 					if ( isset($model) ) {
@@ -327,7 +326,7 @@
 		 */
 		private function actionMostarSolicitudCorreccionCedulaRif()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New CorreccionCedulaRifSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionCedulaRif($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -366,7 +365,7 @@
 		 */
 		private function actionMostarSolicitudCorreccionCapital()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New CorreccionCapitalSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionCapital($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -406,7 +405,7 @@
 		 */
 		private function actionMostarSolicitudCorreccionRepresentanteLegal()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New CorreccionRepresentanteLegalSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionRepresentanteLegal($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -445,7 +444,7 @@
 		 */
 		private function actionMostarSolicitudCorreccionRazonSocial()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New CorreccionRazonSocialSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionRazonSocial($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -484,7 +483,7 @@
 		 */
 		private function actionMostarSolicitudAutorizarRamo()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New AutorizarRamoSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudAutorizarRamo($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -524,7 +523,7 @@
 		 */
 		private function actionMostarSolicitudCorreccionFechaInicio()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New CorreccionFechaInicioSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCorreccionFechaInicio($this->_model->nro_solicitud);
 					if ( isset($model) ) {
@@ -562,7 +561,7 @@
 		 */
 		private function actionMostarSolicitudAnexarRamo()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New AnexoRamoSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudAnexoRamo($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -602,7 +601,7 @@
 		 */
 		private function actionMostarSolicitudDesincorporarRamo()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New DesincorporarRamoSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudDesincorporarRamo($this->_model->nro_solicitud);
 					$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -724,7 +723,7 @@
 		 */
 		private function actionMostarSolicitudDeclaracionSustitutiva()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 				$modelSearch = New SustitutivaBaseSearch($this->_model->id_contribuyente);
 				$model = $modelSearch->findSolicitudSustitutiva($this->_model->nro_solicitud);
 				$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -765,7 +764,7 @@
 		 */
 		private function actionMostarSolicitudLicencia()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 				$modelSearch = New LicenciaSolicitudSearch($this->_model->id_contribuyente);
 				$model = $modelSearch->findSolicitudLicencia($this->_model->nro_solicitud);
 				$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -850,7 +849,7 @@
 		 */
 		private function actionMostarSolicitudSolvenciaActividadEconomica()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 				$modelSearch = New SolvenciaActividadEconomicaSearch($this->_model->id_contribuyente);
 				$model = $modelSearch->findSolicitudSolvencia($this->_model->nro_solicitud);
 				$dataProvider = $modelSearch->getDataProviderSolicitud($this->_model->nro_solicitud);
@@ -902,7 +901,7 @@
 		 */
 		private function actionMostarSolicitudDesincorporarActividadEconomica()
 		{
-			if ( $this->_model->nivel_aprobacion == 2 ) {
+			if ( $this->_model->nivel_aprobacion == 2 || $this->_model->nivel_aprobacion == 1 ) {
 					$modelSearch = New DesincorporarActividadEconomicaSearch($this->_model->id_contribuyente);
 					$model = $modelSearch->findSolicitudDesincorporarActividadEconomica($this->_model->nro_solicitud);
 					if ( isset($model) ) {
