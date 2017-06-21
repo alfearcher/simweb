@@ -97,8 +97,7 @@
 		 */
 		public function actionInicioView()
 		{
-			//die('llego');
-			if ( isset($this->model) && isset($_SESSION['idContribuyente']) ) {
+			if ( isset($this->model) ) {
 
 				if ( $this->model->tipo_solicitud == 32 ) {
 
@@ -165,7 +164,7 @@
 		 */
 		private function actionMostarSolicitudInscripcionVehiculo()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findInscripcion($this->model->nro_solicitud);
 
@@ -204,7 +203,7 @@
 		 */
 		private function actionMostarSolicitudCambioPropietarioVendedorVehiculo()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCambioPropietarioVendedor($this->model->nro_solicitud);
 					$modelRelacion = self::busquedaRelacionVehiculoSlCambioPropietario($model->id_impuesto, $model->id_comprador);
@@ -244,7 +243,7 @@
 		 */
 		private function actionMostarSolicitudCambioPropietarioCompradorVehiculo()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCambioPropietarioComprador($this->model->nro_solicitud);
 					$modelRelacion = self::busquedaRelacionVehiculoSlCambioPropietarioComprador($model->id_impuesto, $model->id_propietario);
@@ -284,7 +283,7 @@
 		 */
 		private function actionMostarSolicitudCambioPlacaVehiculo()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudCambioPlaca($this->model->nro_solicitud);
 
@@ -322,8 +321,7 @@
 		 */
 		private function actionMostrarDesincorporacionVehiculo()
 		{
-			//die('llegue a desincorporacion');
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudDesincorporacionVehiculo($this->model->nro_solicitud);
 
@@ -364,7 +362,7 @@
 		 */
 		private function actionMostrarActualizarDatosVehiculo()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudActualizarDatosVehiculo($this->model->nro_solicitud);
 
@@ -404,7 +402,7 @@
 		 */
 		private function actionMostrarSolicitudReposicionCalcomaniaExtravio()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 					$modelSearch = New SlVehiculosForm($this->model->id_contribuyente);
 					$model = $modelSearch->findSolicitudReposicionCalcomaniaExtravio($this->model->nro_solicitud);
 
@@ -487,7 +485,7 @@
 		 */
 		private function actionMostrarSolicitudSolvenciaVehiculo()
 		{
-			if ( $this->model->nivel_aprobacion == 2 ) {
+			if ( $this->model->nivel_aprobacion == 2 || $this->model->nivel_aprobacion == 1 ) {
 				$modelSearch = New SolvenciaVehiculoSearch($this->model->id_contribuyente, $this->model->id_impuesto);
 				$modelSolvencia = $modelSearch->findSolicitudSolvencia($this->model->nro_solicitud);
 
