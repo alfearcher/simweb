@@ -260,6 +260,7 @@
 	    {
 	    	$historicoSolicitudSearch = New HistoricoSolicitudSearch();
 	    	$model = $historicoSolicitudSearch->findDataSolicitudMaestro($nroSolicitud);
+die(var_dump($model));
 	    	if ( $model !== null ) {
 	    		return $this->renderPartial('/solicitud/busqueda/view-maestro-solicitud', [
 	    												'model' => $model,
