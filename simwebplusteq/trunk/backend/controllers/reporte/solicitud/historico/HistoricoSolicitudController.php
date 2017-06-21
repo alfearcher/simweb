@@ -238,7 +238,7 @@ die(var_dump($viewMaestro));
 			$caption = Yii::t('backend', 'Detalle de la Solicitud Nro. ') . $nroSolicitud;
 			$subCaption = Yii::t('backend', 'Detalle');
 
-			return $this->renderAjax('/reporte/solicitud/historico/solicitud-creada', [
+			return $this->renderAjax('@backend/views/reporte/solicitud/historico/solicitud-creada', [
 												'viewMaestro' => $viewMaestro,
 												'viewDetalle' => $viewDetalle,
 												'caption' => $caption,
