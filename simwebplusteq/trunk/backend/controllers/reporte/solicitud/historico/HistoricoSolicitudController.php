@@ -261,7 +261,7 @@ die(var_dump($viewMaestro));
 	    	$historicoSolicitudSearch = New HistoricoSolicitudSearch();
 	    	$model = $historicoSolicitudSearch->findDataSolicitudMaestro($nroSolicitud);
 	    	if ( $model !== null ) {
-	    		return $this->renderPartial('/solicitud/busqueda/view-maestro-solicitud', [
+	    		return $this->renderPartial('@backend/views/solicitud/busqueda/view-maestro-solicitud', [
 	    												'model' => $model,
 	    			]);
 	    	}
