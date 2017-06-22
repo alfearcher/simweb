@@ -22,17 +22,14 @@
  */
 
  /**
- *  @file NivelesContables.php
+ *  @file CodigosContables.php
  *
  *  @author Manuel Alejandro Zapata Canelon
  *
  *  @date 22/09/2016
  *
- *  @class NivelesContables
- *  @brief Modelo que instancia la conexion a la base de datos para buscar datos de la tabla niveles_contables.
- *
- *
- *
+ *  @class CodigosContables
+ *  @brief Modelo clase de la entidad "codigos-contables".
  *
  *
  *  @property
@@ -52,22 +49,16 @@
     namespace common\models\presupuesto\codigopresupuesto;
 
     use Yii;
-    use yii\base\Model;
-    use common\models\Users;
     use yii\db\ActiveRecord;
-    use backend\models\configuracion\tiposolicitud\TipoSolicitud;
     use backend\models\impuesto\Impuesto;
-    use backend\models\funcionario\solicitud\FuncionarioSolicitud;
-    use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
-    use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
-    use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
-    use backend\models\solicitud\estatus\EstatusSolicitud;
-    use backend\models\propaganda\Propaganda;
-    use common\models\contribuyente\ContribuyenteBase;
-    use backend\models\TiposPropaganda;
     use common\models\presupuesto\nivelespresupuesto\NivelesContables;
     use backend\models\tasa\Tasa;
 
+
+
+    /**
+     * Clase principal de la entidad "codigos_contables"
+     */
     class CodigosContables extends ActiveRecord
     {
         public $cod;
@@ -87,14 +78,21 @@
           return 'codigos_contables';
         }
 
+
+        /**
+         * Relacion con la entidad "niveles-contables"
+         * @return
+         */
         public function getNivelPresupuesto()
         {
             return $this->hasOne(NivelesContables::className(), ['nivel_contable' => 'nivel_contable']);
         }
 
+
+        /***/
         public function getDescripcionCodigoContable($codigo)
         {
-            //die(var_dump($codigo));
+
             $model = CodigosContables::find()
                                     ->where(['id_codigo' => $codigo])
                                     ->one();
@@ -112,11 +110,7 @@
         }
 
 
-
-
-
-
- }
+    }
 
 
  ?>
