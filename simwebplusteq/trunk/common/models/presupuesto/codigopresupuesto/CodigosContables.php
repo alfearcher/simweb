@@ -22,17 +22,14 @@
  */
 
  /**
- *  @file NivelesContables.php
+ *  @file CodigosContables.php
  *
  *  @author Manuel Alejandro Zapata Canelon
  *
  *  @date 22/09/2016
  *
- *  @class NivelesContables
- *  @brief Modelo que instancia la conexion a la base de datos para buscar datos de la tabla niveles_contables.
- *
- *
- *
+ *  @class CodigosContables
+ *  @brief Modelo clase de la entidad "codigos-contables".
  *
  *
  *  @property
@@ -113,11 +110,7 @@
         }
 
 
-
-
-
-
- }
+    }
 
 
  ?>
