@@ -52,22 +52,16 @@
     namespace common\models\presupuesto\codigopresupuesto;
 
     use Yii;
-    use yii\base\Model;
-    use common\models\Users;
     use yii\db\ActiveRecord;
-    use backend\models\configuracion\tiposolicitud\TipoSolicitud;
     use backend\models\impuesto\Impuesto;
-    use backend\models\funcionario\solicitud\FuncionarioSolicitud;
-    use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
-    use backend\models\configuracion\nivelaprobacion\NivelAprobacion;
-    use backend\models\utilidad\causanegacionsolicitud\CausaNegacionSolicitud;
-    use backend\models\solicitud\estatus\EstatusSolicitud;
-    use backend\models\propaganda\Propaganda;
-    use common\models\contribuyente\ContribuyenteBase;
-    use backend\models\TiposPropaganda;
     use common\models\presupuesto\nivelespresupuesto\NivelesContables;
     use backend\models\tasa\Tasa;
 
+
+
+    /**
+     * Clase principal de la entidad "codigos_contables"
+     */
     class CodigosContables extends ActiveRecord
     {
         public $cod;
