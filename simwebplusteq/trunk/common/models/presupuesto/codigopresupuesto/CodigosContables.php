@@ -81,14 +81,21 @@
           return 'codigos_contables';
         }
 
+
+        /**
+         * Relacion con la entidad "niveles-contables"
+         * @return
+         */
         public function getNivelPresupuesto()
         {
             return $this->hasOne(NivelesContables::className(), ['nivel_contable' => 'nivel_contable']);
         }
 
+
+        /***/
         public function getDescripcionCodigoContable($codigo)
         {
-            //die(var_dump($codigo));
+
             $model = CodigosContables::find()
                                     ->where(['id_codigo' => $codigo])
                                     ->one();
