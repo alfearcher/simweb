@@ -531,6 +531,7 @@
 	     */
 	    public function armarDescripcionUltimoPago()
 	    {
+	    	$ultimo = [];
 	    	$ultimoPago = self::getUltimoPago();
 	    	if ( count($ultimoPago) > 0 ) {
 	    		$ultimo = $ultimoPago['pagos']['planilla'] . '-' .
