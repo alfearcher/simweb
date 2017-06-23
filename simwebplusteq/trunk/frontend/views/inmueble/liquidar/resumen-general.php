@@ -88,7 +88,12 @@
 						<div class="col-5" style="padding: 0px;">
 							<?= MensajeController::actionMensaje($codigo); ?>
 						</div>
-
+						<div class="col-sm-3" style="padding: 0px; padding-top:5px;">
+							<!-- Boton para ir a consulta de planilla -->
+							<?=Html::a('Ir a consulta de planillas', Url::to(['consultor-planilla']),[
+														'class' => 'btn btn-primary',
+							]) ?>
+						</div>
 	 				</div>
 
 					<div class="row" style="padding:0px;padding-top: 5px;">
