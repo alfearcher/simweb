@@ -69,8 +69,7 @@
 	use yii\base\Model;
 	use yii\helpers\ArrayHelper;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
-	use frontend\controllers\planilla\ConsultaController;
-	use frontend\controllers\planilla\PlanillaConsultaController;
+	use backend\controllers\planilla\PlanillaConsultaController;
 
 	session_start();
 
@@ -669,12 +668,8 @@
 		/***/
 		public function actionConsultorPlanilla()
 		{
-// die(var_dump(Yii::$app->controller->id));
-			$consultor = New PlanillaConsultaController();
-			$consultor->actionIndex();
+			return Yii::$app->getResponse()->redirect(array('/planilla/planilla-consulta/index'));
 		}
-
-
 
 
 
@@ -736,7 +731,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
+			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
 		}
 
 
