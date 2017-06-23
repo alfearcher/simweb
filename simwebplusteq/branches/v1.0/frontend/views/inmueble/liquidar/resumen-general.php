@@ -90,11 +90,8 @@
 						</div>
 						<div class="col-sm-3" style="padding: 0px; padding-top:5px;">
 							<!-- Boton para ir a consulta de planilla -->
-							<?=Html::submitButton('Ir a consulta de planillas',[
+							<?=Html::a('Ir a consulta de planillas', Url::to(['consultor-planilla']),[
 														'class' => 'btn btn-primary',
-														'id' => 'btn-consulta-planilla',
-														'name' => 'btn-consulta-planilla',
-														'value' => 9,
 							]) ?>
 						</div>
 	 				</div>
