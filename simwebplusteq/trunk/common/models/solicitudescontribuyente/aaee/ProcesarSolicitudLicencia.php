@@ -335,7 +335,7 @@
                 $arregloDatos['usuario'] = Yii::$app->identidad->getUsuario();
                 $arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
 
-                 $firmaControl = json_encode($arregloContribuyente) . json_encode($rjson);
+                $firmaControl = json_encode($arregloContribuyente) . json_encode($rjson);
 
                 $arregloDatos['firma_control'] = md5($firmaControl);
 
