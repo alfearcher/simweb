@@ -329,11 +329,15 @@
                 $arregloDatos['serial_control'] = '';
                 $arregloDatos['fuente_json'] = $fuente_json;
                 $arregloDatos['rubro_json'] = json_encode($rjson);
-                $arregloDatos['observacion'] = 'SOLICITUD LICENCIA APROBADA POR FUNCIONARIO';
+                $arregloDatos['observacion'] = 'SOLICITUD LICENCIA NUEVA APROBADA POR FUNCIONARIO';
                 $arregloDatos['inactivo'] = 0;
 
                 $arregloDatos['usuario'] = Yii::$app->identidad->getUsuario();
                 $arregloDatos['fecha_hora'] = date('Y-m-d H:i:s');
+
+                $firmaControl = json_encode($arregloContribuyente) . json_encode($rjson);
+
+                $arregloDatos['firma_control'] = md5($firmaControl);
 
                 $result = $search->guardar($arregloDatos, $this->_conexion, $this->_conn);
                 if ( $result['id'] > 0 ) {
