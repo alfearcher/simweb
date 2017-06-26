@@ -548,8 +548,9 @@
 
 			if ( $solicitudAprobada !== null ) {
 
-				$model = New BusquedaSolicitudLicenciaForm();
+				self::actionAnularSession(['solicitudAprobada']);
 
+				$model = New BusquedaSolicitudLicenciaForm();
 				$dataProvider = $model->getDataProviderHistoricoLicencia($solicitudAprobada);
 				return $this->render('/solicitud/especial/aaee/licencia/lista-historico-licencia',[
 														'model' => $model,
