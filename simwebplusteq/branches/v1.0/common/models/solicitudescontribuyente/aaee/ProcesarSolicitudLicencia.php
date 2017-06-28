@@ -324,7 +324,7 @@
                 $arregloDatos['ano_impositivo'] = $modelLicencia[0]->ano_impositivo;
                 $arregloDatos['nro_solicitud'] = $modelLicencia[0]->nro_solicitud;
                 $arregloDatos['tipo'] = $modelLicencia[0]->tipo;
-                $arregloDatos['licencia'] = $modelLicencia[0]->licencia;
+                $arregloDatos['licencia'] = $contribuyente->id_sim;
                 $arregloDatos['nro_control'] = '';
                 $arregloDatos['serial_control'] = '';
                 $arregloDatos['fuente_json'] = $fuente_json;
@@ -340,6 +340,7 @@
                 $arregloDatos['firma_control'] = md5($firmaControl);
 
                 $result = $search->guardar($arregloDatos, $this->_conexion, $this->_conn);
+
                 if ( $result['id'] > 0 ) {
                     return true;
                 } else {
