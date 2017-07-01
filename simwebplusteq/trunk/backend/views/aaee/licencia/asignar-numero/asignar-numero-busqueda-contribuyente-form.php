@@ -65,11 +65,11 @@
 	?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-default"  style="width: 80%;">
+    <div class="panel panel-default"  style="width: 70%;">
         <div class="panel-heading">
         	<div class="row">
-        		<div class="col-sm-4" style="padding-top: 10px;">
-        			<h4><?= Html::encode($caption) ?></h4>
+        		<div class="col-sm-4" style="padding-top: 10px;width: 100%;">
+        			<h4><strong><?= Html::encode($caption) ?></strong></h4>
         		</div>
         	</div>
         </div>
