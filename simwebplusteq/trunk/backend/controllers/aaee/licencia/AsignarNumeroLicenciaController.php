@@ -57,6 +57,7 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use backend\models\aaee\licencia\asignarnumero\AsignarNumeroLicenciaSearch;
+	use backend\models\aaee\licencia\asignarnumero\AsignarNumeroLicenciaBusquedaForm;
 
 
 
@@ -81,7 +82,52 @@
 		 */
 		public function actionIndex()
 		{
-			$this->redirect(['listado-contribuyente']);
+			self::actionAnularSession(self::actionGetListaSessions());
+			$this->redirect(['mostrar-form-consulta']);
+		}
+
+
+
+		/***/
+		public function actionMostrarFormConsulta()
+		{
+			$model = New AsignarNumeroLicenciaBusquedaForm();
+			$autorizado = false;
+
+			// Se determina si el usuario esta autorixado a utilizar el modulo.
+			$autorizado = $model->estaAutorizado(Yii::$app->identidad->getUsuario());
+
+			if ( $autorizado ) {
+				$formName = $model->formName();
+				$request = Yii::$app->request;
+				$postData = $request->post();
+
+				$_SESSION['begin'] = 1;
+				$caption = Yii::t('backend', 'Asignar Numero de Licencia');
+				$subCaption = Yii::t('backend', 'Busqueda de Contribuyentes');
+
+				if ( $model->load($postData) && Yii::$app->request->isAjax ) {
+					Yii::$app->response->format = Response::FORMAT_JSON;
+					return ActiveForm::validate($model);
+		      	}
+
+		      	if ( $model->load($postData) ) {
+		      		if ( $model->validate() ) {
+		      			$_SESSION['postEnviado'] = $postData;
+		      			$this->redirect(['mostrar-listado']);
+		      		}
+		      	}
+
+		      	return $this->render('/aaee/licencia/asignar-numero/asignar-numero-busqueda-contribuyente-form', [
+		      															'model' => $model,
+		      															'caption' => $caption,
+		      															'subCaption' => $subCaption,
+		      		]);
+
+			} else {
+				// El usuario no esta autorizado.
+				$this->redirect(['error-operacion', 'cod' => 700]);
+			}
 		}
 
 
@@ -92,40 +138,35 @@
 		 * que tengan los rubros cargados del año actual.
 		 * @return View
 		 */
-		public function actionListadoContribuyente()
-		{
-			$model = New AsignarNumeroLicenciaSearch();
-			$autorizado = false;
+		// public function actionListadoContribuyente()
+		// {
+		// 	if ( isset($_SESSION['begin']) ) {
+		// 		$model = New AsignarNumeroLicenciaSearch();
 
-			// Se determina si el usuario esta autorixado a utilizar el modulo.
-			$autorizado = $model->estaAutorizado(Yii::$app->identidad->getUsuario());
+		// 		$mensajes = '';
+		// 		// Ruta donde se atendera la solicitud de busqueda.
+		// 		$url = Url::to(['mostrar-listado']);
 
-			if ( $autorizado ) {
+		// 		$dataProvider = $model->getDataProvider();
+		// 		$_SESSION['begin'] = 1;
+		// 		$caption = Yii::t('backend', 'Asignar Numero de Licencia');
+		// 		$subCaption = Yii::t('backend', 'Listado de Contribuyentes de Actividades Economicas sin numero de  Licencias');
 
-				$mensajes = '';
-				// Ruta donde se atendera la solicitud de busqueda.
-				$url = Url::to(['mostrar-listado']);
+		// 		// Se levanta el formulario listado.
+		// 		return $this->render('/aaee/licencia/asignar-numero/_view-listado-sin-licencia',[
+		// 														'mensajes' => $mensajes,
+		// 														'model' => $model,
+		// 														'url' => $url,
+		// 														'caption' => $caption,
+		// 														'subCaption' => $subCaption,
+		// 														'dataProvider' => $dataProvider,
+		// 			]);
 
-				$dataProvider = $model->getDataProvider();
-				$_SESSION['begin'] = 1;
-				$caption = Yii::t('backend', 'Asignar Numero de Licencia');
-				$subCaption = Yii::t('backend', 'Listado de Contribuyentes de Actividades Economicas sin numero de  Licencias');
-
-				// Se levanta el formulario listado.
-				return $this->render('/aaee/licencia/asignar-numero/_view-listado-sin-licencia',[
-																'mensajes' => $mensajes,
-																'model' => $model,
-																'url' => $url,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'dataProvider' => $dataProvider,
-					]);
-
-			} else {
-				// El usuario no esta autorizado.
-				$this->redirect(['error-operacion', 'cod' => 700]);
-			}
-		}
+		// 	} else {
+		// 		// El usuario no esta autorizado.
+		// 		$this->redirect(['error-operacion', 'cod' => 700]);
+		// 	}
+		// }
 
 
 
@@ -137,28 +178,51 @@
 		{
 			if ( isset($_SESSION['begin']) ) {
 
-				$_SESSION['begin'] = 2;
 				$request = Yii::$app->request;
-				$postData = $request->post();
 
-				$model = New AsignarNumeroLicenciaSearch();
-
-				$chkIdContribuyente = isset($postData['chkIdContribuyente']) ? $postData['chkIdContribuyente'] : [];
-
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
+				if ( $request->post('btn-quit') !== null ) {
+					if ( $request->post('btn-quit') == 1 ) {
 						$this->redirect(['quit']);
 					}
-				} elseif ( isset($postData['btn-back']) ) {
-					if ( $postData['btn-back'] == 1 ) {
+				} elseif ( $request->post('btn-back') !== null ) {
+					if ( $request->post('btn-back') == 1 ) {
 
-						// Regresar al listado inicial
-						self::actionAnularSession(['begin']);
 						$this->redirect(['index']);
 
 					}
-				} elseif ( isset($postData['btn-confirmar-asignar-numero-licencia']) ) {
-					if ( $postData['btn-confirmar-asignar-numero-licencia'] == 5 ) {
+				}
+
+
+				$chkIdContribuyente = [];
+				if ( (int)$_SESSION['begin'] == 1 ) {
+
+					// Post enviado en el primer formulario "Formulario de Busqueda"
+					$postData = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : [];
+					$formModel = New AsignarNumeroLicenciaBusquedaForm();
+					$formName = $formModel->formName();
+
+					if ( $postData[$formName]['todos'] == 1 ) {
+						// Buscar a todos.
+						$chkIdContribuyente = [];
+					} elseif ( $postData[$formName]['todos'] == 0 && (int)$postData[$formName]['id_contribuyente'] > 0 ) {
+						// Buscar solo a este contribuyente.
+						$chkIdContribuyente = [$postData[$formName]['id_contribuyente']];
+					}
+
+					$_SESSION['begin'] == 2;
+
+				} elseif ( (int)$_SESSION['begin'] == 2 ) {
+					// Viene del formulario donde aparece el lsitado y se debe seleccionar aquellos contribueyentes
+					// a los cuales se les asignara el numero de licencia.
+					$postData = $request->post();
+die(var_dump($postData));
+					$chkIdContribuyente = [];
+				}
+
+				$model = New AsignarNumeroLicenciaSearch();
+
+				if ( $request->post('btn-confirmar-asignar-numero-licencia') !== null ) {
+					if ( $request->post('btn-confirmar-asignar-numero-licencia') == 5 ) {
 
 						$chkIdContribuyenteActualizado = [];
 						// Guardar lo seleccionado
@@ -287,7 +351,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
+			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
 		}
 
 
@@ -347,10 +411,9 @@
 		public function actionGetListaSessions()
 		{
 			return $varSession = [
-							'postData',
-							'conf',
-							'begin',
-							'actualizado',
+						'postEnviado',
+						'conf',
+						'begin',
 					];
 		}
 
