@@ -72,14 +72,6 @@
 
 
 
-		/***/
-		public function __construct()
-		{}
-
-
-
-
-
 		/**
 		 * Metodo que permite buscar a los contribuyentes juridico y activos que tengan
 		 * cargados los rubros del año actual y que no posean licencia. Aqui la condicion
