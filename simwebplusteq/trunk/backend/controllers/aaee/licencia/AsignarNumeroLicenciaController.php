@@ -248,6 +248,9 @@
 				if ( $request->post('btn-confirmar-asignar-numero-licencia') !== null ) {
 					if ( $request->post('btn-confirmar-asignar-numero-licencia') == 5 ) {
 
+						$postData = $request->post();
+						$chkIdContribuyente = isset($postData['chkIdContribuyente']) ? $postData['chkIdContribuyente'] : [];
+
 						$chkIdContribuyenteActualizado = [];
 						// Guardar lo seleccionado
 						if ( count($chkIdContribuyente) > 0 ) {
@@ -402,7 +405,7 @@
 						'postEnviado',
 						'conf',
 						'begin',
-						'mensaje',
+						'mensajes',
 					];
 		}
 
