@@ -77,8 +77,8 @@
 
 
 		/**
-		 * Metodo
-		 * @return [type] [description]
+		 * Metodo que inicia la clase y permite redireccionar a un formulario de busqueda.
+		 * @return none
 		 */
 		public function actionIndex()
 		{
@@ -88,7 +88,11 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que permite renderizar una vista que permite la busqueda de los constribuyentes.
+		 * dia numero de licencias.
+		 * @return view
+		 */
 		public function actionMostrarFormConsulta()
 		{
 			$model = New AsignarNumeroLicenciaBusquedaForm();
@@ -132,47 +136,11 @@
 
 
 
-
 		/**
-		 * Metodo que permite levantar una vista con los contribuyentes juridicos activos
-		 * que tengan los rubros cargados del año actual.
-		 * @return View
-		 */
-		// public function actionListadoContribuyente()
-		// {
-		// 	if ( isset($_SESSION['begin']) ) {
-		// 		$model = New AsignarNumeroLicenciaSearch();
-
-		// 		$mensajes = '';
-		// 		// Ruta donde se atendera la solicitud de busqueda.
-		// 		$url = Url::to(['mostrar-listado']);
-
-		// 		$dataProvider = $model->getDataProvider();
-		// 		$_SESSION['begin'] = 1;
-		// 		$caption = Yii::t('backend', 'Asignar Numero de Licencia');
-		// 		$subCaption = Yii::t('backend', 'Listado de Contribuyentes de Actividades Economicas sin numero de  Licencias');
-
-		// 		// Se levanta el formulario listado.
-		// 		return $this->render('/aaee/licencia/asignar-numero/_view-listado-sin-licencia',[
-		// 														'mensajes' => $mensajes,
-		// 														'model' => $model,
-		// 														'url' => $url,
-		// 														'caption' => $caption,
-		// 														'subCaption' => $subCaption,
-		// 														'dataProvider' => $dataProvider,
-		// 			]);
-
-		// 	} else {
-		// 		// El usuario no esta autorizado.
-		// 		$this->redirect(['error-operacion', 'cod' => 700]);
-		// 	}
-		// }
-
-
-
-		/**
-		 * [actionMostrarListado description]
-		 * @return [type] [description]
+		 * Metodo que permite mostrar un listado de los contribuyentes que no poseen numero
+		 * de licencia valido, asi como mostrar el listado con la selecciona de registros
+		 * a los cuales se les asignara un numero de licencia.
+		 * @return view.
 		 */
 		public function actionMostrarListado()
 		{
@@ -182,18 +150,28 @@
 
 				if ( $request->post('btn-quit') !== null ) {
 					if ( $request->post('btn-quit') == 1 ) {
-						$this->redirect(['quit']);
+						return $this->redirect(['quit']);
 					}
 				} elseif ( $request->post('btn-back') !== null ) {
 					if ( $request->post('btn-back') == 1 ) {
 
-						$this->redirect(['index']);
+						return $this->redirect(['index']);
 
+					} elseif ( $request->post('btn-back') == 2 ) {
+
+						self::actionAnularSession(['begin']);
+						$_SESSION['begin'] = 1;
+						return $this->redirect(['mostrar-listado']);
+
+					} elseif ( $request->post('btn-back') == 3 ) {
+
+						return $this->redirect(['index']);
 					}
 				}
 
-
+				$model = New AsignarNumeroLicenciaSearch();
 				$chkIdContribuyente = [];
+
 				if ( (int)$_SESSION['begin'] == 1 ) {
 
 					// Post enviado en el primer formulario "Formulario de Busqueda"
@@ -203,23 +181,69 @@
 
 					if ( $postData[$formName]['todos'] == 1 ) {
 						// Buscar a todos.
-						$chkIdContribuyente = [];
+						$chkId = [];
 					} elseif ( $postData[$formName]['todos'] == 0 && (int)$postData[$formName]['id_contribuyente'] > 0 ) {
 						// Buscar solo a este contribuyente.
-						$chkIdContribuyente = [$postData[$formName]['id_contribuyente']];
+						$chkId = [$postData[$formName]['id_contribuyente']];
 					}
 
-					$_SESSION['begin'] == 2;
+					self::actionAnularSession(['begin']);
+					$_SESSION['begin'] = 2;
+
+			      	// Ruta donde se atendera la solicitud de busqueda.
+					$url = Url::to(['mostrar-listado']);
+
+					$dataProvider = $model->getDataProvider($chkId);
+					$caption = Yii::t('backend', 'Asignar Numero de Licencia');
+					$subCaption = Yii::t('backend', 'Listado de Contribuyentes de Actividades Economicas sin numero de  Licencias');
+					$mensajes = isset($_SESSION['mensajes']) ? $_SESSION['mensajes'] : '';
+
+					// Se levanta el formulario listado.
+					return $this->render('/aaee/licencia/asignar-numero/_view-listado-sin-licencia',[
+																	'mensajes' => $mensajes,
+																	'model' => $model,
+																	'url' => $url,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'dataProvider' => $dataProvider,
+						]);
+
 
 				} elseif ( (int)$_SESSION['begin'] == 2 ) {
-					// Viene del formulario donde aparece el lsitado y se debe seleccionar aquellos contribueyentes
+
+					// Viene del formulario donde aparece el listado y se debe seleccionar aquellos contribueyentes
 					// a los cuales se les asignara el numero de licencia.
 					$postData = $request->post();
-die(var_dump($postData));
-					$chkIdContribuyente = [];
-				}
+					$chkIdContribuyente = isset($postData['chkIdContribuyente']) ? $postData['chkIdContribuyente'] : [];
 
-				$model = New AsignarNumeroLicenciaSearch();
+					if ( count($chkIdContribuyente) > 0 ) {
+
+			      		// Mostrar lista de los seleccionado.
+						$dataProvider = $model->getDataProvider($chkIdContribuyente);
+						self::actionAnularSession(['begin']);
+						$_SESSION['begin'] = 3;
+
+						$caption = Yii::t('backend', 'Asignar Numero de Licencia');
+						$subCaption = Yii::t('backend', 'Listado de Contribuyentes seleccionados');
+
+						// Se levanta el formulario listado.
+						return $this->render('/aaee/licencia/asignar-numero/listado-contribuyente-sin-licencia-seleccionado',[
+																					'model' => $model,
+																					'caption' => $caption,
+																					'subCaption' => $subCaption,
+																					'dataProvider' => $dataProvider,
+							]);
+
+			      	} else {
+			      		$mensajes = Yii::t('backend', 'No ha seleccionado ningún registro');
+			      		$begin = (int)$_SESSION['begin'] - 1;
+			      		self::actionAnularSession(['mensajes', 'begin']);
+			      		$_SESSION['mensajes'] = $mensajes;
+			      		$_SESSION['begin'] = $begin;
+			      		$this->redirect(['mostrar-listado']);
+			      	}
+
+				}
 
 				if ( $request->post('btn-confirmar-asignar-numero-licencia') !== null ) {
 					if ( $request->post('btn-confirmar-asignar-numero-licencia') == 5 ) {
@@ -251,46 +275,6 @@ die(var_dump($postData));
 					}
 				}
 
-
-		      	if ( count($chkIdContribuyente) > 0 ) {
-
-		      		// Mostrar lista de los seleccionado.
-					$dataProvider = $model->getDataProvider($chkIdContribuyente);
-					$_SESSION['begin'] = 3;
-					$caption = Yii::t('backend', 'Asignar Numero de Licencia');
-					$subCaption = Yii::t('backend', 'Listado de Contribuyentes seleccionados');
-
-					// Se levanta el formulario listado.
-					return $this->render('/aaee/licencia/asignar-numero/listado-contribuyente-sin-licencia-seleccionado',[
-																				'model' => $model,
-																				'caption' => $caption,
-																				'subCaption' => $subCaption,
-																				'dataProvider' => $dataProvider,
-						]);
-
-		      	} else {
-		      		$mensajes = Yii::t('backend', 'No ha seleccionado ningún registro');
-		      	}
-
-
-		      	// Ruta donde se atendera la solicitud de busqueda.
-				$url = Url::to(['mostrar-listado']);
-
-				$dataProvider = $model->getDataProvider();
-				$caption = Yii::t('backend', 'Asignar Numero de Licencia');
-				$subCaption = Yii::t('backend', 'Listado de Contribuyentes de Actividades Economicas sin numero de  Licencias');
-
-				// Se levanta el formulario listado.
-				return $this->render('/aaee/licencia/asignar-numero/_view-listado-sin-licencia',[
-																'mensajes' => $mensajes,
-																'model' => $model,
-																'url' => $url,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'dataProvider' => $dataProvider,
-					]);
-
-
 			} else {
 				// No ha iniciado correctamente el modulo.
 				$this->redirect(['error-operacion', 'cod' => 702]);
@@ -300,7 +284,11 @@ die(var_dump($postData));
 
 
 
-		/***/
+		/**
+		 * Metodo que muestra un listado de los contribuyentes a los cvuales se les asigno
+		 * un numero de licencia.
+		 * @return view
+		 */
 		public function actionMostrarListadoActualizado()
 		{
 			if ( isset($_SESSION['actualizado']) ) {
@@ -414,6 +402,7 @@ die(var_dump($postData));
 						'postEnviado',
 						'conf',
 						'begin',
+						'mensaje',
 					];
 		}
 
