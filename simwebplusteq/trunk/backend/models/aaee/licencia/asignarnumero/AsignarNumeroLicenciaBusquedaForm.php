@@ -75,6 +75,14 @@
 	    public function rules()
 	    {
 	        return [
+	        	[['id_contribuyente'], 'required', 'when' => function($model) {
+	        													if ( $model->todos == 0 ) {
+	        														return true;
+	        													} else {
+	        														return false;
+	        													}
+	        												}
+	        	],
 	        	[['id_contribuyente', 'todos'],
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
 	        	[['id_contribuyente', 'todos'],
@@ -96,6 +104,41 @@
 	        	'id_contribuyente' => Yii::t('backend','Id. Contribuyente'),
 	        	'todos' => Yii::t('backend','Todos los Contribuyente'),
 	        ];
+	    }
+
+
+
+	    /**
+	     * Metodo donde se fijan los usuario autorizados para utilizar esl modulo.
+	     * @return array
+	     */
+	    private function getListaFuncionarioAutorizado()
+	    {
+	    	return [
+	    		'adminteq',
+	    		'kperez',
+	    		'pfranco'
+	    	];
+	    }
+
+
+
+	    /**
+	     * Metodo que permite determinar si un usuario esta autorizado para utilizar el modulo.
+	     * @param  string $usuario usuario logueado
+	     * @return booleam retorna true si lo esta, false en caso conatrio.
+	     */
+	    public function estaAutorizado($usuario)
+	    {
+	    	$listaUsuarioAutorizado = self::getListaFuncionarioAutorizado();
+	    	if ( count($listaUsuarioAutorizado) > 0 ) {
+	    		foreach ( $listaUsuarioAutorizado as $key => $value ) {
+	    			if ( $value == $usuario ) {
+	    				return true;
+	    			}
+	    		}
+	    	}
+	    	return false;
 	    }
 
 	}
