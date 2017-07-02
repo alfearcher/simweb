@@ -190,7 +190,7 @@
 																		'id' => 'btn-back',
 																		'class' => 'btn btn-danger',
 																		'name' => 'btn-back',
-																		'value' => 1,
+																		'value' => 2,
 																		'style' => 'width: 100%;'
 								])?>
 							</div>

@@ -218,6 +218,17 @@
 									])?>
 							</div>
 
+
+							<div class="col-sm-3" style="width: 20%;margin-left:50px;">
+								 <?= Html::submitButton(Yii::t('backend', 'Back'),[
+																		'id' => 'btn-back',
+																		'class' => 'btn btn-danger',
+																		'name' => 'btn-back',
+																		'value' => 1,
+																		'style' => 'width: 100%;'
+									])?>
+							</div>
+
 							<div class="col-sm-3" style="width: 20%;margin-left:50px;">
 								 <?= Html::submitButton(Yii::t('backend', 'Quit'),[
 																		'id' => 'btn-quit',
