@@ -350,6 +350,20 @@
 
 
 	    /**
+	     * Metodo que permite determinar la naturaleza de un contribuyente.
+	     * - Natural
+	     * -Juridico
+	     * @return string, retorna la descripcion del tipo de naturaleza.
+	     */
+	    public function getTipoNaturaleza()
+	    {
+	    	return ContribuyenteBase::getTipoNaturalezaDescripcionSegunID($this->_id_contribuyente);
+	    }
+
+
+
+
+	    /**
 	     * Metodo que permite iniciar el un data provider. Esto se utiliza para iniciar
 	     * el grid donde se muestran los rubros registrados de un contribuyente para un
 	     * lapso determinado.
@@ -386,33 +400,40 @@
 	    	// Solicitudes adjuntas que colidan con la creacion de la solicitud actual.
 	    	$mensajes = self::verificarSolicitud();
 
-			// Permite determinar si ya posee una solicitud similar.
-	    	if ( self::yaPoseeSolicitudSimiliarPendiente() ) {
-	    		$mensajes[] = Yii::t('backend', 'Ya posee resgitrada una solicitud similar');
-	    	}
+	    	if ( strtoupper(trim(self::getTipoNaturaleza())) !== 'JURIDICO' ) {
 
-	    	// Se verifica si es sede principal
-	    	$esSedePrincipal = self::getSedePrincipal();
+	    		$mensajes[] = Yii::t('backend', 'Contribuyente no aplica para esta opción');
 
-	    	// Cantidad de contribuyentes asociados al rif.
-	    	$cantidadSede = count(self::findSucursales()->all());
+	    	} else {
 
-	    	if ( $esSedePrincipal && $cantidadSede > 1 ) {
-				$mensajes[] = Yii::t('backend', 'La razon social esta registrada como sede principal de un grupo relacionado al mismo rif');
+				// Permite determinar si ya posee una solicitud similar.
+		    	if ( self::yaPoseeSolicitudSimiliarPendiente() ) {
+		    		$mensajes[] = Yii::t('backend', 'Ya posee resgitrada una solicitud similar');
+		    	}
+
+		    	// Se verifica si es sede principal
+		    	$esSedePrincipal = self::getSedePrincipal();
+
+		    	// Cantidad de contribuyentes asociados al rif.
+		    	$cantidadSede = count(self::findSucursales()->all());
+
+		    	if ( $esSedePrincipal && $cantidadSede > 1 ) {
+					$mensajes[] = Yii::t('backend', 'La razon social esta registrada como sede principal de un grupo relacionado al mismo rif');
+				}
+
+				if ( !self::estaSolvente() ) {
+					$mensajes[] = Yii::t('backend', 'El contribuyente no se encuentra solvente') . '. ' . Yii::t('backend', 'Ultimo pago ') . self::armarDescripcionUltimoPago();
+				}
+
+				if ( !self::declaracionValida() ) {
+					$mensajes[] = Yii::t('backend', 'No se encontro la declaracion del año actual');
+				}
+
+				if ( $this->_datoContribuyente['no_declara'] == 1 ) {
+					$mensajes[] = Yii::t('backend', 'El contribuyente aparece como DESINCORPORADO para declarar');
+				}
+
 			}
-
-			if ( !self::estaSolvente() ) {
-				$mensajes[] = Yii::t('backend', 'El contribuyente no se encuentra solvente') . '. ' . Yii::t('backend', 'Ultimo pago ') . self::armarDescripcionUltimoPago();
-			}
-
-			if ( !self::declaracionValida() ) {
-				$mensajes[] = Yii::t('backend', 'No se encontro la declaracion del año actual');
-			}
-
-			if ( $this->_datoContribuyente['no_declara'] == 1 ) {
-				$mensajes[] = Yii::t('backend', 'El contribuyente aparece como DESINCORPORADO para declarar');
-			}
-
 	    	return $mensajes;
 
 	    }
