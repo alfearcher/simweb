@@ -540,7 +540,7 @@
 	    		          $ultimoPago['exigibilidad']['unidad'];
 	    	}
 
-	    	return $ultimo;
+	    	return ( count($ultimo) > 0 ) ? $ultimo : '';
 	    }
 
 
