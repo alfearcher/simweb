@@ -188,7 +188,7 @@
 <!-- Fin de Buscar por Licencia -->
 
 
-					<div class="row" style="border-bottom: 0.5px solid #ccc;margin-top: 20px;">
+					<div class="row" style="border-bottom: 0.5px solid #ccc;margin-top: 20px;color:blue;">
 						<h4><strong><?= Yii::t('backend', 'Parametros adicionales')?></strong></h4>
 					</div>
 <!-- Inicio Tipo de Licencia -->
