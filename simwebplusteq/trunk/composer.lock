@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "19da47235b243df3f9e523e99117e303",
+    "hash": "6fba31d71c91ba351f94260e1b618331",
+    "content-hash": "43faa9150265461ee584b0996e9d3c0a",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -65,7 +66,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2015-04-02T11:48:05+00:00"
+            "time": "2015-04-02 11:48:05"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -381,7 +382,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2015-03-06T05:28:07+00:00"
+            "time": "2015-03-06 05:28:07"
         },
         {
             "name": "components/flag-icon-css",
@@ -419,7 +420,7 @@
                 }
             ],
             "description": "CSS for vector based country flags",
-            "time": "2015-03-26T16:41:06+00:00"
+            "time": "2015-03-26 16:41:06"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -463,7 +464,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2013-11-30T08:25:19+00:00"
+            "time": "2013-11-30 08:25:19"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -511,7 +512,7 @@
                 "font",
                 "icon"
             ],
-            "time": "2015-01-22T18:09:42+00:00"
+            "time": "2015-01-22 18:09:42"
         },
         {
             "name": "host33/yii2-multilevel-vertical-menu",
@@ -556,7 +557,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-04-01T09:55:57+00:00"
+            "time": "2015-04-01 09:55:57"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
@@ -604,7 +605,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2015-07-26T20:29:14+00:00"
+            "time": "2015-07-26 20:29:14"
         },
         {
             "name": "kartik-v/bootstrap-popover-x",
@@ -648,7 +649,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2015-03-18T13:08:39+00:00"
+            "time": "2015-03-18 13:08:39"
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
@@ -689,7 +690,7 @@
                 "jquery",
                 "star"
             ],
-            "time": "2015-06-18T14:42:46+00:00"
+            "time": "2015-06-18 14:42:46"
         },
         {
             "name": "kartik-v/dependent-dropdown",
@@ -731,7 +732,7 @@
                 "option",
                 "select"
             ],
-            "time": "2015-07-14T09:54:25+00:00"
+            "time": "2015-07-14 09:54:25"
         },
         {
             "name": "kartik-v/mpdf",
@@ -774,7 +775,7 @@
                 "php",
                 "utf-8"
             ],
-            "time": "2015-05-05T07:34:49+00:00"
+            "time": "2015-05-05 07:34:49"
         },
         {
             "name": "kartik-v/php-date-formatter",
@@ -819,7 +820,7 @@
                 "php-date-formatter.js",
                 "time"
             ],
-            "time": "2015-06-18T15:14:51+00:00"
+            "time": "2015-06-18 15:14:51"
         },
         {
             "name": "kartik-v/yii2-context-menu",
@@ -866,7 +867,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-25T09:06:15+00:00"
+            "time": "2014-11-25 09:06:15"
         },
         {
             "name": "kartik-v/yii2-datecontrol",
@@ -913,7 +914,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2015-07-19T05:01:43+00:00"
+            "time": "2015-07-19 05:01:43"
         },
         {
             "name": "kartik-v/yii2-dropdown-x",
@@ -960,7 +961,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-12-08T04:31:32+00:00"
+            "time": "2014-12-08 04:31:32"
         },
         {
             "name": "kartik-v/yii2-icons",
@@ -1008,7 +1009,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2015-04-21T15:15:10+00:00"
+            "time": "2015-04-21 15:15:10"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -1054,7 +1055,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-16T05:19:57+00:00"
+            "time": "2015-06-16 05:19:57"
         },
         {
             "name": "kartik-v/yii2-mpdf",
@@ -1101,7 +1102,7 @@
                 "utf8",
                 "yii2"
             ],
-            "time": "2014-11-10T18:09:37+00:00"
+            "time": "2014-11-10 18:09:37"
         },
         {
             "name": "kartik-v/yii2-nav-x",
@@ -1148,7 +1149,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-12-06T18:38:52+00:00"
+            "time": "2014-12-06 18:38:52"
         },
         {
             "name": "kartik-v/yii2-popover-x",
@@ -1196,7 +1197,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2015-07-01T16:51:32+00:00"
+            "time": "2015-07-01 16:51:32"
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
@@ -1243,7 +1244,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-07-08T11:36:38+00:00"
+            "time": "2015-07-08 11:36:38"
         },
         {
             "name": "kartik-v/yii2-widget-affix",
@@ -1292,7 +1293,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T04:56:27+00:00"
+            "time": "2014-11-09 04:56:27"
         },
         {
             "name": "kartik-v/yii2-widget-alert",
@@ -1342,7 +1343,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-19T06:44:12+00:00"
+            "time": "2014-11-19 06:44:12"
         },
         {
             "name": "kartik-v/yii2-widget-colorinput",
@@ -1391,7 +1392,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-08T21:10:18+00:00"
+            "time": "2014-11-08 21:10:18"
         },
         {
             "name": "kartik-v/yii2-widget-datepicker",
@@ -1440,7 +1441,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-07-19T04:49:03+00:00"
+            "time": "2015-07-19 04:49:03"
         },
         {
             "name": "kartik-v/yii2-widget-datetimepicker",
@@ -1489,7 +1490,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-01-25T16:36:55+00:00"
+            "time": "2015-01-25 16:36:55"
         },
         {
             "name": "kartik-v/yii2-widget-depdrop",
@@ -1538,7 +1539,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-26T20:20:32+00:00"
+            "time": "2015-06-26 20:20:32"
         },
         {
             "name": "kartik-v/yii2-widget-fileinput",
@@ -1588,7 +1589,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-26T20:23:24+00:00"
+            "time": "2015-06-26 20:23:24"
         },
         {
             "name": "kartik-v/yii2-widget-growl",
@@ -1637,7 +1638,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-05-03T08:23:04+00:00"
+            "time": "2015-05-03 08:23:04"
         },
         {
             "name": "kartik-v/yii2-widget-rangeinput",
@@ -1686,7 +1687,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-08T21:15:27+00:00"
+            "time": "2014-11-08 21:15:27"
         },
         {
             "name": "kartik-v/yii2-widget-rating",
@@ -1737,7 +1738,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-08T19:30:37+00:00"
+            "time": "2014-11-08 19:30:37"
         },
         {
             "name": "kartik-v/yii2-widget-select2",
@@ -1785,7 +1786,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-07-01T15:20:59+00:00"
+            "time": "2015-07-01 15:20:59"
         },
         {
             "name": "kartik-v/yii2-widget-sidenav",
@@ -1834,7 +1835,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T08:07:23+00:00"
+            "time": "2014-11-09 08:07:23"
         },
         {
             "name": "kartik-v/yii2-widget-spinner",
@@ -1882,7 +1883,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T05:02:05+00:00"
+            "time": "2014-11-09 05:02:05"
         },
         {
             "name": "kartik-v/yii2-widget-switchinput",
@@ -1932,7 +1933,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-01-14T16:27:26+00:00"
+            "time": "2015-01-14 16:27:26"
         },
         {
             "name": "kartik-v/yii2-widget-timepicker",
@@ -1981,7 +1982,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-08T20:01:29+00:00"
+            "time": "2014-11-08 20:01:29"
         },
         {
             "name": "kartik-v/yii2-widget-touchspin",
@@ -2031,7 +2032,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-12-04T12:53:04+00:00"
+            "time": "2014-12-04 12:53:04"
         },
         {
             "name": "kartik-v/yii2-widget-typeahead",
@@ -2079,7 +2080,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-28T18:05:41+00:00"
+            "time": "2015-06-28 18:05:41"
         },
         {
             "name": "kartik-v/yii2-widgets",
@@ -2141,7 +2142,52 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2014-11-09T19:54:17+00:00"
+            "time": "2014-11-09 19:54:17"
+        },
+        {
+            "name": "moonlandsoft/yii2-phpexcel",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonlandsoft/yii2-phpexcel.git",
+                "reference": "9408d09abc7ff4828302dafd5ffb709314f14589"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonlandsoft/yii2-phpexcel/zipball/9408d09abc7ff4828302dafd5ffb709314f14589",
+                "reference": "9408d09abc7ff4828302dafd5ffb709314f14589",
+                "shasum": ""
+            },
+            "require": {
+                "phpoffice/phpexcel": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "moonland\\phpexcel\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Moh Khoirul Anam",
+                    "email": "moh.khoirul.anaam@gmail.com"
+                }
+            ],
+            "description": "Exporting PHP to Excel or Importing Excel to PHP",
+            "keywords": [
+                "excel",
+                "export",
+                "extension",
+                "import",
+                "xls",
+                "yii2"
+            ],
+            "time": "2015-09-06 07:50:33"
         },
         {
             "name": "mpdf/mpdf",
@@ -2184,7 +2230,64 @@
                 "php",
                 "utf-8"
             ],
-            "time": "2015-03-01T10:27:49+00:00"
+            "time": "2015-03-01 10:27:49"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2015-05-01 07:00:55"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2237,7 +2340,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06T14:19:39+00:00"
+            "time": "2015-06-06 14:19:39"
         },
         {
             "name": "yiisoft/yii2",
@@ -2331,7 +2434,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-10-20T12:02:50+00:00"
+            "time": "2016-10-20 12:02:50"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2381,7 +2484,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2015-05-10T22:08:17+00:00"
+            "time": "2015-05-10 22:08:17"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -2428,7 +2531,7 @@
                 "extension installer",
                 "yii2"
             ],
-            "time": "2016-02-06T00:49:24+00:00"
+            "time": "2016-02-06 00:49:24"
         },
         {
             "name": "yiisoft/yii2-jui",
@@ -2478,7 +2581,7 @@
                 "jQuery UI",
                 "yii2"
             ],
-            "time": "2015-05-10T22:09:43+00:00"
+            "time": "2015-05-10 22:09:43"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -2528,7 +2631,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2015-05-10T22:12:32+00:00"
+            "time": "2015-05-10 22:12:32"
         }
     ],
     "packages-dev": [
@@ -2609,7 +2712,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2015-05-29T06:29:14+00:00"
+            "time": "2015-05-29 06:29:14"
         },
         {
             "name": "phpspec/php-diff",
@@ -2643,7 +2746,7 @@
                 }
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
-            "time": "2013-11-01T13:02:21+00:00"
+            "time": "2013-11-01 13:02:21"
         },
         {
             "name": "yiisoft/yii2-codeception",
@@ -2688,7 +2791,8 @@
                 "codeception",
                 "yii2"
             ],
-            "time": "2015-05-10T22:08:30+00:00"
+            "abandoned": "codeception/codeception",
+            "time": "2015-05-10 22:08:30"
         },
         {
             "name": "yiisoft/yii2-debug",
@@ -2735,7 +2839,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2015-05-10T22:08:56+00:00"
+            "time": "2015-05-10 22:08:56"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -2782,7 +2886,7 @@
                 "faker",
                 "yii2"
             ],
-            "time": "2015-03-01T06:22:44+00:00"
+            "time": "2015-03-01 06:22:44"
         },
         {
             "name": "yiisoft/yii2-gii",
@@ -2835,7 +2939,7 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2015-05-10T22:09:31+00:00"
+            "time": "2015-05-10 22:09:31"
         }
     ],
     "aliases": [],
