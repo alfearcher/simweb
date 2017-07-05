@@ -46,6 +46,7 @@
 	use yii\base\Model;
 	use yii\data\ActiveDataProvider;
 	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicio;
+	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicioSearch;
 
 
 	/**
@@ -127,7 +128,7 @@
 	     		//['usuario', 'default', 'value' => Yii::$app->user->identity->username, 'on' => 'backend'],
 	     		['origen', 'default', 'value' => 'WEB', 'on' => 'frontend'],
 	     		['origen', 'default', 'value' => 'LAN', 'on' => 'backend'],
-
+	     		['fecha_inicio_new', 'puedoElaborarSolicitud'],
     		];
     	}
 
@@ -182,6 +183,24 @@
 	    	];
 
 	    	return $atributos[$evento];
+	    }
+
+
+
+
+	    /**
+	     * [puedoElaborarSolicitud description]
+	     * @param  [type] $attribute [description]
+	     * @return [type]            [description]
+	     */
+	    public function puedoElaborarSolicitud($attribute)
+	    {
+	    	$correccionSearch = New CorreccionFechaInicioSearch($this->id_contribuyente);
+	    	$mensajes = $correccionSearch->validarEvento($this->fecha_inicio_new);
+
+	    	if ( count($mensajes) > 0 ) {
+	    		$this->addError($attribute, $mensajes[0]);
+	    	}
 	    }
 
 	}
