@@ -103,7 +103,7 @@ class User extends Component
      * the current session expires (c.f. [[Session::timeout]]).
      * Note that this will not work if [[enableAutoLogin]] is `true`.
      */
-    public $authTimeout;
+    public $authTimeout = 300;
     /**
      * @var CheckAccessInterface The access checker to use for checking access.
      * If not set the application auth manager will be used.
@@ -583,7 +583,7 @@ class User extends Component
         $this->removeIdentityCookie();
         return null;
     }
-     
+
     /**
      * Removes the identity cookie.
      * This method is used when [[enableAutoLogin]] is true.

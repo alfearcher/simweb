@@ -17,7 +17,7 @@
         "require": {
             "php": ">=5.2"
         },
-        "time": "2013-11-30T08:25:19+00:00",
+        "time": "2013-11-30 08:25:19",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -69,7 +69,7 @@
             "facebook/xhprof": "*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2015-03-06T05:28:07+00:00",
+        "time": "2015-03-06 05:28:07",
         "bin": [
             "bin/markdown"
         ],
@@ -237,7 +237,7 @@
             "swiftmailer/swiftmailer": "~5.0",
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10T22:12:32+00:00",
+        "time": "2015-05-10 22:12:32",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -288,7 +288,7 @@
         "require": {
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10T22:08:30+00:00",
+        "time": "2015-05-10 22:08:30",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -337,7 +337,7 @@
             "bower-asset/bootstrap": "3.3.* | 3.2.* | 3.1.*",
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10T22:08:17+00:00",
+        "time": "2015-05-10 22:08:17",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -389,7 +389,7 @@
             "yiisoft/yii2": ">=2.0.4",
             "yiisoft/yii2-bootstrap": "*"
         },
-        "time": "2015-05-10T22:08:56+00:00",
+        "time": "2015-05-10 22:08:56",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -463,7 +463,7 @@
             "reference": "30e103d19519fe678ae64a60d77884ef3d71b28a",
             "shasum": ""
         },
-        "time": "2013-11-01T13:02:21+00:00",
+        "time": "2013-11-01 13:02:21",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -505,7 +505,7 @@
             "yiisoft/yii2": ">=2.0.4",
             "yiisoft/yii2-bootstrap": "~2.0"
         },
-        "time": "2015-05-10T22:09:31+00:00",
+        "time": "2015-05-10 22:09:31",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -558,7 +558,7 @@
             "fzaninotto/faker": "*",
             "yiisoft/yii2": "*"
         },
-        "time": "2015-03-01T06:22:44+00:00",
+        "time": "2015-03-01 06:22:44",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -603,7 +603,7 @@
             "reference": "db9d702ac15e74a84d5d859c9f3b1ce4c1882304",
             "shasum": ""
         },
-        "time": "2015-03-26T16:41:06+00:00",
+        "time": "2015-03-26 16:41:06",
         "type": "component",
         "extra": {
             "component": {
@@ -647,7 +647,7 @@
             "jekyll": "1.0.2",
             "lessc": "1.4.2"
         },
-        "time": "2015-01-22T18:09:42+00:00",
+        "time": "2015-01-22 18:09:42",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -724,7 +724,7 @@
             "bower-asset/jquery-ui": "1.11.*@stable",
             "yiisoft/yii2": ">=2.0.4"
         },
-        "time": "2015-05-10T22:09:43+00:00",
+        "time": "2015-05-10 22:09:43",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -778,7 +778,7 @@
             "kartik-v/yii2-krajee-base": "*",
             "yiisoft/yii2-jui": "*"
         },
-        "time": "2015-04-21T15:15:10+00:00",
+        "time": "2015-04-21 15:15:10",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -826,7 +826,7 @@
             "ext-mbstring": "*",
             "php": ">=4.3.10"
         },
-        "time": "2015-05-05T07:34:49+00:00",
+        "time": "2015-05-05 07:34:49",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -870,7 +870,7 @@
         "require": {
             "kartik-v/mpdf": "*"
         },
-        "time": "2014-11-10T18:09:37+00:00",
+        "time": "2014-11-10 18:09:37",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -919,7 +919,7 @@
         "require": {
             "yiisoft/yii2": "*"
         },
-        "time": "2015-04-01T09:55:57+00:00",
+        "time": "2015-04-01 09:55:57",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -966,7 +966,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-12-08T04:31:32+00:00",
+        "time": "2014-12-08 04:31:32",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1015,7 +1015,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-12-04T12:53:04+00:00",
+        "time": "2014-12-04 12:53:04",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1067,7 +1067,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08T20:01:29+00:00",
+        "time": "2014-11-08 20:01:29",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1118,7 +1118,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-01-14T16:27:26+00:00",
+        "time": "2015-01-14 16:27:26",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1170,7 +1170,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09T05:02:05+00:00",
+        "time": "2014-11-09 05:02:05",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1220,7 +1220,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09T08:07:23+00:00",
+        "time": "2014-11-09 08:07:23",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1272,7 +1272,7 @@
             "kartik-v/bootstrap-star-rating": "*",
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08T19:30:37+00:00",
+        "time": "2014-11-08 19:30:37",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1324,7 +1324,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08T21:15:27+00:00",
+        "time": "2014-11-08 21:15:27",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1375,7 +1375,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-05-03T08:23:04+00:00",
+        "time": "2015-05-03 08:23:04",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1426,7 +1426,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2015-01-25T16:36:55+00:00",
+        "time": "2015-01-25 16:36:55",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1477,7 +1477,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-08T21:10:18+00:00",
+        "time": "2014-11-08 21:10:18",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1528,7 +1528,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-19T06:44:12+00:00",
+        "time": "2014-11-19 06:44:12",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1580,7 +1580,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-09T04:56:27+00:00",
+        "time": "2014-11-09 04:56:27",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1649,7 +1649,7 @@
             "kartik-v/yii2-widget-touchspin": "*",
             "kartik-v/yii2-widget-typeahead": "*"
         },
-        "time": "2014-11-09T19:54:17+00:00",
+        "time": "2014-11-09 19:54:17",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1695,7 +1695,7 @@
         "require": {
             "kartik-v/yii2-dropdown-x": "*"
         },
-        "time": "2014-12-06T18:38:52+00:00",
+        "time": "2014-12-06 18:38:52",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1744,7 +1744,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "*"
         },
-        "time": "2014-11-25T09:06:15+00:00",
+        "time": "2014-11-25 09:06:15",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1794,7 +1794,7 @@
             "ext-mbstring": "*",
             "php": ">=4.3.10"
         },
-        "time": "2015-03-01T10:27:49+00:00",
+        "time": "2015-03-01 10:27:49",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1835,7 +1835,7 @@
             "reference": "ce1d165af25f6e6caaf97083e20b5a3ad7c7b7c6",
             "shasum": ""
         },
-        "time": "2015-03-18T13:08:39+00:00",
+        "time": "2015-03-18 13:08:39",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1935,7 +1935,7 @@
         "require": {
             "yiisoft/yii2-bootstrap": "@dev"
         },
-        "time": "2015-06-16T05:19:57+00:00",
+        "time": "2015-06-16 05:19:57",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -1983,7 +1983,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-08T11:36:38+00:00",
+        "time": "2015-07-08 11:36:38",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2033,7 +2033,7 @@
             "kartik-v/bootstrap-popover-x": "~1.4",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-01T16:51:32+00:00",
+        "time": "2015-07-01 16:51:32",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2085,7 +2085,7 @@
         "require-dev": {
             "mockery/mockery": "~0.9.1,<0.9.4"
         },
-        "time": "2015-06-06T14:19:39+00:00",
+        "time": "2015-06-06 14:19:39",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2144,7 +2144,7 @@
         "suggest": {
             "ext-intl": "*"
         },
-        "time": "2015-05-29T06:29:14+00:00",
+        "time": "2015-05-29 06:29:14",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2191,7 +2191,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-19T04:49:03+00:00",
+        "time": "2015-07-19 04:49:03",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2239,7 +2239,7 @@
             "reference": "03b086d7ec51fc773aab064d7204adbbaa807ec4",
             "shasum": ""
         },
-        "time": "2015-07-14T09:54:25+00:00",
+        "time": "2015-07-14 09:54:25",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2287,7 +2287,7 @@
             "kartik-v/dependent-dropdown": "~1.4",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-26T20:20:32+00:00",
+        "time": "2015-06-26 20:20:32",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2334,7 +2334,7 @@
             "reference": "e8a712d4840ba9abe7c1302808e86e55e91aab7f",
             "shasum": ""
         },
-        "time": "2015-07-26T20:29:14+00:00",
+        "time": "2015-07-26 20:29:14",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2388,7 +2388,7 @@
             "kartik-v/bootstrap-fileinput": "~4.2",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-26T20:23:24+00:00",
+        "time": "2015-06-26 20:23:24",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2439,7 +2439,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-01T15:20:59+00:00",
+        "time": "2015-07-01 15:20:59",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2489,7 +2489,7 @@
         "require": {
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-06-28T18:05:41+00:00",
+        "time": "2015-06-28 18:05:41",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2536,7 +2536,7 @@
             "reference": "bd9c52db6ac71cb270620c1aee601d142ab2cc00",
             "shasum": ""
         },
-        "time": "2015-06-18T14:42:46+00:00",
+        "time": "2015-06-18 14:42:46",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2579,7 +2579,7 @@
             "reference": "7d3dc3495dd10bd1909c0dfdecd673967019cc21",
             "shasum": ""
         },
-        "time": "2015-06-18T15:14:51+00:00",
+        "time": "2015-06-18 15:14:51",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2630,7 +2630,7 @@
             "kartik-v/php-date-formatter": ">1.3",
             "kartik-v/yii2-krajee-base": "~1.7"
         },
-        "time": "2015-07-19T05:01:43+00:00",
+        "time": "2015-07-19 05:01:43",
         "type": "yii2-extension",
         "installation-source": "dist",
         "autoload": {
@@ -2716,7 +2716,7 @@
         "require-dev": {
             "phpunit/phpunit": "4.*"
         },
-        "time": "2015-04-02T11:48:05+00:00",
+        "time": "2015-04-02 11:48:05",
         "type": "yii2-extension",
         "extra": {
             "branch-alias": {
@@ -2774,7 +2774,7 @@
         "require": {
             "composer-plugin-api": "^1.0"
         },
-        "time": "2016-02-06T00:49:24+00:00",
+        "time": "2016-02-06 00:49:24",
         "type": "composer-plugin",
         "extra": {
             "class": "yii\\composer\\Plugin",
@@ -2881,7 +2881,7 @@
             "php": ">=5.4.0",
             "yiisoft/yii2-composer": "~2.0.4"
         },
-        "time": "2016-10-20T12:02:50+00:00",
+        "time": "2016-10-20 12:02:50",
         "bin": [
             "yii"
         ],
@@ -2946,6 +2946,112 @@
         "homepage": "http://www.yiiframework.com/",
         "keywords": [
             "framework",
+            "yii2"
+        ]
+    },
+    {
+        "name": "phpoffice/phpexcel",
+        "version": "1.8.1",
+        "version_normalized": "1.8.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPOffice/PHPExcel.git",
+            "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+            "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+            "shasum": ""
+        },
+        "require": {
+            "ext-xml": "*",
+            "ext-xmlwriter": "*",
+            "php": ">=5.2.0"
+        },
+        "time": "2015-05-01 07:00:55",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "PHPExcel": "Classes/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL"
+        ],
+        "authors": [
+            {
+                "name": "Maarten Balliauw",
+                "homepage": "http://blog.maartenballiauw.be"
+            },
+            {
+                "name": "Mark Baker"
+            },
+            {
+                "name": "Franck Lefevre",
+                "homepage": "http://blog.rootslabs.net"
+            },
+            {
+                "name": "Erik Tilt"
+            }
+        ],
+        "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+        "homepage": "http://phpexcel.codeplex.com",
+        "keywords": [
+            "OpenXML",
+            "excel",
+            "php",
+            "spreadsheet",
+            "xls",
+            "xlsx"
+        ]
+    },
+    {
+        "name": "moonlandsoft/yii2-phpexcel",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/moonlandsoft/yii2-phpexcel.git",
+            "reference": "9408d09abc7ff4828302dafd5ffb709314f14589"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/moonlandsoft/yii2-phpexcel/zipball/9408d09abc7ff4828302dafd5ffb709314f14589",
+            "reference": "9408d09abc7ff4828302dafd5ffb709314f14589",
+            "shasum": ""
+        },
+        "require": {
+            "phpoffice/phpexcel": "*",
+            "yiisoft/yii2": "*"
+        },
+        "time": "2015-09-06 07:50:33",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "moonland\\phpexcel\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Moh Khoirul Anam",
+                "email": "moh.khoirul.anaam@gmail.com"
+            }
+        ],
+        "description": "Exporting PHP to Excel or Importing Excel to PHP",
+        "keywords": [
+            "excel",
+            "export",
+            "extension",
+            "import",
+            "xls",
             "yii2"
         ]
     }
