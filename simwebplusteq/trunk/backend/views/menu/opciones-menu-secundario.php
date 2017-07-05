@@ -90,6 +90,24 @@
             'title' => Yii::t('backend', 'Undo'),
             'url' => '#',
         ],
+        'export-excel' => [
+            'icon' => 'fa fa-file-excel-o',
+            'class' => 'fa-2x',
+            'color' => $color,
+            'tipoIcon' => $tipoIcon[0],
+            'caption' => Yii::t('backend', 'Export to Excel'),
+            'title' => Yii::t('backend', 'Export to Excel'),
+            'url' => '#',
+        ],
+        'export-pdf' => [
+            'icon' => 'fa fa-file-pdf-o',
+            'class' => 'fa-2x',
+            'color' => $color,
+            'tipoIcon' => $tipoIcon[0],
+            'caption' => Yii::t('backend', 'Export to pdf'),
+            'title' => Yii::t('backend', 'Export to pdf'),
+            'url' => '#',
+        ],
     ];
 
 ?>
