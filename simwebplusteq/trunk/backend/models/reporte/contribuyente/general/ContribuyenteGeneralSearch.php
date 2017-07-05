@@ -47,6 +47,7 @@
 	use yii\data\ArrayDataProvider;
 	use common\models\contribuyente\ContribuyenteBase;
 	use yii\helpers\ArrayHelper;
+	use moonland\phpexcel\Excel;
 
 
 
@@ -167,17 +168,27 @@
 
 	    /**
 	     * Metodo que crea el data provider de los contribuyentes
+	     * @param boolean $expot indica si el dataProvider se utilizara en una exportacion de datos.
+	     * Excel, PDF, etc.
 	     * @return ActiveDataProvider
 	     */
-	    public function getDataProvider()
+	    public function getDataProvider($export = false)
 	    {
 	    	$query = self::armarConsultaContribuyenteModel()->orderBy(['C.id_contribuyente' => SORT_ASC]);
-	    	$dataProvider = New ActiveDataProvider([
-	    		'query' => $query,
-	    		'pagination' => [
-	    			'pageSize' => 50,
-	    		],
-	    	]);
+	    	if ( $export ) {
+	    		$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => false,
+		    	]);
+	    	} else {
+	    		$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => [
+		    			'pageSize' => 50,
+		    		],
+		    	]);
+	    	}
+
 	    	$query->all();
 	    	return $dataProvider;
  	    }
@@ -235,6 +246,101 @@
  	    {
  	    	return self::findCondicionContribuyente();
  	    }
+
+
+
+ 	    /**
+		 * Metodo que exporta el contenido de la consulta a formato excel
+		 * @return view
+		 */
+		public function exportarExcel($model)
+		{
+
+			return Excel::widget([
+    			'models' => $model,
+    			'format' => 'Excel2007',
+                'properties' => [
+
+                ],
+    			'mode' => 'export', //default value as 'export'
+    			'columns' => [
+    				[
+    					'attribute' => 'ID',
+    					'value' => function($model) {
+    						return $model->id_contribuyente;
+    					},
+    				],
+    				[
+    					'attribute' => 'RIF/CEDULA',
+    					'value' => function($model) {
+		                				if ( $model->tipo_naturaleza == 0 ) {
+											return $model->naturaleza . '-' . $model->cedula;
+										} elseif ( $model->tipo_naturaleza == 1 ) {
+											return $model->naturaleza . '-' . $model->cedula . '-' . $model->tipo;
+										} else {
+											return '';
+										}
+									},
+    				],
+    				[
+    					'attribute' => 'Contribuyente',
+    					'value' => function($model) {
+		                				if ( $model->tipo_naturaleza == 0 ) {
+		                					return $model->apellidos . ' ' . $model->nombres;
+		                				} elseif ( $model->tipo_naturaleza == 1 ) {
+		                					return $model->razon_social;
+		                				} else {
+		                					return '';
+		                				}
+									},
+    				],
+    				[
+    					'attribute' => 'Correo',
+    					'value' => function($model) {
+		                				return $model->email;
+									},
+    				],
+    				[
+    					'attribute' => 'Domicilio',
+    					'value' => function($model) {
+		                				return $model->domicilio_fiscal;
+									},
+    				],
+    				[
+    					'attribute' => 'Licencia',
+    					'value' => function($model) {
+    									if ( $model->tipo_naturaleza == 0 ) {
+		                					return Yii::t('backend', 'No aplica');
+		                				} elseif ( $model->tipo_naturaleza == 1 ) {
+		                					return $model->id_sim;
+		                				}
+									},
+    				],
+    				[
+    					'attribute' => 'Condicion',
+    					'value' => function($model) {
+										if ( $model->inactivo == 0 ) {
+											return 'ACTIVO';
+										} else {
+											return 'INACTIVO';
+										}
+									},
+    				],
+    				[
+    					'attribute' => 'Tipo',
+    					'value' => function($model) {
+										if ( $model->tipo_naturaleza == 0 ) {
+		                					return 'NATURAL';
+		                				} elseif ( $model->tipo_naturaleza == 1 ) {
+		                					return 'JURIDICO';
+		                				} else {
+		                					return '';
+		                				}
+									},
+    				],
+    			]
+			]);
+		}
 
 	}
 
