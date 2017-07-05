@@ -124,23 +124,29 @@
 							// Se determina si ya existe una solicitud pendiente.
 							if ( !$searchCorreccion->yaPoseeSolicitudSimiliarPendiente() ) {
 
-								$modelParametro = New ParametroSolicitud($id);
-								// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
-								// del parametro y el valor del elemento es el contenido del campo en base de datos.
-								$config = $modelParametro->getParametroSolicitud([
-																		'id_config_solicitud',
-																		'tipo_solicitud',
-																		'impuesto',
-																		'nivel_aprobacion'
-															]);
+								$mensajes = $searchCorreccion->validarEvento();
+								if ( count($mensajes) == 0 ) {
 
-								if ( isset($config) ) {
-									$_SESSION['conf'] = $config;
-									$_SESSION['begin'] = 1;
-									$this->redirect(['index-create']);
+									$modelParametro = New ParametroSolicitud($id);
+									// Se obtiene el tipo de solicitud. Se retorna un array donde el key es el nombre
+									// del parametro y el valor del elemento es el contenido del campo en base de datos.
+									$config = $modelParametro->getParametroSolicitud([
+																			'id_config_solicitud',
+																			'tipo_solicitud',
+																			'impuesto',
+																			'nivel_aprobacion'
+																]);
+
+									if ( isset($config) ) {
+										$_SESSION['conf'] = $config;
+										$_SESSION['begin'] = 1;
+										$this->redirect(['index-create']);
+									} else {
+										// No se obtuvieron los parametros de la configuracion.
+										return $this->redirect(['error-operacion', 'cod' => 955]);
+									}
 								} else {
-									// No se obtuvieron los parametros de la configuracion.
-									return $this->redirect(['error-operacion', 'cod' => 955]);
+
 								}
 							} else {
 								// El contribuyente ya posee una solicitud similar, y la misma esta pendiente.
