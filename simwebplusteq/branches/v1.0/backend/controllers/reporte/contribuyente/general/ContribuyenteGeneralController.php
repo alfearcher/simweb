@@ -60,7 +60,6 @@
 	use backend\models\buscargeneral\BuscarGeneral;
 
 
-
 	session_start();
 
 
@@ -184,22 +183,21 @@
 
 
 
-
-		/***/
-		public function actionGenerarPdf()
+		/**
+		 * Metodo que exporta el contenido de la consulta a formato excel
+		 * @return view
+		 */
+		public function actionExportarExcel()
 		{
-			$request = Yii::$app->request;
-			$postData = $request->post();
+			$postData = isset($_SESSION['postData']) ? $_SESSION['postData'] : [];
+			$contribuyenteSearch = New ContribuyenteGeneralSearch();
+			$contribuyenteSearch->load($postData);
+			$dataProvider = $contribuyenteSearch->getDataProvider(true);
+			$model = $dataProvider->getModels();
 
-			if ( isset($postData['planilla']) ) {
-				$planilla = $postData['planilla'];
-				$pdf = New PlanillaPdfController($planilla);
-				$pdf->actionGenerarPlanillaPdf();
-
-			}
+			$contribuyenteSearch->exportarExcel($model);
 
 		}
-
 
 
 
