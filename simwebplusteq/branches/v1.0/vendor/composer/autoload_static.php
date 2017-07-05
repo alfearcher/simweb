@@ -24,6 +24,10 @@ class ComposerStaticInit0cc9277c01b094b0f2fa855698844884
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
+        'm' => 
+        array (
+            'moonland\\phpexcel\\' => 18,
+        ),
         'k' => 
         array (
             'kartik\\widgets\\' => 15,
@@ -113,6 +117,10 @@ class ComposerStaticInit0cc9277c01b094b0f2fa855698844884
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
+        ),
+        'moonland\\phpexcel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/moonlandsoft/yii2-phpexcel',
         ),
         'kartik\\widgets\\' => 
         array (
@@ -261,6 +269,13 @@ class ComposerStaticInit0cc9277c01b094b0f2fa855698844884
     );
 
     public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+            ),
+        ),
         'H' => 
         array (
             'HTMLPurifier' => 
