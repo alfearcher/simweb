@@ -50,6 +50,11 @@
 	use yii\jui\DatePicker;
 	use backend\controllers\menu\MenuController;
 
+	$typeIcon = Icon::FA;
+    $typeLong = 'fa-2x';
+
+    Icon::map($this, $typeIcon);
+
 ?>
 <div class="busqueda-contribuyente-existentes">
 	<?php
