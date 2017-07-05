@@ -28,7 +28,7 @@
  *  @date 14-06-2017
  *
  *  @view contribuyente-existente-reporte.php
- *  @brief vista.
+ *  @brief vista que muestra a los contribuyentes resultantes de la consulta (lista).
  *
  *
  *  @property
@@ -66,9 +66,6 @@
 		]);
 	?>
 
-
-	<!-- <?//=$form->field($model, 'nro_solicitud')->hiddenInput(['value' => 0])->label(false);?> -->
-
 	<meta http-equiv="refresh">
     <div class="panel panel-default"  style="width: 100%;">
         <div class="panel-heading">
@@ -83,7 +80,21 @@
 				<div class="col-sm-12">
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?=Html::encode($subCaption)?></strong></h4>
+						<div class="col-sm-2" style="width: 25%;padding: 0px;margin: 0px;margin-top: 10px;">
+							<h4><strong><?=Html::encode($subCaption)?></strong></h4>
+						</div>
+						<div class="col-sm-3" style="width: 30%;float:right;padding: 0px;margin: 0px;">
+        					<style type="text/css">
+								.col-sm-3 > ul > li > a:hover {
+									background-color: #ECF1EF;
+								}
+    						</style>
+	        				<?= MenuController::actionMenuSecundario([
+	        						'export-excel' => '/reporte/contribuyente/general/contribuyente-general/exportar-excel',
+	        						//'export-pdf' => '/funcionario/solicitud/solicitud-asignada/quit',
+	        					])
+	        				?>
+	        			</div>
 					</div>
 
 					<div class="row" style="width: 103%;padding: 0px;margin: 0px;">
@@ -99,18 +110,6 @@
 								},
 								'columns' => [
 									['class' => 'yii\grid\SerialColumn'],
-									// [
-				     //                    'class' => 'yii\grid\CheckboxColumn',
-				     //                    'name' => 'chkPago',
-				     //                    'multiple' => true,
-				     //                    'checkboxOptions' => function ($model, $key, $index, $column) {
-				     //            				return [
-				     //            					//'onClick' => 'javascript: return false;',
-			      //                       			//'checked' => true,
-				     //            				];
-
-				     //                    }
-				     //                ],
 						            [
 						                'label' => Yii::t('backend', 'ID.'),
 						                'contentOptions' => [
