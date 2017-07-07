@@ -156,11 +156,6 @@
             											'barcode' => $barcode,
             					]);
 
-
-            // Identificación de las formas de pagos.
-            $htmlFormaPago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-forma-de-pago-pdf');
-
-
             // Nombre del archivo.
 	        $nombrePDF = self::actionGenerarNombreArchivo($deposito);
 	        if ( trim($nombrePDF) !== '' ) {
