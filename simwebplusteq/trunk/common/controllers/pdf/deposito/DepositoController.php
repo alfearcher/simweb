@@ -157,6 +157,9 @@
             					]);
 
 
+            // Identificación de las formas de pagos.
+            $htmlFormaPago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-forma-de-pago-pdf');
+
 
             // Nombre del archivo.
 	        $nombrePDF = self::actionGenerarNombreArchivo($deposito);
@@ -172,23 +175,57 @@
 	        $mpdf->WriteHTML($htmlIdentidadPago);
 	        $mpdf->WriteHTML($htmlDetallePago);
 
-	       //funciona
-	       // $mpdf->Rect(18, 230, 100, 30, D);
+	       	//funciona
+	       	// $mpdf->Rect(18, 230, 100, 30, D);
 
 	        // eje x, y, w=width, h=height, r=radius, estilo de la linea
 	        // 											D = dibuja linea
 	        // 											F
 	        // 											DF
-	       $mpdf->RoundedRect(18, 230, 120, 30, 3, D);
-	       $mpdf->SetFont('Arial', 'B', 8);
-	       $mpdf->Text(60,258,"Validacion terminal caja");
+	       	$mpdf->RoundedRect(18, 230, 120, 30, 3, D);
+	       	$mpdf->SetFont('Arial', 'B', 8);
+	       	$mpdf->Text(60,258,"Validacion terminal caja");
 
-	       // Se coloca el QR
-	       $mpdf->WriteFixedPosHTML($htmlQR, 100, 220, 120, 30);
+	       	// Se coloca el identificador de la forma de pago
+	       	$y = 17;
+	       	$indicacionesFormaPago = Yii::t('backend', 'Forma de pago: Máximo un (1) cheque de otros Bancos por recibo, especificar monto y Nro. de cheque. Se permiten pagos mixtos.');
 
+	       	$mpdf->SetY(180 + $y);
+			$mpdf->SetFillColor(22, 86, 120); 						// set background color
+			$mpdf->SetTextColor(255, 255, 255);
+			$mpdf->Cell(180, 5, 'Forma de Pago', 1, 0, 'C', true);
 
-	       $mpdf->Output($nombre, 'I');
-	       exit;
+			$mpdf->SetTextColor(0, 0, 0);
+			$mpdf->SetY(185 + $y);
+			$mpdf->Cell(180, 7, '', 1, 0, 'L', false);				// crea una celda con las especificaciones.
+			$mpdf->SetFont('Arial', '', 8);
+			$mpdf->Text(18, 189 + $y, utf8_decode((utf8_encode($indicacionesFormaPago))));		// Coorenadas x, y.
+
+			$mpdf->SetFillColor(22, 86, 120); 						// set background color
+			$mpdf->SetTextColor(255, 255, 255);
+			$mpdf->SetY(192 + $y);
+			$mpdf->Cell(40, 5, 'Efectivo', 1, 0, 'C', true);
+			$mpdf->Cell(40, 5, 'Cargo a Cuenta', 1, 0, 'C', true);
+			$mpdf->Cell(100, 5, 'Cheque otro banco', 1, 1, 'C', true);
+
+			$mpdf->SetTextColor(0, 0, 0);
+			$mpdf->SetY(197 + $y);
+			$mpdf->Cell(40, 5, 'Monto', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, 'Monto', 1, 0, 'C', false);
+			$mpdf->Cell(60, 5, 'Nro. Cheque', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, 'Monto', 1, 1, 'C', false);
+
+			$mpdf->SetY(202 + $y);
+			$mpdf->Cell(40, 5, '', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, '', 1, 0, 'C', false);
+			$mpdf->Cell(60, 5, '', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, '', 1, 1, 'C', false);
+
+	       	// Se coloca el QR
+	       	$mpdf->WriteFixedPosHTML($htmlQR, 112, 225, 120, 30);
+
+	       	$mpdf->Output($nombre, 'I');
+	       	exit;
 		}
 
 
