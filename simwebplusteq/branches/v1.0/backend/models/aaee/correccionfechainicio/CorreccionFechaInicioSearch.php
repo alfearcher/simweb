@@ -47,10 +47,15 @@
 	use yii\db\ActiveRecord;
 	use backend\models\aaee\correccionfechainicio\CorreccionFechaInicio;
 	use backend\models\aaee\inscripcionactecon\InscripcionActividadEconomicaSearch;
+	use backend\models\aaee\actecon\ActEcon;
 	use common\models\contribuyente\ContribuyenteBase;
 
 
-	/***/
+	/**
+	 * Clase que permite controlar las politicas que se deben cumplir para poder elaborar
+	 * una solicitude de cambio de fecha de inicio. Solicitud que solo aplica para los
+	 * contribuyentes "juridicos" y que además declaren ingresos brutos.
+	 */
 	class CorreccionFechaInicioSearch
 	{
 
@@ -199,6 +204,111 @@
 				$dato['fecha_inicio'] = $datos['fecha_inicio'];
 			}
 			return $dato;
+		}
+
+
+		/**
+		 * Metodo que permite obtener el modelo de consulta basico de los años declarados
+		 * validos que presente el contribuyente.
+		 * @return ActEcon
+		 */
+		private function findActEconModel()
+		{
+			$findModel = ActEcon::find()->where('id_contribuyente =:id_contribuyente',
+													[':id_contribuyente' => $this->_id_contribuyente]);
+
+			return $findModel;
+		}
+
+
+
+		/**
+		 * Metodo que permite obtener el ultimo registros que representa la ultima declaracion
+		 * registrada del contribuyente.
+		 * @return array
+		 */
+		public function getUltimaDeclaracion()
+		{
+			$findModel = self::findActEconModel();
+			return $results = $findModel->andWhere('estatus =:estatus', [':estatus' => 0])
+							  		    ->orderBy([
+								 			'ano_impositivo' => SORT_DESC
+								 		])
+								 		->limit(1)
+								 		->asArray()
+								 		->all();
+		}
+
+
+
+		/***/
+		public function getPrimeraDeclaracion()
+		{
+			$findModel = self::findActEconModel();
+			return $results = $findModel->andWhere('estatus =:estatus', [':estatus' => 0])
+							  		    ->orderBy([
+								 			'ano_impositivo' => SORT_ASC
+								 		])
+								 		->limit(1)
+								 		->asArray()
+								 		->all();
+		}
+
+
+
+
+		/**
+		 * Metodo que permite determinar el ultimo año declarado, sino encuentra nada retorna
+		 *  cero (0).
+		 * @return integer
+		 */
+		public function determinarUltimoAnoDeclarado()
+		{
+			$results = self::getUltimaDeclaracion();
+			if ( count($results) > 0 ) {
+				return (int)$results[0]['ano_impositivo'];
+			} else {
+				// No se encontro declaracion realizada.
+				return 0;
+			}
+		}
+
+
+
+		/***/
+		public function determinarPrimerAnoDeclarado()
+		{
+			$results = self::getPrimeraDeclaracion();
+			if ( count($results) > 0 ) {
+				return (int)$results[0]['ano_impositivo'];
+			} else {
+				// No se encontro declaracion realizada.
+				return 0;
+			}
+		}
+
+
+
+
+
+
+		/**
+		 * Metodo que ejecuta todos las politicas de validacion de la solicitud, de no cumplir
+		 * alguna se creara un agregara un mensaje al arreglo para indicar la situacion presentada.
+		 * @param string $fechaInicio la nueva fecha de inicio colocada
+		 * @return array
+		 */
+		public function validarEvento($newFechaInicio)
+		{
+			$añoInicio = (int)date('Y', strtotime($newFechaInicio));
+			$mensajes = [];
+
+			$primerAñoDeclarado = self::determinarPrimerAnoDeclarado();
+			if ( $primerAñoDeclarado < $añoInicio && $primerAñoDeclarado > 0 ) {
+				$mensajes[] = Yii::t('backend', 'Fecha de inicio es posterior a la primera declaracion registrada, año ') . $primerAñoDeclarado;
+			}
+
+			return $mensajes;
 		}
 
 	}
