@@ -76,6 +76,12 @@
         					],
         				],
 
+        				['label' => 'Propaganda',
+        					'items' => [
+        						['label' => 'General', 'url' => ['/reporte/propaganda/general/propaganda-general/index']],
+        					],
+        				],
+
         				['label' => 'Solicitudes',
         					'items' => [
         						['label' => 'Historico', 'url' => ['/reporte/solicitud/historico/historico-solicitud/index']],
