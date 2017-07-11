@@ -184,7 +184,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                     foreach ($datosIRegistros as $key => $valueIn) {
                                             
                     } 
-                    $añoUltimoRegistro = explode('-', $registros['fecha']);
+                    $añoUltimoRegistro = explode('-', $valueIn['fecha']);
                     $_SESSION['anioRegistro'] = $añoUltimoRegistro;
                     $_SESSION['datosURegistros'] = $valueIn;
                 } else {
