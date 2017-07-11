@@ -557,23 +557,7 @@ Session["variablephp"] = tu;
                                                         </div> 
 
                                                         <div class="col-sm-3" id="totales" style="display:none"> 
-                                                        <?= Html::a(Yii::t('backend', 'Totales Avaluo Año '.date('Y')), '#', [
-                                                                                'id' => 'link-year-avaluo',
-                                                                                'data-toggle' => 'modal', 
-                                                                                'data-target' => '#modal',
-                                                                                'data-url' => Url::to(['view-pre-avaluo-modal',
-                                                                                                        
-                                                                                                        'id' =>$_COOKIE['id'],//"<script type='text/javascript'> document.getElementById('tipologiaInmuebles').value;  </script>", 
-                                                                                                        'a' => date('Y'),
-                                                                                                        't' => $_COOKIE['t'],//'<script type="text/javascript"> document.getElementById("mterreno").value  </script>',
-                                                                                                        'c' => $_COOKIE['c'],//'<script type="text/javascript"> document.getElementById("mconstruccion").value  </script>',
-
-                                                                                                    ]),
-                                                                                'data-ano-impositivo' => date('Y'),
-                                                                                'data-periodo' => 1,
-                                                                                'data-pjax' => 0,
-                                                                                
-                                                                    ]); ?> 
+             <!-- aqui va  -->
                                                         </div>
 
                                                     </div>       
