@@ -53,7 +53,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\solicitud\estatus\EstatusSolicitud;
 	use common\models\solicitudescontribuyente\DetalleSolicitudCreada;
-
+	use common\utilidades\CrearComboTipoSolicitud;
 
 
 
@@ -193,27 +193,6 @@
 
 
 
-
-	    /**
-	     * Metodo que realiza la consultas del tipo de solicitud segun el impuesto.
-	     * Y retorna los atributos de la entidad respectiva.
-	     * @param integer $impuesto identificador del impuesto.
-	     * @return array.
-	     */
-	    public function findTipoSolicitudByImpuesto($impuesto)
-	    {
-	    	return $model = TipoSolicitud::find()->alias('T')
-	    										 ->where('impuesto =:impuesto',
-	    										 					[':impuesto' => $impuesto])
-	    										 ->orderBy([
-	    										 	'impuesto' => SORT_ASC,
-	    										 	'descripcion' => SORT_ASC,
-	    										 ])
-	    										 ->all();
-	    }
-
-
-
 	    /**
 	     * Metodo que arma un combo-lista de tipos de solicitudes.
 	     * @param integer $impuesto identificador del impuesto.
@@ -221,16 +200,7 @@
 	     */
 	    public function armarComboTipoSolicitud($impuesto)
 	    {
-	    	$listaTipoSolicitud = self::findTipoSolicitudByImpuesto($impuesto);
-	    	if ( count($listaTipoSolicitud) > 0 ) {
-	        	echo "<option value='0'>" . "Select..." . "</option>";
-	            foreach ( $listaTipoSolicitud as $solicitud ) {
-	                echo "<option value='" . $solicitud->id_tipo_solicitud . "'>" . $solicitud->descripcion . "</option>";
-	            }
-	        } else {
-	            echo "<option> - </option>";
-	        }
-	        return;
+	    	return CrearComboTipoSolicitud::getComboTipoSolicitud($impuesto);
 	    }
 
 
@@ -287,20 +257,65 @@
 
 	    /**
 	     * Metodo que genera el data provider del historico de las solicitudes
+	     * @param boolean $export indica si el resultado se utilizara para
+	     * mostrarlo en un reporte tipo excel o pdf.
 	     * @return ActiveDataProvider
 	     */
-	    public function getDataProvider()
+	    public function getDataProvider($export = false)
 	    {
 	    	$query = self::armarConsultaHistoricoSolicitudModel();
-	    	$dataProvider = New ActiveDataProvider([
-	    		'query' => $query,
-	    		'pagination' => [
-	    			'pageSize' => '50',
-	    		],
-	    	]);
+	    	if ( $export ) {
+	    		$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => false,
+		    	]);
+	    	} else {
+		    	$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => [
+		    			'pageSize' => '50',
+		    		],
+		    	]);
+		    }
 	    	$query->all();
 	    	return $dataProvider;
 	    }
+
+
+
+
+	    /**
+	     * Metodo que genera el data provider del historico de las solicitudes. Este metodo
+	     * se utilizara para la consulta del contribuyente (frontend).
+	     * @param integer $idContribuyente identificador del contribuyente.
+	     * @param boolean $export indica si el resultado se utilizara para
+	     * mostrarlo en un reporte tipo excel o pdf
+	     * @return ActiveDataProvider
+	     */
+	    public function getDataProviderFrontend($idContribuyente, $export = false)
+	    {
+
+    		$query = self::armarConsultaHistoricoSolicitudModel();
+    		$query = $query->andWhere(['=', 'S.id_contribuyente', $idContribuyente]);
+
+    		if ( $export ) {
+	    		$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => false,
+		    	]);
+	    	} else {
+		    	$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => [
+		    			'pageSize' => '50',
+		    		],
+		    	]);
+		    }
+	    	$query->all();
+
+	    	return $dataProvider;
+	    }
+
 
 
 
