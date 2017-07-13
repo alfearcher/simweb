@@ -66,8 +66,8 @@
     <div class="panel panel-default"  style="width: 80%;">
         <div class="panel-heading">
         	<div class="row">
-        		<div class="col-sm-4" style="padding-top: 10px;">
-        			<h4><?= Html::encode($caption) ?></h4>
+        		<div class="col-sm-4" style="padding-top: 10px;width: 40%;">
+        			<h4><strong><?= Html::encode($caption) ?></strong></h4>
         		</div>
         	</div>
         </div>
@@ -83,7 +83,9 @@
         						<?= Html::tag('li', Yii::t('backend', 'Impuesto - Tipo Solicitud - Rango de Fechas'));?>
         						<?= Html::tag('li', Yii::t('backend', 'Impuesto - Rango de Fechas'));?>
         						<?= Html::tag('li', Yii::t('backend', 'Numero de Solicitud')); ?>
+        						<?php if ( $esFuncionario ) { ?>
         						<?= Html::tag('li', Yii::t('backend', 'Identiicador (ID) del Contribuyente'));?>
+        						<?php } ?>
         						<?= Html::tag('p', Yii::t('backend', ''));?>
         						<?= Html::tag('p', Yii::t('backend', 'Puede complementar la consulta con los Parametros adicionales'));?>
         					</p>
@@ -109,9 +111,13 @@
                                                                   'prompt' => Yii::t('backend', 'Select'),
                                                                   'style' => 'width:460px;',
                                                                   'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                       		           ->createUrl('reporte/solicitud/historico/historico-solicitud/lista-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
+                                                                                        		           ->createUrl($urlRequest) . '&i=' . '" + $(this).val(), function( data ) {
                                                                                                                  $( "select#tipo-solicitud" ).html( data );
                                                                                                            });'
+                                                                  // 'onchange' => '$.post( "' . Yii::$app->urlManager
+                                                                  //                      		           ->createUrl('reporte/solicitud/historico/historico-solicitud/lista-solicitud') . '&i=' . '" + $(this).val(), function( data ) {
+                                                                  //                                                $( "select#tipo-solicitud" ).html( data );
+                                                                  //                                          });'
                                                                             ])->label(false);
                                 ?>
 							</div>
