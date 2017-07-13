@@ -265,7 +265,7 @@
 		        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Elaboradas',
 		        			'items' => [
 		        						['label' => 'Pendientes', 'url' => ['/solicitud/solicitud-creada/index-search']],
-		        						['label' => 'Historico', 'url' => '#'],
+		        						['label' => 'Historico', 'url' => ['/solicitud/historico/historico-solicitud/index']],
 
 		        			]
 		        		],
