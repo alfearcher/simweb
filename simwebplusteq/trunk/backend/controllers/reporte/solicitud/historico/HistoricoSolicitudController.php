@@ -155,6 +155,8 @@
 					return ActiveForm::validate($model);
 		      	}
 
+		      	// url donde se solicitara exportar el reporte.
+		      	$urlExportReport = Url::to('x');
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
 						$subCaption = Yii::t('backend', 'Resultado de la Consulta');
@@ -163,10 +165,15 @@
 		      										'dataProvider' => $dataProvider,
 		      										'caption' => $caption,
 		      										'subCaption' => $subCaption,
+		      										'urlExportReport' => $urlExportReport,
 
 		      		  		]);
 		      		}
 		      	}
+
+		      	// url donde se debe retornar de la vista de consulta para armar
+		      	// el combo de tipos de solicitudes segun el impuesto seleccionado.
+		      	$urlRequest = Url::to(['lista-solicitud']);
 
 		      	// Lista de impuestos. Aplica para todos.
 		      	$listaImpuesto = $model->getListaImpuestoContribuyenteJuridico();
@@ -186,6 +193,7 @@
 				      											'listaTipoSolicitud' => $listaTipoSolicitud,
 				      											'listaEstatus' => $listaEstatus,
 				      											'esFuncionario' => $esFuncionario,
+				      											'urlRequest' => $urlRequest,
 		      		  ]);
 
 			} else {
