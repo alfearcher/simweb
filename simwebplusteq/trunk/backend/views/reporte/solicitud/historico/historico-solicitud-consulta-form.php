@@ -110,8 +110,7 @@
                                                                   'id'=> 'impuesto',
                                                                   'prompt' => Yii::t('backend', 'Select'),
                                                                   'style' => 'width:460px;',
-                                                                  'onchange' => '$.post( "' . Yii::$app->urlManager
-                                                                                        		           ->createUrl($urlRequest) . '&i=' . '" + $(this).val(), function( data ) {
+                                                                  'onchange' => '$.post( "' . $urlRequest . '&i=' . '" + $(this).val(), function( data ) {
                                                                                                                  $( "select#tipo-solicitud" ).html( data );
                                                                                                            });'
                                                                   // 'onchange' => '$.post( "' . Yii::$app->urlManager
