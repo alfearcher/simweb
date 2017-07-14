@@ -60,6 +60,7 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\models\historico\cvbrecibo\GenerarValidadorRecibo;
+	use common\models\historico\cvbrecibo\GenerarValidadorReciboTresDigito;
 	use common\models\historico\cvbrecibo\HistoricoCodigoValidadorBancarioForm;
 
 	use mPDF;
@@ -123,7 +124,8 @@
             $deposito = Deposito::findOne($this->_recibo);
 
             // Se determina el codigo validador bancario del recibo.
-            $validador = New GenerarValidadorRecibo($deposito);
+            //$validador = New GenerarValidadorRecibo($deposito);
+            $validador = New GenerarValidadorReciboTresDigito($deposito);
             $cvb = $validador->getCodigoValidadorRecibo();
 
             // Se guarda el historico del documento.
@@ -154,8 +156,6 @@
             											'barcode' => $barcode,
             					]);
 
-
-
             // Nombre del archivo.
 	        $nombrePDF = self::actionGenerarNombreArchivo($deposito);
 	        if ( trim($nombrePDF) !== '' ) {
@@ -170,24 +170,140 @@
 	        $mpdf->WriteHTML($htmlIdentidadPago);
 	        $mpdf->WriteHTML($htmlDetallePago);
 
-	       //funciona
-	       // $mpdf->Rect(18, 230, 100, 30, D);
+	        self::actionCuadroFormaPago($mpdf, 13);
+
+	       	//funciona
+	       	// $mpdf->Rect(18, 230, 100, 30, D);
 
 	        // eje x, y, w=width, h=height, r=radius, estilo de la linea
 	        // 											D = dibuja linea
 	        // 											F
 	        // 											DF
-	       $mpdf->RoundedRect(18, 230, 120, 30, 3, D);
-	       $mpdf->SetFont('Arial', 'B', 8);
-	       $mpdf->Text(60,258,"Validacion terminal caja");
+	       	$mpdf->RoundedRect(16, 230, 120, 30, 3, D);
+	       	$mpdf->SetFont('Arial', 'B', 8);
+	       	$mpdf->Text(60,258,"Validacion terminal caja");
 
-	       // Se coloca el QR
-	       $mpdf->WriteFixedPosHTML($htmlQR, 100, 220, 120, 30);
+	       	// Se coloca el QR
+	       	$mpdf->WriteFixedPosHTML($htmlQR, 112, 225, 120, 30);
 
-
-	       $mpdf->Output($nombre, 'I');
-	       exit;
+	       	$mpdf->Output($nombre, 'I');
+	       	exit;
 		}
+
+
+
+
+		/**
+		 * Metodo que retorna una vista con la seccion inferior del recibo
+		 * de pago donde se registrara las formas de pago del recibo.
+		 * @param mPDF $mpdf instancia de la clase mPDF
+		 * @param integer $y valor vertical de la vista.
+		 * @return view
+		 */
+		public function actionCuadroFormaPago($mpdf, $y)
+		{
+			// Se coloca el identificador de la forma de pago
+	       	//$y = 17;
+	       	$indicacionesFormaPago = Yii::t('backend', 'Forma de pago: Máximo un (1) cheque de otros Bancos por recibo, especificar monto y Nro. de cheque. Se permiten pagos mixtos.');
+
+	       	$mpdf->SetY(180 + $y);
+			$mpdf->SetFillColor(22, 86, 120); 						// set background color
+			$mpdf->SetTextColor(255, 255, 255);
+			$mpdf->SetFont('Arial', 'B', 8);
+			//$mpdf->Cell(180, 5, 'Forma de Pago', 1, 0, 'C', true);
+
+			/**
+			 	RoumdedRect
+			 	RoundedRect($x, $y, $w, $h, $r, $corners = '1234', $style = '')
+			  	x, y: top left corner of the rectangle.
+				w, h: width and height.
+				r: radius of the rounded corners.
+				corners: numbers of the corners to be rounded: 1, 2, 3, 4 or any combination (1=top left, 2=top right, 3=bottom right, 4=bottom left).
+				style: same as Rect(): F, D (default), FD or DF.
+			 */
+			$mpdf->RoundedRect(15, 179 + $y, 180, 6, 3, DF);
+			$mpdf->Text(92, 183 + $y, 'Forma de Pago');
+
+			$mpdf->SetTextColor(0, 0, 0);
+			$mpdf->SetY(185 + $y);
+			$mpdf->Cell(180, 7, '', 0, 0, 'L', false);				// crea una celda con las especificaciones.
+			$mpdf->SetFont('Arial', '', 8);
+			$mpdf->Text(18, 189 + $y, utf8_decode((utf8_encode($indicacionesFormaPago))));		// Coorenadas x, y.
+
+			/**
+			$mpdf->SetFillColor(22, 86, 120); 						// set background color
+			$mpdf->SetTextColor(255, 255, 255);
+			$mpdf->SetY(192 + $y);
+			$mpdf->Cell(40, 5, 'Efectivo', 1, 0, 'C', true);
+			$mpdf->Cell(40, 5, 'Cargo a Cuenta', 1, 0, 'C', true);
+			$mpdf->Cell(100, 5, 'Cheque otro banco', 1, 1, 'C', true);
+			*/
+			$mpdf->RoundedRect(15, 192 + $y, 180, 6, 3, DF);
+			$mpdf->SetTextColor(255, 255, 255);					//	Fuente blanca
+			$mpdf->Text(30, 196 + $y, 'Efectivo');
+			$mpdf->Text(65, 196 + $y, 'Cargo a Cuenta');
+			$mpdf->Text(130, 196 + $y, 'Cheque otro banco');
+
+			// CheckBox
+			$mpdf->SetFillColor(255, 255, 255);
+			$mpdf->RoundedRect(25, 193 + $y, 3, 3, 0, DF);
+			$mpdf->RoundedRect(60, 193 + $y, 3, 3, 0, DF);
+			$mpdf->RoundedRect(125, 193 + $y, 3, 3, 0, DF);
+
+
+			/**
+			 	Line(float x1, float y1, float x2, float y2)
+			 	x1 Abscisa del primer punto.
+				y1 Ordenada del primer punto.
+				x2 Abscisa del segundo punto.
+				y2 Ordenada del segundo punto.
+			 */
+			$mpdf->SetDrawColor(255, 255, 255);
+			$mpdf->SetLineWidth(0.3);
+			$mpdf->Line(55, 192 + $y, 55, 198 + $y);
+			$mpdf->Line(95, 192 + $y, 95, 198 + $y);
+
+			$mpdf->SetTextColor(0, 0, 0);					// Fuente negra
+			$mpdf->Text(31, 209 + $y, 'Monto');
+			$mpdf->Text(70, 209 + $y, 'Monto');
+			$mpdf->Text(115, 209 + $y, 'Nro. Cheque');
+			$mpdf->Text(168, 209 + $y, 'Monto');
+
+			// Lineas verticales
+			$mpdf->SetDrawColor(22, 86, 120);
+			$mpdf->SetLineWidth(0.4);
+			$mpdf->Line(16, 210 + $y, 193, 210 + $y);
+			$mpdf->SetLineWidth(0.2);
+			$mpdf->Line(16, 205 + $y, 193, 205 + $y);
+
+			$mpdf->Line(55, 198 + $y, 55, 210 + $y);
+			$mpdf->Line(95, 198 + $y, 95, 210 + $y);
+			$mpdf->Line(150, 198 + $y, 150, 210 + $y);
+
+			$mpdf->SetDrawColor(0, 0, 0);
+
+			/**
+			$mpdf->SetDrawColor(0, 0, 0);
+			$mpdf->SetTextColor(0, 0, 0);
+			$mpdf->SetY(197 + $y);
+			$mpdf->Cell(40, 5, 'Monto', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, 'Monto', 1, 0, 'C', false);
+			$mpdf->Cell(60, 5, 'Nro. Cheque', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, 'Monto', 1, 1, 'C', false);
+
+			$mpdf->SetY(202 + $y);
+			$mpdf->Cell(40, 5, '', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, '', 1, 0, 'C', false);
+			$mpdf->Cell(60, 5, '', 1, 0, 'C', false);
+			$mpdf->Cell(40, 5, '', 1, 1, 'C', false);
+			*/
+			return;
+		}
+
+
+
+
+
 
 
 
@@ -201,7 +317,7 @@
 		{
 			$ceroAgregado = '0000000';
 			$codigo = 'RC';
-			$nombrePDF = $codigo . '-';
+			$nombrePDF = $codigo;
 			$preSerial = '';
 			$serial = '';
 			$parametros = [
