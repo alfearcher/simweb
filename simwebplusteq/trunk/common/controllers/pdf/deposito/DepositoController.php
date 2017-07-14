@@ -193,7 +193,13 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que retorna una vista con la seccion inferior del recibo
+		 * de pago donde se registrara las formas de pago del recibo.
+		 * @param mPDF $mpdf instancia de la clase mPDF
+		 * @param integer $y valor vertical de la vista.
+		 * @return view
+		 */
 		public function actionCuadroFormaPago($mpdf, $y)
 		{
 			// Se coloca el identificador de la forma de pago
