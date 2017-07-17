@@ -798,7 +798,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
      public function TarifaAvaluos($manzana_limite,$id_tipologia_zona, $date)
      {
 
-         $buscar = TarifasAvaluos::find()->where("manzana_limite=:manzana_limite", [":manzana_limite" => $manzana_limite])
+         $buscar = TarifasAvaluos::find()->where("manzana_limite=:manzana_limite", [":manzana_limite" => 1])
                                             ->AndWhere("id_tipologia_zona=:id_tipologia_zona", [":id_tipologia_zona" => $id_tipologia_zona])
                                             ->AndWhere("ano_impositivo=:ano_impositivo", [":ano_impositivo" => $date])
                                             ->asArray()->all();
@@ -972,7 +972,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                       'valor_terreno'=> $tarifaAvaluos['valor_terreno']*$metros_terreno,
                       'valor' => $valuo,
                       ];
-      
+        
       $models = new VistaPreliminarCertificado();
 
             //renderAjax
