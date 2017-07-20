@@ -263,7 +263,8 @@
 			if ( self::existeArchivo() ) {
 
 				// Ruta y nonmbre del archivo
-				$ruta = self::getRuta() . self::getNombre();
+				//$ruta = self::getRuta() . self::getNombre();
+				$ruta = self::getRutaArchivoTxt();
 
 				$fp = fopen($ruta, "r");
 				$ct = 0;

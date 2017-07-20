@@ -45,6 +45,7 @@
  	use Yii;
 	use yii\base\Model;
 	use backend\models\utilidad\banco\BancoSearch;
+	use backend\models\utilidad\fecha\RangoFechaValido;
 
 
 	/**
@@ -53,8 +54,11 @@
 	class BusquedaArchivoTxtForm extends Model
 	{
 		public $id_banco;
+		public $fecha_desde;
+		public $fecha_hasta;
 		public $fecha_pago;
 
+		private $rangoValido;
 
 
 		/**
@@ -74,13 +78,38 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['id_banco', 'fecha_pago'],
+	        	[['id_banco', 'fecha_desde', 'fecha_hasta'],
 	        	  'required',
 	        	  'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['id_banco',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', 'El banco no es valido')],
+	        	['fecha_desde',
+	        	 'compare',
+	        	 'compareAttribute' => 'fecha_hasta',
+	        	 'operator' => '<=',
+	        	 'enableClientValidation' => false
+	        	],
+	        	['fecha_desde' , 'validarRango'],
+	        	[['fecha_pago',],'safe'],
 	        ];
+	    }
+
+
+
+	    /**
+	     * [validarRango description]
+	     * @return [type] [description]
+	     */
+	    public function validarRango()
+	    {
+	    	$this->rangoValido = false;
+	    	$validarRango = New RangoFechaValido($this->fecha_desde, $this->fecha_hasta);
+	    	if ( !$validarRango->rangoValido() ) {
+	    		$this->addError('fecha_desde', Yii::t('backend', 'Rango de fecha no es valido'));
+	    	} else {
+	    		$this->rangoValido = true;
+	    	}
 	    }
 
 
@@ -92,8 +121,9 @@
 	    public function attributeLabels()
 	    {
 	        return [
-	        	'id_banco' => Yii::t('frontend', 'Banco'),
-	        	'fecha_pago' => Yii::t('frontend', 'Fecha de pago'),
+	        	'id_banco' => Yii::t('backend', 'Banco'),
+	        	'fecha_desde' => Yii::t('backend', 'Desde'),
+	        	'fecha_hasta' => Yii::t('backend', 'Hasta'),
 
 	        ];
 	    }
