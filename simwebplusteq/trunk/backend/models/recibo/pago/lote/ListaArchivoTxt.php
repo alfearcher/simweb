@@ -189,6 +189,7 @@
 			//$arregloNombre = array_column($arregloArchivo, 'nombre', 'fecha');
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
+die(var_dump(self::getRuta()));
 				while ( false !== ($file = readdir($gestor)) ) {
 	        		if ( $file !== '.' && $file !== '..' && $file !== NULL && substr(trim($file), -4) == '.txt' ) {
 	        			$key = array_search($file, array_column($arregloArchivo, 'nombre'));
