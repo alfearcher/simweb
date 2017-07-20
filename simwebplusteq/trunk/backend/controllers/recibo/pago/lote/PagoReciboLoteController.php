@@ -148,14 +148,12 @@
                     }
                 }
 
-//die(var_dump($postData));
                 if ( $model->load($postData) && Yii::$app->request->isAjax ) {
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($model);
                 }
 
                 if ( $model->load($postData) ) {
-//die(var_dump($model));
                     if ( $model->validate() ) {
                         $_SESSION['postEnviado'] = $postData;
                         $this->redirect(['mostrar-lista-archivo']);
