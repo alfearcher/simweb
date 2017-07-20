@@ -148,28 +148,17 @@
                     }
                 }
 
-
+//die(var_dump($postData));
                 if ( $model->load($postData) && Yii::$app->request->isAjax ) {
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     return ActiveForm::validate($model);
                 }
 
                 if ( $model->load($postData) ) {
+//die(var_dump($model));
                     if ( $model->validate() ) {
                         $_SESSION['postEnviado'] = $postData;
                         $this->redirect(['mostrar-lista-archivo']);
-
-                        // $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_pago);
-                        // $listaArchivo->crearListaArchivo();
-                        // $provider = $listaArchivo->getDataProvider();
-
-                        // $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
-                        // return $this->render('/recibo/pago/lote/lista-archivo-txt',[
-                        //                             'model' => $model,
-                        //                             'dataProvider' => $provider,
-                        //                             'caption' => $caption,
-                        //                             'subCaption' => $subCaption,
-                        // ]);
                     }
                 }
 
@@ -242,9 +231,10 @@
             $model = New BusquedaArchivoTxtForm();
             $model->load($postData);
 
-            $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_pago);
-            $listaArchivo->crearListaArchivo();
-//die(var_dump($listaArchivo->getRutaArchivo()));
+            // Se muestra una lista de archivo o un archivo segun el banco y la fecha de pago
+            // indicado, se armaria el nombre del archivo en caso de ser necesario.
+            $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_desde, $model->fecha_hasta);
+            $listaArchivo->iniciarListaArchivo();
             $provider = $listaArchivo->getDataProvider();
 
             $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
@@ -306,6 +296,9 @@
 
                     $archivo = $postData['data-file'];
                     $ruta = $postData['data-path'];
+                    // Fecha de pago
+                    $fecha = $postData['data-date'];
+                    $model->fecha_pago = $fecha;
 
                     $mostrar = New MostrarArchivoTxt($ruta, $archivo);
                     $mostrar->iniciarMostrarArchivo();
@@ -322,6 +315,7 @@
                                                     'totalRegistro' => $totalRegistro,
                                                     'ruta' => $ruta,
                                                     'archivo' => $archivo,
+                                                    'fecha' => $fecha,
                                                     'model' => $model,
 
                         ]);
