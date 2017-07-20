@@ -95,11 +95,11 @@
 <!-- FECHA DE PAGO -->
 							<div class="row" style="width:100%;padding:0px;margin:0px;">
 								<div class="col-sm-2" style="width: 20%;padding:0px;margin:0px;padding-left: 10px;">
-									<p><strong><?=Html::encode(Yii::t('backend', 'Fecha de Pago:'))?></strong></p>
+									<p><strong><?=Html::encode(Yii::t('backend', 'Fecha(s) de Pago:'))?></strong></p>
 								</div>
 
 								<div class="col-sm-2" style="width:12%; padding: 0px;margin:0px;">
-									<?= $form->field($model, 'fecha_pago')->widget(\yii\jui\DatePicker::classname(),[
+									<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
 																					  'clientOptions' => [
 																							'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
 																							'changeMonth' => true,
@@ -108,7 +108,7 @@
 																					  'language' => 'es-ES',
 																					  'dateFormat' => 'dd-MM-yyyy',
 																					  'options' => [
-																					  		'id' => 'id-fecha-pago',
+																					  		'id' => 'id-fecha-desde',
 																							'class' => 'form-control',
 																							'readonly' => true,
 																							'style' => 'background-color:white;
@@ -118,8 +118,35 @@
 																						]
 																						])->label(false) ?>
 								</div>
+
+
+								<div class="col-sm-2" style="width:12%; padding: 0px;margin:0px;margin-left: 5px;">
+									<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),[
+																					  'clientOptions' => [
+																							'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																							'changeMonth' => true,
+																							'changeYear' => true,
+																						],
+																					  'language' => 'es-ES',
+																					  'dateFormat' => 'dd-MM-yyyy',
+																					  'options' => [
+																					  		'id' => 'id-fecha-hasta',
+																							'class' => 'form-control',
+																							'readonly' => true,
+																							'style' => 'background-color:white;
+																									    width:100%;
+																										font-size:100;
+																		 								font-weight:bold;',
+																						]
+																						])->label(false) ?>
+								</div>
+
+
 							</div>
 <!-- FIN DE FECHA DE PAGO -->
+
+
+
 						</div>
 
 						<div class="row">

@@ -68,6 +68,7 @@
 
 <?=Html::hiddenInput('data-path', $ruta);?>
 <?=Html::hiddenInput('data-file', $archivo);?>
+<?=Html::hiddenInput('data-date', $fecha);?>
 
 <?=$form->field($model, 'id_banco')->hiddenInput(['value' => $model->id_banco])->label(false);?>
 <?=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?>

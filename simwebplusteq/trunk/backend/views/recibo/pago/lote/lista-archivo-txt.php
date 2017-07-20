@@ -59,7 +59,8 @@
  	?>
 
 	<?=$form->field($model, 'id_banco')->hiddenInput(['value' => $model->id_banco])->label(false);?>
-	<?=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?>
+	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false);?>
+	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
@@ -109,6 +110,7 @@
 														            							'params' => [
 														            								'data-file' => $data['file'],
 														            								'data-path' => $data['path'],
+														            								'data-date' => $data['fecha'],
 														            								'data-key' => $key,
 														            							],
 														            						],
