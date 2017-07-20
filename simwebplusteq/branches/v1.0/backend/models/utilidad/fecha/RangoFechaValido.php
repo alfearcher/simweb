@@ -97,7 +97,7 @@
 
 	    			}
 
-	    		} elseif ( (int)date('Y', strtotime($fDesde)) < (int)date('Y', strtotime($fHasta)) ) {
+	    		} elseif ( (int)date('Y', strtotime($fDesde)) > (int)date('Y', strtotime($fHasta)) ) {
 
 	    			//$this->addError('fecha_desde', Yii::t('backend', 'Rango de fecha no es valido'));
 	    			return false;
