@@ -113,7 +113,6 @@
 		 */
 		public function iniciarListaArchivo()
 		{
-die('ss');
 			// Ciclo de fechas origen $this->_fecha_desde, final $this->_fecha_hasta.
 			$arregloFecha = self::crearCicloFecha();
 			if ( count($arregloFecha) > 0 ) {
@@ -187,6 +186,7 @@ die('ss');
 		 */
 		public function crearListaArchivo($arregloArchivo)
 		{
+die('eeeee');
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
 die(var_dump(self::getRuta()));
