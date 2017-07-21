@@ -97,6 +97,7 @@
 		 */
 		public function actionIndex()
 		{
+			self::actionAnularSession(['begin', 'postEnviado']);
 			$this->redirect(['listado-solicitud']);
 		}
 
@@ -159,7 +160,6 @@
 		{
 			if ( isset($_SESSION['begin']) ) {
 
-				$_SESSION['begin'] = 2;
 				$request = Yii::$app->request;
 				$postData = $request->post();
 
@@ -174,9 +174,11 @@
 
 				if ( isset($postData['btn-back']) ) {
 					if ( $postData['btn-back'] == 2 ) {
-						self::actionAnularSession(['begin']);
+						self::actionAnularSession(['begin', 'postEnviado']);
 						$this->redirect(['index']);
 					}
+				} elseif ( isset($postData['btn-search-contribuyente']) || isset($postData['btn-search-tipo']) ) {
+					$_SESSION['begin'] = 2;
 				}
 
 
@@ -184,8 +186,6 @@
 					Yii::$app->response->format = Response::FORMAT_JSON;
 					return ActiveForm::validate($model);
 		      	}
-
-
 
 		      	if ( isset($postData['chkNroSolicitud']) ) {
 		      		if ( count($postData['chkNroSolicitud']) > 0 ) {
@@ -197,8 +197,7 @@
 		      	}
 
 
-
-		      	if ( $request->isGet ) {
+		      	if ( $request->isGet && $_SESSION['begin'] == 2 ) {
 
 		      		if ( isset($_SESSION['postEnviado']) ) {
 		      			$postData = $_SESSION['postEnviado'];
@@ -227,6 +226,8 @@
 			      																'soloLectura' => $soloLectura,
 			      							]);
 
+			      				} else {
+			      					$_SESSION['begin'] = 1;
 			      				}
 			      			}
 
@@ -245,6 +246,8 @@
 			      																'dataProvider' => $dataProvider,
 			      																'soloLectura' => $soloLectura,
 			      						]);
+			      				} else {
+			      					$_SESSION['begin'] = 1;
 			      				}
 			      			}
 
@@ -712,7 +715,7 @@
 							'postData',
 							'conf',
 							'begin',
-							'lapso',
+							'postEnviado',
 							'id_config_solicitud',
 					];
 		}
