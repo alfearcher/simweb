@@ -55,6 +55,7 @@
 	use common\models\deuda\DeudaSearch;
 	use common\models\deuda\Solvente;
 	use yii\validators\EmailValidator;
+	use backend\models\utilidad\fecha\RangoFechaValido;
 
 
 
@@ -67,6 +68,9 @@
 		public $fecha_desde;
 		public $fecha_hasta;
 		public $id_contribuyente;
+
+		private $rangoValido;
+
 
 
 		/**
@@ -86,6 +90,9 @@
 	    public function rules()
 	    {
 	        return [
+	        	[['tipo'],
+	        	  'required',
+	        	  'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['tipo', 'fecha_desde', 'fecha_hasta', 'id_contribuyente',], 'safe'],
 	        	[['id_contribuyente',],
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
@@ -119,17 +126,30 @@
 	        	  				}
 	        				}
 	        	, 'message' => Yii::t('backend', '{attribute} is required')],
-	        	//['fecha_desde', 'date', 'timestampAttribute' => 'fecha_desde','message' => 'hola'],
-	        	//['fecha_hasta', 'date', 'timestampAttribute' => 'fecha_hasta'],
 	        	['fecha_desde',
 	        	 'compare',
 	        	 'compareAttribute' => 'fecha_hasta',
 	        	 'operator' => '<=',
 	        	 'enableClientValidation' => false],
-	        	// [['fecha_hasta'], 'compare',
-	        	//   'compareAttribute' => 'fecha_desde', 'operator' => '>=', 'type' => 'date'],
+	        	['fecha_desde' , 'validarRango'],
 
 	        ];
+	    }
+
+
+	    /**
+	     * [validarRango description]
+	     * @return [type] [description]
+	     */
+	    public function validarRango()
+	    {
+	    	$this->rangoValido = false;
+	    	$validarRango = New RangoFechaValido($this->fecha_desde, $this->fecha_hasta);
+	    	if ( !$validarRango->rangoValido() ) {
+	    		$this->addError('fecha_desde', Yii::t('backend', 'Rango de fecha no es valido'));
+	    	} else {
+	    		$this->rangoValido = true;
+	    	}
 	    }
 
 
@@ -223,6 +243,7 @@
 		public function findSolicitudLicencia()
 		{
 			$findModel = self::findSolicitudLicencaModel();
+			$model = null;
 
 			$model = $findModel->select([
 									'L.nro_solicitud',
@@ -235,13 +256,12 @@
 
 								])
 							   ->distinct('L.nro_solicitud')
-							   ->joinWith('solicitud S')
-							   ->joinWith('planillas P')
+							   ->joinWith('solicitud S', true, 'LEFT JOIN')
+							   ->joinWith('planillas P', true, 'LEFT JOIN')
 							   ->groupBy('L.nro_solicitud')
 							   ->orderBy([
 							   		'L.nro_solicitud' => SORT_ASC,
 							   	]);
-
 
 			return $model;
 		}
@@ -308,8 +328,10 @@
 
 
 		/**
-		 * [armarDataProvider description]
-		 * @return [type] [description]
+		 * Metodo que arma el data provider que se utilizara en el listado de las solicitudes
+		 * de licencias existentes para que luego sena aprobadas por un funcionario. Este lisrado
+		 * cuenta con un checkbox para la aprobacion personalizada de las solicitudes.
+		 * @return ArrayDataProvider
 		 */
 		public function armarDataProvider($params, $preView = false)
 		{
@@ -340,7 +362,7 @@
 						'id_contribuyente' => $result['id_contribuyente'],
 						'contribuyente' => ContribuyenteBase::getContribuyenteDescripcionSegunID($result['id_contribuyente']),
 						'licencia' => $result['licencia'],
-						'planilla' => $result['planilla'],
+						'planilla' => isset($result['planilla']) ? $result['planilla'] : '',
 						'bloquear' => $bloquear,
 						'observacion' => $observacion,
 
@@ -452,7 +474,10 @@
 
 
 		/**
-		 * [determinarCondicionSolicitud description]
+		 * Metodo que permite aplicar controles de aprobacion a las solicitudes que esten pendientes
+		 * por aprobar. Los controles consiste en una serie de verificacion de condicion, estatus y
+		 * existencia de datos complementarios que deben satisfacerses.
+		 * Esto permitira el bloqueo de la solicitud en el listado.
 		 * @param LicenciaSolicittud $result registro de la consulta realizada sobre
 		 * la entidad "sl-licencias"
 		 * @return array retorna arreglo de mensajes.
@@ -460,8 +485,10 @@
 		public function determinarCondicionSolicitud($result)
 		{
 			$observacion = [];
-			if ( !self::estaPagadaLaPlanilla($result['planilla']) ) {
-				$observacion[] = Yii::t('backend', 'La planilla ' . $result['planilla'] . ' no esta pagada');
+			if ( isset($result['planilla']) ) {
+				if ( !self::estaPagadaLaPlanilla($result['planilla']) ) {
+					$observacion[] = Yii::t('backend', 'La planilla ' . $result['planilla'] . ' no esta pagada');
+				}
 			}
 
 			if ( !self::poseeLicencia($result['id_contribuyente']) ) {
