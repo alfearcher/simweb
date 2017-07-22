@@ -66,7 +66,7 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\controllers\pdf\deposito\DepositoController;
-
+	use common\models\calculo\actualizar\ActualizarPlanilla;
 
 
 
@@ -615,6 +615,9 @@
 
 					if ( $getData['view'] == 1 ) {			//Request desde deuda general.
 						$_SESSION['begin'] = 1;
+
+						// Se actualiza el monto de las planillas
+						self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
 						return $html = self::actionGetViewDeudaEnPeriodo($searchRecibo, (int)$getData['i']);
 
 					} elseif ( $getData['view'] == 2 ) {	// Request desde deuda por tipo.
@@ -666,6 +669,45 @@
 			return null;
 
 		}
+
+
+
+
+		/**
+		 * Metodo que se encarga de la actualizacion de las planillas.
+		 * @param ReciboSearch $searchRecibo instancia de la clase.
+		 * @param integer  $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto.
+		 * @return none
+		 */
+		private function actualizarPlanillaSegunImpesto($searchRecibo, $impuesto, $idImpuesto = 0)
+		{
+			$planillas = [];
+
+			// Setear las planillas ya seleccionadas.
+			$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+			$searchRecibo->setPlanillas($planillaSeleccionadas);
+
+			// PLanillas con periodos mayores a cero.
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
+			$planilla1 = array_column($provider->getModels(), 'planilla');
+
+			// PLanillas con periodos iguales a cero.
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '=');
+			$planilla2 = array_column($provider->getModels(), 'planilla');
+
+			// Se juntan en un solo arreglo.
+			$planillas = array_merge($planilla1, $planilla2);
+
+			if ( count($planillas) > 0 ) {
+				foreach ( $planillas as $i => $planilla ) {
+					$actualizar = New ActualizarPlanilla((int)$planilla);
+					$actualizar->iniciarActualizacion();
+				}
+			}
+
+		}
+
 
 
 
@@ -746,6 +788,8 @@
 
 				// Setear las planillas ya seleccionadas.
 				$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+
+				// Para excluir estas planillas
 				$searchRecibo->setPlanillas($planillaSeleccionadas);
 
 				$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla(1, 0, '>');
