@@ -293,7 +293,7 @@
 						'objeto' => $objeto,
 						'deuda' => $deuda['t'],
 						'tipo' => 'periodo>0',
-						'id_contribuyente' => $deuda['id_contribuyente'],
+						'id_contribuyente' => $this->_id_contribuyente,
 						'caption' => $caption,
 
 					];
