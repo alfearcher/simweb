@@ -741,7 +741,9 @@
 			if ( isset($_SESSION['begin']) ) {
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$caption = Yii::t('frontend', 'Deuda segun tipo');
+die('saaa');
 				$provider = $searchRecibo->getDataProviderEnPeriodo($impuesto);
+die(var_dump($provider));
 				return $this->renderAjax('/recibo/_deuda_en_periodo', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
