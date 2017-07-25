@@ -288,7 +288,7 @@ class RecuperarAccesoContribuyenteController extends Controller
 
                         if($_SESSION['Contribuyente']['email'] != null){
 
-                             $guardo = self::GuardarAfiliacion($nuevaClave, $password_hash, $_SESSION['Contribuyente']);
+                             $guardo = self::GuardarAfiliacion($nuevaClave, $password_hash, $asd_SESSION['Contribuyente']);
                                             
                              if($guardo == true){
 
@@ -297,7 +297,7 @@ class RecuperarAccesoContribuyenteController extends Controller
                                 if ($envio==true){
                                     return MensajeController::actionMensaje(103);//Proceso exitoso, el usuario y clave han sido enviado a su correo electronico
                                     
- 
+
                                 } else {
                                     return MensajeController::actionMensaje(973);//La recuperacion de contraseña a fallado
                                 }
@@ -310,6 +310,7 @@ class RecuperarAccesoContribuyenteController extends Controller
 
                         }
                         
+
                     }
                 }
     return $this->render('/usuario/mensaje-recuperar', ['model' => $model]);

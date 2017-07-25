@@ -105,7 +105,7 @@ class SiteController extends Controller
                         return User::isUserAdmin(Yii::$app->user->identity->id);
                     },
                 ],
-				 [
+				      [
                    //Los usuarios funcionarios tienen permisos sobre las siguientes acciones
                    'actions' => ['logout', 'funcionario'],
                    //Esta propiedad establece que tiene permisos
