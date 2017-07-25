@@ -206,7 +206,7 @@ class OpcionFuncionarioController extends Controller
 
 				           //----salt-----
 				           $salt = $this->randKey("abcdef0123456789", 10);
-				           $clave = $model->password + $salt;
+				           $clave = $model->password.$salt;
 
 				           $password = md5($clave);                    //crypt($model->password, Yii::$app->params["salt"]);
 				           $authkey = $this->randKey("abcdef0123456789", 25); // llama al metodo randkey para asignar el authkey
@@ -322,7 +322,7 @@ class OpcionFuncionarioController extends Controller
                      $table = Users::find()->where("email=:email", [":email" => $model->email])->one();
 					           //Guardamos los cambios en la tabla users
 					           $salt = $this->randKey("abcdef0123456789", 10);
-				             $clave = $model->password + $salt;
+				             $clave = $model->password.$salt;
 
 				             $password = md5($clave);
 					           $email = Yii::$app->user->identity->email;
@@ -503,7 +503,7 @@ class OpcionFuncionarioController extends Controller
 
                      //Guardamos los cambios en la tabla users
 					           $salt = $this->randKey("abcdef0123456789", 10);
-				             $clave = $model->password + $salt;
+				             $clave = $model->password.$salt;
 				             $password = md5($clave);
 					           $username = $usuario;
 
