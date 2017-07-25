@@ -133,7 +133,7 @@ class AvaluoCatastralForm extends \yii\db\ActiveRecord
           
             [['id_impuesto','id_tipologia_zona','tipo_inmueble','clase_inmueble','id_uso_inmueble','validacion2','ano_impositivo'], 'integer','message' => Yii::t('backend', 'only integers'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
             [['metros_terreno','metros_construccion','id_tipologia_zona','tipo_inmueble','clase_inmueble','fecha','id_uso_inmueble','valor_terreno','valor_construccion'/*,'valor_terreno','valor_construccion'*/],'required','message' => Yii::t('backend', 'No debe estar vacio el campo de datos'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
-            [['id_tipologia_zona'],'ComparaTarifaAvaluos','when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
+            //[['id_tipologia_zona'],'ComparaTarifaAvaluos','when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
             [['lindero_norte','lindero_sur','lindero_este','lindero_oeste'],'string','message' => Yii::t('backend', 'No debe estar vacio el campo'),'when'=> function($modelAvaluo){ return $this->validacion2 == 2; }],
           
         ];   
