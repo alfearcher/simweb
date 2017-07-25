@@ -102,7 +102,7 @@ class LoginForm extends Model
     {   
 	   
 	    //-----salt-------
-		$password = $this->password + $this->salt;
+		//$password = $this->password;
 		
 		if (!$this->hasErrors()) {
             $user = $this->getUser();

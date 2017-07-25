@@ -70,6 +70,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
 	public $salt;
 	public $fecha_creacion;
 	public $fecha_vcto;
+    public $clave;
     
     /* busca la identidad del usuario a través de su $id */
      public static function findIdentity($id_funcionario)
@@ -146,8 +147,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
 	    		
-	    $clave = $password + $this->salt;
-		
+	    $clave = $password.$this->salt;
+       
+		//die(var_dump(md5($clave)).var_dump($this->password));  //cfcd208495d565ef66e7dff9f98764da
         /* Valida el password */
         if (crypt($password, $this->password) == $this->password)
         {
