@@ -151,6 +151,8 @@
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
+			} else {
+				$this->redirect(['error-operacion', 'cod' => 932]);
 			}
 		}
 
@@ -616,8 +618,6 @@
 					if ( $getData['view'] == 1 ) {			//Request desde deuda general.
 						$_SESSION['begin'] = 1;
 
-						// Se actualiza el monto de las planillas
-						self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
 						return $html = self::actionGetViewDeudaEnPeriodo($searchRecibo, (int)$getData['i']);
 
 					} elseif ( $getData['view'] == 2 ) {	// Request desde deuda por tipo.
@@ -625,6 +625,9 @@
 
 							if ( $getData['tipo'] == 'periodo>0' ) {
 								if ( $getData['i'] == 1 ) {
+
+									// Se actualiza el monto de las planillas
+									self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
 
 									// Se buscan todas las planillas.
 									return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
@@ -636,6 +639,9 @@
 								}
 
 							} elseif ( $getData['tipo'] == 'periodo=0' ) {
+
+								// Se actualiza el monto de las planillas
+								self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
 
 								// Se buscan todas la planilla que cumplan con esta condicion
 								return $html = self::actionGetViewDeudaTasa($searchRecibo, (int)$getData['i']);
@@ -653,6 +659,9 @@
 
 							} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
 								if ( isset($getData['idO']) ) {
+
+									// Se actualiza el monto de las planillas
+									self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i'], (int)$getData['idO']);
 
 									// Se busca las deudas detalladas de un objeto especifico.
 									return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO'], $getData['objeto']);
@@ -682,6 +691,8 @@
 		 */
 		private function actualizarPlanillaSegunImpesto($searchRecibo, $impuesto, $idImpuesto = 0)
 		{
+			$planilla1 = [];
+			$planilla2 = [];
 			$planillas = [];
 
 			// Setear las planillas ya seleccionadas.
@@ -690,11 +701,15 @@
 
 			// PLanillas con periodos mayores a cero.
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
-			$planilla1 = array_column($provider->getModels(), 'planilla');
+			if ( $provider !== null ) {
+				$planilla1 = array_column($provider->getModels(), 'planilla');
+			}
 
 			// PLanillas con periodos iguales a cero.
 			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '=');
-			$planilla2 = array_column($provider->getModels(), 'planilla');
+			if ( $provider !== null ) {
+				$planilla2 = array_column($provider->getModels(), 'planilla');
+			}
 
 			// Se juntan en un solo arreglo.
 			$planillas = array_merge($planilla1, $planilla2);
