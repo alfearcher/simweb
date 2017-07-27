@@ -85,12 +85,12 @@
 	        	[['id_banco', 'sin_formato'],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', 'El banco no es valido')],
-	        	['fecha_desde',
-	        	 'compare',
-	        	 'compareAttribute' => 'fecha_hasta',
-	        	 'operator' => '<=',
-	        	 'enableClientValidation' => false
-	        	],
+	        	// ['fecha_desde',
+	        	//  'compare',
+	        	//  'compareAttribute' => 'fecha_hasta',
+	        	//  'operator' => '<=',
+	        	//  'enableClientValidation' => false
+	        	// ],
 	        	['fecha_desde' , 'validarRango'],
 	        	[['fecha_pago', 'sin_formato'],'safe'],
 	        ];
