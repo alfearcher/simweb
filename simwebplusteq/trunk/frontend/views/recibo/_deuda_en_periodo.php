@@ -61,9 +61,9 @@
  			'id' => 'id-deudad-en-periodo',
  			'method' => 'post',
  			//'action'=> $url,
- 			// 'enableClientValidation' => true,
- 			// 'enableAjaxValidation' => false,
- 			// 'enableClientScript' => false,
+ 			'enableClientValidation' => false,
+ 			'enableAjaxValidation' => false,
+ 			'enableClientScript' => false,
  		]);
  	?>
 
