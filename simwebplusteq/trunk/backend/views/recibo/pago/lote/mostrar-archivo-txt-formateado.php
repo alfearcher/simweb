@@ -48,7 +48,9 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	use yii\bootstrap\Progress;
+	use yii\bootstrap\Modal;
+	use yii\widgets\Pjax;
+	//use yii\bootstrap\Progress;
 
 
  ?>
@@ -111,6 +113,20 @@
 	</div>
 
 
+<div class="col-sm-2" style="margin-left: 40px;">
+	<div class="form-group">
+		<?= Html::submitButton(Yii::t('backend', 'Procesar Pagos'),
+											  [
+												'id' => 'btn-procesar-pago',
+												'class' => 'btn btn-success',
+												'value' => 3,
+												'style' => 'width: 100%',
+												'name' => 'btn-procesar-pago',
+											  ])
+		?>
+	</div>
+</div>
+
 <div class="col-sm-2" style="margin-left: 20px;">
 	<div class="form-group">
 		<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
@@ -157,30 +173,35 @@
 	<div class="lista-pago">
 		<div class="row" style="width: 100%;margin-top: 5px;">
 	    	<?= GridView::widget([
-	    		'id' => 'id-grid-mostrar-archivo-txt',
+	    		'id' => 'id-grid-mostrar-archivo-formateado-txt',
 	    		'dataProvider' => $dataProvider,
 	    		'headerRowOptions' => [
 	    			'class' => 'success',
 	    		],
+	    		'rowOptions' => function($data) {
+					if ( $data['estatus'] > 0 ) {
+						return ['class' => 'danger'];
+					}
+				},
 	    		'tableOptions' => [
 	    			'class' => 'table table-hover',
-	    			],
-	    		'summary' => '',
+	    		],
+	    		'summary' => true,
 	    		'columns' => [
 	    			[
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chkRecibo',
-                        'multiple' => false,
+                        'multiple' => true,
                         'checkboxOptions' => function ($model, $key, $index, $column) {
-                        	return [
-            					'onClick' => 'javascript: return false;',
-	                            'checked' => true,
-            				];
-                        	//if ( $model['bloquear'] == 1 ) {
-                				// return [
-                				// 	'disabled' => 'disabled',
-                				// ];
-                			//}
+                //         	return [
+            				// 	'onClick' => 'javascript: return false;',
+	               //              'checked' => true,
+            				// ];
+                        	if ( $model['estatus'] > 0 ) {
+                				return [
+                					'disabled' => 'disabled',
+                				];
+                			}
                         }
                     ],
 
@@ -190,19 +211,30 @@
 	                    'contentOptions' => [
 	                          'style' => 'font-size: 90%;',
 	                    ],
+	                    'format' => 'raw',
 	                    'label' => Yii::t('backend', 'recibo'),
 	                    'value' => function($data, $key) {
-                    					return $data['recibo'];
+                    					//return $data['recibo'];
+                    					return Html::a($data['recibo'], '#', [
+                    											'title' => $data['recibo'] . ' - ' . $data['observacion'],
+																'id' => 'link-recibo',
+																'data-toggle' => 'modal',
+																'data-target' => '#modal',
+																'data-url' => Url::to(['view-recibo-modal',
+																						'nro' => $data['recibo'],
+																					]),
+																'data-pjax' => 0,
+    													]);
 	        			           },
 	                ],
 
 	                [
 	                    'contentOptions' => [
-	                    	'style' => 'font-size: 90%;',
+	                    	'style' => 'font-size: 90%;text-align:right',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto recibo'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_recibo'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_recibo'], 2);
 	        			           },
 	                ],
 
@@ -212,27 +244,27 @@
 	                    ],
 	                    'label' => Yii::t('backend', 'fecha pago'),
 	                    'value' => function($data, $key) {
-                    					return $data['fecha_pago'];
+                    					return date('d-m-Y', strtotime($data['fecha_pago']));
 	        			           },
 	                ],
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;text-align:right',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto efectivo'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_efectivo'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_efectivo'], 2);
 	        			           },
 	                ],
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;text-align:right',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto cheque'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_cheque'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_cheque'], 2);
 	        			           },
 	                ],
 
@@ -262,17 +294,21 @@
 	                    ],
 	                    'label' => Yii::t('backend', 'fecha cheque'),
 	                    'value' => function($data, $key) {
-                    					return $data['fecha_cheque'];
+	                    				if ( $data['fecha_cheque'] !== '0000-00-00' ) {
+	                    					return date('d-m-Y', strtotime($data['fecha_cheque']));
+	                    				} else {
+	                    					return $data['fecha_cheque'];
+	                    				}
 	        			           },
 	                ],
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;text-align:right',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto TDD'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_debito'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_debito'], 2);
 	        			           },
 	                ],
 
@@ -288,11 +324,11 @@
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;text-align:right',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto TDC'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_credito'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_credito'], 2);
 	        			           },
 	                ],
 
@@ -308,11 +344,11 @@
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;text-align:right',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto transferencia'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_transferencia'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_transferencia'], 2);
 	        			           },
 	                ],
 
@@ -328,11 +364,11 @@
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;text-align:right;font-weight:bold',
 	                    ],
 	                    'label' => Yii::t('backend', 'monto total'),
 	                    'value' => function($data, $key) {
-                    					return $data['monto_total'];
+                    					return Yii::$app->formatter->asDecimal($data['monto_total'], 2);
 	        			           },
 	                ],
 
@@ -344,6 +380,37 @@
 	                    'value' => function($data, $key) {
                     					return $data['nro_cuenta_recaudadora'];
 	        			           },
+	                ],
+
+	                [
+	                    'contentOptions' => [
+	                          'style' => 'font-size: 90%;',
+	                    ],
+	                    'label' => Yii::t('backend', 'archivo'),
+	                    'value' => function($data, $key) {
+                    					return $data['archivo_txt'];
+	        			           },
+	                ],
+
+	                [
+	                    'contentOptions' => [
+	                          'style' => 'font-size: 90%;',
+	                    ],
+	                    'label' => Yii::t('backend', 'estatus'),
+	                    'value' => function($data, $key) {
+                    					return $data['estatus'];
+	        			           },
+	                ],
+
+	                [
+	                    'contentOptions' => [
+	                          'style' => 'font-size: 90%;',
+	                    ],
+	                    'label' => Yii::t('backend', 'Observacion'),
+	                    'value' => function($data, $key) {
+                    					return $data['observacion'];
+	        			           },
+	        			'visible' => false,
 	                ],
 
 	        	]
@@ -449,3 +516,44 @@
 </div>
 
 <?php ActiveForm::end(); ?>
+
+
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-recibo", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".detalle").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
+    '
+); ?>
+
+
+<style type="text/css">
+	.modal-content	{
+			margin-top: 110px;
+			margin-left: -180px;
+			width: 150%;
+	}
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='detalle'></div>";
+Pjax::end();
+Modal::end();
+?>
