@@ -55,26 +55,26 @@
 	use yii\helpers\Url;
 	use yii\web\NotFoundHttpException;
 	use common\conexion\ConexionController;
-	// use backend\controllers\mensaje\MensajeController;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
-    use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
-    use backend\models\recibo\deposito\DepositoForm;
-    use backend\models\recibo\depositodetalle\DepositoDetalleForm;
-    use backend\models\recibo\depositodetalle\DepositoDetalleUsuarioForm;
-    use backend\models\recibo\formapago\FormaPago;
-    use backend\models\utilidad\banco\BancoSearch;
-    use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
-    use backend\models\recibo\tipodeposito\TipoDepositoSearch;
-    use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
-    use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
-    use backend\models\recibo\pago\individual\SerialReferenciaForm;
-    use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
-    use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
-    use backend\models\recibo\txt\RegistroTxtSearch;
-    use common\models\referencia\GenerarReferenciaBancaria;
-    use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
-    use backend\models\recibo\pago\individual\PagoReciboIndividual;
+    // use backend\controllers\mensaje\MensajeController;
+    //use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
+    //use backend\models\recibo\deposito\DepositoForm;
+    //use backend\models\recibo\depositodetalle\DepositoDetalleForm;
+    //use backend\models\recibo\depositodetalle\DepositoDetalleUsuarioForm;
+    //use backend\models\recibo\formapago\FormaPago;
+    //use backend\models\utilidad\banco\BancoSearch;
+    //use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
+    //use backend\models\recibo\tipodeposito\TipoDepositoSearch;
+    //use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
+    //use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
+    //use backend\models\recibo\pago\individual\SerialReferenciaForm;
+    //use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
+    //use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
+    //use backend\models\recibo\txt\RegistroTxtSearch;
+    //use common\models\referencia\GenerarReferenciaBancaria;
+    //use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
+    //use backend\models\recibo\pago\individual\PagoReciboIndividual;
 
     use backend\models\recibo\pago\lote\BusquedaArchivoTxtForm;
     use backend\models\recibo\pago\lote\ListaArchivoTxt;
@@ -199,7 +199,15 @@
 
 
 
-        /****/
+        /**
+         * Metodo que permite renderizar una vista con una lista de nombres de los
+         * archivos que se encontraron segun la consulta realizada por el usuario.
+         * Se renderiza una vista donde el listado corresponde a los nombres de
+         * archivos contenidos en botones que permite su seleccion, ademas se incluye
+         * un checkbox que permite indicar si se quiere ver el contenido del archivo
+         * sin formato.
+         * @return view
+         */
         public function actionMostrarListaArchivo()
         {
             $usuario = Yii::$app->identidad->getUsuario();
@@ -229,18 +237,25 @@
             $model = New BusquedaArchivoTxtForm();
             $model->load($postData);
 
-            // Se muestra una lista de archivo o un archivo segun el banco y la fecha de pago
-            // indicado, se armaria el nombre del archivo en caso de ser necesario.
+            $banco = $model->getBancoById($model->id_banco);
+            $labelBanco = Yii::t('backend', 'Banco ') . ': ' . $banco->nombre;
+            $labelRango = Yii::t('backend', 'Rango Consulta ') . ': ' . $model->fecha_desde . ' - ' . $model->fecha_hasta;
+
+            // Se muestra una lista de archivos o un archivo segun el banco y el rango de la
+            // fecha de pago indicada, se armaria el nombre del archivo en caso de ser necesario.
             $listaArchivo = New ListaArchivoTxt($model->id_banco, $model->fecha_desde, $model->fecha_hasta);
             $listaArchivo->iniciarListaArchivo();
             $provider = $listaArchivo->getDataProvider();
 
+            ///$model->sin_formato = 0;
             $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
             return $this->render('/recibo/pago/lote/lista-archivo-txt',[
                                             'model' => $model,
                                             'dataProvider' => $provider,
                                             'caption' => $caption,
                                             'subCaption' => $subCaption,
+                                            'labelBanco' => $labelBanco,
+                                            'labelRango' => $labelRango,
             ]);
         }
 
@@ -307,16 +322,40 @@
                     $totalRegistro = $dataProvider->getTotalCount();
 
                     $this->layout = 'layoutbase';
-                    return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
-                                                    'dataProvider' => $dataProvider,
-                                                    'montoTotal' => $montoTotal,
-                                                    'totalRegistro' => $totalRegistro,
-                                                    'ruta' => $ruta,
-                                                    'archivo' => $archivo,
-                                                    'fecha' => $fecha,
-                                                    'model' => $model,
+                    if ( $model->sin_formato == 1 ) {
+                        return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
+                                                        'dataProvider' => $dataProvider,
+                                                        'montoTotal' => $montoTotal,
+                                                        'totalRegistro' => $totalRegistro,
+                                                        'ruta' => $ruta,
+                                                        'archivo' => $archivo,
+                                                        'fecha' => $fecha,
+                                                        'model' => $model,
 
-                        ]);
+                            ]);
+                    } else {
+                        $htmlError = null;
+                        $pagoReciboLoteSearch = New PagoReciboLoteSearch($mostrar);
+                        $dataProvider = $pagoReciboLoteSearch->getDataProviderArchivoFormateado();
+                        $errorMensaje = $pagoReciboLoteSearch->getError();
+                        if ( count($errorMensaje) > 0 ) {
+                            $this->layout = 'layout-main';
+                            return $this->render('/recibo/pago/lote/warnings', [
+                                                                'archivo' => $archivo,
+                                                                'mensajes' => $errorMensaje,
+                                    ]);
+                        } else {
+                            return $this->render('/recibo/pago/lote/mostrar-archivo-txt-formateado',[
+                                                            'dataProvider' => $dataProvider,
+                                                            'montoTotal' => $montoTotal,
+                                                            'totalRegistro' => $totalRegistro,
+                                                            'ruta' => $ruta,
+                                                            'archivo' => $archivo,
+                                                            'fecha' => $fecha,
+                                                            'model' => $model,
+                                    ]);
+                        }
+                    }
 
                 } else {
                     // No se determino el directorio del archivo
@@ -341,7 +380,12 @@
 
 
 
-        /***/
+        /**
+         * Metodo que inica el proceso de procesar y guardar el pago del recibo
+         * @param array $postEnviado post enviado desde el formulario que muestra un listado
+         * resultado del archivo de conciliacion.
+         * @return none
+         */
         public function actionProcesarPagoArchivoTxt($postEnviado)
         {
             $listaRecibo = isset($postEnviado['chkRecibo']) ? $postEnviado['chkRecibo'] : [];
@@ -378,6 +422,27 @@
 
 
 
+        /**
+         * Metodo que permite renderizar una vista con la informacion del recibo.
+         * Informacion relacionada al recibo como a las planillas asociadas al mismo,
+         * tambien se muestra los mensajes de errores encontrados al momento de mostrar
+         * el cotenido del archivo de conciliacion y que estan relacionada al recibo.
+         * @return View
+         */
+        public function actionViewReciboModal()
+        {
+            $request = Yii::$app->request;
+            $postGet = $request->get();
+
+            // Numero de recibo de pago
+            $nro = $postGet['nro'];
+
+            return $this->renderAjax('@backend/views/buscar-general/view', [
+                            'model' => $this->findModel($nro),
+                   ]);
+        }
+
+
 
 
         /**
@@ -389,7 +454,7 @@
 			//self::actionInicializarTemporal();
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
+			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
 		}
 
 
