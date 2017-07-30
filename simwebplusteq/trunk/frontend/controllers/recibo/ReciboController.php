@@ -611,6 +611,7 @@
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 
 			if ( isset($getData['view']) ) {
+
 				$idC = $getData['idC'];
 				if ( $idC == $idContribuyente ) {
 					$searchRecibo = New ReciboSearch($idContribuyente);
@@ -651,6 +652,7 @@
 
 						}
 					} elseif ( $getData['view'] == 3 ) {	// Request desde deuda por objeto.
+
 						if ( $getData['tipo'] == 'periodo>0' ) {
 							if ( $getData['i'] == 1 ) {
 
@@ -689,7 +691,7 @@
 		 * @param  integer $idImpuesto identificador del objeto.
 		 * @return none
 		 */
-		private function actualizarPlanillaSegunImpesto($searchRecibo, $impuesto, $idImpuesto = 0)
+		public function actualizarPlanillaSegunImpesto($searchRecibo, $impuesto, $idImpuesto = 0)
 		{
 			$planilla1 = [];
 			$planilla2 = [];
@@ -742,7 +744,7 @@
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$caption = Yii::t('frontend', 'Deuda segun tipo');
 				$provider = $searchRecibo->getDataProviderEnPeriodo($impuesto);
-				return $this->renderAjax('/recibo/_deuda_en_periodo', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_en_periodo', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'idContribuyente' => $idContribuyente,
@@ -773,7 +775,7 @@
 				$searchRecibo->setPlanillas($planillaSeleccionadas);
 
 				$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, 0, '=');
-				return $this->renderAjax('/recibo/_deuda_detalle_planilla_tasa', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_detalle_planilla_tasa', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'periodoMayorCero' => false,
@@ -812,7 +814,7 @@
 				// Se obtiene la primera planilla del provider.
 				$primeraPlanilla = array_keys($provider->allModels)[0];
 
-				return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_detalle_planilla', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'periodoMayorCero' => true,
@@ -848,7 +850,7 @@
 				}
 				$i = Impuesto::findOne($impuesto);
 				$caption = Yii::t('frontend', 'Deuda - Por: ' . $i->descripcion);
-				return $this->renderAjax('/recibo/_deuda_por_objeto', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_por_objeto', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'labelObjeto' => $labelObjeto,
@@ -887,7 +889,7 @@
 				// Se obtiene la primera planilla del provider.
 				$primeraPlanilla = array_keys($provider->allModels)[0];
 
-				return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_detalle_planilla', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'periodoMayorCero' => true,
@@ -924,7 +926,7 @@
 				$_SESSION['recibo'] = $model->recibo;
 				$_SESSION['nro_control'] = $model->nro_control;
 
-				return $this->render('/recibo/_view', [
+				return $this->render('@frontend/views/recibo/_view', [
 										'model' => $deposito,
 										'dataProvider' => $dataProvider,
 										'caption' => $caption,
