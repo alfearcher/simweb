@@ -48,13 +48,10 @@
 	use common\models\planilla\PlanillaSearch;
     use backend\models\recibo\depositodetalle\DepositoDetalle;
     use yii\data\ArrayDataProvider;
-
-    //use backend\models\recibo\pago\lote\MostrarArchivoTxt;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
     use backend\models\recibo\txt\RegistroTxtRecibo;
     use backend\models\utilidad\banco\BancoSearch;
-
     use common\models\numerocontrol\NumeroControlSearch;
     use common\conexion\ConexionController;
 
@@ -139,6 +136,11 @@
 		private $_conexion;
 		private $_transaccion;
 
+		/**
+		 * Lista de errores ocurridos
+		 * @var array
+		 */
+		private $_errores = [];
 
 
 
@@ -174,6 +176,76 @@
 		 * Metodo que inicia el proceso.
 		 * @return none
 		 */
+		public function getArchivoTxtFormateado()
+		{
+			if ( self::validarArchivo() ) {
+				self::generarNumeroControlOperacion();
+
+				// Arreglo que se creo con el contenido del archivo de conciliacion txt
+				// Cada linea del archivo contiene columnas que se convirtieron en un
+				// arreglo de atributos, a su vez cada linea es un oten de un arreglo
+				// mas global.
+				$listaPagos = self::getListaRegistroPago();
+
+
+				// Permite crear model de ReciboTxtArchivo.
+				self::crearCicloPago($listaPagos);
+
+				return $this->_lista_registro_txt_recibo;
+			} else {
+				return null;
+			}
+		}
+
+
+
+
+		/**
+		 * Metodo que genera el proveedor de datos para los registros que se encuentran
+		 * en el archivo de conciliacion, pero los datos seran mostrados formateados.
+		 * @return ArrayDataProvider
+		 */
+		public function getDataProviderArchivoFormateado()
+		{
+			$data = [];
+			$models = self::getArchivoTxtFormateado();
+
+			if ( $models !== null ) {
+				foreach ( $models as $i => $model ) {
+					$data[] = $model->toArray();
+				}
+			}
+
+			$provider = New ArrayDataProvider([
+				'allModels' => $data,
+				'pagination' => false,
+				// 'sort' => [
+			 //        'attributes' => ['recibo'],
+			 //    ],
+			]);
+
+			return $provider;
+		}
+
+
+
+
+		/**
+		 * Metodo getter
+		 * @return array
+		 */
+		public function getListaRegistroTxt()
+		{
+			return $this->_lista_registro_txt_recibo;
+		}
+
+
+
+
+		/**
+		 * Metodo que inicia el proceso.
+		 * @return none
+		 */
 		public function iniciarPagoReciboLote()
 		{
 			if ( self::validarArchivo() ) {
@@ -187,6 +259,7 @@
 				}
 			}
 		}
+
 
 
 
@@ -225,12 +298,24 @@
 			$this->_mostarArchivo->iniciarMostrarArchivo();
 			if ( count($this->_mostarArchivo->getError()) == 0 ) {
 				return true;
+			} else {
+				array_push($this->_errores, $this->_mostarArchivo->getError());
+				return false;
 			}
-			return false;
+
 		}
 
 
 
+
+		/**
+		 * [getErrores description]
+		 * @return array
+		 */
+		public function getError()
+		{
+			return $this->_errores;
+		}
 
 
 		/**
@@ -414,7 +499,7 @@
 					break;
 
 				default:
-					$dato = $valor;
+					$dato = trim($valor);
 					break;
 			}
 

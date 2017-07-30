@@ -308,14 +308,13 @@
 			$items = explode(';', $lineaPago);
 
 			if ( (int)count($items) == self::NUMERO_COLUMNA ) {
-
 				foreach ( $items as $key => $value ) {
-					$pago[self::campos()[$key]] = $value;
+					$pago[self::campos()[$key]] = trim($value);
 				}
 				self::addItem($pago);
 
 			} else {
-				$mensaje = Yii::t('backend', 'La linea del archivo no cumple con las especificaciones del numero de columnas. Recibo: ') . $linea;
+				$mensaje = Yii::t('backend', 'La linea del archivo no cumple con las especificaciones del numero de columnas. Linea: ') . $linea;
 				self::setError($mensaje);
 			}
 		}
