@@ -122,6 +122,9 @@ return [
 	'700' => [Yii::t('frontend', 'Disculpe, su perfil no le permite esta operación'), 'warning', 'fa fa-info-circle'],
 	'702' => [Yii::t('frontend', 'Disculpe, no ha iniciado correctamente este operación'), 'warning', 'fa fa-info-circle'],
 	'704' => [Yii::t('frontend', 'Disculpe, la operación de aprobación no se ejecuto correctamente'), 'warning', 'fa fa-info-circle'],
+
+	'720' => [Yii::t('backend', 'El identificar de la tasa no esta definida'), 'warning', 'fa fa-info-circle'],
+	'722' => [Yii::t('backend', 'El identificar de la planilla no esta definido'), 'warning', 'fa fa-info-circle'],
 ]
 
 
