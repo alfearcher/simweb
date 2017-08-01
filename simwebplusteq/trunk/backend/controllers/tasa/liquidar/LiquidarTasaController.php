@@ -179,7 +179,7 @@
 		      					]);
 		      			} else {
 		      				// Mostrar mensaje de que no se pudo determinar el identificador de la tasa
-
+		      				$this->redirect(['error-operacion', 'cod' => 720]);
 		      			}
 		      		}
 
@@ -399,7 +399,7 @@
 
 		/**
 		 * Metodo que guarda el maetro de la planilla y ademas se genera el numero de la misma.
-		 * @param  ConexionController $conexion        [description]
+		 * @param  ConexionController $conexion instancia de la clase.
 		 * @param  [type] $conn            [description]
 		 * @param  integer $idContribuyente identificador del contribuyente.
 		 * @return integer retorna el identificador de la entidad "pagos".
@@ -448,10 +448,14 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que muestra la tasa creada
+		 * @param integer $id identificador de la planilla, en la entidad "pagos"
+		 * @return view
+		 */
 		public function actionMostrarTasaCreada($id)
 		{
-			if ( $_SESSION['idPago'] == $id ) {
+			if ( isset($_SESSION['idPago']) == $id ) {
 				self::actionAnularSession(['idPago']);
 				$model = PagoDetalle::find()->alias('D')
 				                            ->joinWith('pagos P', true, 'INNER JOIN')
@@ -474,13 +478,18 @@
 						]);
 				}
 			} else {
-
+				// Mostrar mensaje de que no se pudo determinar el identificador de la planilla
+		      	$this->redirect(['error-operacion', 'cod' => 722]);
 			}
 		}
 
 
 
-		/***/
+		/**
+		 * Metodo que genera la vista con el pdf de la planilla
+		 * @param  integer $p numero de planilla
+		 * @return view
+		 */
 		public function actionGenerarPdf($p)
 		{
 			$request = Yii::$app->request;
