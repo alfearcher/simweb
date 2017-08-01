@@ -6,6 +6,8 @@ return [
 			'class'    => 'yii\db\Connection',
 			//'dsn' => 'mysql:host=localhost;dbname=sim_teq',
 			//'dsn' => 'mysql:host=192.168.1.15;dbname=sim_teq',
+			//'dsn' => 'mysql:host=pinky.ddns.net:3309;dbname=sim_teq',
+			//'dsn' => 'mysql:host=192.168.1.15;dbname=sim_teq',
 			'dsn' => 'mysql:host=192.168.30.7;dbname=sim_teq',
 			//'dsn' => 'mysql:host=pinky.ddns.net:8383;dbname=sim_teq',
 			//'dsn' => 'mysql:host=192.168.1.185;dbname=sim_teq',
@@ -22,7 +24,7 @@ return [
 			'class'    => 'yii\db\Connection',
 			//'dsn' => 'mysql:host=localhost;dbname=sim_teq',
 			//'dsn' => 'mysql:host=192.168.30.7;dbname=sim_car_plus',
-			//'dsn' => 'mysql:host=pinky.ddns.net;dbname=sim_car',
+			'dsn' => 'mysql:host=pinky.ddns.net:3309;dbname=sim_teq',
 			'username' => 'adminyii',
 			'password' => 'adminyii2015',
 			//'username' => 'jperez',
@@ -78,6 +80,9 @@ return [
 		],
 		'ayuda' => [
 			'class' => 'common\classes\GestorAyuda'
+		],
+		'catastro' => [
+			'class' => 'common\classes\ImagenCatastro'
 		]
 	],
 ];
