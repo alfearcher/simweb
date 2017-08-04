@@ -423,12 +423,12 @@
 	    /**
 		 * Metodo para responser a la solicitud de generacion de la declaracion estimada.
 		 * Lo que aparecera sera un pdf con el resumen de la declaracion.
-		 * @return [type] [description]
+		 * @return view
 		 */
 		public function actionGenerarComprobante()
 		{
 
-			$idContribuyente = $_SESSION['idContribuyente'];
+			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 			$lapso = $_SESSION['lapso'];
 			$a = $lapso['a'];
 			$p = $lapso['p'];
