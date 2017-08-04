@@ -61,7 +61,8 @@
 
 		<div class="row" style="margin-top: 25px;">
 
-			<?php if ( $bloquearFormaPago ) {
+			<?php
+				if ( $bloquearFormaPago ) {
 					$bloquear = true;
 				} else {
 					$bloquear = false;
@@ -110,6 +111,23 @@
 				</div>
 
 			</div>
+
+
+			<div class="col-sm-2" style="margin-left: 5px;width: 25%;">
+				<div class="form-group">
+					<?= Html::submitButton(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
+													  [
+														'id' => 'btn-rafaga-printer',
+														'class' => 'btn btn-primary',
+														'value' => 1,
+														'style' => 'width: 100%',
+														'name' => 'btn-rafaga-printer',
+														'disabled' => $desactivarBotonRafaga,
+													  ])
+					?>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
