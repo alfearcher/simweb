@@ -74,8 +74,7 @@
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\recibo\txt\RegistroTxtSearch;
     use common\models\referencia\GenerarReferenciaBancaria;
-    //use common\models\rafaga\GenerarRafagaPlanilla;
-    //use backend\models\recibo\planillaaporte\PlanillaAporteSearch;
+    use common\models\planilla\PlanillaSearch;
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
     use common\models\rafaga\GenerarRafagaRecibo;
@@ -186,9 +185,18 @@
 					}
 				}
 
+                if ( isset($postData['btn-rafaga-print']) ) {
+                    if ( $postData['btn-rafaga-print'] == 2 ) {
+                        $recibo = isset($_SESSION['reciboRafaga']) ? (int)$_SESSION['reciboRafaga'] : 0;
+                        $this->redirect(['mostrar-form-rafaga-print', 'recibo' => $recibo]);
+                    }
+                }
+
 				if ( $model->load($postData) ) {
 
 					if ( $model->validate() ) {
+
+                        $_SESSION['reciboRafaga'] = $model->recibo;
 
 						// Se verifica que el recibo cumpla las reglas de negocio establecidas.
 						$pagoReciboSearch = New PagoReciboIndividualSearch($model->recibo);
@@ -227,6 +235,9 @@
                             }
                         }
 
+                        if ( $desactivarBotonRafaga ) {
+                            self::actionAnularSession(['reciboRafaga']);
+                        }
 
 						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
 
@@ -814,9 +825,10 @@
         		if ($postData['btn-quit'] == 1 ) {
         			$this->redirect(['quit']);
         		}
-        	} elseif ( isset($postData['btn-rafaga']) ) {
-                if ($postData['btn-rafaga'] == 2 ) {
-
+        	} elseif ( isset($postData['btn-rafaga-print']) ) {
+                if ( $postData['btn-rafaga'] == 2 ) {
+                    $recibo = isset($_SESSION['reciboRafaga']) ? $_SESSION['reciboRafaga'] : 0;
+                    $this->redirect(['mostrar-form-rafaga-print', 'recibo' => $recibo]);
                 }
             }
 
@@ -828,6 +840,7 @@
         		$postGet = $request->get();
         		if ( (int)$recibo == (int)$postGet['recibo'] ) {
 
+                    $_SESSION['reciboRafaga'] = (int)$recibo;
         			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
 					// Arreglo de los provider del recibo y el de las planillas.
@@ -857,12 +870,14 @@
      //    					]);
 
 
+                    $desactivarBotonRafaga = false;
 					$caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro.') . $recibo ;
 					return $this->render('/recibo/pago/individual/resumen-pago-efectuado-form',[
 															'caption' => $caption,
 															'htmlRecibo' => $htmlRecibo,
 															'htmlFormaPago' => null,
 															'htmlCuentaRecaudadora' => null,
+                                                            'desactivarBotonRafaga' => $desactivarBotonRafaga
 							]);
         		} else {
                     // La informacion del recibo a pagar no coincide con la enviada.
@@ -871,6 +886,43 @@
         	} else {
         		$this->redirect(['index']);
         	}
+        }
+
+
+
+        /**
+         * Metodo para mostrar el formulario qye permitira la impresion de la rafaga
+         * correspondiente del recibo. La vista sera en formato modal.
+         * @return view
+         */
+        public function actionMostrarFormRafagaPrint()
+        {
+            $request = Yii::$app->request;
+            $getData = $request->get();
+
+            if ( (int)$getData['recibo'] == $_SESSION['reciboRafaga'] ) {
+                $rafaga = New GenerarRafagaRecibo((int)$getData['recibo']);
+                $labelRafaga = $rafaga->getRafaga();
+die(var_dump($labelRafaga));
+
+            }
+
+            // $planilla = $getData['p'];
+            // $planillaSearch = New PlanillaSearch($planilla);
+            // $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+            // // Se determina si la peticion viene de un listado que contiene mas de una
+            // // pagina de registros. Esto sucede cuando los detalles de un listado contienen
+            // // mas de los manejados para una pagina en la vista.
+            // if ( isset($request->queryParams['page']) ) {
+            //     $planillaSearch->load($request->queryParams);
+            // }
+            // $url = Url::to(['generar-pdf']);
+            // return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+            //                                 'dataProvider' => $dataProvider,
+            //                                 'caption' => 'Planilla: ' . $planilla,
+            //                                 'p' => $planilla,
+            // ]);
         }
 
 
@@ -2226,6 +2278,38 @@
 
 
 
+        /**
+         * Metodo que permite renderizar una vista de los detalles de la planilla
+         * que se encuentran en la solicitud.
+         * @return View Retorna una vista que contiene un grid con los detalles de la
+         * planilla.
+         */
+        public function actionViewPlanilla()
+        {
+            $request = Yii::$app->request;
+            $getData = $request->get();
+
+            $planilla = $getData['p'];
+            $planillaSearch = New PlanillaSearch($planilla);
+            $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+            // Se determina si la peticion viene de un listado que contiene mas de una
+            // pagina de registros. Esto sucede cuando los detalles de un listado contienen
+            // mas de los manejados para una pagina en la vista.
+            if ( isset($request->queryParams['page']) ) {
+                $planillaSearch->load($request->queryParams);
+            }
+            $url = Url::to(['generar-pdf']);
+            return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+                                            'dataProvider' => $dataProvider,
+                                            'caption' => 'Planilla: ' . $planilla,
+                                            'p' => $planilla,
+            ]);
+        }
+
+
+
+
 
         /**
 		 * Metodo salida del modulo.
@@ -2302,6 +2386,7 @@
 							'postEnviado',
 							'datosRecibo',
 							'datosBanco',
+                            'reciboRafaga',
 					];
 
 		}
