@@ -78,7 +78,7 @@
     //use backend\models\recibo\planillaaporte\PlanillaAporteSearch;
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
-
+    use common\models\rafaga\GenerarRafagaRecibo;
 
 
 	session_start();		// Iniciando session
@@ -147,6 +147,9 @@
                 $request = Yii::$app->request;
                 $postData = $request->post();
 
+                // Permite controlar la activacion o no del boton para la rafaga del recibo de pago.
+                $desactivarBotonRafaga = true;
+
                 // Permite bloquear el boton para buscar las formas de pagos del recibo.
                 $bloquearFormaPago = true;
 
@@ -206,6 +209,25 @@
 						// Arreglo de los provider del recibo y el de las planillas.
 						$dataProviders = $pagoReciboSearch->getDataProviders();
 
+                        // $dataProviders[0]->getModels(), es el modelo de la entidad "depositos".
+                        // $dataProviders[1]->getModels(), es el modelo de la entidad "depositos-planillas"
+                        $estatusRecibo = isset($dataProviders[0]->getModels()[0]->toArray()['estatus']) ? (int)$dataProviders[0]->getModels()[0]->toArray()['estatus'] : 0;
+                        if ( $estatusRecibo == 1 ) {
+
+                            // Se verifica que todas la planillas contenidas en el recibo esten en condicion
+                            // de pagadas.
+                            $planillasModels = $dataProviders[1]->getModels();
+                            foreach ( $planillasModels as $key => $model ) {
+                                if ( (int)$model->estatus == 1 ) {
+                                    $desactivarBotonRafaga = false;
+                                } else {
+                                    $desactivarBotonRafaga = true;
+                                    break;
+                                }
+                            }
+                        }
+
+
 						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
 
 						$result = self::actionInicializarTemporal($model->recibo);
@@ -216,6 +238,7 @@
 																'htmlMensaje' => $htmlMensaje,
 																'urlFormaPagos' => $urlFormaPagos,
 																'bloquearFormaPago' => $bloquearFormaPago,
+                                                                'desactivarBotonRafaga' => $desactivarBotonRafaga,
 
 											]);
 
@@ -227,6 +250,7 @@
 													'caption' => $caption,
 													'subCaption' => $subCaption,
 													'bloquearFormaPago' => $bloquearFormaPago,
+                                                    'desactivarBotonRafaga' => $desactivarBotonRafaga,
 								]);
 					}
 				}
@@ -790,7 +814,11 @@
         		if ($postData['btn-quit'] == 1 ) {
         			$this->redirect(['quit']);
         		}
-        	}
+        	} elseif ( isset($postData['btn-rafaga']) ) {
+                if ($postData['btn-rafaga'] == 2 ) {
+
+                }
+            }
 
         	if ( $recibo > 0 ) {
         		$varSession = self::actionGetListaSessions();
@@ -836,7 +864,10 @@
 															'htmlFormaPago' => null,
 															'htmlCuentaRecaudadora' => null,
 							]);
-        		}
+        		} else {
+                    // La informacion del recibo a pagar no coincide con la enviada.
+                    $this->redirect(['error-operacion', 'cod' => 724]);
+                }
         	} else {
         		$this->redirect(['index']);
         	}
@@ -2205,7 +2236,7 @@
 			self::actionInicializarTemporal();
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
+			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
 		}
 
 
