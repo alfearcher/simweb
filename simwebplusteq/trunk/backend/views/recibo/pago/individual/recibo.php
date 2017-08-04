@@ -129,7 +129,6 @@
 																  ])
 								?>
 							</div>
-
 						</div>
 
 						<!-- <div class="col-sm-2" style="margin-left: 50px;">
