@@ -117,11 +117,11 @@
 				<div class="form-group">
 					<?= Html::submitButton(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
 													  [
-														'id' => 'btn-rafaga-printer',
+														'id' => 'btn-rafaga-print',
 														'class' => 'btn btn-primary',
-														'value' => 1,
+														'value' => 2,
 														'style' => 'width: 100%',
-														'name' => 'btn-rafaga-printer',
+														'name' => 'btn-rafaga-print',
 														'disabled' => $desactivarBotonRafaga,
 													  ])
 					?>

@@ -42,8 +42,8 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
-	//use yii\widgets\Pjax;
-	//use common\models\contribuyente\ContribuyenteBase;
+	use yii\bootstrap\Modal;
+	use yii\widgets\Pjax;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 
@@ -152,8 +152,18 @@
 	                'contentOptions' => [
 	                	'style' => 'text-align:center;',
 	                ],
-	                'value' => function($model) {
-									return $model->planilla;
+	                'format' => 'raw',
+	                'value' => function($data) {
+									//return $model->planilla;
+									return Html::a($data['planilla'], '#', [
+															'id' => 'link-view-planilla',
+												            //'class' => 'btn btn-success',
+												            'data-toggle' => 'modal',
+												            'data-target' => '#modal',
+												            'data-url' => Url::to(['view-planilla', 'p' => $data['planilla']]),
+												            'data-planilla' => $data['planilla'],
+												            'data-pjax' => '0',
+												        ]);
 								},
 	            ],
 	            [
@@ -216,3 +226,41 @@
 	<div class="row" style="width:100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1; padding-left: 5px;margin-top:20px;">
 	</div>
 </div>
+
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-view-planilla", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".planilla").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));'
+); ?>
+
+<style type="text/css">
+	.modal-content	{
+			margin-top: 150px;
+			margin-left: -180px;
+			width: 150%;
+	}
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='planilla'></div>";
+Pjax::end();
+Modal::end();
+?>
