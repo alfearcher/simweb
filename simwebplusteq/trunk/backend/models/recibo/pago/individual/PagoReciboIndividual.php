@@ -311,7 +311,13 @@
 			$historicoModel->fecha_hora = date('Y-m-d H:i:s');
 			$historicoModel->autorizar = 1;
 			$historicoModel->observacion = Yii::t('backend', 'Autorizacion por pago del recibo');
-			$historicoModel->nro_control = 0;
+
+			// Si se quiere guardar un numero de control, desconmentar las siguientes lineas.
+			//$numeroSearch = New NumeroControlSearch('db');
+			//$control = $numeroSearch->generarNumeroControl();
+
+			$control = 0;
+			$historicoModel->nro_control = $control;
 
 			$historicoSearch = New HistoricoAutorizarRafagaSearch($this->_recibo, $this->_conexion, $this->_conn);
 			return $historicoSearch->guardar($historicoModel);
