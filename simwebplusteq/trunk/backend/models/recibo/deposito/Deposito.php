@@ -48,6 +48,7 @@
 	use common\models\calculo\cvb\ModuloValidador;
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use backend\models\recibo\estatus\EstatusDeposito;
+	use common\models\contribuyente\ContribuyenteBase;
 
 
 
@@ -103,6 +104,16 @@
 			return $this->hasOne(EstatusDeposito::className(), ['estatus' => 'estatus']);
 		}
 
+
+
+		/**
+		 * Relacion con la entidad "contribuyentes"
+		 * @return
+		 */
+		public function getContribuyente()
+		{
+			return $this->hasOne(ContribuyenteBase::className(), ['id_contribuyente' => 'id_contribuyente']);
+		}
 
 	}
 
