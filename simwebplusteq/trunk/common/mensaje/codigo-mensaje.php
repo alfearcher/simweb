@@ -125,6 +125,7 @@ return [
 
 	'720' => [Yii::t('backend', 'El identificar de la tasa no esta definida'), 'warning', 'fa fa-info-circle'],
 	'722' => [Yii::t('backend', 'El identificar de la planilla no esta definido'), 'warning', 'fa fa-info-circle'],
+	'724' => [Yii::t('backend', 'El identificar del recibo no corresponde con la solicitud'), 'warning', 'fa fa-info-circle'],
 ]
 
 
