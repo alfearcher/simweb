@@ -77,7 +77,7 @@
     use common\models\planilla\PlanillaSearch;
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
-    use common\models\rafaga\GenerarRafagaRecibo;
+    use common\controllers\pdf\deposito\ReciboRafagaController;
 
 
 	session_start();		// Iniciando session
@@ -169,6 +169,8 @@
 
 				if ( isset($postData['btn-back']) ) {
 					if ( $postData['btn-back'] == 1 ) {
+                        $varSession = self::actionGetListaSessions();
+                        self::actionAnularSession($varSession);
 						$this->redirect(['index']);
 					}
 				}
@@ -250,6 +252,7 @@
 																'urlFormaPagos' => $urlFormaPagos,
 																'bloquearFormaPago' => $bloquearFormaPago,
                                                                 'desactivarBotonRafaga' => $desactivarBotonRafaga,
+                                                                'modelRecibo' => $model,
 
 											]);
 
@@ -826,7 +829,7 @@
         			$this->redirect(['quit']);
         		}
         	} elseif ( isset($postData['btn-rafaga-print']) ) {
-                if ( $postData['btn-rafaga'] == 2 ) {
+                if ( $postData['btn-rafaga-print'] == 2 ) {
                     $recibo = isset($_SESSION['reciboRafaga']) ? $_SESSION['reciboRafaga'] : 0;
                     $this->redirect(['mostrar-form-rafaga-print', 'recibo' => $recibo]);
                 }
@@ -870,6 +873,8 @@
      //    					]);
 
 
+                    $model = New BusquedaReciboForm();
+                    $model->recibo = $recibo;
                     $desactivarBotonRafaga = false;
 					$caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro.') . $recibo ;
 					return $this->render('/recibo/pago/individual/resumen-pago-efectuado-form',[
@@ -877,7 +882,8 @@
 															'htmlRecibo' => $htmlRecibo,
 															'htmlFormaPago' => null,
 															'htmlCuentaRecaudadora' => null,
-                                                            'desactivarBotonRafaga' => $desactivarBotonRafaga
+                                                            'desactivarBotonRafaga' => $desactivarBotonRafaga,
+                                                            'modelRecibo' => $model,
 							]);
         		} else {
                     // La informacion del recibo a pagar no coincide con la enviada.
@@ -895,38 +901,29 @@
          * correspondiente del recibo. La vista sera en formato modal.
          * @return view
          */
-        public function actionMostrarFormRafagaPrint()
+        public function actionMostrarFormRafagaPrint($recibo)
         {
             $request = Yii::$app->request;
             $getData = $request->get();
+            $recibo = isset($getData['recibo']) ? (int)$getData['recibo'] : 0;
 
-            if ( (int)$getData['recibo'] == $_SESSION['reciboRafaga'] ) {
-                $rafaga = New GenerarRafagaRecibo((int)$getData['recibo']);
-                $labelRafaga = $rafaga->getRafaga();
-die(var_dump($labelRafaga));
+            if ( $recibo == (int)$_SESSION['reciboRafaga'] ) {
+
+                self::actionAnularSession(['reciboRafaga']);
+                $reciboRafaga = New ReciboRafagaController($recibo);
+                $mensajes = $reciboRafaga->actionGenerarRafagaReciboPdf();
+
+               $htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
+                                                            'mensajes' => $mensajes,
+                                            ]);
+
+               return $this->render('/recibo/pago/error/error',[
+                                        'htmlMensaje' => $htmlMensaje,
+                ]);
+
 
             }
-
-            // $planilla = $getData['p'];
-            // $planillaSearch = New PlanillaSearch($planilla);
-            // $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
-
-            // // Se determina si la peticion viene de un listado que contiene mas de una
-            // // pagina de registros. Esto sucede cuando los detalles de un listado contienen
-            // // mas de los manejados para una pagina en la vista.
-            // if ( isset($request->queryParams['page']) ) {
-            //     $planillaSearch->load($request->queryParams);
-            // }
-            // $url = Url::to(['generar-pdf']);
-            // return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
-            //                                 'dataProvider' => $dataProvider,
-            //                                 'caption' => 'Planilla: ' . $planilla,
-            //                                 'p' => $planilla,
-            // ]);
         }
-
-
-
 
 
 
