@@ -157,6 +157,7 @@
 
                                       'id' => 'id-chkSeleccionDeuda',
                                       'onClick' => 'if ( $(this).is(":checked") ) {
+
                                                         var suma = parseFloat($( "#id-suma" ).val());
                                                         var item = parseFloat(' . $model['t'] . ');
                                                         if ( isNaN(suma) ) { suma = 0; }
@@ -434,32 +435,51 @@
   <div class="row" style="padding-bottom: 10px;padding-top: 10px;width: 80%;">
 
     <div class="col-sm-3" style="width: 20%;text-align: left;margin-top:0px;background-color: #F1F1F1;padding-top:25px;">
-      <h4><strong><p>Suma Seleccion:</p></strong></h4>
+      <h4><strong><p>Suma Seleccion id-suma:</p></strong></h4>
     </div>
+
+
+    <div class="col-sm-4" style="width:20%;padding:0px;">
+       <?= Html::textInput('prueba', Yii::$app->formatter->asDecimal(0, 2),
+                      [
+                        'id' => 'id-prueba',
+                        'class' => 'form-control',
+                        'style' => 'width:200px;
+                               background-color:white;
+                               text-align:right;
+                               font-size:120%;',
+                        'readOnly' => true
+                      ]);
+      ?>
+    </div>
+
+
+
+
 
     <div class="col-sm-3" id="suma-seleccion" style="width:30%;text-align: right;background-color: #F1F1F1;">
       <h3><strong><p><?= MaskedInput::widget([
                               'name' => 'suma',
-                              'id' => 'id-suma',
-                              //'value' => 0,
                               'options' => [
+                                  'id' => 'id-suma',
+                                  //'name' => 'suma',
                                   'class' => 'form-control',
                                   'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
                                   'readonly' => true,
-                                  'placeholder' => '0.00',
+                                  'placeholder' => '0,00',
 
                               ],
                                   'clientOptions' => [
                                       'alias' =>  'decimal',
                                       'digits' => 2,
                                       'digitsOptional' => false,
-                                      'groupSeparator' => ',',
+                                      'groupSeparator' => '.',
                                       'removeMaskOnSubmit' => true,
                                       // 'allowMinus'=>false,
                                       //'groupSize' => 3,
-                                      'radixPoint'=> ".",
+                                      'radixPoint'=> ",",
                                       'autoGroup' => true,
-                                      //'decimalSeparator' => ',',
+                                      'decimalSeparator' => ',',
                                 ],
 
                         ]);?></p></strong></h3>
@@ -484,7 +504,7 @@
   <div class="row" >
       <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
           <div class="col-sm-3" style="width: 40%;">
-              <h6><strong><p>+ Total Seleccionado:</p></strong></h6>
+              <h6><strong><p>+ Total Seleccionado id-sub-total:</p></strong></h6>
           </div>
           <div class="col-sm-3" id="id-sub-totales" style="width: 60%;">
               <h3><strong><p><?= MaskedInput::widget([
@@ -494,20 +514,20 @@
                                   'class' => 'form-control',
                                   'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
                                   'readonly' => true,
-                                  'placeholder' => '0.00',
+                                  'placeholder' => '0,00',
 
                               ],
                                   'clientOptions' => [
                                       'alias' =>  'decimal',
                                       'digits' => 2,
                                       'digitsOptional' => false,
-                                      'groupSeparator' => ',',
+                                      'groupSeparator' => '.',
                                       'removeMaskOnSubmit' => true,
                                       // 'allowMinus'=>false,
                                       //'groupSize' => 3,
-                                      'radixPoint'=> ".",
+                                      'radixPoint'=> ",",
                                       'autoGroup' => true,
-                                      //'decimalSeparator' => ',',
+                                      'decimalSeparator' => ',',
                                 ],
 
                         ]);?></p></strong></h3>

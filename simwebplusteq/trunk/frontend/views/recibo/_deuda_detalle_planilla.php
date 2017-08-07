@@ -316,7 +316,9 @@
                                                                                     $( "#btn-add-seleccion" ).removeAttr("disabled");
                                                                                 }
 
-                                                                                $( "#id-sub-total" ).val(s);
+                                                                                var subTotal = s.toFixed(2);
+
+                                                                                $( "#id-sub-total" ).val(s.toFixed(2));
                                                                                 //var subTotal = $( "#id-sub-total" ).val();
                                                                                 //var suma = subTotal.split(",").join("");
                                                                                 //var suma1 = suma.replace("");
@@ -480,7 +482,7 @@
                                   'class' => 'form-control',
                                   'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
                                   'readonly' => true,
-                                  'placeholder' => '0.00',
+                                  'placeholder' => '0,00',
 
                               ],
                                   'clientOptions' => [
@@ -527,7 +529,7 @@
                                   'class' => 'form-control',
                                   'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
                                   'readonly' => true,
-                                  'placeholder' => '0.00',
+                                  'placeholder' => '0,00',
 
                               ],
                                   'clientOptions' => [
