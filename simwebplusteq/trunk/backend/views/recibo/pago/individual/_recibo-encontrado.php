@@ -137,7 +137,6 @@
 						}
 					 ?>
 
-
 					<?= Html::a(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
 												[
 													'mostrar-form-rafaga-print',
@@ -152,10 +151,6 @@
 													'target' => $target,
 												])
 					?>
-
-
-
-
 				</div>
 			</div>
 
