@@ -81,6 +81,8 @@
     use backend\models\recibo\pago\lote\MostrarArchivoTxt;
     use backend\models\recibo\pago\lote\PagoReciboLoteSearch;
 
+    use backend\models\recibo\deposito\Deposito;
+
 	session_start();		// Iniciando session
 
 	/**
@@ -436,11 +438,29 @@
 
             // Numero de recibo de pago
             $nro = $postGet['nro'];
+//die(var_dump(Yii::$app->request));
+            return $this->renderAjax('@backend/views/recibo/pago/consulta/recibo-consultado', [
+                                                        'model' => $this->findModelRecibo($nro),
 
-            return $this->renderAjax('@backend/views/buscar-general/view', [
-                            'model' => $this->findModel($nro),
                    ]);
         }
+
+
+
+        /***/
+        public function findModelRecibo($recibo)
+        {
+            $deposito = Deposito::findOne($recibo);
+
+            if ( $deposito !== null ) {
+                return $deposito;
+            } else {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+        }
+
+
+
 
 
 
