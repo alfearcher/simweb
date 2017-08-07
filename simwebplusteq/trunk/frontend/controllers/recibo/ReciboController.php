@@ -91,7 +91,9 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			self::actionAnularSession(['begin', 'planillaSeleccionadas']);
-			if ( isset($_SESSION['idContribuyente']) ) {
+			$usuario = Yii::$app->identidad->getUsuario();
+
+			if ( isset($_SESSION['idContribuyente']) && ( trim($usuario) !== '' && $usuario !== null ) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -167,8 +169,8 @@
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
+			$usuario = Yii::$app->identidad->getUsuario();
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && ( trim($usuario) !== '' && $usuario !== null ) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -281,6 +283,9 @@
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
+			} else {
+				// Session terminada.
+		  		$this->redirect(['error-operacion', 'cod' => 999]);
 			}
 		}
 
