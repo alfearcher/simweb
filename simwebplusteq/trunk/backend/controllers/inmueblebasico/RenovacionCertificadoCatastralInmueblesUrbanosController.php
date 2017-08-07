@@ -301,7 +301,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                                            $documento = new DocumentoSolicitud();
                         
                                            $requisitos = $documento->documentos();
-                        
+                         
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
                              

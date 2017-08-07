@@ -213,7 +213,7 @@
   																'model' => $model,
   																'dataProvider' => $dataProvider,
   						]);
-
+ 
 		      	} else {
 
 			      	if ( isset($postData['btn-search-tipo']) ) {
