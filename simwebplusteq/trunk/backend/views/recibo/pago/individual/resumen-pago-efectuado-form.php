@@ -107,6 +107,22 @@
 							</div>
 						</div>
 
+						<div class="col-sm-2" style="margin-left: 5px;width: 25%;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
+																  [
+																	'id' => 'btn-rafaga-print',
+																	'class' => 'btn btn-primary',
+																	'value' => 2,
+																	'style' => 'width: 100%',
+																	'name' => 'btn-rafaga-print',
+																	'disabled' => $desactivarBotonRafaga,
+																  ])
+								?>
+							</div>
+						</div>
+
+
 						<div class="col-sm-2" style="width: 20%;margin-left: 10px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Quit'),
