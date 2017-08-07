@@ -109,16 +109,41 @@
 
 						<div class="col-sm-2" style="margin-left: 5px;width: 25%;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
-																  [
-																	'id' => 'btn-rafaga-print',
-																	'class' => 'btn btn-primary',
-																	'value' => 2,
-																	'style' => 'width: 100%',
-																	'name' => 'btn-rafaga-print',
-																	'disabled' => $desactivarBotonRafaga,
-																  ])
+								<?php
+									$disabled = '';
+									$target = '_blank';
+
+									if ( $desactivarBotonRafaga ) {
+										$disabled = ' disabled';
+										$target = '';
+									}
+								 ?>
+
+								<?= Html::a(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
+															[
+																'mostrar-form-rafaga-print',
+															   	'recibo' => ( $modelRecibo->recibo > 0 ) ? $modelRecibo->recibo : '#',
+															],
+															[
+																'id' => 'btn-rafaga-print',
+																'class' => 'btn btn-primary' . $disabled,
+																'value' => 2,
+																'style' => 'width: 100%',
+																'name' => 'btn-rafaga-print',
+																'target' => $target,
+															])
 								?>
+
+								<!-- <?//= Html::submitButton(Yii::t('backend', 'Imprimir Rafaga del Recibo'),
+																 //  [
+																	// 'id' => 'btn-rafaga-print',
+																	// 'class' => 'btn btn-primary',
+																	// 'value' => 2,
+																	// 'style' => 'width: 100%',
+																	// 'name' => 'btn-rafaga-print',
+																	// 'disabled' => $desactivarBotonRafaga,
+																 //  ])
+								?> -->
 							</div>
 						</div>
 
