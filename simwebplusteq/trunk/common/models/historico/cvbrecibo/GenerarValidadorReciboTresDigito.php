@@ -140,9 +140,9 @@
 		1.	Se toma el monto total a pagar del recibo y se convierte en una cadena de dígitos (sin punto ni comas). Si
 		la cadena resultante de dígitos es menor a 19 dígitos, se debe completar el mismo con ceros (0) a la izquierda.
 		Ejemplo: El monto 1564,02 quitando la coma del decimal quedaría 156402 como esta cadena tiene menos de 19
-		dígitos se debe complementar el mismo con ceros (0) a la izquierda. El resultado de la operación será 000000156402.
-		Si al suprimir los puntos y comas del monto a pagar  da como resultado una cadena de dígitos mayor a doces (19),
-		se deberá tomar los doces (19) dígitos más significativos a la derecha de la cadena resultante para utilizarlos
+		dígitos se debe complementar el mismo con ceros (0) a la izquierda. El resultado de la operación será 0000000000000156402.
+		Si al suprimir los puntos y comas del monto a pagar  da como resultado una cadena de dígitos mayor a diecinueve (19),
+		se deberá tomar los diecinueves (19) dígitos más significativos a la derecha de la cadena resultante para utilizarlos
 		en el algoritmo. Ejemplo: Un monto a pagar de 12.356.025.451,25 al quitar los puntos y coma queda 1235602545125,
 		luego se deben tomar los 19 dígitos más significativos a la derecha 235602545125 para utilizarlos en el algoritmo.
 
