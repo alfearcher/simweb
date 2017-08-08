@@ -58,7 +58,7 @@
  		protected $nombreCargo = 'Director(a) de Hacienda Municipal';
  		protected $director = 'Kelly Pérez';
 
- 		protected $nombreCatastro = 'Direccion de Catastro Municipal 0000000000';
+ 		protected $nombreCatastro = 'Direccion de Catastro Municipal';
  		protected $directorCatastro = 'Nombre del director de catastro';
  		protected $directorCatastroCargo = 'Director(a) de Catastro Municipal';
  		//	Inddentificador de la oficina
