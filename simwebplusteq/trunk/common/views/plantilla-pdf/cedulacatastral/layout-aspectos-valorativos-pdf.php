@@ -55,7 +55,7 @@
 
  ?>    
    
-<?php
+<?php die(var_dump($resumen));
 	$fechaEmision = date('d-m-Y');
 	$sumaImpuesto = 0;
 ?>
@@ -67,7 +67,9 @@
 <!-- Datos especificos de la declaracion -->
 	<tr>
 		<th class="label-declaracion" colspan="2.5"><?=Html::encode('VALOR TERRENO (mts2)'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AVALUO TERRENO (mts2)'); ?></th>
 		<th class="label-declaracion" colspan="2.5"><?=Html::encode('VALOR CONSTRUCCION (mts2)'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AVALUO CONSTRUCCION (mts2)'); ?></th>
 		<th class="label-declaracion" colspan="2"><?=Html::encode('VALOR CATASTRAL'); ?></th>
 		
 	</tr>  
@@ -79,7 +81,7 @@
 			<td class="info-declaracion" colspan="2"><?=Html::encode($resumen['valor']); ?></td>
 			
 			
-		   
+		  	
 		</tr>  
 	
                      
