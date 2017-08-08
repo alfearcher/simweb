@@ -340,6 +340,7 @@
                         $pagoReciboLoteSearch = New PagoReciboLoteSearch($mostrar);
                         $dataProvider = $pagoReciboLoteSearch->getDataProviderArchivoFormateado();
                         $errorMensaje = $pagoReciboLoteSearch->getError();
+
                         if ( count($errorMensaje) > 0 ) {
                             $this->layout = 'layout-main';
                             return $this->render('/recibo/pago/lote/warnings', [
