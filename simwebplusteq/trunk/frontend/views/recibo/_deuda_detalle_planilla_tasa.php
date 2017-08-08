@@ -439,19 +439,19 @@
     </div>
 
 
-    <div class="col-sm-4" style="width:20%;padding:0px;">
-       <?= Html::textInput('prueba', Yii::$app->formatter->asDecimal(0, 2),
-                      [
-                        'id' => 'id-prueba',
-                        'class' => 'form-control',
-                        'style' => 'width:200px;
-                               background-color:white;
-                               text-align:right;
-                               font-size:120%;',
-                        'readOnly' => true
-                      ]);
+    <!-- <div class="col-sm-4" style="width:20%;padding:0px;">
+       <?//= Html::textInput('prueba', Yii::$app->formatter->asDecimal(0, 2),
+                      // [
+                      //   'id' => 'id-prueba',
+                      //   'class' => 'form-control',
+                      //   'style' => 'width:200px;
+                      //          background-color:white;
+                      //          text-align:right;
+                      //          font-size:120%;',
+                      //   'readOnly' => true
+                      // ]);
       ?>
-    </div>
+    </div> -->
 
 
 
