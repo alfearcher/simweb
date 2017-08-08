@@ -934,10 +934,10 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
          if ( isset($_SESSION['idContribuyente'] ) ) {
             $barcode = $_SESSION['ultimoCertificado']['firma_control'];
             // Informacion del encabezado.
-            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-encabezado-pdf', [
                                                             'caption' => 'CEDULA CATASTRAL',
 
-                                    ]);
+                                    ]); 
 
             // Informacion del congtribuyente.
             $findModel = ContribuyenteBase::findOne($_SESSION['idContribuyente']);
