@@ -8,6 +8,7 @@ use yii\widgets\ActiveField;
 use backend\models\inmueble\ParametrosNivelesCatastro;
 use backend\models\inmueble\Estados;
 use backend\models\inmueble\Municipios;
+use backend\models\inmueble\Parroquias;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
@@ -120,8 +121,12 @@ function bloquea() {
 
                         <td style="max-width: 100px" align="letf">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'estado_catastro')->textInput(['style' => 'width:80px;'])/*->dropDownList($listaEstados, [
-                                                                                                            'id'=> 'estados', 
+                            <?php
+                                $modelParametros = Estados::find()->where(['estado' => 15])->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'estado','nombre'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
+                            <?= $form->field($model, 'estado_catastro')->dropDownList($listaParametros,['id'=> 'estados', 'style' => 'width:100px;', ])/*->dropDownList($listaEstados, [
+                                                                                                            
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
                                                                                                             'onchange' =>
@@ -143,7 +148,11 @@ function bloquea() {
 
                         <td style="max-width: 100px" align="letf">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'municipio_catastro')->textInput(['style' => 'width:80px;'])/*->dropDownList($listaMunicipios, [
+                           <?php
+                                $modelParametros = Municipios::find()->where(['estado' => 15,'municipio'=>10])->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'municipio','nombre'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
+                            <?= $form->field($model, 'municipio_catastro')->dropDownList($listaParametros,['id'=> 'municipios', 'style' => 'width:100px;',])/*->dropDownList($listaMunicipios, [
                                                                                                             'id'=> 'municipios', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
                                                                                                             'style' => 'width:80px;',
@@ -166,7 +175,11 @@ function bloquea() {
 
                         <td style="max-width: 100px" align="letf">
                             <div class="col-sm-1">
-                            <?= $form->field($model, 'parroquia_catastro')->textInput(['style' => 'width:80px;'])->label(false) ?>
+                            <?php
+                                $modelParametros = Parroquias::find()->where(['estado' => 15, 'municipio'=>10])->asArray()->all();                                         
+                                $listaParametros = ArrayHelper::map($modelParametros,'parroquia','nombre'); 
+                                //echo'<pre>'; var_dump($listaParametros); echo '</pre>'; die(); ?>
+                            <?= $form->field($model, 'parroquia_catastro')->dropDownList($listaParametros,['id'=> 'parroquia','style' => 'width:100px;',])->label(false) ?>
                             </div> 
                         </td>
 
