@@ -67,9 +67,9 @@
 <!-- Datos especificos de la declaracion -->
 	<tr>
 		<th class="label-declaracion" colspan="2.5"><?=Html::encode('VALOR TERRENO (mts2)'); ?></th>
-		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AVALUO TERRENO (mts2)'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AVALUO TERRENO'); ?></th>
 		<th class="label-declaracion" colspan="2.5"><?=Html::encode('VALOR CONSTRUCCION (mts2)'); ?></th>
-		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AVALUO CONSTRUCCION (mts2)'); ?></th>
+		<th class="label-declaracion" colspan="2.5"><?=Html::encode('AVALUO CONSTRUCCION'); ?></th>
 		<th class="label-declaracion" colspan="2"><?=Html::encode('VALOR CATASTRAL'); ?></th>
 		
 	</tr>  
