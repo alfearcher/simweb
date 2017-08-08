@@ -41,7 +41,6 @@
  */
 
  	use yii\web\Response;
- 	//use kartik\icons\Icon;
  	use yii\grid\GridView;
 	use yii\helpers\Html;
 	use yii\helpers\Url;
@@ -50,7 +49,6 @@
 	use yii\web\View;
 	use yii\bootstrap\Modal;
 	use yii\widgets\Pjax;
-	//use yii\bootstrap\Progress;
 
 
  ?>
@@ -59,12 +57,12 @@
 <?php
 
 	$form = ActiveForm::begin([
-		'id' => 'id-lista-archivo',
+		'id' => 'id-mostrar-archivo-form',
 		'method' => 'post',
 		//'action' => ['mostrar-archivo-txt'],
 		'enableClientValidation' => true,
 		'enableAjaxValidation' => false,
-		'enableClientScript' => false,
+		'enableClientScript' => true,
 	]);
  ?>
 
@@ -95,77 +93,79 @@
 </div>
 
 <div class="row" style="width:100%;padding: 0px;margin: 0px;">
-		<div class="col-sm-3" style="width: 20%;padding: 0px;margin: 0px;padding-left: 100px;">
-			<h4><strong><?=Html::encode(Yii::t('backend', 'Total Registros:'))?> </strong></h4>
+	<div class="col-sm-3" style="width: 20%;padding: 0px;margin: 0px;padding-left: 100px;">
+		<h4><strong><?=Html::encode(Yii::t('backend', 'Total Registros:'))?> </strong></h4>
+	</div>
+	<div class="col-sm-3" style="width: 20%;padding: 0px;margin: 0px;">
+		<h4><strong><?=Html::textInput('total-registro', $totalRegistro,
+						 								[
+						 									'class' => 'form-control',
+						 									'style' => 'width: 100%;
+						 												text-align:right;
+						 									            font-size:120%;
+						 									            font-weight:bold;',
+														]);
+				?>
+		</strong></h4>
+	</div>
+</div>
+
+
+<div class="row">
+	<div class="col-sm-2" style="margin-left: 40px;">
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('backend', 'Procesar Pagos'),
+												  [
+													'id' => 'btn-procesar-pago',
+													'class' => 'btn btn-success',
+													'value' => 3,
+													'style' => 'width: 100%',
+													'name' => 'btn-procesar-pago',
+												  ])
+			?>
 		</div>
-		<div class="col-sm-3" style="width: 20%;padding: 0px;margin: 0px;">
-			<h4><strong><?=Html::textInput('total-registro', $totalRegistro,
-							 								[
-							 									'class' => 'form-control',
-							 									'style' => 'width: 100%;
-							 												text-align:right;
-							 									            font-size:120%;
-							 									            font-weight:bold;',
-															]);
-					?>
-			</strong></h4>
+	</div>
+
+	<div class="col-sm-2" style="margin-left: 20px;">
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
+												  [
+													'id' => 'btn-analize-file',
+													'class' => 'btn btn-primary',
+													'value' => 1,
+													'style' => 'width: 100%',
+													'name' => 'btn-analize-file',
+												  ])
+			?>
 		</div>
 	</div>
 
-
-<div class="col-sm-2" style="margin-left: 40px;">
-	<div class="form-group">
-		<?= Html::submitButton(Yii::t('backend', 'Procesar Pagos'),
-											  [
-												'id' => 'btn-procesar-pago',
-												'class' => 'btn btn-success',
-												'value' => 3,
-												'style' => 'width: 100%',
-												'name' => 'btn-procesar-pago',
-											  ])
-		?>
+	<div class="col-sm-2" style="margin-left: 20px;">
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('backend', 'Back'),
+												  [
+													'id' => 'btn-back',
+													'class' => 'btn btn-danger',
+													'value' => 1,
+													'style' => 'width: 100%',
+													'name' => 'btn-back',
+												  ])
+			?>
+		</div>
 	</div>
-</div>
 
-<div class="col-sm-2" style="margin-left: 20px;">
-	<div class="form-group">
-		<?= Html::submitButton(Yii::t('backend', 'Analizar Archivo'),
-											  [
-												'id' => 'btn-analize-file',
-												'class' => 'btn btn-primary',
-												'value' => 1,
-												'style' => 'width: 100%',
-												'name' => 'btn-analize-file',
-											  ])
-		?>
-	</div>
-</div>
-
-<div class="col-sm-2" style="margin-left: 20px;">
-	<div class="form-group">
-		<?= Html::submitButton(Yii::t('backend', 'Back'),
-											  [
-												'id' => 'btn-back',
-												'class' => 'btn btn-danger',
-												'value' => 1,
-												'style' => 'width: 100%',
-												'name' => 'btn-back',
-											  ])
-		?>
-	</div>
-</div>
-
-<div class="col-sm-2" style="margin-left: 20px;">
-	<div class="form-group">
-		<?= Html::submitButton(Yii::t('backend', 'Quit'),
-											  [
-												'id' => 'btn-quit',
-												'class' => 'btn btn-danger',
-												'value' => 1,
-												'style' => 'width: 100%',
-												'name' => 'btn-quit',
-											  ])
-		?>
+	<div class="col-sm-2" style="margin-left: 20px;">
+		<div class="form-group">
+			<?= Html::submitButton(Yii::t('backend', 'Quit'),
+												  [
+													'id' => 'btn-quit',
+													'class' => 'btn btn-danger',
+													'value' => 1,
+													'style' => 'width: 100%',
+													'name' => 'btn-quit',
+												  ])
+			?>
+		</div>
 	</div>
 </div>
 
@@ -186,7 +186,7 @@
 	    		'tableOptions' => [
 	    			'class' => 'table table-hover',
 	    		],
-	    		'summary' => true,
+	    		//'summary' => true,
 	    		'columns' => [
 	    			[
                         'class' => 'yii\grid\CheckboxColumn',
@@ -221,7 +221,7 @@
 																'data-toggle' => 'modal',
 																'data-target' => '#modal',
 																'data-url' => Url::to(['view-recibo-modal',
-																						'nro' => $data['recibo'],
+																					   'nro' => $data['recibo'],
 																					]),
 																'data-pjax' => 0,
     													]);
@@ -522,10 +522,10 @@
 <?php
 $this->registerJs(
     '$(document).on("click", "#link-recibo", (function() {
+    	alert("jkka");
         $.get(
             $(this).data("url"),
             function (data) {
-                //$(".modal-body").html(data);
                 $(".detalle").html(data);
                 $("#modal").modal();
             }

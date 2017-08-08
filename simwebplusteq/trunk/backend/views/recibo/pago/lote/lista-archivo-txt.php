@@ -61,6 +61,7 @@
 	<?=$form->field($model, 'id_banco')->hiddenInput(['value' => $model->id_banco])->label(false);?>
 	<?=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false);?>
 	<?=$form->field($model, 'fecha_hasta')->hiddenInput(['value' => $model->fecha_hasta])->label(false);?>
+	<?=$form->field($model, 'sin_formato')->hiddenInput(['value' => $model->sin_formato])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">
@@ -74,11 +75,31 @@
         		<div class="col-sm-12" >
 
 		        	<div class="row" style="width:60%;margin-bottom: 20px;">
-						<div class="row" style="border-bottom: 1px solid;padding:0px;padding-top: 0px;">
+						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;">
 							<h4><strong><?=Html::encode($subCaption)?></strong></h4>
 						</div>
 
+						<div class="row" style="padding:0px;padding-top: 15px;">
+							<p><strong><?=$labelBanco?></strong></p>
+						</div>
+
+						<div class="row" style="padding:0px;padding-top: 0px;">
+							<p><strong><?=$labelRango?></strong></p>
+						</div>
+
+						<div class="row" style="border-bottom: 1px solid #ccc;padding:0px;padding-top: 0px;">
+						</div>
+
 						<div class="row" style="width: 100%;padding:0px;margin:0px;margin-top: 20px;">
+							<div class="row" style="width: 100%;">
+								<?= Html::activeCheckbox($model, 'sin_formato', [
+																				'label' => $model->getAttributeLabel('sin_formato'),
+																				'labelOptions' => [
+																					'style' => 'width:100%;',
+																				],
+																			]);
+								?>
+							</div>
 							<div class="row" style="width: 100%;margin-top: 5px;">
 						    	<?= GridView::widget([
 						    		'id' => 'id-grid-lista-archivo-txt',
