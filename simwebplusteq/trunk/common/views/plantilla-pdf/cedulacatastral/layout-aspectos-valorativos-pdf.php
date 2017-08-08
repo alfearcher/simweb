@@ -55,7 +55,7 @@
 
  ?>    
    
-<?php die(var_dump($resumen));
+<?php 
 	$fechaEmision = date('d-m-Y');
 	$sumaImpuesto = 0;
 ?>
