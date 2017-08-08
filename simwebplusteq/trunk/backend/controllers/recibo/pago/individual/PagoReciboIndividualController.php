@@ -198,6 +198,7 @@
 
 					if ( $model->validate() ) {
 
+                        $estatusRecibo = 0;
                         $_SESSION['reciboRafaga'] = $model->recibo;
 
 						// Se verifica que el recibo cumpla las reglas de negocio establecidas.
@@ -219,9 +220,11 @@
 						// Arreglo de los provider del recibo y el de las planillas.
 						$dataProviders = $pagoReciboSearch->getDataProviders();
 
-                        // $dataProviders[0]->getModels(), es el modelo de la entidad "depositos".
-                        // $dataProviders[1]->getModels(), es el modelo de la entidad "depositos-planillas"
-                        $estatusRecibo = isset($dataProviders[0]->getModels()[0]->toArray()['estatus']) ? (int)$dataProviders[0]->getModels()[0]->toArray()['estatus'] : 0;
+                        if ( count($dataProviders[0]->getModels()) > 0 ) {
+                            // $dataProviders[0]->getModels(), es el modelo de la entidad "depositos".
+                            // $dataProviders[1]->getModels(), es el modelo de la entidad "depositos-planillas"
+                            $estatusRecibo = isset($dataProviders[0]->getModels()[0]->toArray()['estatus']) ? (int)$dataProviders[0]->getModels()[0]->toArray()['estatus'] : 0;
+                        }
                         if ( $estatusRecibo == 1 ) {
 
                             // Se verifica que todas la planillas contenidas en el recibo esten en condicion
