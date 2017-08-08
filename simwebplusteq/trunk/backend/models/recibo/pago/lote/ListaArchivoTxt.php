@@ -188,6 +188,11 @@
 		{
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
+
+				// Permite mostrar el contenido del direcorio y lo muestra en un arreglo
+				// cada item encontrado sera un elemento del arreglo.
+				//$ficheros1  = scandir(self::getRuta());
+
 				while ( false !== ($file = readdir($gestor)) ) {
 	        		if ( $file !== '.' && $file !== '..' && $file !== NULL && substr(trim($file), -4) == '.txt' ) {
 	        			$key = array_search($file, array_column($arregloArchivo, 'nombre'));
