@@ -59,7 +59,7 @@
  		protected $director = 'Kelly Pérez';
 
  		protected $nombreCatastro = 'Direccion de Catastro Municipal';
- 		protected $directorCatastro = 'Nombre del director de catastro';
+ 		protected $directorCatastro = 'Danelly Colmenares';
  		protected $directorCatastroCargo = 'Director(a) de Catastro Municipal';
  		//	Inddentificador de la oficina
  		protected $id = 1;
