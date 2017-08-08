@@ -118,9 +118,9 @@
 		        // 											D = dibuja linea
 		        // 											F
 		        // 											DF
-		       	$mpdf->RoundedRect(16, 230, 120, 30, 3, D);
-		       	$mpdf->SetFont('Arial', 'B', 8);
-		       	$mpdf->Text(60,258,"Validacion terminal caja");
+		       	//$mpdf->RoundedRect(16, 230, 120, 30, 3, D);
+		       	//$mpdf->SetFont('Arial', 'B', 8);
+		       	//$mpdf->Text(60,258,"Validacion terminal caja");
 
 		       	$mpdf->SetFont('Arial', 'N', 8);
 		       	// Texto de la rafaga.
