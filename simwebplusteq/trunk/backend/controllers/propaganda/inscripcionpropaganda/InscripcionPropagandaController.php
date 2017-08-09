@@ -803,7 +803,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menu-vertical');
+			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));;
 		}
 
 
