@@ -214,7 +214,7 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
      *para el cambio de otros datos inmuebles
      *@return model 
      **/ 
-     public function actionCambioOtrosDatosInmuebles($id_impuesto)
+     public function actionCambioOtrosDatosInmuebles()
      { 
          
          if ( isset($_SESSION['idContribuyente']) ) {

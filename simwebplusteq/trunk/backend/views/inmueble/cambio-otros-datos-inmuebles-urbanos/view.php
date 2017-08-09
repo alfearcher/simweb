@@ -40,7 +40,7 @@ $this->title = Yii::t('backend', 'View Property Urban.');
             'tlf_hab',
             //'medidor',
             //'id_sim',
-            'observacion:ntext',
+            //'observacion:ntext',
             'inactivo',
             //'tipo_ejido',
             //'propiedad_horizontal',
@@ -60,10 +60,3 @@ $this->title = Yii::t('backend', 'View Property Urban.');
 </div>
 
 
-<!-- <? /*= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id_impuesto], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ], 
-        ]) */ ?> -->
