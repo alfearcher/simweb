@@ -1016,7 +1016,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             'director'=> Yii::$app->oficina->getDirectorCatastro(),
                                                             'nombreCargo' => Yii::$app->oficina->getDirectorCatastroCargo(),
                                                             'barcode' => $barcode,
-                                    ]);          
+                                    ]);         
 
             
 
