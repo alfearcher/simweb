@@ -132,6 +132,17 @@
 							</div>
 						</div>
 
+
+						<?php
+							$disabled = ' disabled';
+							$target = '';
+
+							if ( $model->estatus == 0 ) {
+								$disabled = '';
+								$target = '_blank';
+							}
+						 ?>
+
 						<div class="col-sm-3" style="width: 30%;padding-left: 50px;padding-top: 30px;">
 							<div class="form-group">
 								<?= Html::a(Yii::t('frontend', 'Generar Recibo'),[
@@ -140,11 +151,11 @@
 																		],
 																		[
 																			'id' => 'btn-generate',
-																			'class' => 'btn btn-success',
+																			'class' => 'btn btn-success' . $disabled,
 																			'value' => 2,
 																			'style' => 'width: 100%',
 																			'name' => 'btn-generate',
-																			'target' => '_blank',
+																			'target' => $target,
 																		])
 								?>
 							</div>
