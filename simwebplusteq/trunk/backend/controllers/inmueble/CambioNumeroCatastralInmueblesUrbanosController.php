@@ -410,6 +410,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 if($model->propiedad_horizontal == 1){
                 $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                     'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    'id_sim'=>$model->id_sim,
                                     'nro_solicitud' => $result,
                                     'estado_catastro' => $model->estado_catastro,
                                     'municipio_catastro' => $model->municipio_catastro,
@@ -431,6 +432,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                 } else {
                 $arrayDatos2 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
                                     'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],
+                                    'id_sim'=>$model->id_sim,
                                     'nro_solicitud' => $result,
                                     'estado_catastro' => $model->estado_catastro,
                                     'municipio_catastro' => $model->municipio_catastro,
@@ -467,6 +469,7 @@ class CambioNumeroCatastralInmueblesUrbanosController extends Controller
                     } else {
                         if($model->propiedad_horizontal == 1){
                         $arrayDatos3 = [    'id_contribuyente' => $_SESSION['idContribuyente'],
+                                            'id_sim'=>$model->id_sim,
                                             'estado_catastro' => $model->estado_catastro,
                                             'municipio_catastro' => $model->municipio_catastro,
                                             'parroquia_catastro' => $model->parroquia_catastro,

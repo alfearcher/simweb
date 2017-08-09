@@ -84,7 +84,7 @@ function bloquea() {
 
                         <td style="max-width: 100px" align="letf">
                             <div class="col-sm-1"> 
-                            <?= Yii::t('backend', 'Id Sim') ?>
+                            <?= Yii::t('backend', 'Nro Boletin') ?>
                             </div> 
                         </td>
 
