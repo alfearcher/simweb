@@ -482,7 +482,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      * @return [type] [description]
      */
     public function actionDescargarCertificadoCatastral()
-    {
+    {die('llego');
       self::actionCedulaCatastralInmuebles();
     }
 
