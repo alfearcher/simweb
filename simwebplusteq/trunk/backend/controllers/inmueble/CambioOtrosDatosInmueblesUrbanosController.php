@@ -53,6 +53,10 @@ use backend\models\inmueble\InmueblesUrbanosForm;
 use backend\models\inmueble\CambioOtrosDatosInmueblesForm;
 use backend\models\inmueble\InmueblesConsulta;
 use backend\models\inmueble\InmueblesSearch;
+use backend\models\inmueble\AvaluoCatastralForm;
+use backend\models\inmueble\InmueblesRegistrosForm;
+use backend\models\inmueble\InmueblesRegistros;
+use backend\models\inmueble\HistoricoAvaluoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -99,7 +103,7 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView()
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
         
