@@ -426,7 +426,7 @@
                     <div class="row" class="informacion-botones-licencia" id="informacion-botones-licencia">
                             <div class="col-sm-5" style="width: 15%;padding: 0px;padding-left: 5px;padding-top: 10px;">
                                 <div class="fecha-vcto" style="margin-left: 0px;">
-                                    <?= Html::a(Yii::t('backend', 'Descargar Certificado catastral'), ['inmueble/certificado-catastral-inmuebles-urbanos/descargar-certificado-catastral'], ['class' => 'btn btn-success','target'=> '_blank'])//'target'=> '_blank' ?>
+                                    <?= Html::a(Yii::t('backend', 'Descargar Certificado catastral'), ['inmueble/certificadocatastral/certificado-catastral-inmuebles-urbanos/descargar-certificado-catastral'], ['class' => 'btn btn-success','target'=> '_blank'])//'target'=> '_blank' ?>
                                 </div>
                             </div>
 
