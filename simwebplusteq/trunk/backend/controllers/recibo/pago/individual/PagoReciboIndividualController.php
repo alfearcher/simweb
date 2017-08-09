@@ -73,6 +73,7 @@
     use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
     use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
     use backend\models\recibo\txt\RegistroTxtSearch;
+    use backend\models\recibo\txt\RegistroTxtReciboSearch;
     use common\models\referencia\GenerarReferenciaBancaria;
     use common\models\planilla\PlanillaSearch;
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
@@ -861,13 +862,13 @@
 
 										]);
 
-					// $dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
-     //    			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+					$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+        			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-     //    			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
-			  //     								'montoAgregado' => $montoAgregado,
-			  //     								'dataProvider' => $dataProvider,
-			  //     						]);
+        			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
+			      								'montoAgregado' => $montoAgregado,
+			      								'dataProvider' => $dataProvider,
+			      						]);
 
 
      //    			$datosBanco = $_SESSION['datosBanco'];
@@ -1079,12 +1080,12 @@
          */
         public function actionViewHtmlPlanillaSinReferencia($fechaPago, $cuentaRecaudadora)
         {
-        	$txtSearch = New RegistroTxtSearch();
+        	$txtSearch = New RegistroTxtReciboSearch();
         	$txtSearch->setFechaPago($fechaPago);
         	$dataProvider = $txtSearch->getDataProviderPlanillaSinRferenciaByFecha();
         	$models = $dataProvider->getModels();
 
-        	$totalizar = self::actionTotalizarMontoDocumento($models, 'monto_planilla');
+        	$totalizar = self::actionTotalizarMontoDocumento($models, 'monto_recibo');
 
         	return $this->renderPartial('/recibo/pago/individual/lista-planilla-sin-referencia', [
         														'dataProvider' => $dataProvider,
