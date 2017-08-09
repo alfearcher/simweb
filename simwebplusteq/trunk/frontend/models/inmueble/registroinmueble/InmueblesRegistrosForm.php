@@ -116,7 +116,7 @@ class InmueblesRegistrosForm extends \yii\db\ActiveRecord
     
     //public $nro_matriculado;
     //public $asiento_registral;
-    //public $validacion3;
+    public $validacion3;
 
    
 
