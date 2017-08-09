@@ -251,6 +251,27 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
     }
+
+    public function VerificarFecha($fecha)
+    {
+          $verificar = explode('-', $fecha);
+        if($_SESSION['datosHAvaluos'] !=null){
+
+                foreach ($_SESSION['datosHAvaluos'] as $key => $value) {
+                      
+                      $año = explode('-', $value['fecha']);  
+                      if($año[0] == $verificar[0]){
+                          
+                        return true;
+                      }  else {
+                        return false;
+                      }             
+                } 
+          
+        }
+        return false;
+
+    }
      /**
      *REGISTRO (inscripcion) INMUEBLES URBANOS
      *Metodo para crear las cuentas de usuarios de los funcionarios
@@ -304,8 +325,10 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                          
                                          
                                         if (!\Yii::$app->user->isGuest){                                    
-                             
-                                          if ($_SESSION['anioAvaluo'][0] == date('Y')) {
+                                      
+
+                                        $verificarFecha = self::VerificarFecha($modelAvaluo->fecha); 
+                                            if ($verificarFecha == true) {// if ($_SESSION['anioAvaluo'][0] == date('Y')) {
 
                                                   return MensajeController::actionMensaje(921);
 
