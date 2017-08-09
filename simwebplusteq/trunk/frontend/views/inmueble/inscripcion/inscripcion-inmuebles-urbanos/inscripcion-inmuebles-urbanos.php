@@ -221,7 +221,7 @@ function documento() {
                             <div class="col-sm-1">
                             <?= Html::submitButton(Yii::t('frontend', 'Incorporate'), ['class' => 'btn btn-success',
                                       'data' => [
-                                                  'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
+                                                  'confirm' => Yii::t('app', 'Estas seguro que deseas incorporar los datos cargados al sistema?'),
                                                   'method' => 'post',],]) ?> 
                             </div>
                             <div class="col-sm-1">
