@@ -200,7 +200,7 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
 
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            //'model' => $this->findModel($id),
         ]);
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
