@@ -90,3 +90,4 @@ $this->title = Yii::t('backend', 'Property Urban');
     </p>
 
 </div>
+<?php ActiveForm::end(); ?> 

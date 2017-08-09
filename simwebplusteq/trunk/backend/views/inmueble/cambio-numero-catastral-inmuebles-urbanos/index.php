@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
 use kartik\icons\Icon;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\InmueblesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
