@@ -102,6 +102,7 @@ class InmueblesRegistrosForm extends \yii\db\ActiveRecord
     public $conn;
     public $conexion;
     public $transaccion;   
+    public $documento_propiedad;
     //public $fecha;
     //public $documento_propiedad;
     //public $num_reg;
