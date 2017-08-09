@@ -99,12 +99,12 @@
 
 <?php if ( $showRepresentante ) {?>
 	<tr>
-		<th class="label-representante" colspan="2"><?=Html::encode('NRO. CATASTRO'); ?></th>
+		<th class="label-representante" colspan="2"><?=Html::encode('NRO. BOLETIN'); ?></th>
 		<th class="label-representante" colspan="6"><?=Html::encode('REPRESENTANTE LEGAL'); ?></th>
 		<th class="label-representante" colspan="2"><?=Html::encode('CI REP. LEGAL'); ?></th>
 	</tr>
 	<tr class="cuerpo">
-		<td class="info-representante" colspan="2"><?=Html::encode($catastro); ?></td>
+		<td class="info-representante" colspan="2"><?=Html::encode($resumen['id_sim']); ?></td>
 		<td class="info-representante" colspan="6"><?=Html::encode($model->representante); ?></td>
 		<td class="info-representante" colspan="2"><?=Html::encode($ciRep); ?></td>
 	</tr>
