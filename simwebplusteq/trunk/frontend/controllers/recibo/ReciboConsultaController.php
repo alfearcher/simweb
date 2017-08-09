@@ -63,6 +63,7 @@
 	use backend\models\recibo\estatus\EstatusDepositoSearch;
 	use backend\models\recibo\recibo\ReciboConsultaForm;
 	use backend\models\recibo\deposito\Deposito;
+	use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
 
 
 
@@ -213,6 +214,7 @@
 
 				} else {
 
+					$htmlDepositoDetalle = null;
 					$dataProvider = $model->searchDepositoPlanilla($recibo);
 					$deposito = Deposito::find()->where('recibo =:recibo',[':recibo' => $recibo])
 											    ->joinWith('condicion C', true)
@@ -221,11 +223,20 @@
 					if ( $model->estatus == 0 ) {
 						$_SESSION['recibo'] = $recibo;
 						$_SESSION['nro_control'] = $deposito->nro_control;
+
+					} elseif ( $model->estatus == 1 ) {
+						$detalleSearch = New DepositoDetalleSearch(null, null);
+						$dataProviderDetalle = $detalleSearch->getDataProviderDepositoDetalle($recibo);
+						$htmlDepositoDetalle = $this->renderPartial('@backend/views/recibo/deposito-detalle/deposito-detalle-forma-pago',[
+																				'dataProviderDetalle' => $dataProviderDetalle,
+												]);
 					}
+
 					return $this->render('/recibo/consulta/recibo-consultado',[
 													'model' => $deposito,
 													'caption' => 'Recibo consultado ' . $recibo,
 													'dataProvider' => $dataProvider,
+													'htmlDepositoDetalle' => $htmlDepositoDetalle,
 						]);
 				}
 			}
