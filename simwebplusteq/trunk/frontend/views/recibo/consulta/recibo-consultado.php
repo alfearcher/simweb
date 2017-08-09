@@ -112,18 +112,29 @@
 						    					'value' => Yii::$app->formatter->asDecimal($model->monto, 2),
 						    				],
 
-						    				// [
-						    				// 	'label' => $model->getAttributeLabel('usuario'),
-						    				// 	'value' => $model->usuario,
-						    				// ],
-						    				// [
-						    				// 	'label' => $model->getAttributeLabel('fecha_hora'),
-						    				// 	'value' => $model->fecha_hora,
-						    				// ],
+						    				[
+						    					'label' => $model->getAttributeLabel('usuario') . ' '. Yii::t('frontend', '(pago)'),
+						    					'value' => $model->usuario,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('usuario_creador'),
+						    					'value' => $model->usuario_creador,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('fecha_hora_creacion'),
+						    					'value' => date('d-m-Y', strtotime($model->fecha_hora_creacion)),
+						    				],
 						    				[
 						    					'label' => $model->getAttributeLabel('estatus'),
-						    					// 'value' => $model->estatus,
 						    					'value' => $model->condicion->descripcion,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('id_contribuyente'),
+						    					'value' => $model->id_contribuyente,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('contribuyente'),
+						    					'value' => $model->getDescripcionContribuyente($model->id_contribuyente),
 						    				],
 
 						    			],
@@ -244,6 +255,13 @@
 						</div>
 					</div>
 <!-- Fin de lo seleccionado -->
+
+					<?php if ( $htmlDepositoDetalle !== null ) { ?>
+
+						<?=$htmlDepositoDetalle; ?>
+
+					<?php } ?>
+
 
 					<div class="row" style="padding-top: 20px;">
 
