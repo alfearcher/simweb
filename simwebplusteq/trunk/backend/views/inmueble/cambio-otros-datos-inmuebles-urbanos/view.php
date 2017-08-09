@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Inmuebles */
 
-$this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impuesto);
+$this->title = Yii::t('backend', 'View Property Urban.');
 
 ?>
 <div class="inmuebles-view">
@@ -14,7 +14,7 @@ $this->title = Yii::t('backend', 'View Property Urban. Id Tax: '.$model->id_impu
     
 
     <p>
-        <?= Html::a(Yii::t('backend', 'Update other data of property'), ['inmueble/cambio-otros-datos-inmuebles-urbanos/cambio-otros-datos-inmuebles', 'id_impuesto' => $model->id_impuesto], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('backend', 'Update other data of property'), ['inmueble/cambio-otros-datos-inmuebles-urbanos/cambio-otros-datos-inmuebles', ], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
     </p> 
 

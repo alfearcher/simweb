@@ -919,7 +919,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
      {
          $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Renovacion de Avaluo Catastral de Inmueble';
+         $solicitud = 'Renovacion de Avaluo Catastral de Inmueble'; 
 
          $nro_solicitud = $guardo;
 
