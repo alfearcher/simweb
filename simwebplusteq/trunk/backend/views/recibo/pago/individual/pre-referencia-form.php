@@ -317,12 +317,17 @@
 
 						                        }
 						                    ],
-											// [
-								   //              'label' => Yii::t('backend', 'Nro. Recibo'),
-								   //              'value' => function($model) {
-											// 					return $model->recibo;
-											// 				},
-								   //          ],
+
+								        	 [
+								                'label' => Yii::t('backend', 'Nro. Recibo'),
+								                'contentOptions' => [
+								                	'style' => 'text-align:center;font-size:90%;',
+								                ],
+								                'value' => function($model) {
+																return $model->recibo;
+															},
+								            ],
+
 								            [
 								                'label' => Yii::t('backend', 'Planilla'),
 								                'contentOptions' => [
@@ -333,6 +338,7 @@
 																return $model->planilla;
 															},
 								            ],
+
 								            [
 								                'label' => Yii::t('backend', 'Impuesto'),
 								                'contentOptions' => [

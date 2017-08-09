@@ -66,7 +66,7 @@
     <?=Html::hiddenInput('cuenta_recaudadora', $cuentaRecaudadora)?>
 
     <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width: 100%;padding-top: 10px;">
-        <strong><p><?=Yii::t('backend', 'Planillas sin referencia ( Referencias Bancarias )')?></p></strong>
+        <strong><p><?=Yii::t('backend', 'Recibos sin referencia ( Referencias Bancarias )')?></p></strong>
     </div>
     <div class="row" style="width:100%;">
 
@@ -92,13 +92,13 @@
                     }
                 ],
                 [
-                    'label' => Yii::t('backend', 'Planilla'),
+                    'label' => Yii::t('backend', 'Recibo'),
                     'contentOptions' => [
                         'style' => 'text-align:center;font-size:90%;',
                     ],
                     'format' => 'raw',
                     'value' => function($model) {
-                                    return $model->planilla;
+                                    return $model->recibo;
                                 },
                 ],
                 [
@@ -118,7 +118,7 @@
                     ],
                     'format' => 'raw',
                     'value' => function($model) {
-                                    return Yii::$app->formatter->asDecimal($model->monto_planilla, 2);
+                                    return Yii::$app->formatter->asDecimal($model->monto_recibo, 2);
                                 },
                 ],
                 // [
@@ -141,7 +141,7 @@
     </div>
     <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;width: 100%;padding: 0px;margin-top: -10px;">
         <div class="col-sm-4" style="width: 50%;padding: 0px;margin: 0px;">
-            <strong><h4><?=Yii::t('backend', 'Total (Planilla):')?></h4></strong>
+            <strong><h4><?=Yii::t('backend', 'Total (Recibo):')?></h4></strong>
         </div>
         <div class="col-sm-4" style="width: 40%;padding: 0px;margin: 0px;text-align: right;">
             <strong><h4><?=Yii::$app->formatter->asDecimal($totalizar, 2)?></h4></strong>
