@@ -50,16 +50,18 @@
 	use yii\helpers\ArrayHelper;
 	use backend\models\recibo\prereferencia\PreReferenciaPlanilla;
 	use backend\models\recibo\pago\individual\SerialReferenciaUsuario;
+	use backend\models\recibo\txt\RegistroTxtRecibo;
 
 
 	/**
 	* Clase
 	*/
-	class RegistroTxtSearch extends RegistroTxt
+	class RegistroTxtReciboSearch extends RegistroTxtRecibo
 	{
 
 		private $_fecha_pago;
 		private $_planilla;
+		private $_recibo;
 
 
 
@@ -112,7 +114,7 @@
 		 */
 		public function getPlanilla()
 		{
-			return $tis->_planilla;
+			return $this->_planilla;
 		}
 
 
@@ -245,25 +247,25 @@
 			// filtro para la entidad "registros-txt".
 			$referencias = self::findPreReferenciaPlanillaByFecha([0,1]);
 
-			// Lista de planilla registradas con referencia.
-			$listaReferencia = self::getListaPlanillaReferencia($referencias, 'planilla', 'planilla');
+			// Lista de recibo registrados con referencia.
+			$listaReferencia = self::getListaPlanillaReferencia($referencias, 'recibo', 'recibo');
 
-			// arreglo donde el valor delo mismo es el numero de planilla.
+			// arreglo donde el valor delo mismo es el numero de recibo.
 			$listaPlanilla = array_values($listaReferencia);
 
-			// Se buscan las planillas ya agregadas en la entidad temporal.
+			// Se buscan los recibos ya agregadas en la entidad temporal.
 			$listaYaAgregada = self::getListaPlanillaYaSeleccionada();
 
 			// Listado que se utilizara para filtar la consulta, con el objeto que no
 			// aparezcan en el listado nuevamente.
 			$listaFiltro = array_merge($listaPlanilla, $listaYaAgregada);
 
-			// Ahora se debe buscar en la entidad "registros-txt", las planillas que aun
+			// Ahora se debe buscar en la entidad "registros-txt-recibos", los recibos que aun
 			// no estan en las referencias. Se debe realizar una consulta excluyente de
 			// conjunto.
 			$model = $this->find()->where('fecha_pago =:fecha_pago',
 													[':fecha_pago' => $this->_fecha_pago])
-									  ->andWhere(['NOT IN', 'planilla', $listaFiltro]);
+									  ->andWhere(['NOT IN', 'recibo', $listaFiltro]);
 
 			return $model;
 		}
@@ -282,7 +284,7 @@
 
 			$query = self::getDataModelPlanillaSinReferencia();
 			$provider = New ActiveDataProvider([
-				'key' => 'id_registro',
+				'key' => 'id_registro_recibo',
 				'query' => $query,
 				'pagination' => false,
 			]);
