@@ -309,7 +309,7 @@
                                                                                 var total = total1.replace(".", "");
                                                                                 var t = total.replace(",", ".");
 
-                                                                                var s = parseFloat(n) + parseFloat(t);
+                                                                                var s = parseFloat(n).toFixed(2) + parseFloat(t).toFixed(2);
                                                                                 if ( n <= 0 ) {
                                                                                     $("#btn-add-seleccion").attr("disabled", true);
                                                                                 } else {
@@ -318,7 +318,7 @@
 
                                                                                 var subTotal = s.toFixed(2);
 
-                                                                                $( "#id-sub-total" ).val(s.toFixed(2));
+                                                                                //$( "#id-sub-total" ).val(s.toFixed(2));
                                                                                 //var subTotal = $( "#id-sub-total" ).val();
                                                                                 //var suma = subTotal.split(",").join("");
                                                                                 //var suma1 = suma.replace("");
@@ -517,37 +517,37 @@
   </div>
 
   <div class="row" >
-      <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
+      <!-- <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
           <div class="col-sm-3" style="width: 40%;">
               <h6><strong><p>+ Total Seleccionado:</p></strong></h6>
           </div>
           <div class="col-sm-3" id="id-sub-totales" style="width: 60%;">
-              <h3><strong><p><?= MaskedInput::widget([
-                              'name' => 'subtotal',
-                              'id' => 'id-sub-total',
-                              'options' => [
-                                  'class' => 'form-control',
-                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
-                                  'readonly' => true,
-                                  'placeholder' => '0,00',
+              <h3><strong><p><?//= MaskedInput::widget([
+                              // 'name' => 'subtotal',
+                              // 'id' => 'id-sub-total',
+                              // 'options' => [
+                              //     'class' => 'form-control',
+                              //     'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
+                              //     'readonly' => true,
+                              //     'placeholder' => '0,00',
 
-                              ],
-                                  'clientOptions' => [
-                                      'alias' =>  'decimal',
-                                      'digits' => 2,
-                                      'digitsOptional' => false,
-                                      'groupSeparator' => ',',
-                                      'removeMaskOnSubmit' => true,
-                                      // 'allowMinus'=>false,
-                                      //'groupSize' => 3,
-                                      'radixPoint'=> ".",
-                                      'autoGroup' => true,
-                                      //'decimalSeparator' => ',',
-                                ],
+                              // ],
+                              //     'clientOptions' => [
+                              //         'alias' =>  'decimal',
+                              //         'digits' => 2,
+                              //         'digitsOptional' => false,
+                              //         'groupSeparator' => ',',
+                              //         'removeMaskOnSubmit' => true,
+                              //         // 'allowMinus'=>false,
+                              //         //'groupSize' => 3,
+                              //         'radixPoint'=> ".",
+                              //         'autoGroup' => true,
+                              //         //'decimalSeparator' => ',',
+                              //   ],
 
-                        ]);?></p></strong></h3>
+                       // ]);?></p></strong></h3>
           </div>
-      </div>
+      </div> -->
   </div>
 
 	<?php ActiveForm::end();?>
