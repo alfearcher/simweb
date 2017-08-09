@@ -862,13 +862,13 @@
 
 										]);
 
-					$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
-        			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+					// $dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+     //    			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-        			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
-			      								'montoAgregado' => $montoAgregado,
-			      								'dataProvider' => $dataProvider,
-			      						]);
+     //    			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
+			  //     								'montoAgregado' => $montoAgregado,
+			  //     								'dataProvider' => $dataProvider,
+			  //     						]);
 
 
      //    			$datosBanco = $_SESSION['datosBanco'];
@@ -1126,7 +1126,7 @@
         	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
         	$usuario = Yii::$app->identidad->getUsuario();
 
-        	$txtSearch = New RegistroTxtSearch();
+        	$txtSearch = New RegistroTxtReciboSearch();
         	foreach ( $chkIdRegistro as $key => $value ) {
 
 	        	$register = $txtSearch->findRegistroTxtById($value)->toArray();
@@ -1136,9 +1136,9 @@
 		        	$modelSerial = New SerialReferenciaForm();
 
 		        	$modelSerial->recibo = $recibo;
-		        	$modelSerial->serial = $register['planilla'];
+		        	$modelSerial->serial = $register['recibo'];
 		        	$modelSerial->fecha_edocuenta = $register['fecha_pago'];
-		        	$modelSerial->monto_edocuenta = $register['monto_planilla'];
+		        	$modelSerial->monto_edocuenta = $register['monto_recibo'];
 		        	$modelSerial->estatus = 0;
 		        	$modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
 		        	$modelSerial->usuario = $usuario;
