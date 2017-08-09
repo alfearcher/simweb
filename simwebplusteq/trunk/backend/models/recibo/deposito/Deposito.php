@@ -115,6 +115,14 @@
 			return $this->hasOne(ContribuyenteBase::className(), ['id_contribuyente' => 'id_contribuyente']);
 		}
 
+
+
+		/***/
+		public function getDescripcionContribuyente($idContribuyente)
+		{
+			return $descripcion = ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+		}
+
 	}
 
 ?>
