@@ -161,13 +161,13 @@
                                                         var suma = parseFloat($( "#id-suma" ).val());
                                                         var item = parseFloat(' . $model['t'] . ');
                                                         if ( isNaN(suma) ) { suma = 0; }
-                                                        var total = suma + item;
+                                                        var total =  parseFloat(suma + item).toFixed(2);
                                                         $( "#id-suma" ).val(total);
                                                     } else {
                                                         var suma = parseFloat($( "#id-suma" ).val());
                                                         var item = parseFloat(' . $model['t'] . ');
                                                         if ( suma > 0 ) {
-                                                            var total = suma - item;
+                                                            var total = parseFloat(suma - item).toFixed(2);
                                                             $( "#id-suma" ).val(total);
                                                         }
                                                     }
@@ -175,7 +175,7 @@
                                                     var total = $( "#id-total" ).val();
                                                     var s = parseFloat(n) + parseFloat(total);
 
-                                                    $( "#id-sub-total" ).val(s);
+                                                    //$( "#id-sub-total" ).val(s);
 
                                                     if ( n > 0 ) {
                                                         $( "#btn-add-seleccion" ).removeAttr("disabled");
@@ -502,13 +502,13 @@
 
 
   <div class="row" >
-      <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
+      <!-- <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
           <div class="col-sm-3" style="width: 40%;">
               <h6><strong><p>+ Total Seleccionado id-sub-total:</p></strong></h6>
           </div>
           <div class="col-sm-3" id="id-sub-totales" style="width: 60%;">
-              <h3><strong><p><?= MaskedInput::widget([
-                              'name' => 'subtotal',
+              <h3><strong><p><?//= MaskedInput::widget([
+                              /*'name' => 'subtotal',
                               'id' => 'id-sub-total',
                               'options' => [
                                   'class' => 'form-control',
@@ -528,11 +528,11 @@
                                       'radixPoint'=> ",",
                                       'autoGroup' => true,
                                       'decimalSeparator' => ',',
-                                ],
+                                ],*/
 
-                        ]);?></p></strong></h3>
+                        //]);?></p></strong></h3>
           </div>
-      </div>
+      </div> -->
   </div>
 
 
