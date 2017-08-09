@@ -96,6 +96,7 @@ $this->title = Yii::t('backend', 'Property Update'). '<p>Id Tax: ' . $model->id_
                             </div> 
                         </td>
                   
+                  </tr>
                    <tr>
                         
 
