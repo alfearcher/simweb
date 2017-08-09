@@ -19,7 +19,7 @@ $this->title = Yii::t('backend', 'View Property Urban.');
     </p> 
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelInmueble,
         'attributes' => [ 
             'id_impuesto',
             'id_contribuyente',
