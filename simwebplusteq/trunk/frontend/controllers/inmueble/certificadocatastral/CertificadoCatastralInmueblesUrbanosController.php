@@ -934,7 +934,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
          if ( isset($_SESSION['idContribuyente'] ) ) {
             $barcode = 152222;
             // Informacion del encabezado.
-            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
+            $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-encabezado-pdf', [
                                                             'caption' => 'CEDULA CATASTRAL',
 
                                     ]);
@@ -943,6 +943,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             $findModel = ContribuyenteBase::findOne($_SESSION['idContribuyente']);
             $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-contribuyente-pdf',[
                                                             'model' => $findModel,
+                                                            'resumen'=> $_SESSION['datosInmueble'],
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
                                     ]);          
