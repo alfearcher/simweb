@@ -482,7 +482,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      * @return [type] [description]
      */
     public function actionDescargarCertificadoCatastral()
-    {die('llego');
+    {
       self::actionCedulaCatastralInmuebles();
     }
 
@@ -927,7 +927,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      **/
      public function actionCedulaCatastralInmuebles()
      { 
-die('llego');
+die('llego 22');
       //$_SESSION['datosURegistros']
       //$_SESSION['datosUAvaluos']
          
