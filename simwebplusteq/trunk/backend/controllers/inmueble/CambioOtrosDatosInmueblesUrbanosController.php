@@ -102,6 +102,98 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
     public function actionView($id)
     {
         if ( isset( $_SESSION['idContribuyente'] ) ) {
+        
+            $idInmueble = yii::$app->request->post('id');
+           
+          $datos = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+          $_SESSION['datos'] = $datos;
+
+
+          $datosInmueble = InmueblesConsulta::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->one();
+
+           $_SESSION['datosInmueble'] = $datosInmueble; 
+
+          $datosIRegistros = InmueblesRegistros::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])
+                                            //->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all();
+
+          $_SESSION['datosIRegistros'] = $datosIRegistros; 
+          
+          $datosHAvaluos = HistoricoAvaluoSearch::find()->where("id_impuesto=:impuesto", [":impuesto" => $idInmueble])->asArray()
+                                            ->andwhere("inactivo=:inactivo", [":inactivo" => 0])
+                                            ->all(); 
+
+          $_SESSION['datosHAvaluos'] = $datosHAvaluos; 
+
+          
+          
+          if ($datosHAvaluos != null) {
+                
+                foreach ($datosHAvaluos as $key => $value) {
+                                            
+                } 
+                $añoUltimoAvaluo = explode('-', $value['fecha']);
+                $_SESSION['anioAvaluo'] = $añoUltimoAvaluo;
+                $_SESSION['datosUAvaluos'] = $value; 
+
+                if ($datosIRegistros != null) {
+
+                    foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    
+                    $añoUltimoRegistro = explode('-', $valueIn['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                 
+                  $valueIn = new InmueblesRegistrosForm(); 
+                  $_SESSION['datosURegistros'] = $valueIn; 
+                  $_SESSION['anioRegistro'] = null; 
+                  
+                  //no posee registros de inmueble
+                  
+                } 
+                
+          } else {
+                $value = new AvaluoCatastralForm();
+                $_SESSION['datosUAvaluos'] = $value; 
+                // no presenta historico de avaluos
+                // buscaremos fecha en inmuebles registros
+                if ($datosIRegistros != null) {
+
+                    foreach ($datosIRegistros as $key => $valueIn) {
+                                            
+                    } 
+                    $añoUltimoRegistro = explode('-', $valueIn['fecha']);
+                    $_SESSION['anioRegistro'] = $añoUltimoRegistro;
+                    $_SESSION['datosURegistros'] = $valueIn;
+                } else {
+                  $valueIn = new InmueblesRegistrosForm(); 
+                  $_SESSION['datosURegistros'] = $valueIn; 
+                  $_SESSION['anioRegistro'] = null; 
+                  //no posee registros de inmueble
+                  
+                } 
+          } 
+
+      
+
+
+           $verificarSolicitud = self::verificarSolicitud($datosInmueble['id_impuesto'] , $_SESSION['id']);
+           
+
+           if($verificarSolicitud == true){
+                
+                return MensajeController::actionMensaje(923);                
+                          
+            }
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -375,6 +467,29 @@ class CambioOtrosDatosInmueblesUrbanosController extends Controller
 
 
      }
+
+     /**
+    * [verificarSolicitud description]
+    * @param  [type] $idInmueble [description] datos del inmueble 
+    * @param  [type] $idConfig   [description] id configuracion de la solicuitud de desincorporacion del inmueble
+    * @return [type]             [description]
+    */
+     public function verificarSolicitud($idInmueble,$idConfig)
+    {
+      $buscar = SolicitudesContribuyente::find()
+                                        ->where([ 
+                                          'id_impuesto' => $idInmueble,
+                                          'id_config_solicitud' => $idConfig,
+                                          'estatus' => 0,
+                                        ])
+                                      ->all();
+
+            if($buscar == true){
+             return true;
+            }else{
+             return false;
+            }
+    }
 
     /**
      * Finds the InmueblesUrbanosForm model based on its primary key value.
