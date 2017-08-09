@@ -943,7 +943,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
             $findModel = ContribuyenteBase::findOne($_SESSION['idContribuyente']);
             $htmlContribuyente =  $this->renderPartial('@common/views/plantilla-pdf/cedulacatastral/layout-contribuyente-pdf',[
                                                             'model' => $findModel,
-                                                            'resumen'=> $_SESSION['datosInmueble']
+                                                            'resumen'=> $_SESSION['datosInmueble'],
                                                             'showDireccion' => true,
                                                             'showRepresentante' => true,
                                     ]);        
