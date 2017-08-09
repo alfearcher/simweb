@@ -927,7 +927,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      **/
      public function actionCedulaCatastralInmuebles()
      { 
-die('llego 22');
+
       //$_SESSION['datosURegistros']
       //$_SESSION['datosUAvaluos']
          
