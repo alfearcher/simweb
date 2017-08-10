@@ -263,6 +263,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
                       if($año[0] == $verificar[0]){
                           
                         return true;
+                        break;
                       }  else {
                         return false;
                       }             
@@ -480,7 +481,7 @@ class RenovacionCertificadoCatastralInmueblesUrbanosController extends Controlle
 
                         $arrayDatos3 = [    'id_impuesto' => $_SESSION['datosInmueble']['id_impuesto'],// $value['id_impuesto'],
                                             'fecha' => $modelAvaluo->fecha,
-                                            'ano_impositivo' => $ano_impositivo,
+                                            'ano_impositivo' => $ano_impositivo[0],
                                             'mts' => $modelAvaluo->metros_construccion,
                                             'valor_por_mts2' => $modelAvaluo->valor_construccion,
                                             'mts2_terreno' => $modelAvaluo->metros_terreno,
