@@ -63,7 +63,7 @@
 
 
 <div class="row" style="width:100%;padding:0px;">
-    <div class="row" style="width:100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;">
+    <div class="row" style="width:100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-left: 5px;">
     	<h4><?=Html::encode(Yii::t('backend', 'Formas de pago registradas'))?></h4>
     </div>
 
