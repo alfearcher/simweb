@@ -61,6 +61,8 @@
  	?>
 
 	<?=$form->field($model, 'recibo')->hiddenInput(['value' => $model->recibo])->label(false);?>
+	<?=$form->field($model, 'nro_control')->hiddenInput(['value' => $model->nro_control])->label(false);?>
+	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $model->id_contribuyente])->label(false);?>
 
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 100%;">

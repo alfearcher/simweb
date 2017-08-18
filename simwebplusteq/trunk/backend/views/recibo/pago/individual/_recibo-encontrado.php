@@ -141,6 +141,8 @@
 												[
 													'mostrar-form-rafaga-print',
 												   	'recibo' => ( $modelRecibo->recibo > 0 ) ? $modelRecibo->recibo : '#',
+												   	'nro' => $modelRecibo->nro_control,
+												   	'id_contribuyente' => $modelRecibo->id_contribuyente,
 												],
 												[
 													'id' => 'btn-rafaga-print',

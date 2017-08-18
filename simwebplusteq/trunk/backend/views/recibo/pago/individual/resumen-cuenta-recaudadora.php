@@ -43,7 +43,6 @@
 	use yii\web\View;
 	use yii\widgets\Pjax;
 	use yii\bootstrap\Modal;
-	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 

@@ -42,7 +42,7 @@
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
 	//use yii\widgets\Pjax;
-	//use common\models\contribuyente\ContribuyenteBase;
+	use common\mensaje\MensajeController;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 
@@ -72,6 +72,10 @@
         		<div class="col-sm-12" style="width:100%;padding:0px;margin: 0px;">
 
 		        	<div class="row" style="width:100%;padding:0px;margin: 0px;">
+						<div class="row" style="width: 100%;padding-left: 20px;">
+							<?= MensajeController::actionMensaje($codigo); ?>
+	 					</div>
+
 <!-- DATOS DEL RECIBO Y LAS PLANILLAS -->
 						<div class="row" style="width: 100%;padding: 0px;margin: 0px;margin-left: 15px;">
 							<?=$htmlRecibo?>
@@ -123,6 +127,8 @@
 															[
 																'mostrar-form-rafaga-print',
 															   	'recibo' => ( $modelRecibo->recibo > 0 ) ? $modelRecibo->recibo : '#',
+															   	'nro' => $modelRecibo->nro_control,
+												   				'id_contribuyente' => $modelRecibo->id_contribuyente,
 															],
 															[
 																'id' => 'btn-rafaga-print',
