@@ -66,7 +66,7 @@
 	use common\conexion\ConexionController;
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\controllers\pdf\deposito\DepositoController;
-
+	use common\models\calculo\actualizar\ActualizarPlanilla;
 
 
 
@@ -91,7 +91,9 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			self::actionAnularSession(['begin', 'planillaSeleccionadas']);
-			if ( isset($_SESSION['idContribuyente']) ) {
+			$usuario = Yii::$app->identidad->getUsuario();
+
+			if ( isset($_SESSION['idContribuyente']) && ( trim($usuario) !== '' && $usuario !== null ) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -151,6 +153,8 @@
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
+			} else {
+				$this->redirect(['error-operacion', 'cod' => 932]);
 			}
 		}
 
@@ -165,8 +169,8 @@
 		public function actionIndexCreate()
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
-
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) ) {
+			$usuario = Yii::$app->identidad->getUsuario();
+			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['begin']) && ( trim($usuario) !== '' && $usuario !== null ) ) {
 
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$request = Yii::$app->request;
@@ -279,6 +283,9 @@
 		  			// No se encontraron los datos del contribuyente principal.
 		  			$this->redirect(['error-operacion', 'cod' => 938]);
 		  		}
+			} else {
+				// Session terminada.
+		  		$this->redirect(['error-operacion', 'cod' => 999]);
 			}
 		}
 
@@ -609,12 +616,14 @@
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 
 			if ( isset($getData['view']) ) {
+
 				$idC = $getData['idC'];
 				if ( $idC == $idContribuyente ) {
 					$searchRecibo = New ReciboSearch($idContribuyente);
 
 					if ( $getData['view'] == 1 ) {			//Request desde deuda general.
 						$_SESSION['begin'] = 1;
+
 						return $html = self::actionGetViewDeudaEnPeriodo($searchRecibo, (int)$getData['i']);
 
 					} elseif ( $getData['view'] == 2 ) {	// Request desde deuda por tipo.
@@ -622,6 +631,9 @@
 
 							if ( $getData['tipo'] == 'periodo>0' ) {
 								if ( $getData['i'] == 1 ) {
+
+									// Se actualiza el monto de las planillas
+									self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
 
 									// Se buscan todas las planillas.
 									return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
@@ -634,6 +646,9 @@
 
 							} elseif ( $getData['tipo'] == 'periodo=0' ) {
 
+								// Se actualiza el monto de las planillas
+								self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
+
 								// Se buscan todas la planilla que cumplan con esta condicion
 								return $html = self::actionGetViewDeudaTasa($searchRecibo, (int)$getData['i']);
 							}
@@ -642,6 +657,7 @@
 
 						}
 					} elseif ( $getData['view'] == 3 ) {	// Request desde deuda por objeto.
+
 						if ( $getData['tipo'] == 'periodo>0' ) {
 							if ( $getData['i'] == 1 ) {
 
@@ -650,6 +666,9 @@
 
 							} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
 								if ( isset($getData['idO']) ) {
+
+									// Se actualiza el monto de las planillas
+									self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i'], (int)$getData['idO']);
 
 									// Se busca las deudas detalladas de un objeto especifico.
 									return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO'], $getData['objeto']);
@@ -671,6 +690,51 @@
 
 
 		/**
+		 * Metodo que se encarga de la actualizacion de las planillas.
+		 * @param ReciboSearch $searchRecibo instancia de la clase.
+		 * @param integer  $impuesto identificador del impuesto.
+		 * @param  integer $idImpuesto identificador del objeto.
+		 * @return none
+		 */
+		public function actualizarPlanillaSegunImpesto($searchRecibo, $impuesto, $idImpuesto = 0)
+		{
+			$planilla1 = [];
+			$planilla2 = [];
+			$planillas = [];
+
+			// Setear las planillas ya seleccionadas.
+			$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+			$searchRecibo->setPlanillas($planillaSeleccionadas);
+
+			// PLanillas con periodos mayores a cero.
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '>');
+			if ( $provider !== null ) {
+				$planilla1 = array_column($provider->getModels(), 'planilla');
+			}
+
+			// PLanillas con periodos iguales a cero.
+			$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, $idImpuesto, '=');
+			if ( $provider !== null ) {
+				$planilla2 = array_column($provider->getModels(), 'planilla');
+			}
+
+			// Se juntan en un solo arreglo.
+			$planillas = array_merge($planilla1, $planilla2);
+
+			if ( count($planillas) > 0 ) {
+				foreach ( $planillas as $i => $planilla ) {
+					$actualizar = New ActualizarPlanilla((int)$planilla);
+					$actualizar->iniciarActualizacion();
+				}
+			}
+
+		}
+
+
+
+
+
+		/**
 		 * Metodo que renderiza una vista con la contabilizacion de la deuda
 		 * segun el impuesto separando la deuda en dos tipos:
 		 * - Deudas de periodos: periodos mayores a cero (trimestre>0).
@@ -685,7 +749,7 @@
 				$idContribuyente = $_SESSION['idContribuyente'];
 				$caption = Yii::t('frontend', 'Deuda segun tipo');
 				$provider = $searchRecibo->getDataProviderEnPeriodo($impuesto);
-				return $this->renderAjax('/recibo/_deuda_en_periodo', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_en_periodo', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'idContribuyente' => $idContribuyente,
@@ -716,7 +780,7 @@
 				$searchRecibo->setPlanillas($planillaSeleccionadas);
 
 				$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla($impuesto, 0, '=');
-				return $this->renderAjax('/recibo/_deuda_detalle_planilla_tasa', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_detalle_planilla_tasa', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'periodoMayorCero' => false,
@@ -746,6 +810,8 @@
 
 				// Setear las planillas ya seleccionadas.
 				$planillaSeleccionadas = isset($_SESSION['planillaSeleccionadas']) ? $_SESSION['planillaSeleccionadas'] : [];
+
+				// Para excluir estas planillas
 				$searchRecibo->setPlanillas($planillaSeleccionadas);
 
 				$provider = $searchRecibo->getDataProviderDeudaPorObjetoPlanilla(1, 0, '>');
@@ -753,7 +819,7 @@
 				// Se obtiene la primera planilla del provider.
 				$primeraPlanilla = array_keys($provider->allModels)[0];
 
-				return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_detalle_planilla', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'periodoMayorCero' => true,
@@ -789,7 +855,7 @@
 				}
 				$i = Impuesto::findOne($impuesto);
 				$caption = Yii::t('frontend', 'Deuda - Por: ' . $i->descripcion);
-				return $this->renderAjax('/recibo/_deuda_por_objeto', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_por_objeto', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'labelObjeto' => $labelObjeto,
@@ -828,7 +894,7 @@
 				// Se obtiene la primera planilla del provider.
 				$primeraPlanilla = array_keys($provider->allModels)[0];
 
-				return $this->renderAjax('/recibo/_deuda_detalle_planilla', [
+				return $this->renderAjax('@frontend/views/recibo/_deuda_detalle_planilla', [
 													'caption' => $caption,
 													'dataProvider' => $provider,
 													'periodoMayorCero' => true,
@@ -865,7 +931,7 @@
 				$_SESSION['recibo'] = $model->recibo;
 				$_SESSION['nro_control'] = $model->nro_control;
 
-				return $this->render('/recibo/_view', [
+				return $this->render('@frontend/views/recibo/_view', [
 										'model' => $deposito,
 										'dataProvider' => $dataProvider,
 										'caption' => $caption,
