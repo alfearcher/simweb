@@ -44,7 +44,8 @@
 
  	use Yii;
 	use backend\models\recibo\depositodetalle\DepositoDetalle;
-
+	use yii\data\ArrayDataProvider;
+	use yii\data\ActiveDataProvider;
 
 
 	/**
@@ -57,7 +58,7 @@
 		private $_conexion;
 		private $_model;			// Modelo DepositoDetalle
 		private $_id_generado;
-
+		private $_recibo;
 
 
 		/**
@@ -65,7 +66,7 @@
 		 * @param ConexionController $conexion instancia de la clase.
 		 * @param connection $conn
 		 */
-		public function __construct($conexion, $conn)
+		public function __construct($conexion = null, $conn = null)
 		{
 			$this->_conexion = $conexion;
 			$this->_conn = $conn;
@@ -105,6 +106,38 @@
 				$this->_id_generado = $this->_conn->getLastInsertID();
 			}
 			return $result;
+		}
+
+
+
+		/**
+		 * Metodo que genera el modelo basico de consulta sobre la entidad "depositos-detalle"
+		 * @param  integer $recibo identificador de la entidad "depositos"
+		 * @return DepositoDetalle
+		 */
+		private function findDepositoDetalleModel($recibo)
+		{
+			return $this->find()->where('recibo =:recibo', [':recibo' => $recibo]);
+		}
+
+
+
+		/**
+		 * Metodo que retorna un proveedro de datos, con la informacion detallada
+		 * de las formas de pago del recibo.
+		 * @param integer $recibo identificador de la entidad "depositos"
+		 * @return ActivaDataProvider
+		 */
+		public function getDataProviderDepositoDetalle($recibo)
+		{
+			$findModel = self::findDepositoDetalleModel($recibo);
+			$query = $findModel->joinWith('formaPago F', true, 'INNER JOIN');
+			$dataProvider = New ActiveDataProvider([
+				'query' => $query,
+				'pagination' => false,
+			]);
+			$query->all();
+			return $dataProvider;
 		}
 
 	}
