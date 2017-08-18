@@ -62,6 +62,9 @@
 	use common\models\historico\cvbrecibo\GenerarValidadorRecibo;
 	use common\models\historico\cvbrecibo\GenerarValidadorReciboTresDigito;
 	use common\models\historico\cvbrecibo\HistoricoCodigoValidadorBancarioForm;
+	use common\models\rafaga\GenerarRafagaRecibo;
+	use backend\models\historico\impresion\HistoricoImpresionSearch;
+    use backend\models\historico\impresion\HistoricoImpresion;
 
 	use mPDF;
 
@@ -76,6 +79,7 @@
 		private $_recibo;
 		private $_id_contribuyente;
 		private $_nro_control;
+		private $_rafaga;
 
 
 
@@ -94,6 +98,7 @@
 			$this->_recibo = $recibo;
 			$this->_id_contribuyente = $idContribuyente;
 			$this->_nro_control = $nroControl;
+			$this->_rafaga = '';
 		}
 
 
@@ -105,7 +110,10 @@
 		 */
 		public function actionGenerarReciboPdf()
 		{
+			$this->_rafaga = '';
 			$cvb = '';
+			$mensajeCVB = "";	// Mensaje que se guarda en el historico del cvb.
+
             // Informacion del encabezado.
             $htmlEncabezado = $this->renderPartial('@common/views/plantilla-pdf/layout/layout-encabezado-pdf', [
                                                             'caption' => 'RECIBO DE PAGO MULTIPLE',
@@ -123,14 +131,29 @@
             // Identificacion del pago.
             $deposito = Deposito::findOne($this->_recibo);
 
+            // Mensaje del historico del cvb.
+			if ( $deposito->estatus == 0 ) {
+				// Recibo pendiente
+				$mensajeCVB = Yii::t('backend', 'MOSTRANDO RECIBO PENDIENTE');
+
+			} elseif ( $deposito->estatus == 1 ) {
+				// Recibo pagado
+				$mensajeCVB = Yii::t('backend', 'MOSTRANDO RECIBO PAGADO, FECHA: ' . $deposito->fecha);
+
+			} else {
+				// Recibo anulado
+				$mensajeCVB = Yii::t('backend', 'MOSTRANDO RECIBO ANULADO');
+
+			}
+
+
             // Se determina el codigo validador bancario del recibo.
-            //$validador = New GenerarValidadorRecibo($deposito);
             $validador = New GenerarValidadorReciboTresDigito($deposito);
             $cvb = $validador->getCodigoValidadorRecibo();
 
             // Se guarda el historico del documento.
             $historico = New HistoricoCodigoValidadorBancarioForm($deposito);
-            $historico->guardarHistorico('Se genero cvb ' . $cvb . ', antes de emitir el pdf del recibo');
+            $historico->guardarHistorico($mensajeCVB);
 
 
             $htmlIdentidadPago = $this->renderPartial('@common/views/plantilla-pdf/recibo/layout-identidad-pago-pdf', [
@@ -141,7 +164,6 @@
 
             $searchDeuda = New ReciboSearch($this->_id_contribuyente);
             $deudas = $searchDeuda->getDepositoPlanillaPorAnoImpositivoSegunRecibo($this->_recibo);
-
 
             // Detalle del pago.
             // Detalle del pdf, planillas contenidas en el recibo.
@@ -157,7 +179,7 @@
             					]);
 
             // Nombre del archivo.
-	        $nombrePDF = self::actionGenerarNombreArchivo($deposito);
+	        $nombrePDF = self::generarNombreArchivo($deposito);
 	        if ( trim($nombrePDF) !== '' ) {
 	        	$nombre = $nombrePDF . '.pdf';
 	        }
@@ -170,7 +192,7 @@
 	        $mpdf->WriteHTML($htmlIdentidadPago);
 	        $mpdf->WriteHTML($htmlDetallePago);
 
-	        self::actionCuadroFormaPago($mpdf, 13);
+	        self::cuadroFormaPago($mpdf, 13);
 
 	       	//funciona
 	       	// $mpdf->Rect(18, 230, 100, 30, D);
@@ -182,6 +204,12 @@
 	       	$mpdf->RoundedRect(16, 230, 120, 30, 3, D);
 	       	$mpdf->SetFont('Arial', 'B', 8);
 	       	$mpdf->Text(60,258,"Validacion terminal caja");
+
+
+	       	// se coloca la rafaga en el documento.
+	       	if ( $deposito->estatus == 1 ) {
+	       		self::getPrintRafaga($mpdf);
+	       	}
 
 	       	// Se coloca el QR
 	       	$mpdf->WriteFixedPosHTML($htmlQR, 112, 225, 120, 30);
@@ -200,7 +228,7 @@
 		 * @param integer $y valor vertical de la vista.
 		 * @return view
 		 */
-		public function actionCuadroFormaPago($mpdf, $y)
+		public function cuadroFormaPago(mPDF $mpdf, $y)
 		{
 			// Se coloca el identificador de la forma de pago
 	       	//$y = 17;
@@ -313,7 +341,7 @@
 		 * @return string retorna un nombre que se utilizara como nombre de
 		 * archivo para el PDF.
 		 */
-		private function actionGenerarNombreArchivo($model)
+		private function generarNombreArchivo($model)
 		{
 			$ceroAgregado = '0000000';
 			$codigo = 'RC';
@@ -339,6 +367,88 @@
 			}
 			return $nombrePDF;
 		}
+
+
+
+		/**
+		 * Metodo que se encarga de generar la rafaga del recibo actual.
+		 * @return array
+		 */
+		public function generarRafagaReciboActual()
+		{
+			$this->_rafaga = '';
+			$generarRafaga = New GenerarRafagaRecibo($this->_recibo);
+            $rafaga = $generarRafaga->getRafaga();
+            if ( count($rafaga) > 0 && count($generarRafaga->getErrores()) == 0 ) {
+            	$this->_rafaga = $rafaga;
+            } else {
+            	$this->_rafaga = [];
+            }
+		}
+
+
+
+		/**
+		 * Metodo que arma y genera la impresion de la rafaga del recibo para
+		 * mostrarlo en el documento pdf.
+		 * @return view
+		 */
+		private function getPrintRafaga(mPDF $mpdf)
+		{
+			self::generarRafagaReciboActual();
+			if ( count($this->_rafaga) > 0 ) {
+				$rafaga = $this->_rafaga;
+
+				$mpdf->SetFont('Arial', 'N', 8);
+		       	// Texto de la rafaga.
+		       	$mpdf->Text(18, 234, $rafaga['alcaldia']);
+		       	$mpdf->Text(18, 238, $rafaga['id_contribuyente'] . ' ' . $rafaga['contribuyente']);
+		       	$mpdf->Text(18, 242, 'R'. $rafaga['recibo'] . ' - total: ' . Yii::$app->formatter->asDecimal($rafaga['monto'], 2) . ' -  fecha pago: ' . date('d-m-Y', strtotime($rafaga['fecha'])));
+
+		       	// Formas de pagos del Recibo.
+		       	foreach ( $rafaga['forma_pago'] as $formaPago ) {
+		       		$forma .= $formaPago['descripcion'] . ' : ' . $formaPago['aporte'] . '  -  ';
+		       	}
+
+		       	$mpdf->Text(18, 246, $forma);
+		       	$mpdf->Text(18, 254, 'impreso por: ' . $rafaga['usuario'] . ' ' . $rafaga['fecha_hora']);
+		    }
+	       	return;
+		}
+
+
+
+		/**
+		 * Netodo setter para obtener la rafaga
+		 * @return array arreglo con la informacion generada de la rafaga.
+		 */
+		private function getRafagaActual()
+		{
+			return $this->_rafaga;
+		}
+
+
+
+		/***/
+        public function guardarHistoricoImpresion(Deposito $deposito)
+        {
+            $result = false;
+
+            $impresionModel = New HistoricoImpresion();
+            $impresionModel->documento = 'RECIBO';
+            $impresionModel->nro_documento = $deposito['recibo'];
+            $impresionModel->usuario = Yii::$app->identidad->getUsuario();
+            $impresionModel->fecha_hora = date('Y-m-d H:i:s');
+            $impresionModel->fuente_json = json_encode($deposito);
+            $impresionModel->observacion = '';
+            $impresionModel->nro_control = 0;
+            $impresionModel->ip_maquina = isset(Yii::$app->request->userIP) ? Yii::$app->request->userIP : '';
+            $impresionModel->host_name = isset(Yii::$app->request->userHost) ? Yii::$app->request->userHost : '';
+
+            $historicoSearch = New HistoricoImpresionSearch();
+            $result = $historicoSearch->guardar($impresionModel);
+            return $result;
+        }
 
 
 	}

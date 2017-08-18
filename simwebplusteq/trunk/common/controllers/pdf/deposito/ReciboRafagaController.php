@@ -21,13 +21,13 @@
  */
 
  /**
- *	@file DepositoController.php
+ *	@file ReciboRafagaController.php
  *
  *	@author Jose Rafael Perez Teran
  *
  *	@date 14-11-2016
  *
- *  @class DepositoController
+ *  @class ReciboRafagaController
  *	@brief Clase que gestiona la generacion del pdf del recibo de pago
  *
  *
