@@ -52,6 +52,7 @@
 	use yii\data\ArrayDataProvider;
 	use yii\data\ActiveDataProvider;
 	use backend\models\recibo\depositoplanilla\DepositoPlanillaSearch;
+	use common\models\pago\PagoSearch;
 
 
 	/**
@@ -293,7 +294,7 @@
 						'objeto' => $objeto,
 						'deuda' => $deuda['t'],
 						'tipo' => 'periodo>0',
-						'id_contribuyente' => $deuda['id_contribuyente'],
+						'id_contribuyente' => $this->_id_contribuyente,
 						'caption' => $caption,
 
 					];
@@ -552,7 +553,11 @@
 			$planillas = $findModel->where('DP.recibo =:recibo',[':recibo' => $recibo])
 								   ->asArray()
 								   ->all();
-			$listaPlanillas= [];
+
+			// Contenido de la entidad maestro del recibo de pago.
+			$deposito = isset($planillas[0]['deposito']) ? $planillas[0]['deposito'] : [];
+
+			$listaPlanillas = [];
 			foreach ( $planillas as $planilla ) {
 				$listaPlanillas[] = $planilla['planilla'];
 			}
@@ -560,8 +565,15 @@
 			$deudas = [];
 			if ( count($listaPlanillas) > 0 ) {
 				$añoActual = date('Y');
-				$deudas['morosa'] = $this->_deuda->getAgruparDeudaPorImpuestoAnoImpositivoPlanilla($añoActual, '<', $listaPlanillas);
-				$deudas['actual'] = $this->_deuda->getAgruparDeudaPorImpuestoAnoImpositivoPlanilla($añoActual, '=', $listaPlanillas);
+				if ( $deposito['estatus'] == 0 ) {
+					$deudas['morosa'] = $this->_deuda->getAgruparDeudaPorImpuestoAnoImpositivoPlanilla($añoActual, '<', $listaPlanillas);
+					$deudas['actual'] = $this->_deuda->getAgruparDeudaPorImpuestoAnoImpositivoPlanilla($añoActual, '=', $listaPlanillas);
+				} elseif ( $deposito['estatus'] == 1 ) {
+					$pagoSearch = New PagoSearch();
+					$deudas['morosa'] = $pagoSearch->getAgruparPagoPorImpuestoAnoImpositivoPlanilla($añoActual, '<', $listaPlanillas);
+					$deudas['actual'] = $pagoSearch->getAgruparPagoPorImpuestoAnoImpositivoPlanilla($añoActual, '=', $listaPlanillas);
+				}
+
 			}
 
 			// Se arma un arreglo de impuestos existentes
