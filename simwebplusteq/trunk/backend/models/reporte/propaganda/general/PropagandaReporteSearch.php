@@ -105,6 +105,7 @@
 						'asc' => ['nombre_propaganda' => SORT_ASC],
 						'desc' => ['nombre_propaganda' => SORT_DESC],
 					],
+					'fecha_hora',
 					'clase_propaganda',
 					'uso_propaganda',
 					'id_contribuyente',
@@ -119,6 +120,11 @@
 				$query->filterWhere(['C.inactivo' => $this->condicion_contribuyente]);
 			}
 			$query->andFilterWhere(['P.inactivo' => $this->condicion_objeto]);
+
+			if ( strlen($this->fecha_desde) > 0 && strlen($this->fecha_hasta) > 0 ) {
+				$query->andFilterWhere(['BETWEEN', 'date(P.fecha_hora)', date('Y-m-d', strtotime($this->fecha_desde)), date('Y-m-d', strtotime($this->fecha_hasta))]);
+			}
+
 
 			return $dataProvider;
 		}
@@ -170,6 +176,15 @@
 	                	'format' => 'raw',
 	                    'value' => function($data) {
 										return $data->nombre_propaganda;
+									},
+	                ],
+	                [
+	               		'attribute' => 'Fecha',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($data) {
+										return date('d-m-Y', strtotime($data->fecha_hora));
 									},
 	                ],
 	               	[
