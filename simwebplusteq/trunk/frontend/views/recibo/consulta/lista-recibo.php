@@ -114,7 +114,6 @@
 				            			'template' => '{view}',
 				            			'buttons' => [
 				                			'view' => function ($url, $model, $key) {
-
 				                   					return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. $model['recibo'] .'</center></div>',
 				                    							[
 				                    								'id' => 'id-recibo',
