@@ -48,7 +48,7 @@
 	use backend\models\reporte\aaee\licencia\LicenciaEmitidaBusquedaForm;
 	use backend\models\aaee\historico\licencia\HistoricoLicencia;
 	use yii\helpers\ArrayHelper;
-
+	use moonland\phpexcel\Excel;
 
 
 
@@ -206,18 +206,145 @@
 	     * Metodo que crea el data provider del historico de licencia
 	     * @return ActiveDataProvider
 	     */
-	    public function getDataProvider()
+	    public function getDataProvider($export = false)
 	    {
 	    	$query = self::armarConsultaHistoricoLicenciaModel();
-	    	$dataProvider = New ActiveDataProvider([
-	    		'query' => $query,
-	    		'pagination' => [
-	    			'pageSize' => 50,
-	    		],
-	    	]);
+
+	    	if ( $export ) {
+		    	$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => false,
+		    	]);
+		    } else {
+		    	$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
+		    		'pagination' => [
+		    			'pageSize' => 50,
+		    		],
+		    	]);
+		    }
 	    	$query->all();
 	    	return $dataProvider;
  	    }
+
+
+ 	    /**
+		 * Metodo que exporta el contenido de la consulta a formato excel
+		 * @return view
+		 */
+		public function exportarExcel($model)
+		{
+
+			return Excel::widget([
+    			'models' => $model,
+    			'format' => 'Excel2007',
+                'properties' => [
+
+                ],
+    			'mode' => 'export', //default value as 'export'
+    			'columns' => [
+					//['class' => 'yii\grid\SerialColumn'],
+	            	[
+	            		'attribute' => 'nro_solicitud',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										return $model->nro_solicitud;
+									},
+	                ],
+	                [
+	                	'attribute' => 'tipo',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										return $model->tipo;
+									},
+	                ],
+	                [
+	               		'attribute' => 'Lic. Generada',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										return $model->licencia;
+									},
+	                ],
+	               	[
+	               		'attribute' => 'Emision',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										$fuente = json_decode($model->fuente_json, true);
+										return date('d-m-Y', strtotime($fuente['fechaEmision']));
+									},
+	                ],
+	                [
+	                	'attribute' => 'Vcto',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										$fuente = json_decode($model->fuente_json, true);
+										return date('d-m-Y', strtotime($fuente['fechaVcto']));
+									},
+	                ],
+	                [
+	                	'attribute' => 'Condicion',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										if ( $model->inactivo == 1 ) {
+											return 'INACTIVO';
+										} else {
+											return 'ACTIVO';
+										}
+									},
+	                ],
+	                [
+	                	'attribute' => 'ID',
+	                    'contentOptions' => [
+		                	'style' => 'text-align:center;font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										return $model->id_contribuyente;
+									},
+	                ],
+	                 [
+	                 	'attribute' => 'Contribuyente',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										$fuente = json_decode($model->fuente_json, true);
+										return $fuente['descripcion'];
+									},
+	                ],
+	                [
+	                	'attribute' => 'Serial Control',
+	                    'contentOptions' => [
+		                	'style' => 'text-align:center;font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										return $model->serial_control;
+									},
+	                ],
+	                [
+	                	'attribute' => 'Usuario',
+	                    'contentOptions' => [
+		                	'style' => 'text-align:center;font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										return $model->usuario;
+									},
+	                ],
+	        	]
+			]);
+		}
 
 	}
 

@@ -59,6 +59,10 @@
 		public $todos;					// CheckBox que indica que se muestren todo los contribuyentes.
 		public $condicion_contribuyente;
 		public $condicion_objeto;
+		public $fecha_desde;
+		public $fecha_hasta;
+
+		private $rangoValido;
 
 
 		/**
@@ -100,12 +104,26 @@
 							},
 				  'message' => Yii::t('backend', '{attribute} is required')
 	        	],
+	        	[['fecha_desde', 'fecha_hasta'],
+	        	  'required',
+	        	  'when' => function($model) {
+								if ( strlen($model->fecha_desde) > 0 || strlen($model->fecha_hasta) > 0 ) {
+									return true;
+								} else {
+									return false;
+								}
+							},
+				  'message' => Yii::t('backend', '{attribute} is required')
+	        	],
 	        	[['condicion_objeto'],
 	        	  'required',
 	        	  'message' => Yii::t('backend', '{attribute} is required')],
 	        	[['id_contribuyente', 'condicion_contribuyente',
 	        	  'condicion_objeto', 'todos'],
 	        	  'integer', 'message' => Yii::t('backend', 'Formato de valores incorrecto')],
+	        	['fecha_desde' , 'validarRango'],
+	        	[['fecha_desde', 'fecha_hasta'], 'safe'],
+
 	        ];
 	    }
 
@@ -123,6 +141,8 @@
 	        	'todos' => Yii::t('backend','Todos los Contribuyente'),
 	        	'condicion_contribuyente' => Yii::t('backend','Condicion'),
 	        	'condicion_objeto' => Yii::t('backend','Condicion'),
+	        	'fecha_desde' => Yii::t('backend','Desde'),
+	        	'fecha_hasta' => Yii::t('backend','Hasta'),
 	        ];
 	    }
 
@@ -161,6 +181,22 @@
 	    	return false;
 	    }
 
+
+
+	    /**
+	     * Metodo que permite validar el rango de fecha.
+	     * @return none
+	     */
+	    public function validarRango()
+	    {
+	    	$this->rangoValido = false;
+	    	$validarRango = New RangoFechaValido($this->fecha_desde, $this->fecha_hasta);
+	    	if ( !$validarRango->rangoValido() ) {
+	    		$this->addError('fecha_desde', Yii::t('backend', 'Rango de fecha no es valido'));
+	    	} else {
+	    		$this->rangoValido = true;
+	    	}
+	    }
 
 	}
 ?>
