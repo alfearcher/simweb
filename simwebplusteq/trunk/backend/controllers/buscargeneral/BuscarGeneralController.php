@@ -57,9 +57,6 @@
 	use yii\web\NotFoundHttpException;
 	use backend\models\buscargeneral\BuscarGeneralForm;
 	use backend\models\buscargeneral\BuscarGeneral;
-	//use  yii\web\Session;
-
-	//$session = Yii::$app()->session;		// Iniciando session
 
 	session_start();
 
@@ -88,19 +85,11 @@
 
 
 		/**
-		*
+		* Metodo que muestra el formulario principal de busqueda.
+		* Si la consulta es exitosa se renderiza una vista con el listado de contribuyentes.
 		*/
 		public function actionIndex()
 		{
-
-			$params = Yii::$app->request->queryParams;
-			if ( isset($params['page']) ) {
-				if ( $params['page'] > 0 ) {
-					//die(var_dump($params) . 'Primero');
-					//die(var_dump(self::getDataProviderGlobal()) . ' ***Primero****');
-					//die(var_dump($dataProvider));
-				}
-			}
 
 			$model = New BuscarGeneralForm();
 	  		$arrayParametros = [];
@@ -118,12 +107,12 @@
 	      	 		$request = Yii::$app->request;
 	      	 		$arrayParametros = $request->bodyParams;
 
+	      	 		$_SESSION['postEnviado'] = $request->bodyParams;
+
 	      	 		// Creo mi proveedor de datos para realizar la busqueda y mostrar lo encontrado.
 	      	 		$dataProvider = $model->BuscarContribuyente($arrayParametros);
 
-	      	 		//$session['dataProvider'] = $dataProvider;
 	      	 		$_SESSION['dataProvider'] = $dataProvider;
-
 
 	      	 		// Se levanta una vista con el resultado de la consulta, la misma tiene formato de tabla.
 	      	 		return $this->render('/buscar-general/contribuyente-encontrado-form', ['searchModel' => $model,'dataProvider' => $dataProvider,]);
@@ -133,13 +122,11 @@
 	      	 		$model->getErrors();
 	      	 	}
 	      	} else {
-
+	      		$params = Yii::$app->request->get();
 	      		if ( isset($params['page']) ) {
-	      			$params = Yii::$app->request->queryParams;
-	      			//$dataProvider = $session['dataProvider'];
-	      			$dataProvider = $_SESSION['dataProvider'];
-
+	      			$params = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : Yii::$app->request->queryParams;
 	      			$model->load($params);
+	      			$dataProvider = $model->BuscarContribuyente($params);
       				return $this->render('/buscar-general/contribuyente-encontrado-form', ['searchModel' => $model,'dataProvider' => $dataProvider,]);
 	  			}
 	  		}
@@ -186,7 +173,6 @@
 		 */
 		public  function actionEliminarSession()
 		{
-			//unset(Yii::app()->session['var']);
 			session_unset();
 			return $this->render('/buscar-general/view-ok',['mostrarMenuPrincipal' => 0]);
 		}
@@ -219,17 +205,18 @@
 	  	 * @param $idContribuyente, long que identifica al contribuyente.
 	  	 * @return Vista con los datos mas representativos
 	  	 */
-	  	public function actionView($idContribuyente = null)
+	  	public function actionView($idContribuyente)
     	{
+    		unset($_SESSION['idContribuyente']);
  			if ( isset($idContribuyente) ) {
 	    		if ( isset($_SESSION['idContribuyente']) ) {
-	    			if ( $_SESSION['idContribuyente'] == $idContribuyente ) {
+	    			// if ( $_SESSION['idContribuyente'] == $idContribuyente ) {
 	    				return $this->render('/buscar-general/view', [
 			            	'model' => $this->findModel($idContribuyente),
 			        	]);
-	    			} else {
-	    				unset($_SESSION['idContribuyente']);
-	    			}
+	    			// } else {
+	    			// 	unset($_SESSION['idContribuyente']);
+	    			// }
 	    		} else {
 	    			return $this->render('/buscar-general/view', [
 			            	'model' => $this->findModel($idContribuyente),
