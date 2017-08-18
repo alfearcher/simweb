@@ -74,6 +74,11 @@
 		public $layout = 'layout-main';				//	Layout principal del formulario
 
 
+
+		/**
+		 * Metodo inicial
+		 * @return none
+		 */
 		public function actionIndex()
 		{
 			$varSessions = self::actionGetListaSessions();
@@ -85,8 +90,8 @@
 
 
 		/**
-		 * Metodo que inicia el modulo de lqiquidacion.
-		 * @return [type] [description]
+		 * Metodo que renderiza una vista que permite la busqueda de los registros.
+		 * @return view
 		 */
 		public function actionMostrarFormConsultaContribuyente()
 		{
@@ -149,8 +154,9 @@
 		      	// Lista de Condicion del registro
 		      	$contribuyenteSearch = New ContribuyenteGeneralSearch();
 		      	$listaCondicionContribuyente = $contribuyenteSearch->getListaCondicionContribuyente();
-		      	array_pop($listaCondicionContribuyente);
 
+		      	// Extrae o quita el último elemento del final del array
+		      	array_pop($listaCondicionContribuyente);
 
 		      	// Se muestra el formulario de busqueda.
 		      	return $this->render('/reporte/contribuyente/general/contribuyente-objeto-busqueda-form', [
@@ -159,6 +165,7 @@
 						      										'subCaption' => $subCaption,
 						      										'listaCondicionContribuyente' => $listaCondicionContribuyente,
 						      										'captionObjeto' => $captionObjeto,
+						      										'showFecha' => true,
 		      		  ]);
 
 			} else {
@@ -205,7 +212,7 @@
 			$postGet = $request->get();
 
 			// Identificador del contribuyente
-			$id = $postGet['id'];
+			$id = (int)$postGet['id'];
 
 			return $this->renderAjax('@backend/views/buscar-general/view', [
 			            	'model' => $this->findModel($id),
@@ -224,7 +231,6 @@
 			$postData = isset($_SESSION['postData']) ? $_SESSION['postData'] : [];
 			$propagandaSearch = New PropagandaReporteSearch();
 			$propagandaSearch->load($postData);
-
 			$dataProvider = $propagandaSearch->getDataProvider($postData, true);
 			$model = $dataProvider->getModels();
 

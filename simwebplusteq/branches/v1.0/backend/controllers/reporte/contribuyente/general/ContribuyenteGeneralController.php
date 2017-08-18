@@ -277,9 +277,10 @@
 
 
 		/**
-    	 * [findModel description]
-    	 * @param  [type] $idContribuyente [description]
-    	 * @return [type]                  [description]
+    	 * Metodo que realiza la consulta para obtener los datos del contribuyente con
+    	 * la informacion de su afiliacion. Retorna la informacion de ambas entidades.
+    	 * @param integer $idContribuyente identificador del contribuyente
+    	 * @return BuscarGeneral
     	 */
     	protected function findModel($idContribuyente)
     	{

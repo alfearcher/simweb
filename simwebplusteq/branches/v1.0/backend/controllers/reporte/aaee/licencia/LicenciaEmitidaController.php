@@ -60,6 +60,7 @@
 	use backend\models\reporte\aaee\licencia\LicenciaEmitidaBusquedaForm;
 	use backend\models\aaee\licencia\tipolicencia\TipoLicenciaSearch;
 	use backend\models\aaee\licencia\LicenciaSolicitudSearch;
+	use backend\models\buscargeneral\BuscarGeneral;
 
 
 
@@ -156,6 +157,8 @@
 
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
+		      			$_SESSION['postInicial'] = $postData;
+		      			$_SESSION['scenario'] = $model->scenario;
 						$subCaption = Yii::t('backend', 'Resultado de la Consulta');
 		      			$dataProvider = $model->getDataProvider();
 		      			return $this->render('/reporte/aaee/licencia/licencia-emitida-reporte', [
@@ -229,21 +232,66 @@
 
 
 
-		/***/
-		public function actionGenerarPdf()
+
+		/**
+		 * Metodo que permite renderizar una vista con la informacion preliminar de
+		 * la licencia segun el numero de solicitud de la misma.
+		 * @return View
+		 */
+		public function actionViewContribuyenteModal()
 		{
 			$request = Yii::$app->request;
-			$postData = $request->post();
+			$postGet = $request->get();
 
-			if ( isset($postData['planilla']) ) {
-				$planilla = $postData['planilla'];
-				$pdf = New PlanillaPdfController($planilla);
-				$pdf->actionGenerarPlanillaPdf();
+			// Identificador del contribuyente
+			$id = (int)$postGet['id'];
 
-			}
-
+			return $this->renderAjax('@backend/views/buscar-general/view', [
+			            	'model' => $this->findModel($id),
+			       ]);
 		}
 
+
+
+		/**
+    	 * [findModel description]
+    	 * @param  [type] $idContribuyente [description]
+    	 * @return [type]                  [description]
+    	 */
+    	protected function findModel($idContribuyente)
+    	{
+  			$model = BuscarGeneral::find()->alias('B')
+  			                              ->joinWith('afiliacion A', true, 'LEFT JOIN')
+  			                              ->where('B.id_contribuyente =:id_contribuyente',
+  			                          					[':id_contribuyente' => $idContribuyente])
+  			                              ->one();
+
+  			if ( $model !== null ) {
+  				return $model;
+  			} else {
+  				throw new NotFoundHttpException('The requested page does not exist.');
+  			}
+    	}
+
+
+    	/**
+		 * Metodo que exporta el contenido de la consulta a formato excel
+		 * @return view
+		 */
+		public function actionExportarExcel()
+		{
+			$postInicial = isset($_SESSION['postInicial']) ? $_SESSION['postInicial'] : [];
+			if ( count($postInicial) > 0 ) {
+				$licenciaSearch = New LicenciaEmitidaSearch();
+				$postData = $postInicial;
+				$licenciaSearch->scenario = $_SESSION['scenario'];
+				$licenciaSearch->load($postData);
+				$dataProvider = $licenciaSearch->getDataProvider(true);
+				$model = $dataProvider->getModels();
+
+				$licenciaSearch->exportarExcel($model);
+			}
+		}
 
 
 
@@ -318,6 +366,8 @@
 							'postData',
 							'conf',
 							'begin',
+							'postInicial',
+							'scenario',
 					];
 		}
 
