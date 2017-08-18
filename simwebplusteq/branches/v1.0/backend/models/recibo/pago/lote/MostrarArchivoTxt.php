@@ -81,7 +81,7 @@
          */
         private $_arreglo_pago = [];
 
- 		private $_errores = [];
+ 		private $_errores;
 
         const NUMERO_COLUMNA = 16;
 
@@ -263,7 +263,8 @@
 			if ( self::existeArchivo() ) {
 
 				// Ruta y nonmbre del archivo
-				$ruta = self::getRuta() . self::getNombre();
+				//$ruta = self::getRuta() . self::getNombre();
+				$ruta = self::getRutaArchivoTxt();
 
 				$fp = fopen($ruta, "r");
 				$ct = 0;
@@ -271,6 +272,9 @@
 					$linea = fgets($fp);
 					if ( $ct > 0 ) {
 						if ( $linea !== null ) {
+							// if ( trim($linea) == '' ) {
+							// 	$linea = ' ';
+							// }
 							//echo $linea . "<br />";
 							self::armarItemPago($linea, $ct);
 						}
@@ -307,14 +311,13 @@
 			$items = explode(';', $lineaPago);
 
 			if ( (int)count($items) == self::NUMERO_COLUMNA ) {
-
 				foreach ( $items as $key => $value ) {
-					$pago[self::campos()[$key]] = $value;
+					$pago[self::campos()[$key]] = trim($value);
 				}
 				self::addItem($pago);
 
 			} else {
-				$mensaje = Yii::t('backend', 'La linea del archivo no cumple con las especificaciones del numero de columnas. Recibo: ') . $linea;
+				$mensaje = Yii::t('backend', 'La linea del archivo no cumple con las especificaciones del numero de columnas. Linea: ') . $linea;
 				self::setError($mensaje);
 			}
 		}

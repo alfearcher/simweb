@@ -60,12 +60,8 @@
 		 */
 		private $_id_banco;
 
-
-        /**
-         * Fecha de pago
-         * @var date
-         */
-        private $_fecha_pago;
+        private $_fecha_desde;
+        private $_fecha_hasta;
 
         /**
          * Arreglo de alias de los bancos para armar el nombre del archivo txt
@@ -81,7 +77,7 @@
          */
         private $_alias;
 
-        private $_nombre_archivo;
+        private $_lista_nombre_archivo = [];
 
         private $_arreglo_pago = [];
 
@@ -97,12 +93,14 @@
 		/**
 		 * Metodo constructor de la clase.
 		 * @param integer $idBanco entero que identifica al banco dentro de la entidad "bancos"
-		 * @param date $fechaPago fecha de pago.
+		 * @param string $fechaDesde fecha inicio de consulta.
+		 * @param string $fechaHasta fecha final de consulta.
 		 */
-		public function __construct($idBanco, $fechaPago)
+		public function __construct($idBanco, $fechaDesde, $fechaHasta)
 		{
 			$this->_id_banco = $idBanco;
-			$this->_fecha_pago = date('Y-m-d', strtotime($fechaPago));
+			$this->_fecha_desde = date('Y-m-d', strtotime($fechaDesde));
+			$this->_fecha_hasta = date('Y-m-d', strtotime($fechaHasta));
 			$this->_listaAlias = require('alias-banco-archivo-txt.php');
 			$this->_alias = $this->_listaAlias[$idBanco];
 		}
@@ -115,7 +113,16 @@
 		 */
 		public function iniciarListaArchivo()
 		{
-			self::armarNombreArchivo();
+			// Ciclo de fechas origen $this->_fecha_desde, final $this->_fecha_hasta.
+			$arregloFecha = self::crearCicloFecha();
+			if ( count($arregloFecha) > 0 ) {
+				// Ciclo de nombres creados, segun la politica de formacion de los nombres.
+				$arregloArchivo = self::crearCicloNombreArchivo($arregloFecha);
+				if ( count($arregloArchivo) > 0 ) {
+					$this->_lista_nombre_archivo = $arregloArchivo;
+					self::crearListaArchivo($arregloArchivo);
+				}
+			}
 		}
 
 
@@ -123,25 +130,15 @@
 
 		/**
 		 * bcoban_aaa_20170420
-		 * @return
-		 */
-		private function armarNombreArchivo()
-		{
-			$fecha = str_replace("-", "", $this->_fecha_pago);
-			$fecha = str_replace("/", "", $fecha);
-			$this->_nombre_archivo = self::NOMBRE_BASE . $this->_alias . "_" . self::ALIAS_ALCALDIA . "_" . $fecha;
-		}
-
-
-
-		/**
-		 * Metodo getter del nombre del archivo.
 		 * @return string
 		 */
-		public function getNombre()
+		private function armarNombreArchivo($fecha)
 		{
-			return $this->_nombre_archivo;
+			$fechaArmada = str_replace("-", "", $fecha);
+			$fechaArmada = str_replace("/", "", $fechaArmada);
+			return self::NOMBRE_BASE . $this->_alias . "_" . self::ALIAS_ALCALDIA . "_" . $fechaArmada . ".txt";
 		}
+
 
 
 
@@ -158,14 +155,24 @@
 
 
 
+
 		/**
-		 * Metodo que retorna la ruta completa donde esta localizado el archivo con los
-		 * registros de pagos.
-		 * @return string
+		 * Metodo getter de fecha desde
+		 * @return string retorna la fecha desde en formato YYYY-mm-dd.
 		 */
-		public function getRutaArchivo()
+		public function getFechaDesde()
 		{
-			return $ruta = self::getRuta() . self::getNombre() . '.txt';
+			return $this->_fecha_desde;
+		}
+
+
+		/**
+		 * Metodo getter de fecha hasta
+		 * @return string retorna la fecha hasta en formato YYYY-mm-dd.
+		 */
+		public function getFechaHasta()
+		{
+			return $this->_fecha_hasta;
 		}
 
 
@@ -174,18 +181,28 @@
 		 * Metodo que recorre un directorio particular para crear un arreglo con los
 		 * nombres de los archivos que se encuentren en dicho directorio. Pero se hara
 		 * un filtro para obtener solo los archivos que cumplan una condicion especifica.
+		 * @param array $arregloArchivo arreglo de nombres de archivos de conciliacion.
 		 * @return array
 		 */
-		public function crearListaArchivo()
+		public function crearListaArchivo($arregloArchivo)
 		{
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
+
+				// Permite mostrar el contenido del direcorio y lo muestra en un arreglo
+				// cada item encontrado sera un elemento del arreglo.
+				//$ficheros1  = scandir(self::getRuta());
+
 				while ( false !== ($file = readdir($gestor)) ) {
 	        		if ( $file !== '.' && $file !== '..' && $file !== NULL && substr(trim($file), -4) == '.txt' ) {
-	        			$this->_lista_archivo[] = [
-	        				'file' => $file,
-	        				'path' => self::getRuta(),
-	        			];
+	        			$key = array_search($file, array_column($arregloArchivo, 'nombre'));
+	        			if ( $key !== false ) {
+		        			$this->_lista_archivo[] = [
+		        				'file' => $file,
+		        				'path' => self::getRuta(),
+		        				'fecha' => $arregloArchivo[$key]['fecha'],
+		        			];
+		        		}
 	        		}
 	    		}
 	    		closedir($gestor);
@@ -220,7 +237,10 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que retorna un arreglo con los nombres de los archivos.
+		 * @return array. Arreglo de nombres de los archivos txt de recaudacion.
+		 */
 		public function getListaArchivo()
 		{
 			return $this->_lista_archivo;
@@ -228,86 +248,63 @@
 
 
 
-
-
-		/***/
-		// public function lecturaArchivo()
-		// {
-
-		// 	if ( is_dir(self::getRuta()) ) {
-		// 		$ruta = self::getRuta() . self::getNombre() . '.txt';
-		// 		$fp = fopen($ruta, "r");
-		// 		$ct = 0;
-		// 		while(!feof($fp)) {
-		// 			$linea = fgets($fp);
-		// 			if ( $ct > 0 ) {
-		// 				if ( $linea !== null ) {
-		// 					//echo $linea . "<br />";
-		// 					self::armarItemPago($linea);
-		// 				}
-		// 			}
-		// 			$ct++;
-		// 		}
-		// 		fclose($fp);
-		// 	}
-		// }
+		/**
+		 * Metodo que retorna un arreglo con la estructura
+		 * {
+		 * 		[n] = {
+		 *   		['fecha'] => fecha,
+		 *     		['nombre'] => nombre
+		 * 		}
+		 * }
+		 * donde la fecha corresponde a la fecha armada segun el ciclo de fecha
+		 * y el nombre corresponde al nombre de archivo que se armo segun especificaciones.
+		 * @return array
+		 */
+		public function getListaNombreArchivo()
+		{
+			return $this->_lista_nombre_archivo;
+		}
 
 
 
-
-
-		// /***/
-		// private function armarItemPago($itemPago)
-		// {
-		// 	// se crea un arreglo con la estructura
-		// 	// {
-		// 	// 		campo1 => valor1,
-		// 	// 		campo2 => valor2,
-		// 	// 		.
-		// 	// 		.
-		// 	// 		campoN => valorN
-		// 	// }
-		// 	//
-		// 	$items = explode(';', $itemPago);
-		// 	foreach ( $items as $key => $value ) {
-		// 		$pago[self::campos()[$key]] = $value;
-		// 	}
-		// 	self::addItem($pago);
-		// }
+		/**
+		 * Metodo que arma un arreglo de fechas tomando como fecha inicial y final
+		 * las fechas $this->_fecha_desde y $this->_fecha_hasta.
+		 * @return array. arreglo de fechas en formato YYYY-mm-dd.
+		 */
+		public function crearCicloFecha()
+		{
+			$f1 = self::getFechaDesde();
+			$f2 = self::getFechaHasta();
+			$arreglo = [];
+			for( $i = $f1; $i <= $f2; $i = date("Y-m-d", strtotime($i ."+ 1 days")) ) {
+    			//echo $i . "<br />";
+    			$arreglo[] = $i;
+    		}
+    		return $arreglo;
+		}
 
 
 
 
-		// /***/
-		// private function addItem($itemPago)
-		// {
-		// 	$this->_arreglo_pago[] = $itemPago;
-		// }
-
-
-
-		// /***/
-		// private function campos()
-		// {
-		// 	return [
-		// 		0 => 'recibo',
-		// 		1 => 'monto_recibo',
-		// 		2 => 'fecha_pago',
-		// 		3 => 'monto_efectivo',
-		// 		4 => 'monto_cheque',
-		// 		5 => 'cuenta_cheque',
-		// 		6 => 'nro_cheque',
-		// 		7 => 'fecha_cheque',
-		// 		8 => 'monto_tdd',
-		// 		9 => 'nro_tdd',
-		// 		10 => 'monto_tdc',
-		// 		11 => 'nro_tdc',
-		// 		12 => 'monto_transferencia',
-		// 		13 => 'nro_transaccion',
-		// 		14 => 'monto_total',
-		// 		15 => 'nro_cuenta_recaudadora'
-		// 	];
-		// }
+		/**
+		 * Metodo que crea un arreglo de nombres de archivos relacionado a las
+		 * fechas de recaudacion, estos archivos corresponde a la recaudacion
+		 * y conciuliacion enviada por el banco.
+		 * @param array $cicloFecha arreglo de fechas.
+		 * @return array arreglo de nombres de archivos de conciliacion.
+		 */
+		private function crearCicloNombreArchivo($cicloFecha)
+		{
+			$arreglo = [];
+			foreach ( $cicloFecha as $key => $fecha ) {
+				$arreglo[] = [
+					'fecha' => $fecha,
+					'nombre' => self::armarNombreArchivo($fecha)
+				];
+			}
+			return $arreglo;
+		}
 
 	}
 
