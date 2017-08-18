@@ -79,6 +79,9 @@
     use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
     use backend\models\recibo\pago\individual\PagoReciboIndividual;
     use common\controllers\pdf\deposito\ReciboRafagaController;
+    use common\controllers\pdf\deposito\DepositoController;
+    use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
+    use backend\models\utilidad\banco\BancoCuentaReceptora;
 
 
 	session_start();		// Iniciando session
@@ -205,7 +208,6 @@
 						// Se verifica que el recibo cumpla las reglas de negocio establecidas.
 						$pagoReciboSearch = New PagoReciboIndividualSearch($model->recibo);
 						$mensajes = $pagoReciboSearch->validarEvento();
-
 						if ( count($mensajes) == 0 ) {
 							$urlFormaPagos = Url::to(['registrar-formas-pago']);
 							$bloquearFormaPago = false;
@@ -213,6 +215,10 @@
 							$_SESSION['recibo'] = $model->recibo;
 
 						} else {
+                            $modelRecibo = New BusquedaReciboForm();
+                            $modelRecibo->recibo = $model->recibo;
+                            $modelRecibo->id_contribuyente = 0;
+                            $modelRecibo->nro_control = 0;
 							$htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
 																	'mensajes' => $mensajes,
 											]);
@@ -225,14 +231,15 @@
                             // $dataProviders[0]->getModels(), es el modelo de la entidad "depositos".
                             // $dataProviders[1]->getModels(), es el modelo de la entidad "depositos-planillas"
                             $estatusRecibo = isset($dataProviders[0]->getModels()[0]->toArray()['estatus']) ? (int)$dataProviders[0]->getModels()[0]->toArray()['estatus'] : 0;
+                            $modelRecibo = $dataProviders[0]->getModels()[0];
                         }
                         if ( $estatusRecibo == 1 ) {
 
                             // Se verifica que todas la planillas contenidas en el recibo esten en condicion
                             // de pagadas.
                             $planillasModels = $dataProviders[1]->getModels();
-                            foreach ( $planillasModels as $key => $model ) {
-                                if ( (int)$model->estatus == 1 ) {
+                            foreach ( $planillasModels as $key => $mod ) {
+                                if ( (int)$mod->estatus == 1 ) {
                                     $desactivarBotonRafaga = false;
                                 } else {
                                     $desactivarBotonRafaga = true;
@@ -256,7 +263,7 @@
 																'urlFormaPagos' => $urlFormaPagos,
 																'bloquearFormaPago' => $bloquearFormaPago,
                                                                 'desactivarBotonRafaga' => $desactivarBotonRafaga,
-                                                                'modelRecibo' => $model,
+                                                                'modelRecibo' => $modelRecibo,
 
 											]);
 
@@ -862,32 +869,41 @@
 
 										]);
 
-					// $dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
-     //    			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-     //    			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
-			  //     								'montoAgregado' => $montoAgregado,
-			  //     								'dataProvider' => $dataProvider,
-			  //     						]);
+                    // Datos de la formas de pago.
+                    $detalleSearch = New DepositoDetalleSearch(null, null);
+                    $dataProviderDetalle = $detalleSearch->getDataProviderDepositoDetalle($recibo);
+                    $htmlDepositoDetalle = $this->renderPartial('@backend/views/recibo/deposito-detalle/deposito-detalle-forma-pago',[
+                                                                            'dataProviderDetalle' => $dataProviderDetalle,
+                                            ]);
 
 
-     //    			$datosBanco = $_SESSION['datosBanco'];
-     //    			$htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
-     //    													'datosBanco' => $datosBanco,
-     //    					]);
+                    // Datos de la cuenta recaudadora.
+                    $detalleModel = $dataProviderDetalle->getModels()[0];
+                    $cuenta = $detalleModel['cuenta_deposito'];
+
+        			$datosBanco = self::datoBancoCuentaReceptora($cuenta);
+        			$htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
+        													'datosBanco' => $datosBanco,
+        					                   ]);
 
 
                     $model = New BusquedaReciboForm();
                     $model->recibo = $recibo;
+                    $model->id_contribuyente = $dataProviders[0]->getModels()[0]->toArray()['id_contribuyente'];
+                    $model->nro_control = $dataProviders[0]->getModels()[0]->toArray()['nro_control'];
+
+
                     $desactivarBotonRafaga = false;
-					$caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro.') . $recibo ;
+					$caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro. ') . $recibo ;
 					return $this->render('/recibo/pago/individual/resumen-pago-efectuado-form',[
 															'caption' => $caption,
 															'htmlRecibo' => $htmlRecibo,
-															'htmlFormaPago' => null,
-															'htmlCuentaRecaudadora' => null,
+															'htmlFormaPago' =>  $htmlDepositoDetalle,
+															'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
                                                             'desactivarBotonRafaga' => $desactivarBotonRafaga,
                                                             'modelRecibo' => $model,
+                                                            'codigo' => 100,
 							]);
         		} else {
                     // La informacion del recibo a pagar no coincide con la enviada.
@@ -909,22 +925,27 @@
         {
             $request = Yii::$app->request;
             $getData = $request->get();
+
             $recibo = isset($getData['recibo']) ? (int)$getData['recibo'] : 0;
 
-            if ( $recibo == (int)$_SESSION['reciboRafaga'] ) {
+            if ( $recibo == (int)$getData['recibo'] ) {
 
                 self::actionAnularSession(['reciboRafaga']);
-                $reciboRafaga = New ReciboRafagaController($recibo);
-                $mensajes = $reciboRafaga->actionGenerarRafagaReciboPdf();
+                // $reciboRafaga = New ReciboRafagaController($recibo);
+                // $mensajes = $reciboRafaga->actionGenerarRafagaReciboPdf();
 
-               $htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
-                                                            'mensajes' => $mensajes,
-                                            ]);
+                // $htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
+                //                                             'mensajes' => $mensajes,
+                //                             ]);
 
-               return $this->render('/recibo/pago/error/error',[
+
+               // Controlador que gestiona la generacion del pdf.
+                $depositoPdf = New DepositoController($recibo, (int)$getData['id_contribuyente'], (int)$getData['nro']);
+                return $depositoPdf->actionGenerarReciboPdf();
+
+                return $this->render('/recibo/pago/error/error',[
                                         'htmlMensaje' => $htmlMensaje,
                 ]);
-
 
             }
         }
@@ -1313,6 +1334,62 @@
         	}
         }
 
+
+
+
+        /**
+         * Metodo que realiza la consulta sobre las cuentas recaudadoras que estan
+         * registradas.
+         * @return BancoCuentaReceptora
+         */
+        protected function findCuentaReceptora($cuenta = '')
+        {
+            if ( trim($cuenta) !== '' ) {
+                return BancoCuentaReceptora::find()->alias('R')
+                                               ->joinWith('banco B', true, 'INNER JOIN')
+                                               ->where('R.cuenta =:cuenta', [':cuenta' => $cuenta])
+                                               ->asArray()
+                                               ->one();
+            } else {
+                return BancoCuentaReceptora::find()->alias('R')
+                                                   ->joinWith('banco B', true, 'INNER JOIN')
+                                                   ->asArray()
+                                                   ->all();
+            }
+        }
+
+
+
+        /**
+         * Metodo para crear un arreglo con la estructura:
+         * {
+         *     'nombre' => nombre del banco
+         *     'cuenta_recaudadora' => cuenta recpetora
+         *     'tipo_cuenta' => define si la cuenta es CUENTA RECAUDADORA O NO ES CUENTA RECAUDADORA
+         * }
+         * y lo retorna.
+         * @param string $cuenta numero de la cuenta receptora (string largo de enteros).
+         * @return array
+         */
+        protected function datoBancoCuentaReceptora($cuenta)
+        {
+            $listaCuentasRecaudadoras = Yii::$app->ente->getCuentaRecaudadora();
+            $datoBanco = [];
+            $registers = self::findCuentaReceptora($cuenta);
+            if ( count($registers) > 0 ) {
+                if ( in_array($registers['cuenta'], $listaCuentasRecaudadoras) ) {
+                    $tipo = 'CUENTA RECAUDADORA';
+                } else {
+                    $tipo = 'NO ES CUENTA RECAUDADORA';
+                }
+                $datoBanco = [
+                    'nombre' => $registers['banco']['nombre'],
+                    'cuenta_recaudadora' => $registers['cuenta'],
+                    'tipo_cuenta' => $tipo,
+                ];
+            }
+            return $datoBanco;
+        }
 
 
 

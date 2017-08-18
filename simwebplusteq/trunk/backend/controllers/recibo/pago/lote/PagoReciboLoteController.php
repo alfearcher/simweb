@@ -86,7 +86,9 @@
 	session_start();		// Iniciando session
 
 	/**
-	 *
+	 * Clase que gestiona el pago en lote de los recibos. Utilizando una archivo txt enviado
+     * por una entidad financiera. Este archivo txt debe cunplir con las especificaciones para
+     * que pueda ser detectado y analizado correctamente por el modulo que realiza dicho analisis
 	 */
 	class PagoReciboLoteController extends Controller
 	{
@@ -126,7 +128,12 @@
 
 
 
-        /***/
+        /**
+         * Metodo que muestra el formulario que permite realizar la busqueda de los archivos.
+         * Mostrando un combo-lista de los bancos que envian los archivos y dos campos input
+         * que permiten colocar un rango de fechas que representan las fechas de pagos.
+         * @return view
+         */
         public function actionMostrarFormConsulta()
         {
             $usuario = Yii::$app->identidad->getUsuario();
@@ -249,7 +256,6 @@
             $listaArchivo->iniciarListaArchivo();
             $provider = $listaArchivo->getDataProvider();
 
-            ///$model->sin_formato = 0;
             $subCaption = Yii::t('backend', 'Listado de Archivos de pagos.');
             return $this->render('/recibo/pago/lote/lista-archivo-txt',[
                                             'model' => $model,
@@ -268,7 +274,7 @@
          * Metodo que permite mostrar una vista con los nombres de los archivos txt
          * encontrados, segun los parametros de consulta previamente ingresados.
          * El resultado debe ser un grid con los nombres de los archivos encontrados.
-         * @return View
+         * @return view
          */
         public function actionMostrarArchivoTxt()
         {
@@ -277,7 +283,7 @@
             $postData = ( count($request->post()) > 0 ) ? $request->post() : $_SESSION['postEnviado'];
 
             $postGet = $request->get();
-
+            $errorMensaje = "";
             if ( isset($postData['btn-quit']) ) {
                 if ( $postData['btn-quit'] == 1 ) {
                     $this->redirect(['quit']);
@@ -303,29 +309,51 @@
             }
 
 
-            if ( isset($postData['data-file']) ) {
-                if ( isset($postData['data-path']) ) {
+            if ( isset($postData['data-file']) && isset($postData['data-path']) ) {
 
-                    $model = New BusquedaArchivoTxtForm();
-                    $model->load($postData);
+                $model = New BusquedaArchivoTxtForm();
+                $model->load($postData);
 
-                    $archivo = $postData['data-file'];
-                    $ruta = $postData['data-path'];
-                    // Fecha de pago
-                    $fecha = $postData['data-date'];
-                    $model->fecha_pago = $fecha;
+                $archivo = $postData['data-file'];
+                $ruta = $postData['data-path'];
+                // Fecha de pago
+                $fecha = $postData['data-date'];
+                $model->fecha_pago = $fecha;
 
-                    $mostrar = New MostrarArchivoTxt($ruta, $archivo);
-                    $mostrar->iniciarMostrarArchivo();
-                    $dataProvider = $mostrar->getDataProvider();
+                $mostrar = New MostrarArchivoTxt($ruta, $archivo);
+                $mostrar->iniciarMostrarArchivo();
+                $dataProvider = $mostrar->getDataProvider();
 
-                    $models = $dataProvider->getModels();
-                    $montoTotal = $mostrar->calcularTotalByRenglon($models, 'monto_total');
-                    $totalRegistro = $dataProvider->getTotalCount();
+                $models = $dataProvider->getModels();
+                $montoTotal = $mostrar->calcularTotalByRenglon($models, 'monto_total');
+                $totalRegistro = $dataProvider->getTotalCount();
 
-                    $this->layout = 'layoutbase';
-                    if ( $model->sin_formato == 1 ) {
-                        return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
+                $this->layout = 'layoutbase';
+                if ( $model->sin_formato == 1 ) {
+                    return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
+                                                    'dataProvider' => $dataProvider,
+                                                    'montoTotal' => $montoTotal,
+                                                    'totalRegistro' => $totalRegistro,
+                                                    'ruta' => $ruta,
+                                                    'archivo' => $archivo,
+                                                    'fecha' => $fecha,
+                                                    'model' => $model,
+
+                        ]);
+                } else {
+                    $htmlError = null;
+                    $pagoReciboLoteSearch = New PagoReciboLoteSearch($mostrar);
+                    $dataProvider = $pagoReciboLoteSearch->getDataProviderArchivoFormateado();
+                    $errorMensaje = $pagoReciboLoteSearch->getError();
+
+                    if ( count($errorMensaje) > 0 ) {
+                        $this->layout = 'layout-main';
+                        return $this->render('/recibo/pago/lote/warnings', [
+                                                            'archivo' => $archivo,
+                                                            'mensajes' => $errorMensaje,
+                                ]);
+                    } else {
+                        return $this->render('/recibo/pago/lote/mostrar-archivo-txt-formateado',[
                                                         'dataProvider' => $dataProvider,
                                                         'montoTotal' => $montoTotal,
                                                         'totalRegistro' => $totalRegistro,
@@ -333,36 +361,8 @@
                                                         'archivo' => $archivo,
                                                         'fecha' => $fecha,
                                                         'model' => $model,
-
-                            ]);
-                    } else {
-                        $htmlError = null;
-                        $pagoReciboLoteSearch = New PagoReciboLoteSearch($mostrar);
-                        $dataProvider = $pagoReciboLoteSearch->getDataProviderArchivoFormateado();
-                        $errorMensaje = $pagoReciboLoteSearch->getError();
-
-                        if ( count($errorMensaje) > 0 ) {
-                            $this->layout = 'layout-main';
-                            return $this->render('/recibo/pago/lote/warnings', [
-                                                                'archivo' => $archivo,
-                                                                'mensajes' => $errorMensaje,
-                                    ]);
-                        } else {
-                            return $this->render('/recibo/pago/lote/mostrar-archivo-txt-formateado',[
-                                                            'dataProvider' => $dataProvider,
-                                                            'montoTotal' => $montoTotal,
-                                                            'totalRegistro' => $totalRegistro,
-                                                            'ruta' => $ruta,
-                                                            'archivo' => $archivo,
-                                                            'fecha' => $fecha,
-                                                            'model' => $model,
-                                    ]);
-                        }
+                                ]);
                     }
-
-                } else {
-                    // No se determino el directorio del archivo
-
                 }
 
             } else {
