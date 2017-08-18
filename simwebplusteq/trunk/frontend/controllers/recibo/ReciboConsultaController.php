@@ -64,6 +64,7 @@
 	use backend\models\recibo\recibo\ReciboConsultaForm;
 	use backend\models\recibo\deposito\Deposito;
 	use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
+	use common\models\planilla\PlanillaSearch;
 
 
 
@@ -220,11 +221,11 @@
 											    ->joinWith('condicion C', true)
 											    ->one();
 
-					if ( $model->estatus == 0 ) {
+					if ( $deposito->estatus == 0 ) {
 						$_SESSION['recibo'] = $recibo;
 						$_SESSION['nro_control'] = $deposito->nro_control;
 
-					} elseif ( $model->estatus == 1 ) {
+					} elseif ( $deposito->estatus == 1 ) {
 						$detalleSearch = New DepositoDetalleSearch(null, null);
 						$dataProviderDetalle = $detalleSearch->getDataProviderDepositoDetalle($recibo);
 						$htmlDepositoDetalle = $this->renderPartial('@backend/views/recibo/deposito-detalle/deposito-detalle-forma-pago',[
@@ -274,6 +275,39 @@
 				// Session no valida
 			}
 		}
+
+
+
+
+		/**
+         * Metodo que permite renderizar una vista de los detalles de la planilla
+         * que se encuentran en la solicitud.
+         * @return View Retorna una vista que contiene un grid con los detalles de la
+         * planilla.
+         */
+        public function actionViewPlanilla()
+        {
+            $request = Yii::$app->request;
+            $getData = $request->get();
+
+            $planilla = $getData['p'];
+            $planillaSearch = New PlanillaSearch($planilla);
+            $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+            // Se determina si la peticion viene de un listado que contiene mas de una
+            // pagina de registros. Esto sucede cuando los detalles de un listado contienen
+            // mas de los manejados para una pagina en la vista.
+            if ( isset($request->queryParams['page']) ) {
+                $planillaSearch->load($request->queryParams);
+            }
+            $url = Url::to(['generar-pdf']);
+            return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+                                            'dataProvider' => $dataProvider,
+                                            'caption' => 'Planilla: ' . $planilla,
+                                            'p' => $planilla,
+            ]);
+        }
+
 
 
 
