@@ -97,10 +97,13 @@
 								},
 								'filterModel' => $listadoPropaganda,
 								'columns' => [
-									//['class' => 'yii\grid\SerialColumn'],
+									['class' => 'yii\grid\SerialColumn'],
 					            	[
 					            		'attribute' => 'id_impuesto',
-					                    'label' => Yii::t('frontend', 'Id'),
+					                    'label' => Yii::t('frontend', 'Id. Propaganda'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
 					                    'value' => function($data) {
                 										return $data->id_impuesto;
         											},
@@ -108,6 +111,9 @@
 					                [
 					                	'attribute' => 'nombre_propaganda',
 					                	'label' => Yii::t('frontend', 'Nombre'),
+					                	'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
 					                	'format' => 'raw',
 					                    'value' => function($data) {
                 										return Html::a($data->nombre_propaganda, '#', [
@@ -123,6 +129,9 @@
 					               	[
 					               		'attribute' => 'clase_propaganda',
 					                    'label' => Yii::t('frontend', 'Clase'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
 					                    'value' => function($data) {
                 										return $data->clase->descripcion;
         											},
@@ -130,24 +139,52 @@
 					                [
 					                	'attribute' => 'uso_propaganda',
 					                    'label' => Yii::t('frontend', 'Uso'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
 					                    'value' => function($data) {
                 										return $data->uso->descripcion;
         											},
 					                ],
 					                [
 					                    'label' => Yii::t('frontend', 'Tipo'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
 					                    'value' => function($data) {
                 										return $data->tipoPropaganda->descripcion;
         											},
 					                ],
 					                [
 					                    'label' => Yii::t('frontend', 'Condición'),
+					                    'contentOptions' => [
+						                	'style' => 'text-align:center;font-size:90%;',
+						                ],
 					                    'value' => function($data) {
                 										if ( $data->inactivo == 1 ) {
                 											return 'INACTIVO';
                 										} else {
                 											return 'ACTIVO';
                 										}
+        											},
+					                ],
+					                [
+					                	'attribute' => 'id_contribuyente',
+					                    'label' => Yii::t('frontend', 'ID. Cont.'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+					                    'value' => function($data) {
+                										return $data->id_contribuyente;
+        											},
+					                ],
+					                 [
+					                    'label' => Yii::t('frontend', 'Contribuyente'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+					                    'value' => function($data) {
+                										return $data->contribuyenteName;
         											},
 					                ],
 
