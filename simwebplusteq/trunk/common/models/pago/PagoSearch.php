@@ -859,4 +859,52 @@
 		}
 
 
+
+
+		/**
+		 * Metodo que seprar la deuda por impuesto segun la condicional de los
+		 * añoss y las planillas. Agrupa las deudas por impuestos y que cumplan
+		 * la condicion año-operador enviado mas la lista de planillas.
+		 * @param  integer $año año impositivo.
+		 * @param  string $operador operador.
+		 * @param  array $planillas arreglo de numero de planillas;
+		 * @return array.
+		 */
+		public function getAgruparPagoPorImpuestoAnoImpositivoPlanilla($año, $operador, $planillas)
+		{
+			$findModel = self::getModelGeneral();
+			$pago = [];
+
+			if ( in_array($operador, ['>', '=', '<', '>=', '<=']) ) {
+				$pago = $findModel->select([
+									'P.id_contribuyente',
+									'P.id_pago',
+									'P.ente',
+									'sum(D.monto) as tmonto',
+									'sum(D.recargo) as trecargo',
+									'sum(D.interes) as tinteres',
+									'sum(D.descuento) as tdescuento',
+									'sum(D.monto_reconocimiento) as tmonto_reconocimiento',
+									'D.impuesto',
+									'I.descripcion as descripcion_impuesto',
+								])
+							   ->joinWith('pagos P', false, 'INNER JOIN')
+							   ->joinWith('impuestos I', true, 'INNER JOIN')
+							   ->andWhere('D.ano_impositivo ' . $operador .  ':ano_impositivo',
+							   					[':ano_impositivo' => $año])
+							   ->andWhere(['IN', 'planilla', $planillas])
+							   ->groupBy('D.impuesto')
+							   ->orderBy([
+							   		'D.impuesto' => SORT_ASC,
+
+							   	])
+							   ->asArray()
+							   ->all();
+			}
+			return $pago;
+		}
+
+
+
+
 	}
