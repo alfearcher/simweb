@@ -140,7 +140,7 @@
 					</div>
 
 					<div class="row" style="width:100%;padding-top: 15px;">
-						<div class="col-sm-2" style="width:22%;padding-top:6px;">
+						<div class="col-sm-2" style="width:16%;padding-top:6px;">
 							<p><strong><?= $model->getAttributeLabel('condicion_objeto') ?></strong></p>
 						</div>
 						<div class="col-sm-5" style="width:55%;padding-left:0px;">
@@ -154,10 +154,67 @@
 						</div>
 					</div>
 
+					<?php if ( $showFecha ) { ?>
+<!-- Rango de Inscripcion -->
+						<div class="row" style="width:100%;padding-top: 0px;">
+							<div class="col-sm-2" style="width:28%;padding-top:6px;">
+								<p><strong><?= Yii::t('backend', 'Rango de Inscripcion') ?></strong></p>
+							</div>
+						</div>
+
+<!-- Inicio de Fecha Desde -->
+						<div class="row" style="width:100%;padding-top: 0px;margin-left: 15px;">
+							<div class="col-sm-2" style="width:10%;margin-top: 5px;">
+								<p><strong><?= $model->getAttributeLabel('fecha_desde') ?></strong></p>
+							</div>
+							<div class="col-sm-2" style="width:20%;">
+								<?= $form->field($model, 'fecha_desde')->widget(\yii\jui\DatePicker::classname(),[
+																					  'clientOptions' => [
+																							'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																							'changeYear' => true,
+																						],
+																					  'language' => 'es-ES',
+																					  'dateFormat' => 'dd-MM-yyyy',
+																					  'options' => [
+																					  		'id' => 'fecha-desde',
+																							'class' => 'form-control',
+																							'readonly' => true,
+																							'style' => 'background-color: white;width:100%;',
+
+																						]
+																						])->label(false) ?>
+
+							</div>
+						</div>
+<!-- Fin Fecha Desde -->
 
 
+<!-- Inicio de Fecha Hasts -->
+						<div class="row" style="width:100%;padding-top: 0px;margin-left: 15px;">
+							<div class="col-sm-2" style="width:10%;margin-top: 5px;">
+								<p><strong><?= $model->getAttributeLabel('fecha_hasta') ?></strong></p>
+							</div>
+							<div class="col-sm-2" style="width:20%;">
+								<?= $form->field($model, 'fecha_hasta')->widget(\yii\jui\DatePicker::classname(),[
+																					  'clientOptions' => [
+																							'maxDate' => '+0d',	// Bloquear los dias en el calendario a partir del dia siguiente al actual.
+																							'changeYear' => true,
+																						],
+																					  'language' => 'es-ES',
+																					  'dateFormat' => 'dd-MM-yyyy',
+																					  'options' => [
+																					  		'id' => 'fecha-hasta',
+																							'class' => 'form-control',
+																							'readonly' => true,
+																							'style' => 'background-color: white;width:100%;',
 
+																						]
+																						])->label(false) ?>
 
+							</div>
+						</div>
+<!-- Fin Fecha Hasta -->
+					<?php } ?>
 
 					<div class="row" style="padding-top: 20px;">
 						<div class="col-sm-3" style="">

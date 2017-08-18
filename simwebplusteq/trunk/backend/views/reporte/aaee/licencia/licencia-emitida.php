@@ -227,7 +227,7 @@
 									<?= $form->field($model, 'fecha_emision')->textInput([
 																				'id' => 'id-fecha_emision',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => isset($datosContribuyente['fechaEmision']) ? $datosContribuyente['fechaEmision'] : '',
+																				'value' => isset($datosContribuyente['fechaEmision']) ?  date('d-m-Y', strtotime($datosContribuyente['fechaEmision'])) : '',
 																				'readOnly' => true,
 
 																		])->label('Fecha Emisión') ?>
@@ -239,7 +239,7 @@
 									<?= $form->field($model, 'fecha_vcto')->textInput([
 																				'id' => 'id-fecha_vcto',
 																				'style' => 'width:100%;background-color:white;',
-																				'value' => isset($datosContribuyente['fechaVcto']) ? $datosContribuyente['fechaVcto'] : '',
+																				'value' => isset($datosContribuyente['fechaVcto']) ?  date('d-m-Y', strtotime($datosContribuyente['fechaVcto'])) : '',
 																				'readOnly' => true,
 
 																		])->label('Fecha Vcto') ?>

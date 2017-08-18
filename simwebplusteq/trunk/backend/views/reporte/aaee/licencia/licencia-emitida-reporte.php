@@ -83,7 +83,22 @@
 				<div class="col-sm-12">
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
-						<h4><strong><?=Html::encode($subCaption)?></strong></h4>
+						<div class="col-sm-2" style="width: 25%;padding: 0px;margin: 0px;margin-top: 10px;">
+							<h4><strong><?=Html::encode($subCaption)?></strong></h4>
+						</div>
+
+						<div class="col-sm-3" style="width: 30%;float:right;padding: 0px;margin: 0px;">
+	    					<style type="text/css">
+								.col-sm-3 > ul > li > a:hover {
+									background-color: #ECF1EF;
+								}
+							</style>
+	        				<?= MenuController::actionMenuSecundario([
+	        						'export-excel' => '/reporte/aaee/licencia/licencia-emitida/exportar-excel',
+	        						//'export-pdf' => '/funcionario/solicitud/solicitud-asignada/quit',
+	        					])
+	        				?>
+	        			</div>
 					</div>
 
 					<div class="row" style="width: 103%;padding: 0px;margin: 0px;">
@@ -212,7 +227,15 @@
 						                'format' => 'raw',
 						                'value' => function($model) {
 														$fuente = json_decode($model->fuente_json, true);
-														return $fuente['id_contribuyente'];
+														return Html::a($fuente['id_contribuyente'], '#', [
+                																'id' => 'link-id-contribuyente',
+                																'data-toggle' => 'modal',
+                																'data-target' => '#modal',
+                																'data-url' => Url::to(['view-contribuyente-modal',
+                																						'id' => $fuente['id_contribuyente']]),
+                																'data-pjax' => 0,
+                													]);
+														//return $fuente['id_contribuyente'];
 													},
 						            ],
 
@@ -320,6 +343,17 @@
 <?php
 $this->registerJs(
     '$(document).on("click", "#link-id-historico", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".detalle").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));
+
+    $(document).on("click", "#link-id-contribuyente", (function() {
         $.get(
             $(this).data("url"),
             function (data) {
