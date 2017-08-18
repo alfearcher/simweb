@@ -41,8 +41,8 @@
 	use yii\helpers\ArrayHelper;
 	use yii\widgets\ActiveForm;
 	use yii\web\View;
+	use yii\bootstrap\Modal;
 	use yii\widgets\Pjax;
-	//use common\models\contribuyente\ContribuyenteBase;
 	use yii\widgets\DetailView;
 	use yii\widgets\MaskedInput;
 
@@ -112,18 +112,29 @@
 						    					'value' => Yii::$app->formatter->asDecimal($model->monto, 2),
 						    				],
 
-						    				// [
-						    				// 	'label' => $model->getAttributeLabel('usuario'),
-						    				// 	'value' => $model->usuario,
-						    				// ],
-						    				// [
-						    				// 	'label' => $model->getAttributeLabel('fecha_hora'),
-						    				// 	'value' => $model->fecha_hora,
-						    				// ],
+						    				[
+						    					'label' => $model->getAttributeLabel('usuario') . ' '. Yii::t('frontend', '(pago)'),
+						    					'value' => $model->usuario,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('usuario_creador'),
+						    					'value' => $model->usuario_creador,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('fecha_hora_creacion'),
+						    					'value' => date('d-m-Y', strtotime($model->fecha_hora_creacion)),
+						    				],
 						    				[
 						    					'label' => $model->getAttributeLabel('estatus'),
-						    					// 'value' => $model->estatus,
 						    					'value' => $model->condicion->descripcion,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('id_contribuyente'),
+						    					'value' => $model->id_contribuyente,
+						    				],
+						    				[
+						    					'label' => $model->getAttributeLabel('contribuyente'),
+						    					'value' => $model->getDescripcionContribuyente($model->id_contribuyente),
 						    				],
 
 						    			],
@@ -131,6 +142,17 @@
 								?>
 							</div>
 						</div>
+
+
+						<?php
+							$disabled = ' disabled';
+							$target = '';
+
+							if ( $model->estatus == 0 ) {
+								$disabled = '';
+								$target = '_blank';
+							}
+						 ?>
 
 						<div class="col-sm-3" style="width: 30%;padding-left: 50px;padding-top: 30px;">
 							<div class="form-group">
@@ -140,11 +162,11 @@
 																		],
 																		[
 																			'id' => 'btn-generate',
-																			'class' => 'btn btn-success',
+																			'class' => 'btn btn-success' . $disabled,
 																			'value' => 2,
 																			'style' => 'width: 100%',
 																			'name' => 'btn-generate',
-																			'target' => '_blank',
+																			'target' => $target,
 																		])
 								?>
 							</div>
@@ -182,9 +204,19 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
+				                        'format' => 'raw',
 				                        'label' => Yii::t('frontend', 'planilla'),
 				                        'value' => function($data) {
-				                                      return $data->planilla;
+				                                      //return $data->planilla;
+				                                      return Html::a($data['planilla'], '#', [
+															'id' => 'link-view-planilla',
+												            //'class' => 'btn btn-success',
+												            'data-toggle' => 'modal',
+												            'data-target' => '#modal',
+												            'data-url' => Url::to(['view-planilla', 'p' => $data['planilla']]),
+												            'data-planilla' => $data['planilla'],
+												            'data-pjax' => '0',
+												        ]);
 				            			           },
 				                    ],
 				                    [
@@ -234,6 +266,13 @@
 					</div>
 <!-- Fin de lo seleccionado -->
 
+					<?php if ( $htmlDepositoDetalle !== null ) { ?>
+
+						<?=$htmlDepositoDetalle; ?>
+
+					<?php } ?>
+
+
 					<div class="row" style="padding-top: 20px;">
 
 						<div class="col-sm-3" style="width: 20%;padding-left: 30px;">
@@ -272,3 +311,40 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
+
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-view-planilla", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".planilla").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));'
+); ?>
+
+<style type="text/css">
+	.modal-content	{
+			margin-top: 150px;
+			margin-left: -180px;
+			width: 150%;
+	}
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='planilla'></div>";
+Pjax::end();
+Modal::end();
+?>
