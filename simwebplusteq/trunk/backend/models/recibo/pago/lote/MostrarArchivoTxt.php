@@ -81,7 +81,7 @@
          */
         private $_arreglo_pago = [];
 
- 		private $_errores = [];
+ 		private $_errores;
 
         const NUMERO_COLUMNA = 16;
 
@@ -272,6 +272,9 @@
 					$linea = fgets($fp);
 					if ( $ct > 0 ) {
 						if ( $linea !== null ) {
+							// if ( trim($linea) == '' ) {
+							// 	$linea = ' ';
+							// }
 							//echo $linea . "<br />";
 							self::armarItemPago($linea, $ct);
 						}

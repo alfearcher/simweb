@@ -140,7 +140,7 @@
 		 * Lista de errores ocurridos
 		 * @var array
 		 */
-		private $_errores = [];
+		private $_errores;
 
 
 
@@ -153,7 +153,9 @@
 			$this->_nro_control = 0;
 			$this->_mostarArchivo = $mostrarArchivo;
 			$this->_usuario = Yii::$app->identidad->getUsuario();
-			$_lista_registro_txt_recibo = [];
+			$this->_lista_registro_txt_recibo = [];
+			$this->_errores = [];
+
 		}
 
 
@@ -186,7 +188,6 @@
 				// arreglo de atributos, a su vez cada linea es un oten de un arreglo
 				// mas global.
 				$listaPagos = self::getListaRegistroPago();
-
 
 				// Permite crear model de ReciboTxtArchivo.
 				self::crearCicloPago($listaPagos);
@@ -295,7 +296,7 @@
 		 */
 		private function validarArchivo()
 		{
-			$this->_mostarArchivo->iniciarMostrarArchivo();
+			//$this->_mostarArchivo->iniciarMostrarArchivo();
 			if ( count($this->_mostarArchivo->getError()) == 0 ) {
 				return true;
 			} else {
@@ -316,6 +317,17 @@
 		{
 			return $this->_errores;
 		}
+
+
+		/**
+		 * [setError description]
+		 * @param [type] $mensaje [description]
+		 */
+		public function setError($mensaje)
+		{
+			$this->_errores[] = $mensaje;
+		}
+
 
 
 		/**
@@ -341,7 +353,7 @@
 		private function armarRegistroTxtRecibo($itemPago)
 		{
 			// item de pago efectuado en banco.
-			$recibo = (int)$itemPago['recibo'];
+			$recibo = $itemPago['recibo'];
 
 			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
@@ -390,6 +402,7 @@
 
 				self::addItemRegistroTxt($model);
 			}
+
 		}
 
 
