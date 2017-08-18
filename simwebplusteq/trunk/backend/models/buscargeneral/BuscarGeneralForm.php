@@ -94,7 +94,7 @@
 	        																	return $model->tipo_naturaleza == 1; }
 	        																}],
 	        	[['naturaleza','cedula'],'required','when' => function($model) {
-	        																if ( $model->cedula !== null || $model->naturaleza !== null  ) {
+	        																if ( strlen($model->cedula) > 0 || strlen($model->naturaleza) > 0   ) {
 	        																	return $model->tipo_naturaleza == 0; }
 	        																}],
 	            [['cedula', 'tipo', 'id_contribuyente', 'tipo_naturaleza'], 'integer'],
