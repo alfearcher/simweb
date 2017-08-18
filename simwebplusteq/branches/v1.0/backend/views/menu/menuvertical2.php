@@ -312,16 +312,23 @@
         		// ],
 
 
-        		//	AJUSTAR PAGOS
-        		['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustar Pagos',
+        		//	PAGOS
+        		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
         			'items' => [
-						//['label' => 'Ajustar Formas de Pagos', 'url' => '#'],
-						//['label' => 'Ajustar Pagos Inconsistentes', 'url' => '#'],
-						//['label' => 'Listado Planillas-Bancos vs Planillas-Pagadas', 'url' => '#'],
-						//['label' => 'Ajustar Cuentas Bancarias Sobre Pagos', 'url' => '#'],
-						//['label' => 'Ajustar Planillas por Ingresos', 'url' => '#'],
-						//['label' => 'Ajustar Pagos Por Fecha', 'url' => '#'],
-						['label' => 'Ajustar Cuenta Recaudadora', 'url' => ['/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/index']],
+
+        		 	// 	['label' => 'Caja', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        				// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Archivo txt',
+    					   // 	'items' => [
+    					   // 		['label' => 'Procesar Pago', 'url' => ['/recibo/pago/lote/pago-recibo-lote/index']],
+
+		        		// 	]
+		        		// ],
+						['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustes',
+					   		'items' => [
+					   			['label' => 'Cuenta Recaudadora', 'url' => ['/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/index']],
+					   		]
+	        			],
+
         			]
         		],
 
