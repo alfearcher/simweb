@@ -64,6 +64,8 @@
 	use common\conexion\ConexionController;
 	use yii\db\Exception;
 	use yii\helpers\ArrayHelper;
+	use backend\models\historico\rafaga\autorizar\HistoricoAutorizarRafaga;
+	use backend\models\historico\rafaga\autorizar\HistoricoAutorizarRafagaSearch;
 
 
 
@@ -190,7 +192,11 @@
 
 			if ( $this->_modelDepositoDetalle !== null && count($this->_modelDepositoDetalle) > 0 ) {
 				if ( self::iniciarPago() ) {
+					// Se guarda en la entidad "planillas-aporte"
 					$result = self::generarRafagaPlanilla();
+					if ( $result ) {
+						$result = self::autorizarRafagaRecibo();
+					}
 					return true;
 				} else {
 					return false;
@@ -219,7 +225,7 @@
 				$result = self::seteoPlanilla();
 			}
 
-			// Guardar detalle de pagos
+			// Guardar detalle de como se pago el recibo; efectivo, cheque, deposito, etc.
 			if ( $result ) {
 				$result = self::guardarDetallePago();
 			}
@@ -290,6 +296,32 @@
 			}
 			$this->_conn->close();
 			return $result;
+		}
+
+
+		/**
+		 * Metodo que generar un registro para autorizar la rafaga del recibo
+		 * @return boolean
+		 */
+		private function autorizarRafagaRecibo()
+		{
+			$historicoModel = New HistoricoAutorizarRafaga();
+			$historicoModel->recibo = $this->_recibo;
+			$historicoModel->usuario = Yii::$app->identidad->getUsuario();
+			$historicoModel->fecha_hora = date('Y-m-d H:i:s');
+			$historicoModel->autorizar = 1;
+			$historicoModel->observacion = Yii::t('backend', 'Autorizacion por pago del recibo');
+
+			// Si se quiere guardar un numero de control, desconmentar las siguientes lineas.
+			//$numeroSearch = New NumeroControlSearch('db');
+			//$control = $numeroSearch->generarNumeroControl();
+
+			$control = 0;
+			$historicoModel->nro_control = $control;
+
+			$historicoSearch = New HistoricoAutorizarRafagaSearch($this->_recibo, $this->_conexion, $this->_conn);
+			return $historicoSearch->guardar($historicoModel);
+
 		}
 
 

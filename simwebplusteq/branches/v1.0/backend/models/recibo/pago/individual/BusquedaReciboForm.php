@@ -52,7 +52,8 @@
 	class BusquedaReciboForm extends Model
 	{
 		public $recibo;			// Autoincremental
-
+		public $id_contribuyente;
+		public $nro_control;
 
 
 		/**
@@ -78,6 +79,7 @@
 	        	[['recibo',],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', 'El recibo no es valido')],
+	        	[['nro_control', 'id_contribuyente'], 'safe'],
 	        ];
 	    }
 
@@ -102,7 +104,8 @@
        	{
        		return [
        			'adminteq',
-       			'admin',
+       			'pfranco',
+       			'kperez',
        		];
        	}
 
