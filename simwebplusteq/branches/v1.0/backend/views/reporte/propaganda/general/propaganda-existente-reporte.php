@@ -141,6 +141,16 @@
                 											]);
         											},
 					                ],
+					                 [
+					               		'attribute' => 'fecha_hora',
+					                    'label' => Yii::t('frontend', 'Fecha'),
+					                    'contentOptions' => [
+						                	'style' => 'font-size:90%;',
+						                ],
+					                    'value' => function($data) {
+                										return date('d-m-Y', strtotime($data->fecha_hora));
+        											},
+					                ],
 					               	[
 					               		'attribute' => 'clase_propaganda',
 					                    'label' => Yii::t('frontend', 'Clase'),
