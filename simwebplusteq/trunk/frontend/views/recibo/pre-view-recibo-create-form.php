@@ -94,11 +94,13 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-<!-- Aqui se muestra lo seleccionado por el contribuyente -->
-
-					<div class="row" style="width: 70%;margin-top: 80px;">
+<!-- Aqui se muestra el resumen de lo seleccionado -->
+					<div class="row" style="width: 80%;margin-top: 10px;padding: 0px;">
+						<div class="row" style="padding-left:0px;padding-top: 20px;">
+							<h3><strong><?=Yii::t('frontend', 'Confirmar crear recibo');?></strong></h3>
+						</div>
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left: 5px;padding-top: 0px;">
-							<h4><?=Html::encode('Planilla(s) Seleccionadas')?></h4>
+							<h4><?=Yii::t('frontend', 'Planilla(s) Seleccionada(s)');?></h4>
 						</div>
 
 						<div class="row" class="deuda-seleccionda-pre-view" style="padding-top: 10px;">
@@ -256,7 +258,7 @@
 																				'id' => 'btn-confirm-create',
 																				'class' => 'btn btn-success',
 																				'value' => 5,
-																				'style' => 'width: 100%',
+																				'style' => 'width: 100%;font-size:110%;font-weight:bold;',
 																				'name' => 'btn-confirm-create',
 																			  ])
 									?>

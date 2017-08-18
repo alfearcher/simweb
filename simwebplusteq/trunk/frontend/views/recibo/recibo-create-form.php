@@ -71,7 +71,7 @@
 	<?=$form->field($model, 'id_contribuyente')->hiddenInput(['value' => $findModel['id_contribuyente']])->label(false);?>
 
 	<meta http-equiv="refresh">
-    <div class="panel panel-primary"  style="width: 95%;margin: auto;">
+    <div class="panel panel-primary" style="width: 95%;margin: auto;padding: 0px;">
         <div class="panel-heading">
         	<h3><?= Html::encode($caption) ?></h3>
         </div>
@@ -82,9 +82,26 @@
         	<div class="container-fluid">
         		<div class="col-sm-12">
 
-					<div class="row" style="width: 105%;padding-left: 10px;">
-						<div class="col-sm-4" style="margin-left:0px;padding-left:0; width: 30%;">
+					<div class="row" style="width: 105%;padding-left:0px;">
+						<div class="row" style="width: 90%;">
+							<div class="panel panel-default">
+  								<div class="panel-body  alert-info">
+   									<div class="list-group" style="padding-left: 20px;font-size: 110%;">
+        								<strong><h3 class="list-group-item-heading"><?=Yii::t('backend', 'Indicaciones');?></h3></strong>
+		        						<p class="list-group-item-text">
+		        							<?= Html::tag('li', Yii::t('backend', 'Esta opción le permitirá la creación de un nuevo instrumento de pago denominado <strong>"Recibo de Pago"</strong>.')); ?>
+		        							<?= Html::tag('li', Yii::t('backend', 'En este nuevo instrumento de pago podra incluir todas las planillas pendientes que desea saldar (pagar).')); ?>
+		        							<?= Html::tag('li', Yii::t('backend', 'Para avanzar y obtener una información más especifica de las deudas, presione el boton denominado <strong>"Aceptar..."</strong>')); ?>
+		        							<?= Html::tag('li', Yii::t('backend', 'Las planillas que pertenezcan a periodos (trimestres, bimestres, etc), se seleccionarán a traves de un botón situado a la derecha de la misma. El resto podrá seleccionarlas por medio de un tilde (checkbox), situado a la izquierda de la planilla.')); ?>
+		        							<?= Html::tag('li', Yii::t('backend', 'Para agregar la o las planilla(s) al pote de <strong>"Planillas Seleccionadas"</strong>, presione el boton denominado <strong>"Agregar Monto Seleccionado"</strong>.')); ?>
+		        						</p>
+		        					</div>
+  								</div>
+							</div>
 
+						</div>
+
+						<div class="col-sm-4" style="margin-left:0px;padding-left:0; width: 30%;">
 							<div class="row" style="border-bottom: 1px solid #ccc;padding-left: 0px;">
 								<h4><?= Html::encode(Yii::t('frontend', 'Deuda por impuestos')) ?></h4>
 							</div>
@@ -376,9 +393,9 @@
 									<?= Html::submitButton(Yii::t('frontend', 'Crear Recibo'),
 																			  [
 																				'id' => 'btn-create',
-																				'class' => 'btn btn-success',
+																				'class' => 'btn btn-primary',
 																				'value' => 1,
-																				'style' => 'width: 100%',
+																				'style' => 'width: 100%;font-size:110%;font-weight:bold;',
 																				'name' => 'btn-create',
 																			  ])
 									?>
