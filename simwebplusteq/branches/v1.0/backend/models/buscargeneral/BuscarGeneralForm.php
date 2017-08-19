@@ -175,6 +175,9 @@
 		    		$query = BuscarGeneral::find();
 		    		$dataProvider = new ActiveDataProvider([
 	            		'query' => $query,
+	            		'pagination' => [
+	            			'pageSize' => 100,
+	            		],
 	        		]);
 
 		    		if ( $this->id_contribuyente > 0 ) {
