@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="vista-recibo-anulado">
-			<?= $this->render('/recibo/anulacion/recibo-anulado', [
+			<?= $this->render('@frontend/views/recibo/anulacion/recibo-anulado', [
 									'dataProvider' => $dataProvider,
 									'caption' => $caption,
 					]);
