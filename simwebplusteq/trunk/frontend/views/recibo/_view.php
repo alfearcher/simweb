@@ -54,7 +54,7 @@
 	 </div>
 	 <div class="row">
 		<div class="recibo-creado-view">
-			<?= $this->render('/recibo/recibo-creado', [
+			<?= $this->render('@frontend/views/recibo/recibo-creado', [
 	    							'model' => $model,
 									'dataProvider' => $dataProvider,
 									'caption' => $caption,

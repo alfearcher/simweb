@@ -91,7 +91,7 @@
 		        						<p class="list-group-item-text">
 		        							<?= Html::tag('li', Yii::t('backend', 'Esta opción le permitirá la creación de un nuevo instrumento de pago denominado <strong>"Recibo de Pago"</strong>.')); ?>
 		        							<?= Html::tag('li', Yii::t('backend', 'En este nuevo instrumento de pago podra incluir todas las planillas pendientes que desea saldar (pagar).')); ?>
-		        							<?= Html::tag('li', Yii::t('backend', 'Para avanzar y obtener una información más especifica de las deudas, presione el boton denominado <strong>"Aceptar..."</strong>')); ?>
+		        							<?= Html::tag('li', Yii::t('backend', 'Para avanzar y obtener una información más especifica de las deudas, presione el boton con la <strong>"Deuda"</strong>.')); ?>
 		        							<?= Html::tag('li', Yii::t('backend', 'Las planillas que pertenezcan a periodos (trimestres, bimestres, etc), se seleccionarán a traves de un botón situado a la derecha de la misma. El resto podrá seleccionarlas por medio de un tilde (checkbox), situado a la izquierda de la planilla.')); ?>
 		        							<?= Html::tag('li', Yii::t('backend', 'Para agregar la o las planilla(s) al pote de <strong>"Planillas Seleccionadas"</strong>, presione el boton denominado <strong>"Agregar Monto Seleccionado"</strong>.')); ?>
 		        						</p>
