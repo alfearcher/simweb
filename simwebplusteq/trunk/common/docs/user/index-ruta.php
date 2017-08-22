@@ -38,12 +38,13 @@
  	$rutaBaseFrontendInmueble = '../../common/docs/user/frontend/inmueble/';
  	$rutaBaseFrontendVehiculo = '../../common/docs/user/frontend/vehiculo/';
  	$rutaBaseFrontendPropaganda = '../../common/docs/user/frontend/propaganda/';
-
+ 	$rutaBaseFrontendRecibo = '../../common/docs/user/backend/recibo/';
 
  	$rutaBaseBackendAAEE = '../../common/docs/user/backend/aaee/';
  	$rutaBaseBackendInmueble = '../../common/docs/user/backend/inmueble/';
  	$rutaBaseBackendVehiculo = '../../common/docs/user/backend/vehiculo/';
  	$rutaBaseBackendPropaganda = '../../common/docs/user/backend/propaganda/';
+ 	$rutaBaseBackendRecibo = '../../common/docs/user/backend/recibo/';
 
 
 	return [
@@ -104,6 +105,9 @@
 				'83' => $rutaBaseBackendVehiculo,
 
 				'39' => $rutaBaseBackendPropaganda,
+
+				'999' => $rutaBaseBackendRecibo,
+
 			],
 			'frontend' => [
 				'1' => $rutaBaseFrontendAAEE,
@@ -162,6 +166,8 @@
 				'83' => $rutaBaseFrontendVehiculo,
 
 				'39' => $rutaBaseFrontendPropaganda,
+
+				'999' => $rutaBaseFrontendRecibo,
 
 			]
 	]
