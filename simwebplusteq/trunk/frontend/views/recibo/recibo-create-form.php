@@ -426,7 +426,7 @@
 						<div class="col-sm-1"></div>
 
 <!-- Boton para salir de la actualizacion -->
-						<div class="col-sm-3" style="margin-left: 50px;">
+						<div class="col-sm-3" style="margin-left: 20px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('backend', 'Quit'),
 																		  [
@@ -441,7 +441,7 @@
 						</div>
 <!-- Fin de Boton para salir de la actualizacion -->
 
-						<div class="col-sm-2" style="margin-left: 50px;">
+						<div class="col-sm-2" style="margin-left: 20px;">
 							<div class="form-group">
 						<!-- '../../common/docs/user/ayuda.pdf'  funciona -->
 							<?= Html::a(Yii::t('backend', 'Ayuda'), $rutaAyuda . 'CREAR RECIBO.pdf',  [
