@@ -408,7 +408,7 @@
 
 					<div class="row" style="margin-top: 55px;">
 <!-- Boton para aplicar la actualizacion -->
-						<div class="col-sm-3" style="width: 20%;">
+						<div class="col-sm-3" style="width: 20%;padding:0px;">
 							<div class="form-group">
 								<?= Html::submitButton(Yii::t('frontend', 'Reset'),
 																		  [
