@@ -278,7 +278,6 @@
 																	'total' => $total,
 																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
 																	'rutaAyuda' => $rutaAyuda,
-
 																]);
 					} else {
 						// No presenta deuda pendiente
