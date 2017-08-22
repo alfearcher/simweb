@@ -256,6 +256,8 @@
 					return ActiveForm::validate($model);
 		      	}
 
+		      	$rutaAyuda = Yii::$app->ayuda->getRutaAyuda(999, 'frontend');
+
 		      	$total = 0;
 		  		if ( isset($findModel) ) {
 		  			if ( count($dataProvider) > 0 ) {
@@ -275,6 +277,7 @@
 																	'dataProvider' => $dataProvider,
 																	'total' => $total,
 																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
+																	'rutaAyuda' => $rutaAyuda,
 
 																]);
 					} else {
