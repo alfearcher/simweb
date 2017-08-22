@@ -415,7 +415,7 @@
 																			'id' => 'btn-reset',
 																			'class' => 'btn btn-danger',
 																			'value' => 9,
-																			'style' => 'width: 80%',
+																			'style' => 'width: 100%',
 																			'name' => 'btn-reset',
 																		  ])
 								?>
@@ -433,7 +433,7 @@
 																			'id' => 'btn-quit',
 																			'class' => 'btn btn-danger',
 																			'value' => 1,
-																			'style' => 'width: 80%',
+																			'style' => 'width: 100%',
 																			'name' => 'btn-quit',
 																		  ])
 								?>
