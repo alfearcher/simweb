@@ -38,7 +38,7 @@
  	$rutaBaseFrontendInmueble = '../../common/docs/user/frontend/inmueble/';
  	$rutaBaseFrontendVehiculo = '../../common/docs/user/frontend/vehiculo/';
  	$rutaBaseFrontendPropaganda = '../../common/docs/user/frontend/propaganda/';
- 	$rutaBaseFrontendRecibo = '../../common/docs/user/backend/recibo/';
+ 	$rutaBaseFrontendRecibo = '../../common/docs/user/frontend/recibo/';
 
  	$rutaBaseBackendAAEE = '../../common/docs/user/backend/aaee/';
  	$rutaBaseBackendInmueble = '../../common/docs/user/backend/inmueble/';
