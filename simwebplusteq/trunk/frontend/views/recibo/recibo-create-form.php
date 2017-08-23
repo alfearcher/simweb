@@ -95,6 +95,10 @@
 		        							<?= Html::tag('li', Yii::t('backend', 'Las planillas que pertenezcan a periodos (trimestres, bimestres, etc), se seleccionarán a traves de un botón situado a la derecha de la misma. El resto podrá seleccionarlas por medio de un tilde (checkbox), situado a la izquierda de la planilla.')); ?>
 		        							<?= Html::tag('li', Yii::t('backend', 'Para agregar la o las planilla(s) al pote de <strong>"Planillas Seleccionadas"</strong>, presione el boton denominado <strong>"Agregar Monto Seleccionado"</strong>.')); ?>
 		        						</p>
+		        						<strong><h3 class="list-group-item-heading" style="color:red;"><?=Yii::t('backend', 'Nota Importante');?></h3></strong>
+		        						<p class="list-group-item-text">
+		        							<?= Html::tag('li', Yii::t('backend', 'Antes de agregar la(s) planilla(s) a la lista de <strong>"Planillas Seleccionadas"</strong>, <strong>se someterán a un proceso de actualización</strong>, lo que implicaria cambios en los montos por concepto de impuestos, recargos, intereses moratorios, descuentos y/o reconocimientos.')); ?>
+		        						</p>
 		        					</div>
   								</div>
 							</div>
@@ -214,7 +218,7 @@
 
 					<div class="row" style="width: 70%;margin-top: 80px;">
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left: 5px;padding-top: 0px;">
-							<h4><?=Html::encode('Planilla(s) Seleccionadas')?></h4>
+							<h4><?=Html::encode('Planillas Seleccionadas')?></h4>
 						</div>
 
 						<div class="row" class="deuda-seleccionda" style="padding-top: 10px;">
