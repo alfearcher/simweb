@@ -233,11 +233,23 @@
                 if ( $postData['btn-back'] == 1 ) {
                     $this->redirect(['index']);
                 }
-            } elseif ( isset($postData['data-file']) && isset($postData['data-file']) ) {
-                // Mostrar archivo
-                self::actionAnularSession(['postEnviado']);
-                $_SESSION['postEnviado'] = $request->post();
-                $this->redirect(['mostrar-archivo-txt']);
+            } elseif ( isset($postData['data-file-type']) && isset($postData['data-file']) && isset($postData['data-path']) ) {
+                if ( $postData['data-file-type'] == 'file' ) {
+
+                    // Mostrar archivo
+                    self::actionAnularSession(['postEnviado']);
+                    $_SESSION['postEnviado'] = $request->post();
+                    $this->redirect(['mostrar-archivo-txt']);
+
+                } elseif ( $postData['data-file-type'] == 'file-flat' ) {
+
+                    // Mostrar archivo plano
+                    self::actionAnularSession(['postEnviado']);
+                    $_SESSION['postEnviado'] = $request->post();
+                    $this->redirect(['mostrar-archivo-txt-plano']);
+
+                }
+
             }
 
             $caption = Yii::t('backend', 'Procesar Pagos. Busqueda de Archivo de Pagos.');
@@ -271,6 +283,77 @@
 
 
         /**
+         * Metodo que permite mostrar una vista con el contenido del archivo txt enviado por el
+         * banco. Esta vista sera un representacion bruta del contenido del archivo, tal como
+         * lo mando el banco.
+         * @return view
+         */
+        public function actionMostrarArchivoTxtPlano()
+        {
+            $usuario = Yii::$app->identidad->getUsuario();
+            if ( $usuario !== null ) {
+
+                $request = Yii::$app->request;
+                $postData = ( count($request->post()) > 0 ) ? $request->post() : $_SESSION['postEnviado'];
+
+                $errorMensaje = "";
+                if ( isset($postData['btn-quit']) ) {
+                    if ( $postData['btn-quit'] == 1 ) {
+                        $this->redirect(['quit']);
+                    }
+                } elseif ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 1 ) {
+                        unset($_SESSION['postEnviado']['data-path']);
+                        unset($_SESSION['postEnviado']['data-file']);
+                        unset($_SESSION['postEnviado']['data-key']);
+                        unset($_SESSION['postEnviado']['data-file-type']);
+                        $this->redirect(['mostrar-lista-archivo']);
+                    }
+                }
+
+                if ( isset($postData['data-file']) && isset($postData['data-path']) ) {
+
+                    $model = New BusquedaArchivoTxtForm();
+                    $model->load($postData);
+
+                    $archivo = $postData['data-file'];
+                    $ruta = $postData['data-path'];
+                    // Fecha de pago
+                    $fecha = $postData['data-date'];
+                    $model->fecha_pago = $fecha;
+
+                    $mostrar = New MostrarArchivoTxt($ruta, $archivo);
+                    $mostrar->iniciarMostrarArchivo();
+                    $contenidoPlano = $mostrar->verArchivoPlano();
+                    $errorMensaje = $mostrar->getError();
+
+                    if ( !$mostrar->existeArchivo() ) {
+                        $this->layout = 'layout-main';
+                        return $this->render('/recibo/pago/lote/warnings', [
+                                                            'archivo' => $archivo,
+                                                            'mensajes' => $errorMensaje,
+                                ]);
+                    } else {
+                        $this->layout = 'layoutbase';
+                        return $this->render('/recibo/pago/lote/mostrar-archivo-txt-plano',[
+                                                            'archivo' => $archivo,
+                                                            'contenidoPlano' => $contenidoPlano,
+                            ]);
+                    }
+                }
+
+            } else {
+                $this->redirect(['usuario-no-autorizado']);
+            }
+        }
+
+
+
+
+
+
+
+        /**
          * Metodo que permite mostrar una vista con los nombres de los archivos txt
          * encontrados, segun los parametros de consulta previamente ingresados.
          * El resultado debe ser un grid con los nombres de los archivos encontrados.
@@ -293,6 +376,7 @@
                     unset($_SESSION['postEnviado']['data-path']);
                     unset($_SESSION['postEnviado']['data-file']);
                     unset($_SESSION['postEnviado']['data-key']);
+                    unset($_SESSION['postEnviado']['data-file-type']);
                     $this->redirect(['mostrar-lista-archivo']);
                 }
             } elseif ( isset($postData['btn-analize-file']) ) {
@@ -439,7 +523,6 @@
 
             // Numero de recibo de pago
             $nro = $postGet['nro'];
-//die(var_dump(Yii::$app->request));
             return $this->renderAjax('@backend/views/recibo/pago/consulta/recibo-consultado', [
                                                         'model' => $this->findModelRecibo($nro),
 
@@ -463,6 +546,15 @@
 
 
 
+        /**
+         * Metodo renderiza una vista indicando que el usuario no es valido.
+         * @return view.
+         */
+        public function actionUsuarioNoAutorizado()
+        {
+            return $this->redirect(['error-operacion', 'cod' => 999]);
+        }
+
 
 
 
@@ -472,7 +564,6 @@
 		 */
 		public function actionQuit()
 		{
-			//self::actionInicializarTemporal();
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
 			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
