@@ -74,7 +74,7 @@
         	<div class="container-fluid">
         		<div class="col-sm-12" >
 
-		        	<div class="row" style="width:60%;margin-bottom: 20px;">
+		        	<div class="row" style="width:80%;margin-bottom: 20px;">
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;">
 							<h4><strong><?=Html::encode($subCaption)?></strong></h4>
 						</div>
@@ -116,7 +116,7 @@
 
 						                [
 						                    'contentOptions' => [
-						                          'style' => 'font-size: 100%;font-weight:bold;',
+						                          'style' => 'font-size: 100%;font-weight:bold;width:45%;padding-right:0px;',
 						                    ],
 						                    'label' => Yii::t('backend', 'Archivos'),
 						                    'format' => 'raw',
@@ -132,6 +132,34 @@
 														            								'data-file' => $data['file'],
 														            								'data-path' => $data['path'],
 														            								'data-date' => $data['fecha'],
+														            								'data-file-type' => 'file',
+														            								'data-key' => $key,
+														            							],
+														            						],
+														            					]);
+						        			           },
+						                ],
+
+						                [
+						                    'contentOptions' => [
+						                          'style' => 'font-size: 100%;font-weight:bold;width:45%;',
+						                    ],
+						                    'label' => Yii::t('backend', 'Archivo plano'),
+						                    'format' => 'raw',
+						                    'value' => function($data, $key) {
+					                    					return Html::submitButton($data['file'],
+		                            													[
+																							'id' => 'btn-file-flat',
+																							'name' => 'btn-file-flat',
+														            						'class' => 'btn btn-default',
+														            						'style' => 'width:60%;',
+														            						'data' => [
+														            							'method' => 'post',
+														            							'params' => [
+														            								'data-file' => $data['file'],
+														            								'data-path' => $data['path'],
+														            								'data-date' => $data['fecha'],
+														            								'data-file-type' => 'file-flat',
 														            								'data-key' => $key,
 														            							],
 														            						],

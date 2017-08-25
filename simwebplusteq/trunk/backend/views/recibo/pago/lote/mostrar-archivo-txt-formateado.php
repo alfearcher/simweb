@@ -169,7 +169,12 @@
 	</div>
 </div>
 
- <div class="row" style="width:98%;margin-left: 25px;">
+
+<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;padding-left: 25px;">
+	<h4><strong><?=Html::encode(Yii::t('backend', 'Archivo: ') . $archivo)?></strong></h4>
+</div>
+
+<div class="row" style="width:98%;margin-left: 25px;">
 	<div class="lista-pago">
 		<div class="row" style="width: 100%;margin-top: 5px;">
 	    	<?= GridView::widget([
@@ -184,7 +189,7 @@
 					}
 				},
 	    		'tableOptions' => [
-	    			'class' => 'table table-hover',
+	    			'class' => 'table table-bordered table-hover',
 	    		],
 	    		//'summary' => true,
 	    		'columns' => [
@@ -374,6 +379,21 @@
 
 	                [
 	                    'contentOptions' => [
+	                          'style' => 'font-size: 90%;text-align:left;font-weight:bold',
+	                    ],
+	                    'format' => 'raw',
+	                    'label' => Yii::t('backend', 'planillas'),
+	                    'value' => function($data, $key, $nota) {
+                    					$nota = '';
+	                    				foreach ( json_decode($data['planillas']) as $planilla ) {
+	                    					$nota .= Html::tag('li', $planilla);
+	                    				}
+										return $nota;
+	        			           },
+	                ],
+
+	                [
+	                    'contentOptions' => [
 	                          'style' => 'font-size: 90%;',
 	                    ],
 	                    'label' => Yii::t('backend', 'cuenta recaudadora'),
@@ -406,17 +426,26 @@
 	                    'contentOptions' => [
 	                          'style' => 'font-size: 90%;',
 	                    ],
+	                    'format' => 'raw',
 	                    'label' => Yii::t('backend', 'Observacion'),
-	                    'value' => function($data, $key) {
-                    					return $data['observacion'];
+	                    'value' => function($data, $key, $nota) {
+                    					$nota = '';
+	                    				foreach ( json_decode($data['observacion']) as $obs ) {
+	                    					$nota .= Html::tag('li', $obs);
+	                    				}
+										return $nota;
 	        			           },
-	        			'visible' => false,
+	        			'visible' => true,
 	                ],
 
 	        	]
 	    	]);?>
 	    </div>
 	</div>
+</div>
+
+<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;padding-left: 25px;">
+	<h4><strong><?=Html::encode(Yii::t('backend', 'Archivo: ') . $archivo . ' ------ ' . Yii::t('backend', 'final'))?></strong></h4>
 </div>
 
 <div class="row">
