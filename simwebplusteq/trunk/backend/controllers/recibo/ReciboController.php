@@ -310,7 +310,9 @@
 			$result = false;
 			$recibo = 0;
 
-			if ( isset($_SESSION['idContribuyente']) ) {
+			$usuario = Yii::$app->identidad->getUsuario();
+			if ( trim($usuario) !== '' && $usuario !== null ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
 
 					$this->_conexion = New ConexionController();
 
@@ -336,12 +338,16 @@
 						}
 					} else {
 						// No genero el recibo
-
+						$this->redirect(['error-operacion', 'cod' => 410]);
 					}
 
+				} else {
+					// No esta defino el contribuyente.
+					$this->redirect(['error-operacion', 'cod' => 932]);
+				}
 			} else {
-				// No esta defino el contribuyente.
-				$this->redirect(['error-operacion', 'cod' => 932]);
+				// Session terminada.
+		  		self::actionUsuarioNoAutorizado();
 			}
 			return $result;
 		}
@@ -618,74 +624,80 @@
 		{
 			$request = Yii::$app->request;
 			$getData = $request->get();
-
+			$usuario = Yii::$app->identidad->getUsuario();
 			$idContribuyente = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : 0;
 
-			if ( isset($getData['view']) ) {
+			if ( trim($usuario) !== '' && $usuario !== null ) {
+				if ( isset($getData['view']) ) {
 
-				$idC = $getData['idC'];
-				if ( $idC == $idContribuyente ) {
-					$searchRecibo = New ReciboSearch($idContribuyente);
+					$idC = $getData['idC'];
+					if ( $idC == $idContribuyente ) {
+						$searchRecibo = New ReciboSearch($idContribuyente);
 
-					if ( $getData['view'] == 1 ) {			//Request desde deuda general.
-						$_SESSION['begin'] = 1;
+						if ( $getData['view'] == 1 ) {			//Request desde deuda general.
+							$_SESSION['begin'] = 1;
 
-						return $html = self::actionGetViewDeudaEnPeriodo($searchRecibo, (int)$getData['i']);
+							return $html = self::actionGetViewDeudaEnPeriodo($searchRecibo, (int)$getData['i']);
 
-					} elseif ( $getData['view'] == 2 ) {	// Request desde deuda por tipo.
-						if ( isset($getData['tipo']) ) {
+						} elseif ( $getData['view'] == 2 ) {	// Request desde deuda por tipo.
+							if ( isset($getData['tipo']) ) {
 
-							if ( $getData['tipo'] == 'periodo>0' ) {
-								if ( $getData['i'] == 1 ) {
+								if ( $getData['tipo'] == 'periodo>0' ) {
+									if ( $getData['i'] == 1 ) {
+
+										// Se actualiza el monto de las planillas
+										self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
+
+										// Se buscan todas las planillas.
+										return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
+
+									} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
+
+										// Se buscan los objetos con sus deudas.
+										return $html = self::actionGetViewDeudaPorObjeto($searchRecibo, (int)$getData['i']);
+									}
+
+								} elseif ( $getData['tipo'] == 'periodo=0' ) {
 
 									// Se actualiza el monto de las planillas
 									self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
+
+									// Se buscan todas la planilla que cumplan con esta condicion
+									return $html = self::actionGetViewDeudaTasa($searchRecibo, (int)$getData['i']);
+								}
+							} else {
+								// Peticion no valida.
+
+							}
+						} elseif ( $getData['view'] == 3 ) {	// Request desde deuda por objeto.
+
+							if ( $getData['tipo'] == 'periodo>0' ) {
+								if ( $getData['i'] == 1 ) {
 
 									// Se buscan todas las planillas.
 									return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
 
 								} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
+									if ( isset($getData['idO']) ) {
 
-									// Se buscan los objetos con sus deudas.
-									return $html = self::actionGetViewDeudaPorObjeto($searchRecibo, (int)$getData['i']);
-								}
+										// Se actualiza el monto de las planillas
+										self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i'], (int)$getData['idO']);
 
-							} elseif ( $getData['tipo'] == 'periodo=0' ) {
-
-								// Se actualiza el monto de las planillas
-								self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i']);
-
-								// Se buscan todas la planilla que cumplan con esta condicion
-								return $html = self::actionGetViewDeudaTasa($searchRecibo, (int)$getData['i']);
-							}
-						} else {
-							// Peticion no valida.
-
-						}
-					} elseif ( $getData['view'] == 3 ) {	// Request desde deuda por objeto.
-
-						if ( $getData['tipo'] == 'periodo>0' ) {
-							if ( $getData['i'] == 1 ) {
-
-								// Se buscan todas las planillas.
-								return $html = self::actionGetViewDeudaActividadEconomica($searchRecibo);
-
-							} elseif ( $getData['i'] == 2 || $getData['i'] == 3 || $getData['i'] == 12 ) {
-								if ( isset($getData['idO']) ) {
-
-									// Se actualiza el monto de las planillas
-									self::actualizarPlanillaSegunImpesto($searchRecibo, (int)$getData['i'], (int)$getData['idO']);
-
-									// Se busca las deudas detalladas de un objeto especifico.
-									return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO'], $getData['objeto']);
+										// Se busca las deudas detalladas de un objeto especifico.
+										return $html = self::actionGetViewDeudaPorObjetoEspecifico($searchRecibo, (int)$getData['i'], (int)$getData['idO'], $getData['objeto']);
+									}
 								}
 							}
 						}
+					} else {
+						// El contribuyente solicitante no coincide con la session.
+						$this->redirect(['error-operacion', 'cod' => 938]);
 					}
-				} else {
-					// El contribuyente solicitante no coincide con la session.
-					$this->redirect(['error-operacion', 'cod' => 938]);
 				}
+
+			} else {
+				// Session terminada.
+		  		self::actionUsuarioNoAutorizado();
 			}
 
 			return null;
@@ -999,20 +1011,37 @@
 		 */
 		public function actionGenerarRecibo()
 		{
-			if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['recibo']) && isset($_SESSION['nro_control']) ) {
+			$usuario = Yii::$app->identidad->getUsuario();
+			if ( trim($usuario) !== '' && $usuario !== null ) {
+				if ( isset($_SESSION['idContribuyente']) && isset($_SESSION['recibo']) && isset($_SESSION['nro_control']) ) {
 
-				// Controlador que gestiona la generacion del pdf.
-				$depositoPdf = New DepositoController((int)$_SESSION['recibo'],
-													  (int)$_SESSION['idContribuyente'],
-													  (int)$_SESSION['nro_control']
-													);
-				return $depositoPdf->actionGenerarReciboPdf();
+					// Controlador que gestiona la generacion del pdf.
+					$depositoPdf = New DepositoController((int)$_SESSION['recibo'],
+														  (int)$_SESSION['idContribuyente'],
+														  (int)$_SESSION['nro_control']
+														);
+					return $depositoPdf->actionGenerarReciboPdf();
 
+				} else {
+					// Session no valida
+					self::actionErrorOperacion(941);
+				}
 			} else {
-				// Session no valida
+				// Session terminada.
+		  		self::actionUsuarioNoAutorizado();
 			}
 		}
 
+
+
+		/**
+         * Metodo renderiza una vista indicando que el usuario no es valido.
+         * @return view.
+         */
+        public function actionUsuarioNoAutorizado()
+        {
+            return $this->redirect(['error-operacion', 'cod' => 999]);
+        }
 
 
 
