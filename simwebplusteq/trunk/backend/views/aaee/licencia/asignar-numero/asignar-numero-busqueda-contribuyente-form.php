@@ -117,24 +117,24 @@
 
 
 <!-- Inicio Condicion del registro -->
-						<div class="row" style="padding-left: 40px;">
+						<!-- <div class="row" style="padding-left: 40px;">
 							<div class="col-sm-2">
 								<div class="row">
-									<p><strong><?= $model->getAttributeLabel('condicion') ?></strong></p>
+									<p><strong><?//= $model->getAttributeLabel('condicion') ?></strong></p>
 								</div>
 							</div>
 							<div class="col-sm-5">
 								<div class="row" class="condicion">
-									 <?= $form->field($model, 'condicion')
-									          ->dropDownList($listaCondicion, [
-		                                                           	'id'=> 'id-condicion',
-		                                                           	'prompt' => Yii::t('backend', 'Select'),
-		                                                           	'style' => 'width:260px;',
-		                                                           ])->label(false);
+									 <?//= $form->field($model, 'condicion')
+									          // ->dropDownList($listaCondicion, [
+		                 //                                           	'id'=> 'id-condicion',
+		                 //                                           	'prompt' => Yii::t('backend', 'Select'),
+		                 //                                           	'style' => 'width:260px;',
+		                                                           //])->label(false);
 	                                ?>
 								</div>
 							</div>
-						</div>
+						</div> -->
 <!-- Fin de Condicion del registro -->
 
 
