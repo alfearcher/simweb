@@ -85,21 +85,46 @@
 					<div class="row" style="width: 105%;padding-left:0px;">
 						<div class="row" style="width: 90%;">
 							<div class="panel panel-default">
-  								<div class="panel-body  alert-info">
-   									<div class="list-group" style="padding-left: 20px;font-size: 110%;">
-        								<strong><h3 class="list-group-item-heading"><?=Yii::t('backend', 'Indicaciones');?></h3></strong>
-		        						<p class="list-group-item-text">
-		        							<?= Html::tag('li', Yii::t('backend', 'Esta opción le permitirá la creación de un nuevo instrumento de pago denominado <strong>"Recibo de Pago"</strong>.')); ?>
-		        							<?= Html::tag('li', Yii::t('backend', 'En este nuevo instrumento de pago podra incluir todas las planillas pendientes que desea saldar (pagar).')); ?>
-		        							<?= Html::tag('li', Yii::t('backend', 'Para avanzar y obtener una información más especifica de las deudas, presione el boton con la <strong>"Deuda"</strong>.')); ?>
-		        							<?= Html::tag('li', Yii::t('backend', 'Las planillas que pertenezcan a periodos (trimestres, bimestres, etc), se seleccionarán a traves de un botón situado a la derecha de la misma. El resto podrá seleccionarlas por medio de un tilde (checkbox), situado a la izquierda de la planilla.')); ?>
-		        							<?= Html::tag('li', Yii::t('backend', 'Para agregar la o las planilla(s) al pote de <strong>"Planillas Seleccionadas"</strong>, presione el boton denominado <strong>"Agregar Monto Seleccionado"</strong>.')); ?>
-		        						</p>
-		        						<strong><h3 class="list-group-item-heading" style="color:red;"><?=Yii::t('backend', 'Nota Importante');?></h3></strong>
-		        						<p class="list-group-item-text">
-		        							<?= Html::tag('li', Yii::t('backend', 'Antes de agregar la(s) planilla(s) a la lista de <strong>"Planillas Seleccionadas"</strong>, <strong>se someterán a un proceso de actualización</strong>, lo que implicaria cambios en los montos por concepto de impuestos, recargos, intereses moratorios, descuentos y/o reconocimientos.')); ?>
-		        						</p>
+  								<div class="panel-body">
+  									<div class="well well-sm" style="padding:10px;">
+	   									<div class="list-group" style="padding-left: 20px;font-size: 110%;">
+	        								<strong><h3 class="list-group-item-heading" style="color:blue;"><?=Yii::t('backend', 'Indicaciones');?></h3></strong>
+			        						<p class="list-group-item-text">
+			        							<?=Html::tag('li', Yii::t('backend', 'Esta opción le permitirá crear un nuevo instrumento de pago denominado <strong>"Recibo de Pago"</strong>.')); ?>
+			        							<?=Html::tag('li', Yii::t('backend', 'En este nuevo instrumento de pago podrá incluir todas las planillas pendientes que desea saldar (pagar).')); ?>
+			        							<?=Html::tag('li', Yii::t('backend', 'Para avanzar y obtener una información más especifica de las deudas, presione el boton con la <strong>"Deuda"</strong>.')); ?>
+			        							<?=Html::tag('li', Yii::t('backend', 'Las planillas que pertenezcan a periodos (trimestres, bimestres, etc), se seleccionarán a traves de un botón situado a la derecha de la misma. El resto podrá seleccionarlas por medio de un tilde (checkbox), situado a la izquierda de la planilla.')); ?>
+			        							<?=Html::tag('li', Yii::t('backend', 'Para agregar la o las planilla(s) al pote de <strong>"Planillas Seleccionadas"</strong>, presione el boton denominado <strong>"Agregar Monto Seleccionado"</strong>.')); ?>
+			        							<?=Html::tag('li', Yii::t('backend', 'Verifique el listado denomidado <strong>"Planillas Seleccionadas"</strong>, y una vez conforme con la(s) planilla(s) existentes(s) presione <strong>"Crear Recibo"</strong>. Luego presione <strong>"Confirmar Crear Recibo"</strong>.')); ?>
+			        							<?=Html::tag('li', Yii::t('backend', 'Imprima dos (2) copias de su Recibo de Pago, y dirijase a cualquiera de las entidades financieras autorizadas para la recepción y pago de dicho recibo.')); ?>
+			        						</p>
+
+			        					</div>
 		        					</div>
+		        					<div class="well well-sm">
+		        						<div class="list-group" style="padding-left: 20px;font-size: 110%;">
+		        							<strong><h3 class="list-group-item-heading" style="color:red;"><?=Yii::t('backend', 'Nota Importante');?></h3></strong>
+			        						<p class="list-group-item-text">
+			        							<?=Html::tag('li',
+			        										  Yii::t('backend', 'Los recibos de pagos creados el día de hoy, <strong>vencen a las 12 de la media noche de hoy</strong>.'),
+			        										  [
+			        										  	'style' => 'color: red;',
+
+			        										  ]);
+			        							?>
+			        						</p>
+			        					</div>
+		        					</div>
+		        					<!-- <div class="well well-sm">
+		        						<div class="list-group" style="padding-left: 20px;font-size: 110%;">
+		        							<strong><h3 class="list-group-item-heading" style="color:blue;"><?=Yii::t('backend', 'Información');?></h3></strong>
+			        						<p class="list-group-item-text">
+			        							<?//=Html::tag('li', Yii::t('backend', 'Una vez impreso el recibo de pago puede dirijirse a cualquiera de las entidades financieras autorizadas para el pago del sus impuestos.')); ?>
+
+
+			        						</p>
+			        					</div>
+		        					</div> -->
   								</div>
 							</div>
 
