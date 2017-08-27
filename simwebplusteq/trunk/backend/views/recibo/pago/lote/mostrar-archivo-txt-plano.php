@@ -65,7 +65,9 @@
 	]);
  ?>
 
-
+<div class="row" style="width: 100%;padding:0px;padding-left: 25px;padding-top: 15px;">
+	<?=$htmlIdentidadBanco;?>
+</div>
 
 <div class="row" style="width: 100%;padding-top:20px;">
 	<div class="col-sm-2" style="margin-left: 20px;">

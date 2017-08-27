@@ -74,6 +74,10 @@
 <?=$form->field($model, 'fecha_pago')->hiddenInput(['value' => $model->fecha_pago])->label(false);?>
 <?=$form->field($model, 'sin_formato')->hiddenInput(['value' => $model->sin_formato])->label(false);?>
 
+<div class="row" style="width: 100%;padding:0px;padding-left: 25px;padding-top: 15px;">
+	<?=$htmlIdentidadBanco;?>
+</div>
+
 <div class="row" style="width:100%;padding: 0px;margin: 0px;">
 	<div class="col-sm-3" style="width: 20%;padding: 0px;margin: 0px;padding-left: 100px;padding-top:10px;">
 		<h4><strong><?=Html::encode(Yii::t('backend', 'Monto Total:'))?> </strong></h4>
@@ -167,11 +171,6 @@
 			?>
 		</div>
 	</div>
-</div>
-
-
-<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;padding-left: 25px;">
-	<h4><strong><?=Html::encode(Yii::t('backend', 'Archivo: ') . $archivo)?></strong></h4>
 </div>
 
 <div class="row" style="width:98%;margin-left: 25px;">
@@ -442,10 +441,6 @@
 	    	]);?>
 	    </div>
 	</div>
-</div>
-
-<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;padding-left: 25px;">
-	<h4><strong><?=Html::encode(Yii::t('backend', 'Archivo: ') . $archivo . ' ------ ' . Yii::t('backend', 'final'))?></strong></h4>
 </div>
 
 <div class="row">
