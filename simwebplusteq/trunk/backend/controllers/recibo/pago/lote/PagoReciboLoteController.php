@@ -316,11 +316,20 @@
                     $model = New BusquedaArchivoTxtForm();
                     $model->load($postData);
 
+                    $banco = $model->getBancoById($model->id_banco);
+
                     $archivo = $postData['data-file'];
                     $ruta = $postData['data-path'];
                     // Fecha de pago
                     $fecha = $postData['data-date'];
                     $model->fecha_pago = $fecha;
+
+                    $htmlIdentidadBanco = $this->renderPartial('/recibo/pago/lote/identificar-banco-fecha',[
+                                                                        'banco' => $banco,
+                                                                        'archivo' => $archivo,
+                                                                        'model' => $model,
+                                                                        'detailView' => true,
+                                        ]);
 
                     $mostrar = New MostrarArchivoTxt($ruta, $archivo);
                     $mostrar->iniciarMostrarArchivo();
@@ -338,6 +347,7 @@
                         return $this->render('/recibo/pago/lote/mostrar-archivo-txt-plano',[
                                                             'archivo' => $archivo,
                                                             'contenidoPlano' => $contenidoPlano,
+                                                            'htmlIdentidadBanco' => $htmlIdentidadBanco,
                             ]);
                     }
                 }
@@ -398,11 +408,20 @@
                 $model = New BusquedaArchivoTxtForm();
                 $model->load($postData);
 
+                $banco = $model->getBancoById($model->id_banco);
+
                 $archivo = $postData['data-file'];
                 $ruta = $postData['data-path'];
                 // Fecha de pago
                 $fecha = $postData['data-date'];
                 $model->fecha_pago = $fecha;
+
+                $htmlIdentidadBanco = $this->renderPartial('/recibo/pago/lote/identificar-banco-fecha',[
+                                                                        'banco' => $banco,
+                                                                        'archivo' => $archivo,
+                                                                        'model' => $model,
+                                                                        'detailView' => true,
+                                        ]);
 
                 $mostrar = New MostrarArchivoTxt($ruta, $archivo);
                 $mostrar->iniciarMostrarArchivo();
@@ -422,6 +441,7 @@
                                                     'archivo' => $archivo,
                                                     'fecha' => $fecha,
                                                     'model' => $model,
+                                                    'htmlIdentidadBanco' => $htmlIdentidadBanco,
 
                         ]);
                 } else {
@@ -445,6 +465,7 @@
                                                         'archivo' => $archivo,
                                                         'fecha' => $fecha,
                                                         'model' => $model,
+                                                        'htmlIdentidadBanco' => $htmlIdentidadBanco,
                                 ]);
                     }
                 }
