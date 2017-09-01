@@ -78,7 +78,7 @@
 
 					<div class="row" style="border-bottom: 0.5px solid #ccc;">
 						<h4><strong><?= Yii::t('backend', 'Buscar por Tipo de Certificado Catastral')?></strong></h4>
-					</div>
+					</div> 
 
 <!-- Combo de tipos de licencias -->
 					<div class="row" style="padding-top: 15px;">
