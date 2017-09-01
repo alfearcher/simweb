@@ -369,7 +369,7 @@ Session["variablephp"] = tu;
                             </div> 
                                         
                             <div class="col-sm-1"> 
-                            <?= Yii::t('backend', 'Plot') ?>
+                            <?= Yii::t('backend', 'Parcela') ?>
                             </div> 
                         
                             <div class="col-sm-1" >

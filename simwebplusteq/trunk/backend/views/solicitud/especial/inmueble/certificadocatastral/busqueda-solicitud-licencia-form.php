@@ -84,7 +84,7 @@
 					<div class="row" style="padding-top: 15px;">
 						<div class="col-sm-2">
 							<div class="row">
-								<p><strong><?= $model->getAttributeLabel('tipo') ?></strong></p>
+								<p><strong><?= Yii::t('backend', 'Buscar Tipo de Certificado Catastral') ?></strong></p>
 							</div>
 						</div>
 						<div class="col-sm-5">

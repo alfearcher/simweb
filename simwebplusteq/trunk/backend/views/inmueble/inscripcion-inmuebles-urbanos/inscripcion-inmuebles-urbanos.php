@@ -223,7 +223,7 @@ function bloquea() {
                    <tr>
                         <td style="max-width: 85px" align="right">                 
                             <div class="col-lg-1"> 
-                            <?= Yii::t('backend', 'Plot') ?>
+                            <?= Yii::t('backend', 'Parcela') ?>
                             </div> 
                         </td>
 

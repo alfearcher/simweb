@@ -348,7 +348,7 @@ Session["variablephp"] = tu;
                         <div class="row" style="margin-left:20px; margin-top:20px;">
 
                             <div class="col-sm-1"> 
-                            <?= Yii::t('backend', 'Plot') ?>
+                            <?= Yii::t('backend', 'Parcela') ?>
                             </div> 
 
                              <div class="col-sm-1" >

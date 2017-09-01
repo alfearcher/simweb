@@ -121,7 +121,7 @@
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
 				                        ],
-					                    'label' => Yii::t('frontend', 'Tipo de Licencia'),
+					                    'label' => Yii::t('frontend', 'Tipo de Certificado'),
 					                    'value' => function($data) {
                 										return $data['tipo'];
         											},
@@ -157,7 +157,7 @@
 					                	'contentOptions' => [
 				                        	'style' => 'font-size: 90%;',
 				                        ],
-					                    'label' => Yii::t('frontend', 'Nro. Licencia'),
+					                    'label' => Yii::t('frontend', 'Nro. Certificado'),
 					                    'value' => function($data) {
                 										return $data['certificado_catastral'];
         											},
