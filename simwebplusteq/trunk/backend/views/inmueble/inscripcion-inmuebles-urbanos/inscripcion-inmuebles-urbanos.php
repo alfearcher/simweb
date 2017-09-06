@@ -409,7 +409,7 @@ function bloquea() {
                             <div class="form-group"> 
                             <?= Html::submitButton(Yii::t('backend', 'Incorporate'), ['class' => 'btn btn-primary',
                                       'data' => [
-                                                  'confirm' => Yii::t('app', 'Are you sure you want to Incorporate this item?'),
+                                                  'confirm' => Yii::t('app', 'Seguro que deseas Guardar la informacion registrada?'),
                                                   'method' => 'post',],]) ?>
                             <?= Html::a(Yii::t('backend', 'Back'), ['/menu/vertical'], ['class' => 'btn btn-danger']) ?>
                             </div>                                                                        
