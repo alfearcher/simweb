@@ -49,6 +49,7 @@
 		        							['label' => 'Crear Cuenta','url' =>['opcion-funcionario/buscar-funcionario-usuario']],
 		        							['label' => 'Desincorporar Cuenta','url' => '#'],
 		        							['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente']],
+		        							['label' => 'Añadir Permisos a Usuarios','url' =>['/usuario/registrar-perfil-usuario/registrar-perfil']],
 		        				]
 		        			],
 
@@ -197,7 +198,7 @@
 		        						['label' => 'Datos Registro de Propiedad', 'url' => ['/inmueble/registros-inmuebles-urbanos/index']],
 		        						['label' => 'Certificado Catastral', 'url' => ['/inmueble/certificado-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Renovación de Avaluo Catastral', 'url' => ['/inmueblebasico/renovacion-certificado-catastral-inmuebles-urbanos/index']],
-		        						['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
+		        						//['label' => 'Linderos', 'url' => ['/inmueble/linderos-inmuebles-urbanos/index']],
 		        						['label' => 'Numero Catastral', 'url' => ['/inmueble/cambio-numero-catastral-inmuebles-urbanos/index']],
 		        						['label' => 'Cambio de Propietario(VENDEDOR)', 'url' => ['inmueble/cambio-propietario-vendedor-inmuebles-urbanos/index','id' =>12]], // vendedor:12
 		        						['label' => 'Cambio de Propietario(COMPRADOR)', 'url' => ['inmueble/cambio-propietario-comprador-inmuebles-urbanos/buscar-vendedor','id' =>11]], // comprador:11
