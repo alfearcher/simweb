@@ -71,6 +71,8 @@ use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\enviaremail\PlantillaEmail;
 
+use backend\models\usuario\AutorizacionUsuario;
+
 /**
  * CambiosInmueblesUrbanosController implements the CRUD actions for InmueblesUrbanosForm model.
  */
@@ -87,6 +89,8 @@ class IntegracionInmueblesUrbanosController extends Controller
      */
     public function actionIndex()
     {
+        
+
         $idConfig = yii::$app->request->get('id');
 
          $_SESSION['id'] = 107;
@@ -102,6 +106,8 @@ class IntegracionInmueblesUrbanosController extends Controller
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         }
+
+        
     }
 
     /**
@@ -139,6 +145,12 @@ class IntegracionInmueblesUrbanosController extends Controller
      **/
     public function actionIntegracionInmuebles()
     { 
+        // Se determina si el usuario esta autorixado a utilizar el modulo.
+      $autorizado = New  AutorizacionUsuario();  
+      $autorizado = $autorizado->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']);
+      
+      if ( $autorizado ) {
+
         if ( isset( $_SESSION['idContribuyente'] ) ) {
          //Creamos la instancia con el model de validación
          $model = new IntegracionInmueblesForm();
@@ -206,7 +218,12 @@ class IntegracionInmueblesUrbanosController extends Controller
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
-        }    
+        } 
+
+        } else {
+            // El usuario no esta autorizado.
+            $this->redirect(['error-operacion', 'cod' => 700]);
+        }   
  
      } // cierre del metodo inscripcion de inmuebles
     
@@ -415,7 +432,7 @@ class IntegracionInmueblesUrbanosController extends Controller
 
      } 
 
-     } 
+     
 
     /**
      * [DatosConfiguracionTiposSolicitudes description] metodo que busca el tipo de solicitud en 
@@ -491,6 +508,20 @@ class IntegracionInmueblesUrbanosController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * Metodo que renderiza una vista que indica que ocurrio un error en la
+     * ejecucion del proceso.
+     * @param  integer $cod codigo que permite obtener la descripcion del
+     * codigo de la operacion.
+     * @return view.
+     */
+    public function actionErrorOperacion($cod)
+    {
+      //$varSession = self::actionGetListaSessions();
+      //self::actionAnularSession($varSession);
+      return MensajeController::actionMensaje($cod);
     }
 }
 

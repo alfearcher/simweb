@@ -78,6 +78,8 @@ use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\models\contribuyente\ContribuyenteBase;
 use common\models\configuracion\solicitud\SolicitudProcesoEvento;
+
+use backend\models\usuario\AutorizacionUsuario;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -98,7 +100,10 @@ class InscripcionInmueblesUrbanosController extends Controller
      public function actionInscripcionInmueblesUrbanos()
      { 
        
-         
+         $autorizado = New  AutorizacionUsuario();    
+         $autorizado = $autorizado->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']);
+
+         if ( $autorizado ) {
 
          $_SESSION['id'] = 68;
          if ( isset($_SESSION['idContribuyente'] ) ) {
@@ -168,7 +173,12 @@ class InscripcionInmueblesUrbanosController extends Controller
 
         }  else {
                     echo "No hay Contribuyente Registrado!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['site/login'])."'>";
-        }    
+        } 
+
+        } else {
+        // El usuario no esta autorizado.
+        $this->redirect(['error-operacion', 'cod' => 700]);
+      }   
  
      } // cierre del metodo inscripcion de inmuebles
 
@@ -509,6 +519,20 @@ class InscripcionInmueblesUrbanosController extends Controller
 
 
      }
+
+     /**
+     * Metodo que renderiza una vista que indica que ocurrio un error en la
+     * ejecucion del proceso.
+     * @param  integer $cod codigo que permite obtener la descripcion del
+     * codigo de la operacion.
+     * @return view.
+     */
+    public function actionErrorOperacion($cod)
+    {
+      //$varSession = self::actionGetListaSessions();
+      //self::actionAnularSession($varSession);
+      return MensajeController::actionMensaje($cod);
+    }
 
      
 

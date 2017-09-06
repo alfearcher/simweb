@@ -75,6 +75,8 @@
 	use backend\models\inmueble\HistoricoAvaluoSearch;
 	use backend\models\solicitud\especial\inmueble\certificadocatastral\VistaPreliminarCertificado;
 
+	use backend\models\usuario\AutorizacionUsuario;
+
 
 	session_start();		// Iniciando session
 
@@ -118,7 +120,8 @@
 			$autorizado = false;
 
 			// Se determina si el usuario esta autorixado a utilizar el modulo.
-			$autorizado = $model->estaAutorizado(Yii::$app->identidad->getUsuario());
+			$autorizado = New  AutorizacionUsuario();  
+			$autorizado = $autorizado->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']);
 
 			if ( $autorizado ) {
 

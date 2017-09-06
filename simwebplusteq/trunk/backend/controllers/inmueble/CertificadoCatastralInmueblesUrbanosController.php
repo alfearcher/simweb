@@ -95,6 +95,8 @@ use common\models\configuracion\solicitud\DocumentoSolicitud;
 use common\models\contribuyente\ContribuyenteBase;
 use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 
+use backend\models\usuario\AutorizacionUsuario;
+
 #We will include the pdf library installed by composer
     #funciona asi, requerimiento
     use mPDF;
@@ -117,6 +119,13 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
      */
     public function actionIndex()
     { 
+        
+        // Se determina si el usuario esta autorixado a utilizar el modulo.
+      $autorizado = New  AutorizacionUsuario();  
+      $autorizado = $autorizado->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']);
+      
+      if ( $autorizado ) {
+
         if ( isset( $_SESSION['idContribuyente'] ) ) {
 
           $idConfig = 6;
@@ -131,6 +140,12 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
         }  else {
                     echo "No hay Contribuyente!!!...<meta http-equiv='refresh' content='3; ".Url::toRoute(['menu/vertical'])."'>";
         } 
+
+        } else {
+            // El usuario no esta autorizado.
+            $this->redirect(['error-operacion', 'cod' => 700]);
+        }
+
     }
 
     /**
@@ -1132,6 +1147,20 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
 
             return isset($modelFind) ? $modelFind : null;
         }
+
+        /**
+     * Metodo que renderiza una vista que indica que ocurrio un error en la
+     * ejecucion del proceso.
+     * @param  integer $cod codigo que permite obtener la descripcion del
+     * codigo de la operacion.
+     * @return view.
+     */
+    public function actionErrorOperacion($cod)
+    {
+      //$varSession = self::actionGetListaSessions();
+      //self::actionAnularSession($varSession);
+      return MensajeController::actionMensaje($cod);
+    }
 
 
      
