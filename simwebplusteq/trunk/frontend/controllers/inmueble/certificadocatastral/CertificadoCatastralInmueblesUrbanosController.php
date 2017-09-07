@@ -994,7 +994,7 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             'uso'=> $modelUsos[0]['descripcion'],
                                                             'tipo'=> $modelTipos[0]['descripcion'],
                                                             
-                                    ]);                  
+                                    ]);             
 
 
             // Informacion de las cuotas por cobrar.
@@ -1018,7 +1018,8 @@ class CertificadoCatastralInmueblesUrbanosController extends Controller
                                                             'director'=> Yii::$app->oficina->getDirector(),
                                                             'nombreCargo' => Yii::$app->oficina->getNombreCargo(),
                                                             'barcode' => $barcode,
-                                    ]);            
+                                    ]);              
+
 
             
 

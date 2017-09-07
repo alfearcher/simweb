@@ -247,7 +247,7 @@ class RegistrarPerfilUsuarioController extends Controller
          }
 
 
-     }
+     } 
 
      /**
      * Metodo que renderiza una vista que indica que ocurrio un error en la
