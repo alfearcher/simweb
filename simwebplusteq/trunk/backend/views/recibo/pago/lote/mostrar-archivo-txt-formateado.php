@@ -378,7 +378,9 @@
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;text-align:left;font-weight:bold',
+	                          'style' => 'font-size: 90%;
+	                          			  font-weight:bold;
+	                          			  padding-left:15px;',
 	                    ],
 	                    'format' => 'raw',
 	                    'label' => Yii::t('backend', 'planillas'),
@@ -409,6 +411,7 @@
 	                    'value' => function($data, $key) {
                     					return $data['archivo_txt'];
 	        			           },
+	        			'visible' => false,
 	                ],
 
 	                [
@@ -419,11 +422,12 @@
 	                    'value' => function($data, $key) {
                     					return $data['estatus'];
 	        			           },
+	        			'visible' => false,
 	                ],
 
 	                [
 	                    'contentOptions' => [
-	                          'style' => 'font-size: 90%;',
+	                          'style' => 'font-size: 90%;padding-left:15px;',
 	                    ],
 	                    'format' => 'raw',
 	                    'label' => Yii::t('backend', 'Observacion'),
@@ -546,7 +550,6 @@
 <?php
 $this->registerJs(
     '$(document).on("click", "#link-recibo", (function() {
-    	alert("jkka");
         $.get(
             $(this).data("url"),
             function (data) {
