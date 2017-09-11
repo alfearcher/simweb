@@ -168,9 +168,9 @@
 			<!-- <div class="row" style="width:100%;margin-top: 10px;"> -->
 			<div class="col-sm-2" style="width:15%;">
 				<!-- <div class="col-sm-2" style="width:66%;text-align:right;margin-top: 5px;"><?//=Html::label('Impuesto - ( Descuentos + Recon/Ret.)')?></div> -->
-				<div class="row"><?=Html::label(Yii::t('backend','Imp-(Desc+Recon/Ret.)'))?></div>
+				<div class="row"><?=Html::label(Yii::t('backend','Total Depositos'))?></div>
 				<div class="row"><?=Html::textInput('total-recaudado-total',
-													 				  Yii::$app->formatter->asDecimal($totalRecaudado['monto'] - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']), 2),
+													 				  Yii::$app->formatter->asDecimal( ( $totalRecaudado['monto'] + $totalRecaudado['recargo'] + $totalRecaudado['interes'] ) - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']), 2),
 																	 [
 																	 	'class' => 'form-control',
 																	 	'readOnly' => true,
@@ -208,7 +208,7 @@
 			<div class="col-sm-2" style="width:62%;"></div>
 			<div class="col-sm-2" style="width:15%;">
 				<div class="row"><?=Html::textInput('total-recaudado-menos-chq-recuperado',
-												Yii::$app->formatter->asDecimal($totalRecaudado['monto'] - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']) - $totalChequeRecuperado, 2),
+												Yii::$app->formatter->asDecimal(( $totalRecaudado['monto'] + $totalRecaudado['recargo'] + $totalRecaudado['interes'] ) - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']) - $totalChequeRecuperado, 2),
 																	 [
 																	 	'class' => 'form-control',
 																	 	'readOnly' => true,
@@ -246,7 +246,7 @@
 			<div class="col-sm-2" style="width:62%;"></div>
 			<div class="col-sm-2" style="width:15%;">
 				<div class="row"><?=Html::textInput('total-general',
-												Yii::$app->formatter->asDecimal($totalRecaudado['monto'] - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']) + $totalNotaDebito, 2),
+												Yii::$app->formatter->asDecimal(( $totalRecaudado['monto'] + $totalRecaudado['recargo'] + $totalRecaudado['interes'] ) - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']) - $totalChequeRecuperado + $totalNotaDebito, 2),
 																	 [
 																	 	'class' => 'form-control',
 																	 	'readOnly' => true,
