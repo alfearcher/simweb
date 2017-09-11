@@ -62,15 +62,15 @@
 		]);
 	?>
 
-	<div class="row" style="width: 100%;">
-		<div class="row" style="border-bottom: 1px solid #ccc;background-color:#EAEFFE;padding-top: 0px;">
+	<div class="row" style="width: 100%;margin-top: 10px;border-bottom: 1px solid #ccc;background-color:#EAEFFE;padding-top: 0px;">
+		<div class="row" style="width: 100%;">
 			<div class="col-sm-2" style="width: 10%;font-size: 90%;margin-top:15px;">
 				<strong><?=Yii::t('backend', 'Total Deposito + Chq. Recuperados')?></strong>
 			</div>
 
 <!-- Total por impuesto -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Impuesto')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Impuesto'))?></div>
 				<div class="row"><?=Html::textInput('total-recaudado-impuesto',
 													 Yii::$app->formatter->asDecimal($totalRecaudado['monto'], 2),
 													 [
@@ -88,8 +88,8 @@
 <!-- Fin de Total por impuesto -->
 
 <!-- Total por recargo -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Recargos')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Recargos'))?></div>
 				<div class="row"><?=Html::textInput('total-recaudado-recargo',
 													 Yii::$app->formatter->asDecimal($totalRecaudado['recargo'], 2),
 													 [
@@ -108,8 +108,8 @@
 
 
 <!-- Total por interes -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Interes')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Interes'))?></div>
 				<div class="row"><?=Html::textInput('total-recaudado-interes',
 													 Yii::$app->formatter->asDecimal($totalRecaudado['interes'], 2),
 													 [
@@ -127,8 +127,8 @@
 <!-- Fin de Total por interes -->
 
 <!-- Total por descuento -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Descuentos')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Descuentos'))?></div>
 				<div class="row"><?=Html::textInput('total-recaudado-descuento',
 													 Yii::$app->formatter->asDecimal($totalRecaudado['descuento'], 2),
 													 [
@@ -146,8 +146,8 @@
 <!-- Fin de Total por descuento -->
 
 <!-- Total por monto reconocimiento -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Recon/Ret')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Recon/Ret'))?></div>
 				<div class="row"><?=Html::textInput('total-recaudado-monto-reconocimiento',
 													 Yii::$app->formatter->asDecimal($totalRecaudado['monto_reconocimiento'], 2),
 													 [
@@ -165,9 +165,11 @@
 <!-- Fin de Total por monto reconocimiento -->
 
 <!-- Total por monto total impuesto - ( descuento + monto reconocimiento ) -->
-			<div class="row" style="width:100%;margin-top: 10px;">
-				<div class="col-sm-2" style="width:66%;text-align:right;margin-top: 5px;"><?=Html::label('Impuesto - ( Descuentos + Recon/Ret.)')?></div>
-				<div class="col-sm-2" style="width:19%;"><?=Html::textInput('total-recaudado-total',
+			<!-- <div class="row" style="width:100%;margin-top: 10px;"> -->
+			<div class="col-sm-2" style="width:15%;">
+				<!-- <div class="col-sm-2" style="width:66%;text-align:right;margin-top: 5px;"><?//=Html::label('Impuesto - ( Descuentos + Recon/Ret.)')?></div> -->
+				<div class="row"><?=Html::label(Yii::t('backend','Imp-(Desc+Recon/Ret.)'))?></div>
+				<div class="row"><?=Html::textInput('total-recaudado-total',
 													 				  Yii::$app->formatter->asDecimal($totalRecaudado['monto'] - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']), 2),
 																	 [
 																	 	'class' => 'form-control',
@@ -183,8 +185,83 @@
 			</div>
 <!-- Fin de Total por monto total impuesto - ( descuento + monto reconocimiento ) -->
 		</div>
+
+		<div class="row" style="width: 100%;padding:0px;padding-left: 15px;padding-top: 10px;">
+			<div class="col-sm-2" style="width: 18%;font-size: 90%;margin-top:5px;">
+				<strong><?=Yii::t('backend', 'Total Deposito - Chq. Recuperados')?></strong>
+			</div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::textInput('total-chq-recuperado',
+												Yii::$app->formatter->asDecimal($totalChequeRecuperado, 2),
+																	 [
+																	 	'class' => 'form-control',
+																	 	'readOnly' => true,
+																	 	'style' => 'text-align:right;
+																	 				font-weight: bold;
+																	 				font-size:90%;
+																	 				background-color:white;',
+
+																	 ])
+								?>
+				</div>
+			</div>
+			<div class="col-sm-2" style="width:62%;"></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::textInput('total-recaudado-menos-chq-recuperado',
+												Yii::$app->formatter->asDecimal($totalRecaudado['monto'] - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']) - $totalChequeRecuperado, 2),
+																	 [
+																	 	'class' => 'form-control',
+																	 	'readOnly' => true,
+																	 	'style' => 'text-align:right;
+																	 				font-weight: bold;
+																	 				font-size:90%;
+																	 				background-color:white;',
+
+																	 ])
+								?>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row" style="width: 100%;padding:0px;padding-left: 15px;">
+			<div class="col-sm-2" style="width: 18%;font-size: 90%;margin-top:5px;">
+				<strong><?=Yii::t('backend', 'TOTAL GENERAL - ND')?></strong>
+			</div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::textInput('total-nota-debito',
+												Yii::$app->formatter->asDecimal($totalNotaDebito, 2),
+																	 [
+																	 	'class' => 'form-control',
+																	 	'readOnly' => true,
+																	 	'style' => 'text-align:right;
+																	 				font-weight: bold;
+																	 				font-size:90%;
+																	 				background-color:white;',
+
+																	 ])
+								?>
+				</div>
+			</div>
+			<div class="col-sm-2" style="width:62%;"></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::textInput('total-general',
+												Yii::$app->formatter->asDecimal($totalRecaudado['monto'] - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']) + $totalNotaDebito, 2),
+																	 [
+																	 	'class' => 'form-control',
+																	 	'readOnly' => true,
+																	 	'style' => 'text-align:right;
+																	 				font-weight: bold;
+																	 				font-size:90%;
+																	 				background-color:white;',
+
+																	 ])
+								?>
+				</div>
+			</div>
+		</div>
+
 	</div>
-<!-- ///// -->
 
 	<?php ActiveForm::end(); ?>
 </div>

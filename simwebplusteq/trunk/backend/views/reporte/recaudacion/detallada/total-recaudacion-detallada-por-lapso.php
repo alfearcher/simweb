@@ -65,15 +65,15 @@
 		$descripcionLapso = ( $lapso == 1 ) ? Yii::t('backend', 'AÑO ACTUAL') : Yii::t('backend', 'AÑOS ANTERIORES');
 	?>
 
-	<div class="row" style="width: 100%;">
+	<div class="row" style="width: 100%;margin-top: 10px;">
 		<div class="row" style="border-bottom: 1px solid #ccc;background-color:#C0C0C0;padding-top: 0px;">
-			<div class="col-sm-2" style="width: 10%;font-size: 90%;margin-top:15px;">
+			<div class="col-sm-2" style="width: 8%;font-size: 90%;margin-top:15px;">
 				<strong><?=Html::encode($descripcionLapso)?></strong>
 			</div>
 
 <!-- Total del lapso por impuesto -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Impuesto')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Impuesto'))?></div>
 				<div class="row"><?=Html::textInput('total-lapso-impuesto',
 													 Yii::$app->formatter->asDecimal($totalLapso['monto'], 2),
 													 [
@@ -91,8 +91,8 @@
 <!-- Fin de Total del lapso por impuesto -->
 
 <!-- Total del lapso por recargo -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Recargos')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Recargos'))?></div>
 				<div class="row"><?=Html::textInput('total-lapso-recargo',
 													 Yii::$app->formatter->asDecimal($totalLapso['recargo'], 2),
 													 [
@@ -111,8 +111,8 @@
 
 
 <!-- Total del lapso por interes -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Interes')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Interes'))?></div>
 				<div class="row"><?=Html::textInput('total-lapso-interes',
 													 Yii::$app->formatter->asDecimal($totalLapso['interes'], 2),
 													 [
@@ -130,8 +130,8 @@
 <!-- Fin de Total del lapso por interes -->
 
 <!-- Total del lapso por descuento -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Descuentos')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Descuentos'))?></div>
 				<div class="row"><?=Html::textInput('total-lapso-descuento',
 													 Yii::$app->formatter->asDecimal($totalLapso['descuento'], 2),
 													 [
@@ -149,8 +149,8 @@
 <!-- Fin de Total del lapso por descuento -->
 
 <!-- Total del lapso por monto reconocimiento -->
-			<div class="col-sm-2" style="12%;">
-				<div class="row"><?=Html::label('Recon/Ret')?></div>
+			<div class="col-sm-2" style="width:15%;">
+				<div class="row"><?=Html::label(Yii::t('backend','Recon/Ret'))?></div>
 				<div class="row"><?=Html::textInput('total-lapso-monto-reconocimiento',
 													 Yii::$app->formatter->asDecimal($totalLapso['monto_reconocimiento'], 2),
 													 [
@@ -168,9 +168,11 @@
 <!-- Fin de Total del lapso por monto reconocimiento -->
 
 <!-- Total del lapso por monto total impuesto - ( descuento + monto reconocimiento ) -->
-			<div class="row" style="width:100%;margin-top: 10px;">
-				<div class="col-sm-2" style="width:77%;text-align:right;margin-top: 5px;"><?=Html::label('Impuesto - ( Descuentos + Recon/Ret.)')?></div>
-				<div class="col-sm-2" style="width:19%;"><?=Html::textInput('total-lapso-total',
+			<!-- <div class="row" style="width:100%;margin-top: 10px;"> -->
+				<!-- <div class="col-sm-2" style="width:77%;text-align:right;margin-top: 5px;"><?//=Html::label('Impuesto - ( Descuentos + Recon/Ret.)')?></div> -->
+				<div class="col-sm-2" style="width:15%;">
+					<div class="row"><?=Html::label(Yii::t('backend','Imp-(Desc+Recon/Ret.)'))?></div>
+					<div class="row"><?=Html::textInput('total-lapso-total',
 													 				  Yii::$app->formatter->asDecimal($totalLapso['monto'] - ( $totalLapso['descuento'] + $totalLapso['monto_reconocimiento']), 2),
 																	 [
 																	 	'class' => 'form-control',
@@ -182,8 +184,9 @@
 
 																	 ])
 								?>
+					</div>
 				</div>
-			</div>
+			<!-- </div> -->
 <!-- Fin de Total del lapso por monto total impuesto - ( descuento + monto reconocimiento ) -->
 		</div>
 	</div>

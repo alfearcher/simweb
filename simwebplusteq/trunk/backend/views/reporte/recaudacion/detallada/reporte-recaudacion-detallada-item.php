@@ -118,13 +118,13 @@
 		            ],
 
 		            [
-		                'label' => Yii::t('backend', 'Deposito'),
+		                'label' => Yii::t('backend', 'Recibo'),
 		                'contentOptions' => [
 		                	'style' => 'font-size:90%;',
 		                ],
 		                'format' => 'raw',
 		                'value' => function($model) {
-		                				return 0;
+		                				return $model['recibo'];
 									},
 		            ],
 

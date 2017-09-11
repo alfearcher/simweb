@@ -64,7 +64,7 @@
 		]);
 	?>
 
-	<div class="row">
+	<div class="row" style="width: 100%;padding-left:55px;">
 		<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-top: 0px;">
 			<div class="col-sm-2" style="width: 50%;">
 				<h4><strong><?=Html::encode($caption)?></strong></h4>
