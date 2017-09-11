@@ -141,7 +141,7 @@
 			      			foreach ( $lapsos as $key => $value ) {
 			      				$htmlRecaudacion[$value] = self::actionViewDetalleRecaudacionByLapso($arregloCodigo, $value, $recaudacionSearch);
 
-			      				// Toda la data recolectada por lapso.
+			      				// Toda la data recolectada por lapso. Data por deuda morosa y deuda actual.
 			      				$recaudacion[$value] = $recaudacionSearch->findSumatoriaDetalleByPlanillaCodigoLapso(0, $value);
 			      			}
 
@@ -152,22 +152,30 @@
 			      			$totalRecaudado = $recaudacionSearch->totalizarResultado($results);
 			      			//$htmlTotalRecaudado = self::actionViewTotalRecaudado($totalRecaudado);
 
-			      			$data = $recaudacionSearch->armarData($totalRecaudado);
-			      			$dataProvider = $recaudacionSearch->getDataProvider($data);
-			      			$htmlTotalRecaudado = $this->renderPartial('/reporte/recaudacion/detallada/total-resumen-general1', [
-			      																'dataProvider' => $dataProvider,
-			      			]);
+			      			//$data = $recaudacionSearch->armarData($totalRecaudado);
+			      			//$dataProvider = $recaudacionSearch->getDataProvider($data);
+
+			      			$totalChequeRecuperado = $recaudacionSearch->totalizarChequeRecuperado($results);
+			      			$totalNotaDebito = $recaudacionSearch->totalizarNotaDebito($results);
+//die(var_dump($totalNotaDebito));
+			      			$htmlTotalRecaudado = $this->renderPartial('/reporte/recaudacion/detallada/total-resumen-general', [
+			      																'totalRecaudado' => $totalRecaudado,
+			      																'results' => $results,
+			      																'totalChequeRecuperado' => $totalChequeRecuperado,
+			      																'totalNotaDebito' => $totalNotaDebito,
+			      									]);
 
 			      			$subCaption = Yii::t('backend', 'Reporte de Recaudación de Ingresos Municipales');
 			      			$subCaptionConsulta = Yii::t('backend', 'Rango de Consulta ') . $model->fecha_desde . ' - ' . $model->fecha_hasta;
 
+			      			$this->layout = 'layoutbase';
 			      			return $this->render('/reporte/recaudacion/detallada/reporte-recaudacion-detallada-master', [
-						      										'caption' => $caption,
-						      										'subCaption' => $subCaption,
-						      										'subCaptionConsulta' => $subCaptionConsulta,
-						      										'htmlRecaudacion' => $htmlRecaudacion,
-						      										'lapsos' => $lapsos,
-						      										'htmlTotalRecaudado' => $htmlTotalRecaudado,
+						      													'caption' => $caption,
+						      													'subCaption' => $subCaption,
+						      													'subCaptionConsulta' => $subCaptionConsulta,
+						      													'htmlRecaudacion' => $htmlRecaudacion,
+						      													'lapsos' => $lapsos,
+						      													'htmlTotalRecaudado' => $htmlTotalRecaudado,
 			      					]);
 
 			      		} elseif ( $model->tipo_recaudacion == 'GENERAL' ) {
@@ -215,6 +223,8 @@
 				$results = [];
 
 				// Resultado de la consulta sobre la data recolectada.
+				// Suma agrupado por planilla segun un codigo presupuestario y lapso (deuda actual o morosa).
+				// Lista de planilla.
 				$results = $recaudacionSearch->findSumatoriaDetalleByPlanillaCodigoLapso($codigo['codigo'], $lapso);
 
 				// Totalizacion, en este caso totaliza por codigo presupuestario.
@@ -250,7 +260,7 @@
 		/**
 		 * Metodo que retorna la vista con la totalizacion por lapso (Año Actual, Año Anteriores)
 		 * @param array $totalLapso arreglo con los totales por atributos
-		 * @param  [type] $lapso entero que indica el laspo
+		 * @param integer $lapso entero que indica el laspo
 		 * 1 => Año Actual
 		 * 2 => Años Anteriores
 		 * @return view
