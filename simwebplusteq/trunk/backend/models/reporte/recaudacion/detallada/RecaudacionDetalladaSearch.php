@@ -178,7 +178,8 @@
 
 
 		/**
-		 * [findSumatoriaDetalleByPlanillaCodigoLapso description]
+		 * Metodo que agrupa la deuda por concepto de codigo presupuestario y si esta es resultado
+		 * de una deuda actual o una deuda morosa.
 		 * @param integer $codigo codigo de ingreso presupuestario. Ejemplo 301020700
 		 * Actividad Economica.
 		 * @param integer $lapso entero que indica el tipo de deuda que se quiere
@@ -213,6 +214,7 @@
 									'login',
 									'SUM(descuento) as descuento',
 									'SUM(monto_reconocimiento) as monto_reconocimiento',
+									'recibo'
 									])
 								 ->andWhere('lapso =:lapso', [':lapso' => $lapso])
 								 ->groupBy([
@@ -251,6 +253,7 @@
 									'login',
 									'SUM(descuento) as descuento',
 									'SUM(monto_reconocimiento) as monto_reconocimiento',
+									'recibo'
 									])
 				  				 ->andWhere('codigo =:codigo',[':codigo' => $codigo])
 								 ->andWhere('lapso =:lapso', [':lapso' => $lapso])
@@ -284,7 +287,7 @@
 		 * - interes
 		 * - descuento
 		 * - monto-reconocimiento
-		 * Y entrega un arreglo donde el indice el el nombre del atributo y
+		 * Y entrega un arreglo donde el indice es el nombre del atributo y
 		 * el valor del elemnto sera el monto totalizado del atributo.
 		 * @param arreglo $results arreglo con el resultado de la consulta.
 		 * @return array.
@@ -298,6 +301,48 @@
 						'descuento' => array_sum(array_column($results, 'descuento')),
 						'monto_reconocimiento' => array_sum(array_column($results, 'monto_reconocimiento')),
 					];
+		}
+
+
+
+		/**
+		 * Metodo que totaliza el monto por el concepto de Cheques Recuperados.
+		 * @param  array $results arreglo con la data de la consulta
+		 * @param  integer $lapso entero que indica deuda actual o morosa (1, 2).
+		 * @return double retorna monto con la totalizacion.
+		 */
+		public function totalizarChequeRecuperado($results, $lapso = 0)
+		{
+			$total = (float)0;
+			if ( count($results) > 0 ) {
+				foreach ( $results as $result ) {
+					if ( trim($result['codigo']) == '101020200' && (float)$result['monto'] > 0 ) {
+						$total += (float)$result['monto'] - ((float)$result['descuento'] + (float)$result['monto_reconocimiento']);
+					}
+				}
+			}
+			return $total;
+		}
+
+
+
+		/**
+		 * Metodo que totaliza el monto por el concepto de Notas de Debitos.
+		 * @param  array $results arreglo con la data de la consulta
+		 * @param  integer $lapso entero que indica deuda actual o morosa (1, 2).
+		 * @return double retorna monto con la totalizacion.
+		 */
+		public function totalizarNotaDebito($results, $lapso = 1)
+		{
+			$total = (float)0;
+			if ( count($results) > 0 ) {
+				foreach ( $results as $result ) {
+					if ( (int)$result['lapso'] == $lapso && (float)$result['monto'] < 0 ) {
+						$total += (float)$result['monto'];
+					}
+				}
+			}
+			return $total;
 		}
 
 
@@ -527,7 +572,7 @@
 
 		/**
 		 * Metodo que ejecuta un ajuste en la data resultado de la consulta.
-		 * Esto se aplico para el priyecto de pto Ordaz. Si esto no aplica para el resto
+		 * Esto se aplico para el proyecto de pto Ordaz. Si esto no aplica para el resto
 		 * de los proyecto, no aplicar.
 		 * @return boolean
 		 */
@@ -997,7 +1042,8 @@
 					    				         'D.id_impuesto',
 					    				         'CONCAT("' . $this->_usuario . '") as login',
 					    				         'D.descuento',
-					    				         'D.monto_reconocimiento'
+					    				         'D.monto_reconocimiento',
+					    				         'P.recibo'
 					    				         ])
 									   ->from('contribuyentes C')
 									   ->join('INNER JOIN', 'pagos P', 'C.id_contribuyente = P.id_contribuyente')
@@ -1054,7 +1100,8 @@
 					    				         'D.id_impuesto',
 					    				         'CONCAT("' . $this->_usuario . '") as login',
 					    				         'D.descuento',
-					    				         'D.monto_reconocimiento'
+					    				         'D.monto_reconocimiento',
+					    				         'P.recibo'
 					    				         ])
 									   ->from('contribuyentes C')
 									   ->join('INNER JOIN', 'pagos P', 'C.id_contribuyente = P.id_contribuyente')
@@ -1105,7 +1152,8 @@
 					    				         'D.id_impuesto',
 					    				         'CONCAT("' . $this->_usuario . '") as login',
 					    				         'D.descuento',
-					    				         'D.monto_reconocimiento'
+					    				         'D.monto_reconocimiento',
+					    				         'P.recibo'
 					    				         ])
 									   ->from('contribuyentes C')
 									   ->join('INNER JOIN', 'pagos P', 'C.id_contribuyente = P.id_contribuyente')
@@ -1158,7 +1206,8 @@
 					    				         'D.id_impuesto',
 					    				         'CONCAT("' . $this->_usuario . '") as login',
 					    				         'D.descuento',
-					    				         'D.monto_reconocimiento'
+					    				         'D.monto_reconocimiento',
+					    				         'P.recibo'
 					    				         ])
 									   ->from('contribuyentes C')
 									   ->join('INNER JOIN', 'pagos P', 'C.id_contribuyente = P.id_contribuyente')
@@ -1208,7 +1257,8 @@
 					    				         'D.id_impuesto',
 					    				         'CONCAT("' . $this->_usuario . '") as login',
 					    				         'D.descuento',
-					    				         'D.monto_reconocimiento'
+					    				         'D.monto_reconocimiento',
+					    				         'P.recibo'
 					    				         ])
 									   ->from('contribuyentes C')
 									   ->join('INNER JOIN', 'pagos P', 'C.id_contribuyente = P.id_contribuyente')
