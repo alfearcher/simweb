@@ -415,8 +415,8 @@
 		    	$esSedePrincipal = self::getSedePrincipal();
 
 		    	// Cantidad de contribuyentes asociados al rif.
-die(var_dump(self::findSucursales()));
-		    	$cantidadSede = count(self::findSucursales()->asArray()->all());
+//die(var_dump(self::findSucursales()));
+		    	$cantidadSede =  self::findSucursales() == null ? 0 : count(self::findSucursales()->asArray()->all());
 
 		    	if ( $esSedePrincipal && $cantidadSede > 1 ) {
 					$mensajes[] = Yii::t('backend', 'La razon social esta registrada como sede principal de un grupo relacionado al mismo rif');
