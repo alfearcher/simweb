@@ -207,24 +207,21 @@
 	  	 */
 	  	public function actionView($idContribuyente)
     	{
-    		unset($_SESSION['idContribuyente']);
- 			if ( isset($idContribuyente) ) {
-	    		if ( isset($_SESSION['idContribuyente']) ) {
-	    			// if ( $_SESSION['idContribuyente'] == $idContribuyente ) {
-	    				return $this->render('/buscar-general/view', [
-			            	'model' => $this->findModel($idContribuyente),
-			        	]);
-	    			// } else {
-	    			// 	unset($_SESSION['idContribuyente']);
-	    			// }
-	    		} else {
-	    			return $this->render('/buscar-general/view', [
-			            	'model' => $this->findModel($idContribuyente),
-			        	]);
-	    		}
-	    	} else {
-	    		echo 'Contribuyente no definido';
-	    	}
+    		unset($_SESSION['tipoNaturaleza']);
+ 			unset($_SESSION['idContribuyente']);
+ 			unset($_SESSION['contribuyente']);
+    		if ( (int)$idContribuyente > 0 ) {
+    			//if ( $_SESSION['idContribuyente'] == $idContribuyente ) {
+    				//unset($_SESSION['idContribuyente']);
+    				return $this->render('/buscar-general/view', [
+		            	'model' => $this->findModel((int)$idContribuyente),
+		        	]);
+    			//} else {
+    			//	unset($_SESSION['idContribuyente']);
+    			//}
+    		} else {
+    			throw new NotFoundHttpException(Yii::t('backend', 'ID de contribuyente no existe. ') . $idContribuyente);
+    		}
     	}
 
 
@@ -237,16 +234,22 @@
     	 */
     	protected function findModel($idContribuyente)
     	{
+  			// $model = BuscarGeneral::find()->alias('B')
+  			//                               ->joinWith('afiliacion A', true, 'INNER JOIN')
+  			//                               ->where('B.id_contribuyente =:id_contribuyente',
+  			//                           					[':id_contribuyente' => $idContribuyente])
+  			//                               ->one();
+
   			$model = BuscarGeneral::find()->alias('B')
-  			                              ->joinWith('afiliacion A', true, 'INNER JOIN')
   			                              ->where('B.id_contribuyente =:id_contribuyente',
   			                          					[':id_contribuyente' => $idContribuyente])
   			                              ->one();
 
+
   			if ( $model !== null ) {
   				return $model;
   			} else {
-  				throw new NotFoundHttpException('The requested page does not exist.');
+  				throw new NotFoundHttpException(Yii::t('backend', 'ID de contribuyente no existe. ') . $idContribuyente);
   			}
     	}
 
