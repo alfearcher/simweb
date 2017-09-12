@@ -369,7 +369,7 @@
 				if ( $model->id_contribuyente == $_SESSION['idContribuyente'] ) {
 					$tabla = $model->tableName();
 
-					$model->proceso = date('Y-m-d H:i:s');
+					$model->proceso = $model->getNumeroProceso();
 					$model->fecha_hora_creacion = date('Y-m-d H:i:s');
 					if ( $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes) ) {
 						$recibo = $this->_conn->getLastInsertID();
