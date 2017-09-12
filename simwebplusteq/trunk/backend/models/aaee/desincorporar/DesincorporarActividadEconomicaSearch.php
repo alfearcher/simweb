@@ -415,7 +415,7 @@
 		    	$esSedePrincipal = self::getSedePrincipal();
 
 		    	// Cantidad de contribuyentes asociados al rif.
-die(var_dump(self::findSucursales()->asArray()->all()));
+die(var_dump(self::findSucursales()));
 		    	$cantidadSede = count(self::findSucursales()->asArray()->all());
 
 		    	if ( $esSedePrincipal && $cantidadSede > 1 ) {
