@@ -220,7 +220,7 @@ class RegistrarPerfilUsuarioController extends Controller
               //echo $e->errorInfo[2];
           } 
                        
-     }
+     }  
 
 
 
@@ -232,7 +232,7 @@ class RegistrarPerfilUsuarioController extends Controller
      {
          $email = $_SESSION['datosContribuyente']['email'];
 
-         $solicitud = 'Inscripcion de Inmueble';
+         $solicitud = 'Registrar Perfil de Usuario';
 
          $nro_solicitud = $guardo;
 
