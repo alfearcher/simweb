@@ -70,6 +70,14 @@
     					'label' => Yii::t('backend', 'Fecha'),
     					'value' => $model->fecha_hora_creacion,
     				],
+                    [
+                        'label' => Yii::t('backend', 'ID'),
+                        'value' => $model->id_contribuyente,
+                    ],
+                    [
+                        'label' => Yii::t('backend', 'Contribuyente'),
+                        'value' => $model->getContribuyente($model->id_contribuyente),
+                    ],
     				[
 	                    'label' => Yii::t('backend', 'Impuesto'),
 	                    'value' => $model->impuestos->descripcion,
