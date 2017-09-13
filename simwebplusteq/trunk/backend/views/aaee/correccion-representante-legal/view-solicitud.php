@@ -50,59 +50,86 @@
 	use yii\grid\GridView;
 ?>
 
-<div class="row">
-	<div class="info-solicitud">
-		<div class="row">
+<div class="row" style="width: 100%;">
+	<div class="info-solicitud" style="width: 100%;">
+		<div class="row" style="width: 100%;">
 			<h3><?= Html::encode($caption) ?></h3>
 				<?= GridView::widget([
 					'id' => 'grid-contribuyente-asociado',
 					'dataProvider' => $dataProvider,
 					//'filterModel' => $model,
+					'headerRowOptions' => [
+						'style' => 'font-size: 90%;width:10%;',
+					],
 					'columns' => [
 						//['class' => 'yii\grid\SerialColumn'],
 						[
+							'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                    'label' => Yii::t('frontend', 'Request'),
 		                    'value' => function($model) {
     										return $model->nro_solicitud;
 										},
 		                ],
 		                [
-		                    'label' => Yii::t('frontend', 'Request Description'),
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
+		                    'label' => Yii::t('frontend', 'Description'),
 		                    'value' => function($model) {
     										return $model->getDescripcionTipoSolicitud($model->nro_solicitud);
 										},
 	                	],
 		            	[
-		                    'label' => Yii::t('frontend', 'Id. Taxpayer'),
+		            		'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
+		                    'label' => Yii::t('frontend', 'ID'),
 		                    'value' => function($model) {
     										return $model->id_contribuyente;
 										},
 		                ],
 		                [
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                    'label' => Yii::t('frontend', 'Ant DNI (Legal Rep.)'),
 		                    'value' => function($model) {
     										return $model->naturaleza_rep_v . '-' . $model->cedula_rep_v;
 										},
 		                ],
 		                [
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                    'label' => Yii::t('frontend', 'Ant (Legal Rep.)'),
 		                    'value' => function($model) {
     										return $model->representante_v;
 										},
 		                ],
 		                [
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                    'label' => Yii::t('frontend', 'New DNI (Legal Rep.)'),
 		                    'value' => function($model) {
     										return $model->naturaleza_rep_new . '-' . $model->cedula_rep_new;
 										},
 		                ],
-		                [
+		               	[
+		               		'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                    'label' => Yii::t('frontend', 'New (Legal Rep.)'),
 		                    'value' => function($model) {
     										return $model->representante_new;
 										},
 		                ],
 		                [
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                	//'attribute' => 'sucursal.razon_social',
 		                   	'label' =>Yii::t('frontend', 'Branch Office'),
 		                    'value' => function($model) {
@@ -110,6 +137,9 @@
 										},
 		                ],
 		                [
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                	//'attribute' => 'sucursal.id_sim',
 		                    'label' => Yii::t('frontend', 'License'),
 		                    'value' => function($model) {
@@ -117,6 +147,9 @@
 										},
 		                ],
 		                [
+		                	'contentOptions' => [
+	                        	'style' => 'font-size: 90%;width:10%;',
+	                        ],
 		                    'label' => Yii::t('frontend', 'Condition'),
 		                    'value' => function($model) {
     										return $model->estatusSolicitud->descripcion;
