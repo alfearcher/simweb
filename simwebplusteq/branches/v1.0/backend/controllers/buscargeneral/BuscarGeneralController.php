@@ -229,7 +229,7 @@
 
     	/**
     	 * [findModel description]
-    	 * @param  [type] $idContribuyente [description]
+    	 * @param integer $idContribuyente identificador del contribuyente
     	 * @return [type]                  [description]
     	 */
     	protected function findModel($idContribuyente)
