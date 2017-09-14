@@ -49,7 +49,7 @@
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use backend\models\recibo\estatus\EstatusDeposito;
 	use common\models\contribuyente\ContribuyenteBase;
-
+	use backend\models\recibo\planillacontable\PlanillaContable;
 
 
 	/**
@@ -145,6 +145,16 @@
 
 			$numeroProceso = $año . $mes . $dia . $hora . $minuto . $segundo;
 			return $numeroProceso;
+		}
+
+
+		/**
+		 * Relacion con la entidad "planillas-contables".
+		 * @return active record
+		 */
+		public function getIngresoPresupuestario()
+		{
+			return $this->hasMany(PlanillaContable::className(), ['recibo' => 'recibo']);
 		}
 
 	}
