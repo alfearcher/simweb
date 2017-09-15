@@ -208,7 +208,7 @@
 																		]);
 				      					}
 				      				}
-				      				$totalGeneral = $totalDeposito - $totalNotaDebito;
+				      				$totalGeneral = $totalDeposito + $totalNotaDebito;
 				      				return $this->render('/reporte/recaudacion/general/reporte-recaudacion-general-maestro',[
 																					'model' => $results,
 																					'totalGeneral' => $totalGeneral,
