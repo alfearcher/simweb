@@ -92,7 +92,7 @@
 		</div>
 		<div class="col-sm-2" style="width: 30%;">
 			<?=Html::textInput('total-nota-debito',
-								Yii::$app->formatter->asDecimal($totalNotaDebito, 2),
+								Yii::$app->formatter->asDecimal((-1)*$totalNotaDebito, 2),
 								[
 									'class' => 'form-control',
 									'style' => 'width:100%;
