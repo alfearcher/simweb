@@ -56,6 +56,7 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use backend\models\reporte\recaudacion\detallada\RecaudacionDetalladaSearch;
+	use backend\models\reporte\recaudacion\general\RecaudacionGeneralSearch;
 	use backend\models\reporte\recaudacion\RecaudacionBusquedaForm;
 
 
@@ -125,7 +126,7 @@
 		      	if ( $model->load($postData) ) {
 		      		if ( $model->validate() ) {
 
-		      			if ( $model->tipo_recaudacion == 'DETALLADA' ) {
+		      			if ( strtoupper(trim($model->tipo_recaudacion)) == 'DETALLADA' ) {
 
 			      			$recaudacionSearch = New RecaudacionDetalladaSearch($model->fecha_desde, $model->fecha_hasta, $usuario);
 			      			// Lo siguiente realiza la consulta y carga la entidad temporal con los registros
@@ -157,7 +158,7 @@
 
 			      			$totalChequeRecuperado = $recaudacionSearch->totalizarChequeRecuperado($results);
 			      			$totalNotaDebito = $recaudacionSearch->totalizarNotaDebito($results);
-//die(var_dump($totalNotaDebito));
+
 			      			$htmlTotalRecaudado = $this->renderPartial('/reporte/recaudacion/detallada/total-resumen-general', [
 			      																'totalRecaudado' => $totalRecaudado,
 			      																'results' => $results,
@@ -178,8 +179,48 @@
 						      													'htmlTotalRecaudado' => $htmlTotalRecaudado,
 			      					]);
 
-			      		} elseif ( $model->tipo_recaudacion == 'GENERAL' ) {
+			      		} elseif ( strtoupper(trim($model->tipo_recaudacion)) == 'GENERAL' ) {
 
+			      			$results = [];
+			      			$totalGeneral = 0;
+			      			$totalDeposito = 0;
+			      			$totalNotaDebito = 0;
+			      			$htmlSubTotalNivel = [];
+			      			$recaudacionSearch = New RecaudacionGeneralSearch($model->fecha_desde, $model->fecha_hasta, $usuario);
+
+			      			// Se determina si no hubo error
+			      			$errores = $recaudacionSearch->getError();
+			      			if ( count($errores) == 0 ) {
+			      				// Totalizacion de las notas de debitos
+			      				$totalNotaDebito = $recaudacionSearch->totalizarMontoNegativo();
+
+				      			// Se obtiene una lista de los niveles presupuestario.
+				      			$niveles = $recaudacionSearch->getListaNivelContable();
+				      			if ( count($niveles) > 0 ) {
+				      				foreach ( $niveles as $key => $nivel ) {
+				      					$data = $recaudacionSearch->filtarDataSegunNivel($nivel->nivel_contable);
+				      					if ( count($data) > 0 ) {
+				      						$totalDeposito += (float)array_sum(array_column($data, 'monto'));
+				      						$dataProvider = $recaudacionSearch->getDataProvider($data);
+				      						$htmlSubTotalNivel[] = $this->renderPartial('/reporte/recaudacion/general/reporte-recaudacion-general-por-nivel-presupuestario',[
+																												'model' => $data,
+																												'dataProvider' => $dataProvider,
+																		]);
+				      					}
+				      				}
+				      				$totalGeneral = $totalDeposito - $totalNotaDebito;
+				      				return $this->render('/reporte/recaudacion/general/reporte-recaudacion-general-maestro',[
+																					'model' => $results,
+																					'totalGeneral' => $totalGeneral,
+																					'totalDeposito' => $totalDeposito,
+																					'totalNotaDebito' => $totalNotaDebito,
+																					'htmlSubTotalNivel' => $htmlSubTotalNivel,
+											]);
+				      			}
+				      		} else {
+				      			// Mostrar mensaje de error.
+
+				      		}
 			      		}
 		      		}
 		      	}
