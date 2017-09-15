@@ -181,7 +181,7 @@
 		public function totalizarMontoNegativo()
 		{
 			$data = self::agruparMontoNegativoRecaudadoPorCodigo();
-			return (float)array_sum(array_column($data, 'monto'));
+			return (float)array_sum(array_column($data, 'total'));
 		}
 
 
