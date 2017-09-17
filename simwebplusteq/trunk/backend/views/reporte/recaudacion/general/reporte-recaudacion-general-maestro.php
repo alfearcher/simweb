@@ -154,7 +154,7 @@
 			?>
 		</div>
 	</div>
-	<div class="row" style="width:100%;margin-top: 45px;">
+	<div class="row" style="width:100%;margin-top:45px;margin-bottom:45px;">
 		<div class="col-sm-3" style="width: 25%;">
 			<?= Html::submitButton(Yii::t('backend', 'Back'),
 												  [
