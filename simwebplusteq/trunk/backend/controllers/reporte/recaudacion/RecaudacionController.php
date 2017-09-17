@@ -211,7 +211,7 @@
 				      				}
 				      				// Monto recuperado por cheques devueltos.
 					      			$cheque = $recaudacionSearch->getDeterminarMontoPorChequeRecuperado();
-die(var_dump($cheque));
+///die(var_dump($cheque));
 				      				$totalGeneral = $totalDeposito + $totalNotaDebito;
 				      				return $this->render('/reporte/recaudacion/general/reporte-recaudacion-general-maestro',[
 																					'model' => $results,
