@@ -334,7 +334,6 @@
 			// Se buscan las caracteristicas deben poseer las planillas de cheques recuparedos.
 			$chequeDevueltoSearch = New ChequeDevueltoSearch();
 			$confCheques = $chequeDevueltoSearch->infoConfigTasaSegunAnoImpositivo($añoImpositivo);
-//die(var_dump($confCheques));
 			if ( count($confCheques) > 0 ) {
 
 				foreach ( $confCheques as $conf ) {
