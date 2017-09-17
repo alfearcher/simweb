@@ -213,7 +213,7 @@
 					      			$cheque = $recaudacionSearch->getDeterminarMontoPorChequeRecuperado();
 				      				$totalGeneral = $totalDeposito + $totalNotaDebito;
 				      				return $this->render('/reporte/recaudacion/general/reporte-recaudacion-general-maestro',[
-																					'model' => $results,
+																					'model' => $model,
 																					'totalGeneral' => $totalGeneral,
 																					'totalDeposito' => $totalDeposito,
 																					'totalNotaDebito' => $totalNotaDebito,
