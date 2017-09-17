@@ -120,6 +120,40 @@
 			?>
 		</div>
 	</div>
+	<div class="row" style="width: 100%;">
+		<div class="col-sm-2" style="width: 45%;">
+			<h4><strong><?=Html::label(Yii::t('backend', 'CHEQUE RECUPERADO AÑO ACTUAL'))?></strong></h4>
+		</div>
+		<div class="col-sm-2" style="width: 30%;">
+			<?=Html::textInput('total-cheque-recuperado-ano-actual',
+								Yii::$app->formatter->asDecimal($cheque['año-actual'], 2),
+								[
+									'class' => 'form-control',
+									'style' => 'width:100%;
+												font-size:140%;
+												font-weight: bold;
+												text-align:right;'
+								])
+			?>
+		</div>
+	</div>
+	<div class="row" style="width: 100%;">
+		<div class="col-sm-2" style="width: 45%;">
+			<h4><strong><?=Html::label(Yii::t('backend', 'CHEQUE RECUPERADO AÑO ABTERIORES'))?></strong></h4>
+		</div>
+		<div class="col-sm-2" style="width: 30%;">
+			<?=Html::textInput('total-cheque-recuperado-ano-anterior',
+								Yii::$app->formatter->asDecimal($cheque['año-anterior'], 2),
+								[
+									'class' => 'form-control',
+									'style' => 'width:100%;
+												font-size:140%;
+												font-weight: bold;
+												text-align:right;'
+								])
+			?>
+		</div>
+	</div>
 	<div class="row" style="width:100%;margin-top: 45px;">
 		<div class="col-sm-3" style="width: 25%;">
 			<?= Html::submitButton(Yii::t('backend', 'Back'),
