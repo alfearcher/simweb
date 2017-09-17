@@ -171,6 +171,7 @@
 
 			      			$this->layout = 'layoutbase';
 			      			return $this->render('/reporte/recaudacion/detallada/reporte-recaudacion-detallada-master', [
+			      																'model' => $model,
 						      													'caption' => $caption,
 						      													'subCaption' => $subCaption,
 						      													'subCaptionConsulta' => $subCaptionConsulta,
