@@ -64,7 +64,7 @@
 		]);
 	?>
 
-	<div class="row" style="width:100%;">
+	<div class="row" style="width:100%;text-align:center;">
 		<h3><strong><?=Html::label(Yii::t('backend', 'RECAUDACION DE INGRESOS MUNICIPALES ADAPTADO AL PLAN UNICO DE CUENTA'))?></strong></h4>
 		<h4><strong><?=Html::label(Yii::t('backend', 'Desde: ') . $model['fecha_desde'] . ' - ' . Yii::t('backend', 'Hasta: ') . $model['fecha_hasta'])   ?></strong></h4>
 	</div>
