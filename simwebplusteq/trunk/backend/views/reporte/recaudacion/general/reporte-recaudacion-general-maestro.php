@@ -65,8 +65,8 @@
 	?>
 
 	<div class="row" style="width:100%;">
-		<h4><strong><?=Html::label(Yii::t('backend', 'RECAUDACION DE INGRESOS MUNICIPALES'))?></strong></h4>
-		<h4><strong><?=Html::label(Yii::t('backend', 'ADAPTADO AL PLAN UNICO DE CUENTA'))?></strong></h4>
+		<h3><strong><?=Html::label(Yii::t('backend', 'RECAUDACION DE INGRESOS MUNICIPALES ADAPTADO AL PLAN UNICO DE CUENTA'))?></strong></h4>
+		<h4><strong><?=Html::label(Yii::t('backend', 'Desde: ') . $results[0]['fecha_desde'] . ' - ' . Yii::t('backend', 'Hasta: ') . $results[0]['fecha_hasta'])   ?></strong></h4>
 	</div>
 
 	<div class="row" style="width: 100%;">
@@ -74,10 +74,10 @@
 			<?=$view; ?>
 		<?php endforeach; ?>
 	</div>
-	<div class="row" style="width:100%;border-bottom: 0.5px solid #ccc;">
+	<div class="row" style="width:100%;border-bottom: 0.5px solid #ccc;padding:0px;margin:0px;">
 		<h4><strong><?=Html::label(Yii::t('backend', 'RESUMEN DE LA RECAUDACION'))?></strong></h4>
 	</div>
-	<div class="row" style="width: 100%;">
+	<div class="row" style="width: 100%;margin-top:15px;">
 		<div class="col-sm-2" style="width: 45%;">
 			<h4><strong><?=Html::label(Yii::t('backend', 'TOTAL DEPOSITOS'))?></strong></h4>
 		</div>
