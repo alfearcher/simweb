@@ -80,7 +80,7 @@
 		 */
 		public function getTasa()
 		{
-			return $this->hasMany(Tasa::className(), ['id_impuesto' => 'id_impuesto']);
+			return $this->hasOne(Tasa::className(), ['id_impuesto' => 'id_impuesto']);
 		}
 	}
 
