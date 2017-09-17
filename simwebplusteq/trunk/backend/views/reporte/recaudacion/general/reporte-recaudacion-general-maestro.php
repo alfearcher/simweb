@@ -64,10 +64,18 @@
 		]);
 	?>
 
+	<div class="row" style="width:100%;">
+		<h4><strong><?=Html::label(Yii::t('backend', 'RECAUDACION DE INGRESOS MUNICIPALES'))?></strong></h4>
+		<h4><strong><?=Html::label(Yii::t('backend', 'ADAPTADO AL PLAN UNICO DE CUENTA'))?></strong></h4>
+	</div>
+
 	<div class="row" style="width: 100%;">
 		<?php foreach ( $htmlSubTotalNivel as $i => $view ): ?>
 			<?=$view; ?>
 		<?php endforeach; ?>
+	</div>
+	<div class="row" style="width:100%;border-bottom: 0.5px solid #ccc;">
+		<h4><strong><?=Html::label(Yii::t('backend', 'RESUMEN DE LA RECAUDACION'))?></strong></h4>
 	</div>
 	<div class="row" style="width: 100%;">
 		<div class="col-sm-2" style="width: 45%;">
