@@ -192,6 +192,8 @@
 	    		],
 	    		//'summary' => true,
 	    		'columns' => [
+	    			['class' => 'yii\grid\SerialColumn'],
+
 	    			[
                         'class' => 'yii\grid\CheckboxColumn',
                         'name' => 'chkRecibo',
@@ -208,8 +210,6 @@
                 			}
                         }
                     ],
-
-	    			['class' => 'yii\grid\SerialColumn'],
 
 	                [
 	                    'contentOptions' => [
@@ -386,8 +386,10 @@
 	                    'label' => Yii::t('backend', 'planillas'),
 	                    'value' => function($data, $key, $nota) {
                     					$nota = '';
-	                    				foreach ( json_decode($data['planillas']) as $planilla ) {
-	                    					$nota .= Html::tag('li', $planilla);
+                    					if ( count(json_decode($data['planillas'])) > 0 ) {
+	                    					foreach ( json_decode($data['planillas']) as $planilla ) {
+	                    						$nota .= Html::tag('li', $planilla);
+	                    					}
 	                    				}
 										return $nota;
 	        			           },
@@ -433,8 +435,10 @@
 	                    'label' => Yii::t('backend', 'Observacion'),
 	                    'value' => function($data, $key, $nota) {
                     					$nota = '';
-	                    				foreach ( json_decode($data['observacion']) as $obs ) {
-	                    					$nota .= Html::tag('li', $obs);
+                    					if ( count(json_decode($data['observacion'])) > 0 ) {
+	                    					foreach ( json_decode($data['observacion']) as $obs ) {
+	                    						$nota .= Html::tag('li', $obs);
+	                    					}
 	                    				}
 										return $nota;
 	        			           },
