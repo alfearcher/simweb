@@ -186,6 +186,7 @@
 			      			$totalDeposito = 0;
 			      			$totalNotaDebito = 0;
 			      			$htmlSubTotalNivel = [];
+
 			      			$recaudacionSearch = New RecaudacionGeneralSearch($model->fecha_desde, $model->fecha_hasta, $usuario);
 
 			      			// Se determina si no hubo error
@@ -208,6 +209,9 @@
 																		]);
 				      					}
 				      				}
+				      				// Monto recuperado por cheques devueltos.
+					      			$cheque = $recaudacionSearch->getDeterminarMontoPorChequeRecuperado();
+die(var_dump($cheque));
 				      				$totalGeneral = $totalDeposito + $totalNotaDebito;
 				      				return $this->render('/reporte/recaudacion/general/reporte-recaudacion-general-maestro',[
 																					'model' => $results,
@@ -215,6 +219,7 @@
 																					'totalDeposito' => $totalDeposito,
 																					'totalNotaDebito' => $totalNotaDebito,
 																					'htmlSubTotalNivel' => $htmlSubTotalNivel,
+																					'cheque' => $cheque,
 											]);
 				      			}
 				      		} else {
