@@ -139,7 +139,7 @@
 	</div>
 	<div class="row" style="width: 100%;">
 		<div class="col-sm-2" style="width: 45%;">
-			<h4><strong><?=Html::label(Yii::t('backend', 'CHEQUE RECUPERADO AÑO ABTERIORES'))?></strong></h4>
+			<h4><strong><?=Html::label(Yii::t('backend', 'CHEQUE RECUPERADO AÑO ANTERIORES'))?></strong></h4>
 		</div>
 		<div class="col-sm-2" style="width: 30%;">
 			<?=Html::textInput('total-cheque-recuperado-ano-anterior',
