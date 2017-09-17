@@ -1057,6 +1057,7 @@
 									   ->orderBy([
 									   		'lapso' => SORT_ASC,
 									   		'codigo' => SORT_ASC,
+									   		'P.planilla' => SORT_ASC,
 									   		'id' => SORT_ASC,
 									    ])
 									   ->all();
@@ -1116,6 +1117,7 @@
 									   ->orderBy([
 									   		'lapso' => SORT_ASC,
 									   		'codigo' => SORT_ASC,
+									   		'P.planilla' => SORT_ASC,
 									   		'id' => SORT_ASC,
 									    ])
 									   ->all();
@@ -1170,6 +1172,7 @@
 									   ->orderBy([
 									   		'lapso' => SORT_ASC,
 									   		'A.codigo' => SORT_ASC,
+									   		'P.planilla' => SORT_ASC,
 									   		'id' => SORT_ASC,
 									    ])
 									   ->all();
@@ -1223,6 +1226,7 @@
 									   ->orderBy([
 									   		'lapso' => SORT_ASC,
 									   		'A.codigo' => SORT_ASC,
+									   		'P.planilla' => SORT_ASC,
 									   		'id' => SORT_ASC,
 									    ])
 									   ->all();
@@ -1270,6 +1274,7 @@
 									   ->orderBy([
 									   		'lapso' => SORT_ASC,
 									   		'codigo' => SORT_ASC,
+									   		'P.planilla' => SORT_ASC,
 									   		'id' => SORT_ASC,
 									    ])
 									   ->all();
