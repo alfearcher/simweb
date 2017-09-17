@@ -82,6 +82,30 @@
 			<?php echo $htmlTotalRecaudado; ?>
 		</div>
 	</div>
+	<div class="row" style="width:100%;margin-top:45px;margin-bottom:45px;">
+		<div class="col-sm-3" style="width: 25%;">
+			<?= Html::submitButton(Yii::t('backend', 'Back'),
+												  [
+													'id' => 'btn-back',
+													'class' => 'btn btn-danger',
+													'value' => 1,
+													'name' => 'btn-back',
+													'style' => 'width: 100%;',
+												  ])
+			?>
+		</div>
+		<div class="col-sm-3" style="width: 25%;">
+			<?= Html::submitButton(Yii::t('backend', 'Quit'),
+												  [
+													'id' => 'btn-quit',
+													'class' => 'btn btn-danger',
+													'value' => 1,
+													'name' => 'btn-quit',
+													'style' => 'width: 100%;',
+												  ])
+			?>
+		</div>
+	</div>
 
 	<?php ActiveForm::end(); ?>
 </div>
