@@ -51,8 +51,9 @@
 	use backend\models\recibo\planillacontable\PlanillaContable;
 	use backend\models\recibo\deposito\Deposito;
 	use common\models\presupuesto\codigopresupuesto\CodigosContables;
-	use backend\models\configuracion\cheque\devuelto\ConfigurarChequeDevuelto;
+	use backend\models\configuracion\cheque\devuelto\ChequeDevueltoSearch;
 	use common\models\presupuesto\nivelespresupuesto\NivelesContables;
+	use common\models\planilla\PagoDetalle;
 
 
 
@@ -293,7 +294,7 @@
 
 		/**
 		 * Metodo que inicia el proceso para obtener la data de la recaudacion.
-		 * @return [type] [description]
+		 * @return none
 		 */
 		public function iniciarReporteGeneral()
 		{
@@ -303,6 +304,87 @@
 			} else {
 				self::setError(Yii::t('backend', 'Rango de fecha no validos'));
 			}
+		}
+
+
+		/**
+		 * Metodo que permitira localizar las planillas asosiadas a cheques recuparedos
+		 * para el rango de fecha especifico y segun se trate de cheques recuperados de
+		 * año actual o años anteriores. Para esto se requerirá obtener las caracteristicas
+		 * de las planillas (id-impuesto, impuesto), estas caracteristicas
+		 * serán obtenida de la configuracion del modulo de cheques devueltos conjuntamente
+		 * con la entidad que guarda las tasas. Una vez obtenida los registros que permitan
+		 * definir estas caracteristicas se procederá a buscar las planillas complementando
+		 * la consulta con el rango de fecha de pago definido. Se retornara una totalizacion
+		 * del monto recuperado por cheques devueltos en los conceptos de año actual y año
+		 * anterior. El parametro añoImpositivo servira si se quiere realizar la totalizacion
+		 * para un año impositivo especifico.
+		 * @param integer $añoImpositivo año consulta.
+		 * @return array
+		 */
+		public function getDeterminarMontoPorChequeRecuperado($añoImpositivo = 0)
+		{
+			$planillas = [];
+			// Aqui se totalizara los montos por concepto de cjeques recuperados año anterior
+			// y año actual.
+			$cheque = [
+				'año-anterior' => 0,
+				'año-actual' => 0
+			];
+			// Se buscan las caracteristicas deben poseer las planillas de cheques recuparedos.
+			$chequeDevueltoSearch = New ChequeDevueltoSearch();
+			$confCheques = $chequeDevueltoSearch->infoConfigTasaSegunAnoImpositivo($añoImpositivo);
+//die(var_dump($confCheques));
+			if ( count($confCheques) > 0 ) {
+
+				foreach ( $confCheques as $conf ) {
+					$planillas = self::findPlanilla((int)$conf['tasa']['impuesto'], (int)$conf['tasa']['id_impuesto']);
+					if ( count($planillas) > 0 ) {
+
+						foreach ( $planillas as $planilla ) {
+							// Si el año impositivo es igual al año de pago se considera un cheque recuperado
+							// para el añ actual. Si el año impositivo es menor al año de pago se considera como
+							// un cheque recuperado de añp anteriores.
+							if ( (int)$planilla['ano_impositivo'] == (int)date('Y', strtotime($planilla['fecha_pago'])) ) {
+								$cheque['año-actual'] += $planilla['monto'];
+							} elseif ( (int)$planilla['ano_impositivo'] < (int)date('Y', strtotime($planilla['fecha_pago'])) ) {
+								$cheque['año-anterior'] += $planilla['monto'];
+							}
+						}
+
+					}
+				}
+
+			}
+
+			return $cheque;
+		}
+
+
+		/**
+		 * Metodo que realiza la busqueda de las planillas que cumplan la condiciones
+		 * indicadas en el where. Se retornan los campos de la entidades relacionadas
+		 * con las planillas.
+		 * @param integer $impuesto identificador del impuesto.
+		 * @param integer $idImpuesto identificador de la tasa.
+		 * @return array.
+		 */
+		public function findPlanilla($impuesto, $idImpuesto)
+		{
+			// Planillas
+			$results = PagoDetalle::find()->alias('D')
+										  ->joinWith('pagos P', true, 'INNER JOIN')
+										  ->where(['pago' => 1])
+										  ->andWhere(['trimestre' => 0])
+										  ->andWhere('impuesto =:impuesto',
+										  				[':impuesto' => $impuesto])
+										  ->andWhere('id_impuesto =:id_impuesto',
+										  				[':id_impuesto' => $idImpuesto])
+										  ->andWhere(['BETWEEN', 'fecha_pago', $this->_fecha_desde, $this->_fecha_hasta])
+										  ->andWhere(['>', 'recibo', 0])
+										  ->asArray()
+										  ->all();
+			return $results;
 		}
 
 
