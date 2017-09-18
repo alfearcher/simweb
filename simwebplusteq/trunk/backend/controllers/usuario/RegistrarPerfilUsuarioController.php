@@ -250,6 +250,53 @@ class RegistrarPerfilUsuarioController extends Controller
      } 
 
      /**
+     * [actionInactivarFuncionarioSolicitud description]
+     * @param  [type] $idFuncionario [description]
+     * @param  [type] $tipoSolicitud [description]
+     * @param  [type] $tabla         [description]
+     * @param  [type] $conexionLocal [description]
+     * @param  [type] $connLocal     [description]
+     * @return [type]                [description]
+     */
+    public function actionInactivarFuncionarioSolicitud($idFuncionario, $tipoSolicitud, $tabla, $conexionLocal, $connLocal)
+    {
+      $result = false;
+      $arregloCondicion = [
+          'id_funcionario' => $idFuncionario,
+          'tipo_solicitud' => $tipoSolicitud
+      ];
+      $arregloDatos = ['inactivo' => 1];
+      $result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+
+      return $result;
+    }
+
+
+    /**
+     * [actionListaImpuestoSolicitud description]
+     * @return [type] [description]
+     */
+    public function actionListaImpuestoSolicitud()
+    {
+      $caption = Yii::t('backend', 'List of Request');
+      $request = Yii::$app->request;
+      $getData = $request->get();
+      $impuesto = $getData['id'];   // Indice del combo impuesto.
+      $modelSolicitud = New TipoSolicitudSearch();
+      $modelSolicitud->load($getData);
+      $dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($impuesto);
+
+      return $this->renderAjax('/funcionario/solicitud/lista-impuesto-solicitud', [
+                            'modelSolicitud' => $modelSolicitud,
+                            'dataProvider' => $dataProvider,
+                            'caption' => $caption,
+        ]);
+
+    } 
+
+
+
+     /**
      * Metodo que renderiza una vista que indica que ocurrio un error en la
      * ejecucion del proceso.
      * @param  integer $cod codigo que permite obtener la descripcion del
@@ -263,6 +310,25 @@ class RegistrarPerfilUsuarioController extends Controller
       return MensajeController::actionMensaje($cod);
     }
 
+
+      /*
+      foreach ( $chkFuncionario as $funcionario ) {
+        $arregloDatos['id_funcionario'] = $funcionario;
+        foreach ( $chkSolicitud as $solicitud ) {
+          $arregloDatos['tipo_solicitud'] = $solicitud;
+
+          // Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
+          $result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
+          if ( $result ) {
+            $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
+            if ( !$result ) { break; }
+          } else {
+            break;
+          }
+        }
+        if ( !$result ) { break; }
+      }
+       */
      
 
 
