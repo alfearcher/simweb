@@ -302,6 +302,12 @@
 				}
 			}
 
+			if ( isset($postData['btn-quit']) ) {
+				if ( $postData['btn-quit'] == 1 ) {
+					$this->redirect(['quit']);
+				}
+			}
+
 			if ( isset($postData['btn-confirmar-aprobar']) ) {
 				if ( $postData['btn-confirmar-aprobar'] == 9 ) {
 
@@ -652,7 +658,7 @@
 		{
 			$varSession = self::actionGetListaSessions();
 			self::actionAnularSession($varSession);
-			return $this->render('/menu/menuvertical2');
+			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
 		}
 
 
