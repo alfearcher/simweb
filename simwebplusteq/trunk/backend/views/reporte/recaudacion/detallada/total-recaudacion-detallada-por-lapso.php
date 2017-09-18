@@ -54,14 +54,6 @@
 ?>
 <div class="total-recaudacion-detallada-por-lapso">
 	<?php
-		$form = ActiveForm::begin([
-			'id' => 'id-total-recaudacion-detallada-por-lapso',
-		    'method' => 'post',
-			'enableClientValidation' => true,
-			'enableAjaxValidation' => false,
-			'enableClientScript' => false,
-		]);
-
 		$descripcionLapso = ( $lapso == 1 ) ? Yii::t('backend', 'AÑO ACTUAL') : Yii::t('backend', 'AÑOS ANTERIORES');
 	?>
 
@@ -190,9 +182,6 @@
 <!-- Fin de Total del lapso por monto total impuesto - ( descuento + monto reconocimiento ) -->
 		</div>
 	</div>
-
-
-	<?php ActiveForm::end(); ?>
 </div>
 
 

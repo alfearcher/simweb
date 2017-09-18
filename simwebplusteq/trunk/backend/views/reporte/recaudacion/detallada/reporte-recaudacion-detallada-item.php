@@ -55,14 +55,6 @@
 ?>
 <div class="reporte-recaudacion-detallada-item">
 	<?php
-		$form = ActiveForm::begin([
-			'id' => 'id-reporte-recaudacion-detallada-item',
-		    'method' => 'post',
-			'enableClientValidation' => true,
-			'enableAjaxValidation' => false,
-			'enableClientScript' => false,
-		]);
-
 		$descripcionLapso = ( $lapso == 1 ) ? Yii::t('backend', 'AÑO ACTUAL') : Yii::t('backend', 'AÑOS ANTERIORES');
 		$descripcionTotalCodigo = Yii::t('backend', 'Impuesto - ( Descuento + Recon/Ret. )');
 	?>
@@ -228,8 +220,6 @@
 			</div>
 		</div>
 	</div>
-
-	<?php ActiveForm::end(); ?>
 </div>
 
 

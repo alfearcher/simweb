@@ -53,14 +53,6 @@
 ?>
 <div class="total-resumen-general">
 	<?php
-		$form = ActiveForm::begin([
-			'id' => 'id-total-resumen-general',
-		    'method' => 'post',
-			'enableClientValidation' => true,
-			'enableAjaxValidation' => false,
-			'enableClientScript' => false,
-		]);
-
 		// Total General recaudado.
 		$totalGeneral = ( $totalRecaudado['monto'] + $totalRecaudado['recargo'] + $totalRecaudado['interes'] ) - ( $totalRecaudado['descuento'] + $totalRecaudado['monto_reconocimiento']);
 	?>
@@ -265,8 +257,6 @@
 		</div>
 
 	</div>
-
-	<?php ActiveForm::end(); ?>
 </div>
 
 
