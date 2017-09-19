@@ -72,7 +72,12 @@
 		/***/
 		public function init()
 		{
-			return self::findContribuyente();
+			$contribuyentes = self::findContribuyente();
+			if ( count($contribuyentes) > 0 ) {
+				foreach ( $contribuyentes as $contribuyente ) {
+					self::verificarEvento($contribuyente);
+				}
+			}
 		}
 
 
@@ -84,10 +89,34 @@
 
 			// Se verifica si tiene rubros para el año actual.
 			$añoActual = (int)date('Y');
-			if ( !self::existeRubro($añoActual, (int)$contribuyente['id_contribuyente']) ) {
-				$mensajes[] = Yii::t('backend', 'No posee rubros registrados para el año ') . $añoActual;
+			$idContribuyente = (int)$contribuyente['id_contribuyente'];
+			foreach ( $this->chkCausa as $key => $value ) {
+				if ( $value == 1 ) {
+					// Se buscan las solicitudes pendientes de emision de licencia
+					$results = self::findSolicitudLicenciaPendiente($añoImpositivo, $idContribuyente);
+					if ( $results == null ) {
+						$mensajes[] = Yii::t('backend', 'No existe la solicitud de emision para el año ') . $añoImpositivo;
+					}
+				} elseif ( $value == 2 ) {
+
+				} elseif ( $value == 3 ) {
+					if ( !self::existeRubro($añoActual, $idContribuyente) ) {
+						$mensajes[] = Yii::t('backend', 'No posee rubros registrados para el año ') . $añoActual;
+					}
+				}
 			}
 
+
+			// Se verifica la condicion de las solicitudes.
+			$condiciones = self::verificarCondicionSolicitud($añoActual, $idContribuyente);
+			if ( count($condiciones) > 0 ) {
+				foreach ( $condiciones as $key => $condicion ) {
+					$mensajes[] = $condicion;
+				}
+			}
+
+die(var_dump($mensajes));
+			return $mensajes;
 		}
 
 
@@ -139,7 +168,7 @@
 					$results = $findModel->andWhere('id_contribuyente =:id_contribuyente',
 														[':id_contribuyente' => (int)$this->id_contribuyente])
 										 ->asArray()
-										 ->one();
+										 ->all();
 				}
 			}
 			return $results;
@@ -186,21 +215,33 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que verifica la consicion de la solicitud de emision de la lciencia.
+		 * @param integer $añoImpositivo año impositivo
+		 * @param integer $idContribuyente identificador del contribuyente.
+		 * @return array.
+		 */
 		private function verificarCondicionSolicitud($añoImpositivo, $idContribuyente)
 		{
 			$mensajes = [];
-			// Se buscan las solicitudes pendientes se emision de licencia
+			// Se buscan las solicitudes pendientes de emision de licencia
 			$results = self::findSolicitudLicenciaPendiente($añoImpositivo, $idContribuyente);
 			if ( $results == null ) {
-				$mensajes[] = Yii::t('backend', 'No existe la solicitud para el año ') . $añoImpositivo;
+				$mensajes[] = Yii::t('backend', 'No existe la solicitud de emision para el año ') . $añoImpositivo;
 			} else {
 				// Se determina si la planilla corespondiente la a solicitud esta pagada.
 				foreach ( $results as $result ) {
 					$planilla = $result->getPlanillas();
-					$searchPlanilla = New PlanillaSearch()
+					$searchPlanilla = New PlanillaSearch((int)$planilla['planilla']);
+					$condicionPlanilla = $searchPlanilla->condicionPlanilla();
+					if ( (int)$condicionPlanilla['pago'] == 0 ) {
+						$mensajes[] = Yii::t('backend', "La tasa {$planilla['planilla']}, no se encuentra pagada.");
+					} elseif ( (int)$condicionPlanilla['pago'] == 9 ) {
+						$mensajes[] = Yii::t('backend', "La tasa {$planilla['planilla']}, se encuentra anulada.");
+					}
 				}
 			}
+			return $mensajes;
 		}
 
 
