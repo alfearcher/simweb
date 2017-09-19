@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
+use yii\grid\GridView;
 
 use common\models\Users;
 use common\models\User;
@@ -11,7 +12,7 @@ use backend\models\usuario\RutaAccesoMenu;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Perfil del Usuario');
+$this->title = Yii::t('backend', 'Perfil del Usuario'); 
 ?>
 
 
@@ -59,15 +60,12 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                             </div> 
                         
                             <div class="col-sm-4">
-                            <?php
-                                    $modelParametros = RutaAccesoMenu::find()->where(['inactivo'=>0])->asArray()->all();                                         
-                                    $listaParametros = ArrayHelper::map($modelParametros,'ruta','menu'); 
-                            ?> 
-                            <?= $form->field($model, 'ruta')->dropDownList($listaParametros, [ 
-                                                                                                            'id'=> 'parametro', 
-                                                                                                            'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:480px;',
-                                                                                                           ])->label(false); ?>
+                            
+
+                            <?= $form->field($model, 'ruta')-> Checkboxlist($rutas,[
+                                            'id' => 'id-lista-menu',
+                                            'style' => 'width:380px;',
+                                        ])->label(false); ?>
                             </div> 
                         </div> 
                         
@@ -100,3 +98,4 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
 
 </div><!-- inscripcionInmueblesUrbanos -->
 
+  

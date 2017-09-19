@@ -81,6 +81,8 @@ use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 use backend\models\usuario\PerfilUsuarioForm;
 use backend\models\usuario\PerfilUsuario;
 use backend\models\usuario\AutorizacionUsuario;
+use backend\models\usuario\RutaAccesoMenu;
+use backend\models\usuario\RutaAccesoMenuForm;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
@@ -111,7 +113,7 @@ class RegistrarPerfilUsuarioController extends Controller
 
          //Creamos la instancia con el model de validación
          $model = new PerfilUsuarioForm();
-    
+         $modelRuta = new RutaAccesoMenuForm();
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
          $url = null; 
@@ -158,7 +160,10 @@ class RegistrarPerfilUsuarioController extends Controller
                    $model->getErrors(); 
               }
          }
-              return $this->render('/usuario/registrar-perfil', ['model' => $model, ]);  
+
+               $modelParametros = $modelRuta->getListaRutaAcceso();                                 
+               //$listaParametros = ArrayHelper::map($modelParametros,'ruta','menu'); 
+              return $this->render('/usuario/registrar-perfil', ['model' => $model, 'rutas' => $modelParametros,'searchModel' => $modelRuta,]);  
 
         }  else {
                     $this->redirect(['error-operacion', 'cod' => 700]);
@@ -181,13 +186,11 @@ class RegistrarPerfilUsuarioController extends Controller
             try {
             $tableName1 = 'perfil_usuario'; 
 
-           // $tipoSolicitud = self::DatosConfiguracionTiposSolicitudes();
-     
-           
-            $arrayDatos1 = [  'username' => $model->username,
-                              'ruta' => $model->ruta, 
-                              'inactivo' => 0,
-                          ];  
+             
+            // $arrayDatos1 = [  'username' => $model->username,
+            //                   'ruta' => $model->ruta, 
+            //                   'inactivo' => 0,
+            //               ];  
             
 
             $conn = New ConexionController();
@@ -195,7 +198,31 @@ class RegistrarPerfilUsuarioController extends Controller
             $conexion->open();  
             $transaccion = $conexion->beginTransaction();
 
-            if ( $conn->guardarRegistro($conexion, $tableName1,  $arrayDatos1) ){  
+
+            // foreach ( $model['username'] as $funcionario ) { apertura del for each
+            //   $arregloDatos['username'] = $funcionario;
+            foreach ( $model['ruta'] as $ruta ) {
+                $arregloDatos['ruta'] = $ruta;
+
+                 $arrayDatos1 = [  'username' => $model['username'],
+                               'ruta' => $arregloDatos['ruta'], 
+                               'inactivo' => 0,
+                               'usuario' =>Yii::$app->user->identity->username,
+                               'fecha_hora'=>date('Y-m-d H:i:s'),
+                               'operacion' => 'ASIGNACION',
+                          ];  
+
+                // Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
+                $result = self::actionInactivarFuncionarioSolicitud($model['username'], $ruta, $tableName1, $conn, $conexion);
+                if ( $result ) {
+                    $result = $conn->guardarRegistro($conexion, $tableName1, $arrayDatos1);
+                if ( !$result ) { break; }
+                } else {
+                    break;
+                }
+            }
+          //} cierre for each
+            if ( $result ){  
                 
                
 
@@ -258,15 +285,16 @@ class RegistrarPerfilUsuarioController extends Controller
      * @param  [type] $connLocal     [description]
      * @return [type]                [description]
      */
-    public function actionInactivarFuncionarioSolicitud($idFuncionario, $tipoSolicitud, $tabla, $conexionLocal, $connLocal)
+    public function actionInactivarFuncionarioSolicitud($Funcionario, $ruta, $tabla, $conexionLocal, $conexion)
     {
       $result = false;
       $arregloCondicion = [
-          'id_funcionario' => $idFuncionario,
-          'tipo_solicitud' => $tipoSolicitud
+          'username' => $Funcionario,
+          'ruta'=>$ruta,
+          'inactivo' => 0,
       ];
-      $arregloDatos = ['inactivo' => 1];
-      $result = $conexionLocal->modificarRegistro($connLocal, $tabla, $arregloDatos, $arregloCondicion);
+      $arregloDatos = ['inactivo' => 1]; 
+      $result = $conexionLocal->modificarRegistro($conexion, $tabla, $arregloDatos, $arregloCondicion);
 
       return $result;
     }
@@ -311,24 +339,8 @@ class RegistrarPerfilUsuarioController extends Controller
     }
 
 
-      /*
-      foreach ( $chkFuncionario as $funcionario ) {
-        $arregloDatos['id_funcionario'] = $funcionario;
-        foreach ( $chkSolicitud as $solicitud ) {
-          $arregloDatos['tipo_solicitud'] = $solicitud;
-
-          // Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
-          $result = self::actionInactivarFuncionarioSolicitud($funcionario, $solicitud, $tabla, $conexionLocal, $connLocal);
-          if ( $result ) {
-            $result = $conexionLocal->guardarRegistro($connLocal, $tabla, $arregloDatos);
-            if ( !$result ) { break; }
-          } else {
-            break;
-          }
-        }
-        if ( !$result ) { break; }
-      }
-       */
+      
+     
      
 
 
