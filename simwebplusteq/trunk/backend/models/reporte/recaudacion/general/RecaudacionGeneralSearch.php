@@ -325,13 +325,13 @@
 		public function getDeterminarMontoPorChequeRecuperado($añoImpositivo = 0)
 		{
 			$planillas = [];
-			// Aqui se totalizara los montos por concepto de cjeques recuperados año anterior
+			// Aqui se totalizara los montos por concepto de cheques recuperados año anterior
 			// y año actual.
 			$cheque = [
 				'año-anterior' => 0,
 				'año-actual' => 0
 			];
-			// Se buscan las caracteristicas deben poseer las planillas de cheques recuparedos.
+			// Se buscan las caracteristicas deben poseer las planillas de cheques recuperados.
 			$chequeDevueltoSearch = New ChequeDevueltoSearch();
 			$confCheques = $chequeDevueltoSearch->infoConfigTasaSegunAnoImpositivo($añoImpositivo);
 			if ( count($confCheques) > 0 ) {
@@ -343,7 +343,7 @@
 						foreach ( $planillas as $planilla ) {
 							// Si el año impositivo es igual al año de pago se considera un cheque recuperado
 							// para el añ actual. Si el año impositivo es menor al año de pago se considera como
-							// un cheque recuperado de añp anteriores.
+							// un cheque recuperado de año anteriores.
 							if ( (int)$planilla['ano_impositivo'] == (int)date('Y', strtotime($planilla['fecha_pago'])) ) {
 								$cheque['año-actual'] += $planilla['monto'];
 							} elseif ( (int)$planilla['ano_impositivo'] < (int)date('Y', strtotime($planilla['fecha_pago'])) ) {
