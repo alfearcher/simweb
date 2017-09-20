@@ -100,6 +100,7 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use common\conexion\ConexionController;
 use backend\models\usuario\PerfilUsuario;
+use backend\models\usuario\GrupoPerfilUsuario;
 
 class GrupoPerfilUsuarioForm extends Model{
     
@@ -165,6 +166,100 @@ class GrupoPerfilUsuarioForm extends Model{
             'unidad_catastro' => Yii::t('backend', 'Unit'),
         ];
     }
+
+    /**
+         * Metodo que retorna un dataProvider
+         * @param  array  $arrayImpuesto si el array esta vacio se aume que debe regeresar todos.
+         * @return [type]              [description]
+         */
+        public function getDataProvider($params)
+        {
+            $dataProvider = null;
+
+            $query = GrupoPerfilUsuario::find()->orderBy(['descripcion'])->all();
+
+            $dataProvider = New ActiveDataProvider([
+                'query' => $query,
+            ]);
+            $this->load($params);
+            // if ( is_array($params) ) {
+            //  $query->where(['in', 'id_ruta_acceso_menu', $array]);
+            // }
+            return $dataProvider;
+        }
+
+
+
+        /**
+         * Metodo que permite obtener un o una lista de registro asociada
+         * a la entidad "rutas"
+         * @param  string|array $arrayImpuesto parametro que indica el registro
+         * a buscar, este parametro puede llegar como un entero o como un arreglo
+         * de enteros [1,2,..n].
+         * @return Active Record modelo de la entidad "rutas".
+         */
+        public function findRuta($array = '')
+        {
+            if ( is_array($array) ) {
+                if ( count($array) > 0 ) {
+                    $findModel = GrupoPerfilUsuario::findAll($array);
+                } else {
+                    $findModel = GrupoPerfilUsuario::find()->where(['inactivo'=>0])->all();
+                }
+            } elseif ( is_int($array) ) {
+                $findModel = GrupoPerfilUsuario::findOne($array);
+            } else {
+                $findModel = GrupoPerfilUsuario::find()->all();
+            }
+
+            return $findModel;
+        }
+
+
+
+        /**
+         * Metodo que permite obtener una lista de la entidad "rutas",
+         * para luego utilizarlo en lista de combo.
+         */
+        public function getListaGrupoAcceso($inactivo = 0, $array = [])
+        {
+            $lista = null;
+            $model = $this->findRuta($array);
+            if ( isset($model) ) {
+                // Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
+                if ( count($model) > 0 ) {
+                    $lista = ArrayHelper::map($model, 'descripcion', 'descripcion');
+                }
+            }
+            return $lista;
+        }
+
+        /**
+         * Metodo que permite obtener una lista de la entidad "rutas",
+         * para luego utilizarlo en lista de combo.
+         */
+        public function getListaGrupoAccesoId($inactivo = 0, $array = [])
+        {
+            $lista = null;
+            $model = $this->findRuta($array);
+            if ( isset($model) ) {
+                // Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
+                if ( count($model) > 0 ) {
+                    $lista = ArrayHelper::map($model, 'id_ruta_acceso_menu', 'menu');
+                }
+            }
+            return $lista;
+        }
+
+
+
+        /***/
+        public function getDescripcionRutaAcceso($id_ruta_acceso_menu)
+        {
+            settype($id_ruta_acceso_menu, 'integer');
+            $model = self::findImpuesto($id_ruta_acceso_menu);
+            return $model->menu;
+        }
 
    
    

@@ -50,6 +50,7 @@
 		        							['label' => 'Desincorporar Cuenta','url' => '#'],
 		        							['label' => 'Recuperar Cuenta Contribuyente','url' =>['/usuario/recuperar-acceso-contribuyente/seleccionar-tipo-contribuyente']],
 		        							['label' => 'Añadir Permisos a Usuarios','url' =>['/usuario/registrar-perfil-usuario/registrar-perfil']],
+		        							['label' => 'Añadir Permisos a Usuarios por Grupo','url' =>['/usuario/registrar-perfil-usuario-grupo/registrar-perfil']],
 		        							['label' => 'Crear Grupo de Permisos a Usuarios','url' =>['/usuario/registrar-grupo-perfil-usuario/registrar-grupo-perfil']],
 		        				]
 		        			],
