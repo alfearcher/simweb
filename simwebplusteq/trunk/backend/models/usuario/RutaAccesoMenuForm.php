@@ -124,11 +124,11 @@
 
 	    /**
 	     * Metodo que permite obtener un o una lista de registro asociada
-	     * a la entidad "impuesto"
+	     * a la entidad "rutas"
 	     * @param  string|array $arrayImpuesto parametro que indica el registro
 	     * a buscar, este parametro puede llegar como un entero o como un arreglo
 	     * de enteros [1,2,..n].
-	     * @return Active Record modelo de la entidad "impuestos".
+	     * @return Active Record modelo de la entidad "rutas".
 	     */
 	    public function findRuta($array = '')
 	    {
@@ -150,7 +150,7 @@
 
 
 	    /**
-	     * Metodo que permite obtener una lista de la entidad "impuestos",
+	     * Metodo que permite obtener una lista de la entidad "rutas",
 	     * para luego utilizarlo en lista de combo.
 	     */
 	    public function getListaRutaAcceso($inactivo = 0, $array = [])
@@ -161,6 +161,23 @@
 	    		// Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
 	    		if ( count($model) > 0 ) {
 	    			$lista = ArrayHelper::map($model, 'ruta', 'menu');
+	    		}
+	    	}
+	    	return $lista;
+	    }
+
+	    /**
+	     * Metodo que permite obtener una lista de la entidad "rutas",
+	     * para luego utilizarlo en lista de combo.
+	     */
+	    public function getListaRutaAccesoId($inactivo = 0, $array = [])
+	    {
+	    	$lista = null;
+	    	$model = $this->findRuta($array);
+	    	if ( isset($model) ) {
+	    		// Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
+	    		if ( count($model) > 0 ) {
+	    			$lista = ArrayHelper::map($model, 'id_ruta_acceso_menu', 'menu');
 	    		}
 	    	}
 	    	return $lista;

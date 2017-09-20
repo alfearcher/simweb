@@ -21,7 +21,7 @@
  */
 
  /**    
- *  @file RegistrarPerfilUsuarioController.php
+ *  @file RegistrarGrupoPerfilUsuarioController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
@@ -80,6 +80,8 @@ use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 
 use backend\models\usuario\PerfilUsuarioForm;
 use backend\models\usuario\PerfilUsuario;
+use backend\models\usuario\GrupoPerfilUsuarioForm;
+use backend\models\usuario\GrupoPerfilUsuario;
 use backend\models\usuario\AutorizacionUsuario;
 use backend\models\usuario\RutaAccesoMenu;
 use backend\models\usuario\RutaAccesoMenuForm;
@@ -87,7 +89,7 @@ session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
-class RegistrarPerfilUsuarioController extends Controller
+class RegistrarGrupoPerfilUsuarioController extends Controller
 {
     public $layout="layout-main";
     public $conn;
@@ -100,7 +102,7 @@ class RegistrarPerfilUsuarioController extends Controller
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionRegistrarPerfil()
+     public function actionRegistrarGrupoPerfil()
      { 
        
          
@@ -112,7 +114,7 @@ class RegistrarPerfilUsuarioController extends Controller
          if ( $autorizado ) {
 
          //Creamos la instancia con el model de validación
-         $model = new PerfilUsuarioForm();
+         $model = new GrupoPerfilUsuarioForm();
          $modelRuta = new RutaAccesoMenuForm();
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
@@ -161,9 +163,9 @@ class RegistrarPerfilUsuarioController extends Controller
               }
          }
 
-               $modelParametros = $modelRuta->getListaRutaAcceso();                                 
+               $modelParametros = $modelRuta->getListaRutaAccesoId();                                 
                //$listaParametros = ArrayHelper::map($modelParametros,'ruta','menu'); 
-              return $this->render('/usuario/registrar-perfil', ['model' => $model, 'rutas' => $modelParametros,'searchModel' => $modelRuta,]);  
+              return $this->render('/usuario/registrar-grupo-perfil', ['model' => $model, 'rutas' => $modelParametros,'searchModel' => $modelRuta,]);  
 
         }  else {
                     $this->redirect(['error-operacion', 'cod' => 700]);
@@ -184,7 +186,7 @@ class RegistrarPerfilUsuarioController extends Controller
           
 
             try {
-            $tableName1 = 'perfil_usuario'; 
+            $tableName1 = 'grupos_perfiles_usuarios'; 
 
              
             // $arrayDatos1 = [  'username' => $model->username,
@@ -204,7 +206,7 @@ class RegistrarPerfilUsuarioController extends Controller
             foreach ( $model['ruta'] as $ruta ) {
                 $arregloDatos['ruta'] = $ruta;
 
-                 $arrayDatos1 = [  'username' => $model['username'],
+                 $arrayDatos1 = [  'descripcion' => $model['descripcion'],
                                'ruta' => $arregloDatos['ruta'], 
                                'inactivo' => 0,
                                'usuario' =>Yii::$app->user->identity->username,
@@ -213,13 +215,13 @@ class RegistrarPerfilUsuarioController extends Controller
                           ];  
 
                 // Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
-                $result = self::actionInactivarFuncionarioRuta($model['username'], $ruta, $tableName1, $conn, $conexion);
-                if ( $result ) {
+                //$result = self::actionInactivarFuncionarioRuta($model['username'], $ruta, $tableName1, $conn, $conexion);
+                //if ( $result ) {
                     $result = $conn->guardarRegistro($conexion, $tableName1, $arrayDatos1);
                 if ( !$result ) { break; }
-                } else {
-                    break;
-                }
+                //} else {
+                //    break;
+                //}
             } 
           //} cierre for each
             if ( $result ){  
@@ -288,7 +290,12 @@ class RegistrarPerfilUsuarioController extends Controller
     public function actionInactivarFuncionarioRuta($Funcionario, $ruta, $tabla, $conexionLocal, $conexion)
     {
 
-     
+
+       $perfil = PerfilUsuario::find()
+                ->where("inactivo=:activate", [":activate" => 0])
+                ->groupBy('username')
+                ->all();
+die(var_dump($perfil));
       $result = false;
       $arregloCondicion = [
           'username' => $Funcionario,
