@@ -322,7 +322,7 @@ class RegistrarPerfilUsuarioController extends Controller
                             'caption' => $caption,
         ]);
 
-    } 
+    }  
 
 
 

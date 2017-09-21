@@ -92,13 +92,9 @@ class AutorizacionUsuario extends Users
 	    	$listaUsuarioAutorizado = self::getFuncionarioAutorizado($usuario, $ruta);
 	    	
 	    	if($listaUsuarioAutorizado == true){
-	    	//if ( count($listaUsuarioAutorizado) > 0 ) {
 	    	
-	    		//foreach ( $listaUsuarioAutorizado as $key => $value ) {
-	    		//	if ( $value == $usuario ) {
 	    				return true;
-	    		//	}
-	    		//}
+	    		
 	    	}
 	    	return false;
 	    }

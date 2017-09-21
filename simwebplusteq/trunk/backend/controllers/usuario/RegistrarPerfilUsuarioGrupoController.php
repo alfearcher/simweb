@@ -300,7 +300,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
           'username' => $Funcionario,
           'ruta'=>$ruta,
           'inactivo' => 0,
-      ];
+      ]; 
       $arregloDatos = ['inactivo' => 1]; 
       $result = $conexionLocal->modificarRegistro($conexion, $tabla, $arregloDatos, $arregloCondicion);
 
@@ -367,7 +367,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
       foreach ( $grupo as $ruta ) { 
                $arregloDatos[] = RutaAccesoMenu::find()
                       ->where("id_ruta_acceso_menu=:ruta", [":ruta" => $ruta['ruta']])
-                      ->all();;
+                      ->all();
 
       }
 

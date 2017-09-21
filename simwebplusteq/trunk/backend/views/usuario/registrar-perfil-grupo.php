@@ -51,7 +51,7 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                                                                                                             'style' => 'width:100px;',
                                                                                                            ])->label(false);
                                                                                                            ?>
-                            </div>
+                            </div> 
                         </div> 
 
                         <div class="row" style="margin-left:20px; margin-top:20px;">

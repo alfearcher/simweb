@@ -233,7 +233,7 @@ class RegistrarGrupoPerfilUsuarioController extends Controller
                               $tipoError = 0; 
                               return true; 
 
-            } else {
+            } else { 
             
                               $transaccion->rollBack(); 
                               $conexion->close(); 
