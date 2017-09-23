@@ -59,6 +59,7 @@
 	use backend\models\reporte\aaee\licencia\LicenciaNoEmitidaBusquedaForm;
 	use backend\models\aaee\licencia\tipolicencia\TipoLicenciaSearch;
 	use backend\models\usuario\AutorizacionUsuario;
+	use backend\models\buscargeneral\BuscarGeneral;
 
 	session_start();
 
@@ -112,25 +113,27 @@
 				$postData = $request->post();
 				$mensajeCausa = '';
 
-				if ( $request->post('btn-quit') !== null ) {
-					if ( $request->post('btn-quit') == 1 ) {
+				if ( isset($postData['btn-quit']) ) {
+					if ( $postData['btn-quit'] == 1 ) {
 						$this->redirect(['quit']);
 					}
-				} elseif ( $request->post('btn-back') !== null ) {
-					if ( $request->post('btn-back') == 1 ) {
+				} elseif ( isset($postData['btn-back']) ) {
+					if ( $postData['btn-back'] == 1 ) {
 						$this->redirect(['index']);
 					}
 				}
 
-				// if ( $request->isGet ) {
-				// 	$postData = $request->get();
-				// } else {
-				// 	$postData = $request->post() !== null ? $request->post() : $_SESSION['postData'];
-				// 	$_SESSION['postData'] = $postData;
-				// }
+				if ( $request->isGet ) {
+					$postData = $request->get();
+					if ( isset($postData['page']) ) {
+						$postData = $_SESSION['postData'];
+					}
+				} else {
+					$postData = $request->post() !== null ? $request->post() : $_SESSION['postData'];
+					$_SESSION['postData'] = $postData;
+				}
 
-//die(var_dump($request->post()));
-				//$model->load($postData);
+				$model->load($postData);
 
 				$caption = Yii::t('backend', 'Busqueda de Licencias No Emitidas');
 				$subCaption = Yii::t('backend', 'Parametros de consulta');
@@ -146,7 +149,14 @@
 		      		}
 		      		if ( $model->validate() && trim($mensajeCausa) == '' ) {
 		      			$model->chkCausa = $postData['chkCausa'];
-die(var_dump($model->init()));
+						$model->init();
+						$dataProvider = $model->getDataProvider();
+						return $this->render('/reporte/aaee/licencia-no-emitida/licencia-no-emitida-reporte',[
+																'caption' => 'PRUEBA',
+																'subCaption' => 'PRUEBA DOS',
+																'dataProvider' => $dataProvider,
+								]);
+
 		      		}
 		      	}
 
@@ -170,40 +180,6 @@ die(var_dump($model->init()));
 				$this->redirect(['error-operacion', 'cod' => 700]);
 			}
 		}
-
-
-
-
-
-		/**
-		 * Metodo que permite renderizar una vista con la informacion preliminar de
-		 * la licencia segun el numero de solicitud de la misma.
-		 * @return View
-		 */
-		public function actionViewLicenciaEmitidaModal()
-		{
-			$request = Yii::$app->request;
-			$postGet = $request->get();
-
-			// Identificador del contribuyente
-			$id = $postGet['id'];
-
-			// Numero de solicitud
-			$nroSolicitud = $postGet['nro'];
-
-			// Identificador del historico
-			$historico = $postGet['historico'];
-
-			$licenciaEmitidaSearch = New LicenciaEmitidaSearch();
-			$model = $licenciaEmitidaSearch->findHistoricoLicenciaById($historico);
-			$caption = Yii::t('backend', 'Licencia Emitida, Nro. ') . $model->licencia . ' - ' . Yii::t('backend', 'Nro Control ') . $model->nro_control;
-
-			return $this->renderAjax('/reporte/aaee/licencia/licencia-emitida', [
-												'model' => $model,
-												'caption' => $caption,
-					]);
-		}
-
 
 
 
@@ -254,15 +230,15 @@ die(var_dump($model->init()));
 		 */
 		public function actionExportarExcel()
 		{
-			$postInicial = isset($_SESSION['postInicial']) ? $_SESSION['postInicial'] : [];
+			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : [];
 			if ( count($postInicial) > 0 ) {
-				$licenciaSearch = New LicenciaEmitidaSearch();
-				$postData = $postInicial;
-				$licenciaSearch->scenario = $_SESSION['scenario'];
-				$licenciaSearch->load($postData);
+				$licenciaSearch = New LicenciaNoEmitidaSearch();
+				$licenciaSearch->load($postInicial);
+				$licenciaSearch->chkCausa = $postInicial['chkCausa'];
+				$licenciaSearch->init();
 				$dataProvider = $licenciaSearch->getDataProvider(true);
 				$model = $dataProvider->getModels();
-
+//die(var_dump($model));
 				$licenciaSearch->exportarExcel($model);
 			}
 		}
