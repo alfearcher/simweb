@@ -53,6 +53,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\aaee\licencia\LicenciaSolicitud;
 	use common\models\planilla\PlanillaSearch;
+	use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
 
 
 	/**
@@ -62,63 +63,217 @@
 	*/
 	class LicenciaNoEmitidaSearch extends LicenciaNoEmitidaBusquedaForm
 	{
+		private $_errores;
+		private $_data;			// Fuente para crear el data provider.
+		/**
+		 * Instancia de la clase
+		 * @var CausaNoEmisionLicencia
+		 */
+		private $_causaNoEmision;
 
 
-		/***/
+
+		/**
+		 * Metodo constructor de la clase.
+		 */
 		public function __construct()
-		{}
+		{
+			$this->_causaNoEmision = CausaNoEmisionLicencia::find()->all();
+		}
 
 
-		/***/
+		/**
+		 * Metodo inicial.
+		 * @return none
+		 */
 		public function init()
 		{
 			$contribuyentes = self::findContribuyente();
+			self::armarData($contribuyentes);
+///die(var_dump($this->_data));
+		}
+
+
+		/**
+		 * Metodo para obtener la data armada.
+		 * @return array
+		 */
+		public function getData()
+		{
+			return $this->_data;
+		}
+
+
+
+		/**
+		 * Metodo que arma el arreglo de datos con la informacion del
+		 * contribuyente y las causas que ocacionaron que no poseea su
+		 * licencia.
+		 * @param array $contribuyentes arreglo con algunos atributos de
+		 * la entidad "contribuyentes" y las causas que inidica el porque
+		 * no ha emitido su licencia. EL arreglo representa uno o varios
+		 * contribuyentes.
+		 * @return array
+		 */
+		private function armarData($contribuyentes)
+		{
 			if ( count($contribuyentes) > 0 ) {
 				foreach ( $contribuyentes as $contribuyente ) {
-					self::verificarEvento($contribuyente);
+					$observacion = self::verificarEvento($contribuyente);
+					$observacion = count($observacion) > 0 ? json_encode($observacion) : '';
+					if ( trim($observacion) !== '' ) {
+						$this->_data[] = [
+							'id_contribuyente' => $contribuyente['id_contribuyente'],
+							'naturaleza' => $contribuyente['naturaleza'],
+							'cedula' => $contribuyente['cedula'],
+							'tipo' => $contribuyente['tipo'],
+							'razon_social' => $contribuyente['razon_social'],
+							'tlf_ofic' => $contribuyente['tlf_ofic'],
+							'tlf_ofic_otro' => $contribuyente['tlf_ofic_otro'],
+							'tlf_celular' => $contribuyente['tlf_celular'],
+							'domicilio_fiscal' => $contribuyente['domicilio_fiscal'],
+							'email' => $contribuyente['email'],
+							'observacion' => $observacion,
+						];
+					}
 				}
 			}
 		}
 
 
 
-		/***/
+		/**
+		 * Metodo que realiza la verificacion de las causas por las cuales un
+		 * contribuyente no posee licencia. Si encuentra alguna causa retornara
+		 * uno o varios mensajes.
+		 * @param array $contribuyente arreglo que contiene algunos atributos
+		 * del contribuyente.
+		 * @return array.
+		 */
 		private function verificarEvento($contribuyente)
 		{
 			$mensajes = [];
+			$yaBusqueSolicitud = false;
 
 			// Se verifica si tiene rubros para el año actual.
 			$añoActual = (int)date('Y');
 			$idContribuyente = (int)$contribuyente['id_contribuyente'];
-			foreach ( $this->chkCausa as $key => $value ) {
-				if ( $value == 1 ) {
-					// Se buscan las solicitudes pendientes de emision de licencia
-					$results = self::findSolicitudLicenciaPendiente($añoImpositivo, $idContribuyente);
-					if ( $results == null ) {
-						$mensajes[] = Yii::t('backend', 'No existe la solicitud de emision para el año ') . $añoImpositivo;
-					}
-				} elseif ( $value == 2 ) {
 
-				} elseif ( $value == 3 ) {
-					if ( !self::existeRubro($añoActual, $idContribuyente) ) {
-						$mensajes[] = Yii::t('backend', 'No posee rubros registrados para el año ') . $añoActual;
+			// No ha realizado la solicitud
+			if ( self::existeCausa(1) ) {
+				// Se buscan las solicitudes pendientes de emision de licencia
+				$results = self::findSolicitudLicenciaPendiente($añoActual, $idContribuyente);
+				if ( count($results) == 0 || $results == null ) {
+					$mensajes[] = self::determinarCausaNoEmision(1);
+				}
+			}
+
+			// Realizo la solicitud y no ha pagada la tasa.
+			if ( self::existeCausa(2) ) {
+				if ( self::existeCausa(1) ) {
+					if ( count($results) == 1 ) {
+						$mensaje = self::verificarCondicionTasaSolicitudLicencia($results);
+						if ( count($mensaje) > 0 ) {
+							foreach ( $mensaje as $key => $msj ) {
+								$mensajes[] = $msj;
+							}
+						}
+					} elseif ( count($results) > 1 ) {
+						foreach ( $results as $result ) {
+							$mensaje = self::verificarCondicionTasaSolicitudLicencia($result);
+							if ( count($mensaje) > 0 ) {
+								foreach ( $mensaje as $key => $msj ) {
+									$mensajes[] = $msj;
+								}
+							}
+						}
+					}
+				} else {
+					$results = self::findSolicitudLicenciaPendiente($añoActual, $idContribuyente);
+					if ( count($results) == 1 ) {
+						$mensaje = self::verificarCondicionTasaSolicitudLicencia($results);
+						if ( count($mensaje) > 0 ) {
+							foreach ( $mensaje as $key => $msj ) {
+								$mensajes[] = $msj;
+							}
+						}
+					} elseif ( count($results) > 1 ) {
+						foreach ( $results as $result ) {
+							$mensaje = self::verificarCondicionTasaSolicitudLicencia($result);
+							if ( count($mensaje) > 0 ) {
+								foreach ( $mensaje as $key => $msj ) {
+									$mensajes[] = $msj;
+								}
+							}
+						}
 					}
 				}
 			}
 
 
-			// Se verifica la condicion de las solicitudes.
-			$condiciones = self::verificarCondicionSolicitud($añoActual, $idContribuyente);
-			if ( count($condiciones) > 0 ) {
-				foreach ( $condiciones as $key => $condicion ) {
-					$mensajes[] = $condicion;
+			// No tiene registrados rubros para el año actual.
+			if ( self::existeCausa(3) ) {
+				if ( !self::existeRubro($añoActual, $idContribuyente) ) {
+					$mensajes[] = self::determinarCausaNoEmision(3);
 				}
 			}
-
-die(var_dump($mensajes));
+//die(var_dump($mensajes));
 			return $mensajes;
 		}
 
+
+		/**
+		 * Metodo que retorna la descripcion de la causa.
+		 * @param integer $causa identificador de la causa de no emision de licencia.
+		 * @return string
+		 */
+		public function determinarCausaNoEmision($causa)
+		{
+			foreach ( $this->_causaNoEmision as $key => $value ) {
+				if ( $value['id_causa'] == $causa ) {
+					return $value['descripcion'];
+				}
+			}
+			return '';
+		}
+
+
+
+		/**
+		 * Metodo que permite determinar si existe dentro de las causas enviadas desde
+		 * el forulario alguna en particular. Se envia el numero de causa ($causa) que es
+		 * el identificador dentro de la entidad respectiva. Si retorna true existe la
+		 * causa dentro de las enviadas para su consulta, false sera lo contrario.
+		 * @param integer $causa identificador de la causa.
+		 * @return boolean.
+		 */
+		private function existeCausa($causa)
+		{
+			return in_array($causa, $this->chkCausa);
+		}
+
+
+
+		/**
+		 * Metodo que setea los mensaje de errores, se envia un mensaje
+		 * y se acumula en un arreglo.
+		 * @param string $mensaje mensaje de error.
+		 */
+		public function setError($mensaje)
+		{
+			$this->_errores[] = $mensaje;
+		}
+
+
+
+		/**
+		 * Metodo getter sobre la lista de errores.
+		 * @return array lista de errores ocurridos.
+		 */
+		public function getErrores()
+		{
+			return $this->_errores;
+		}
 
 
 		/**
@@ -161,12 +316,12 @@ die(var_dump($mensajes));
 
 			if ( (int)$this->todos_contribuyentes == 1 ) {
 				// La consulta se realiza sobre un lote
-				$results = $findModel->asArray()->limit(5)->all();
+				$results = $findModel->asArray()->limit(205)->all();
 			} else {
 				// La consulta se realiza sobre uno
 				if ( (int)$this->id_contribuyente > 0 ) {
 					$results = $findModel->andWhere('id_contribuyente =:id_contribuyente',
-														[':id_contribuyente' => (int)$this->id_contribuyente])
+															[':id_contribuyente' => (int)$this->id_contribuyente])
 										 ->asArray()
 										 ->all();
 				}
@@ -205,49 +360,51 @@ die(var_dump($mensajes));
 		 */
 		private function findSolicitudLicenciaPendiente($añoImpositivo, $idContribuyente)
 		{
-			return LicenciaSolicitud::find()->where('id_contribuyente =:id_contribuyente',
+			return LicenciaSolicitud::find()->alias('L')
+											->select(['*'])
+										    ->distinct(['L.nro_solicitud'])
+											->where('id_contribuyente =:id_contribuyente',
 			 													[':id_contribuyente' => $idContribuyente])
 										    ->andWhere('ano_impositivo =:ano_impositivo',
 										  						[':ano_impositivo' => $añoImpositivo])
 										    ->andWhere(['IN', 'estatus', [0]])
-										    ->all();
+										    ->one();
 		}
 
 
 
 		/**
-		 * Metodo que verifica la consicion de la solicitud de emision de la lciencia.
-		 * @param integer $añoImpositivo año impositivo
-		 * @param integer $idContribuyente identificador del contribuyente.
-		 * @return array.
+		 * Metodo que permite determinar la condicion de la tasa asosiada a la solicitud de licencia
+		 * elaborada por el usuario. Esta tasa se liquida segun especificaciones de la configuracion,
+		 * que luego debe ser pagada por el contribuyente, se verican las siguientes condiciones:
+		 * - Pendiente. Condicion de la tasa (planilla) que indica que aun no se ha pagado.
+		 * - Anulada.
+		 * @param LicenciaSolicitud $licenciaSolicitudes consulta de tipo LicenciaSolicitud::find()->all()
+		 * que contiene todas las solicitudes de licencias pendientes elaboradas por el contribuyente.
+		 * @return array. Arreglo de mensaje.
 		 */
-		private function verificarCondicionSolicitud($añoImpositivo, $idContribuyente)
+		private function verificarCondicionTasaSolicitudLicencia($licenciaSolicitud)
 		{
 			$mensajes = [];
-			// Se buscan las solicitudes pendientes de emision de licencia
-			$results = self::findSolicitudLicenciaPendiente($añoImpositivo, $idContribuyente);
-			if ( $results == null ) {
-				$mensajes[] = Yii::t('backend', 'No existe la solicitud de emision para el año ') . $añoImpositivo;
-			} else {
-				// Se determina si la planilla corespondiente la a solicitud esta pagada.
-				foreach ( $results as $result ) {
-					$planilla = $result->getPlanillas();
-					$searchPlanilla = New PlanillaSearch((int)$planilla['planilla']);
+			// Se determina si la planilla corespondiente la a solicitud esta pagada.
+			$solicitudPlanilla = SolicitudPlanilla::find()->where(['inactivo' => 0])
+													 ->andWhere('nro_solicitud =:nro_solicitud',
+													 				[':nro_solicitud' => $licenciaSolicitud->nro_solicitud])
+													 ->asArray()
+													 ->all();
+			if ( count($solicitudPlanilla) > 0 ) {
+				foreach ( $solicitudPlanilla as $planillas ) {
+					$searchPlanilla = New PlanillaSearch((int)$planillas['planilla']);
 					$condicionPlanilla = $searchPlanilla->condicionPlanilla();
-					if ( (int)$condicionPlanilla['pago'] == 0 ) {
-						$mensajes[] = Yii::t('backend', "La tasa {$planilla['planilla']}, no se encuentra pagada.");
-					} elseif ( (int)$condicionPlanilla['pago'] == 9 ) {
-						$mensajes[] = Yii::t('backend', "La tasa {$planilla['planilla']}, se encuentra anulada.");
+					if ( (int)$condicionPlanilla[0]['pago'] == 0 ) {
+						$mensajes[] = Yii::t('backend', "La tasa {$planillas['planilla']}, no se encuentra pagada.");
+					} elseif ( (int)$condicionPlanilla[0]['pago'] == 9 ) {
+						$mensajes[] = Yii::t('backend', "La tasa {$planillas['planilla']}, se encuentra anulada.");
 					}
 				}
 			}
 			return $mensajes;
 		}
-
-
-
-
-
 
 
 
@@ -274,22 +431,20 @@ die(var_dump($mensajes));
 	     */
 	    public function getDataProvider($export = false)
 	    {
-	    	$query = self::armarConsultaHistoricoLicenciaModel();
-
+	    	$data = self::getData();
 	    	if ( $export ) {
-		    	$dataProvider = New ActiveDataProvider([
-		    		'query' => $query,
-		    		'pagination' => false,
-		    	]);
+		    	$dataProvider = New ArrayDataProvider([
+					'allModels' => $data,
+					'pagination' => false,
+				]);
 		    } else {
-		    	$dataProvider = New ActiveDataProvider([
-		    		'query' => $query,
+		    	$dataProvider = New ArrayDataProvider([
+		    		'allModels' => $data,
 		    		'pagination' => [
-		    			'pageSize' => 50,
+		    			'pageSize' => 100,
 		    		],
 		    	]);
 		    }
-	    	$query->all();
 	    	return $dataProvider;
  	    }
 
@@ -309,105 +464,31 @@ die(var_dump($mensajes));
                 ],
     			'mode' => 'export', //default value as 'export'
     			'columns' => [
-					//['class' => 'yii\grid\SerialColumn'],
-	            	[
-	            		'attribute' => 'nro_solicitud',
-	                    'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										return $model->nro_solicitud;
-									},
-	                ],
-	                [
-	                	'attribute' => 'tipo',
-	                	'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                	'format' => 'raw',
-	                    'value' => function($model) {
-										return $model->tipo;
-									},
-	                ],
-	                [
-	               		'attribute' => 'Lic. Generada',
-	                    'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										return $model->licencia;
-									},
-	                ],
-	               	[
-	               		'attribute' => 'Emision',
-	                    'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										$fuente = json_decode($model->fuente_json, true);
-										return date('d-m-Y', strtotime($fuente['fechaEmision']));
-									},
-	                ],
-	                [
-	                	'attribute' => 'Vcto',
-	                    'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										$fuente = json_decode($model->fuente_json, true);
-										return date('d-m-Y', strtotime($fuente['fechaVcto']));
-									},
-	                ],
-	                [
-	                	'attribute' => 'Condicion',
-	                    'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										if ( $model->inactivo == 1 ) {
-											return 'INACTIVO';
-										} else {
-											return 'ACTIVO';
-										}
-									},
-	                ],
-	                [
-	                	'attribute' => 'ID',
-	                    'contentOptions' => [
-		                	'style' => 'text-align:center;font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										return $model->id_contribuyente;
-									},
-	                ],
-	                 [
-	                 	'attribute' => 'Contribuyente',
-	                    'contentOptions' => [
-		                	'style' => 'font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										$fuente = json_decode($model->fuente_json, true);
-										return $fuente['descripcion'];
-									},
-	                ],
-	                [
-	                	'attribute' => 'Serial Control',
-	                    'contentOptions' => [
-		                	'style' => 'text-align:center;font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										return $model->serial_control;
-									},
-	                ],
-	                [
-	                	'attribute' => 'Usuario',
-	                    'contentOptions' => [
-		                	'style' => 'text-align:center;font-size:90%;',
-		                ],
-	                    'value' => function($model) {
-										return $model->usuario;
-									},
-	                ],
+    				[
+      					'attribute' => 'ID',
+      					'format' => 'integer',
+      				],
+
+	        //     	[
+	        //     		'attribute' => 'ID',
+	        //             'contentOptions' => [
+		       //          	'style' => 'font-size:90%;',
+		       //          ],
+	        //             'value' => function($model) {
+									// 	return $model['id_contribuyente'];
+									// },
+	        //         ],
+	        //         [
+	        //         	'attribute' => 'RIF',
+	        //         	'contentOptions' => [
+		       //          	'style' => 'font-size:90%;',
+		       //          ],
+	        //         	'format' => 'raw',
+	        //             'value' => function($model) {
+									// 	return $model['naturaleza'] . '-' . $model['cedula'] . '-' - $model['tipo'];
+									// },
+	        //         ],
+
 	        	]
 			]);
 		}
