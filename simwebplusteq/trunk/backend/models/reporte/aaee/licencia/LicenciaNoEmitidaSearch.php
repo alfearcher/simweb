@@ -43,7 +43,6 @@
 	namespace backend\models\reporte\aaee\licencia;
 
  	use Yii;
- 	use yii\helpers\Html;
 	use yii\data\ActiveDataProvider;
 	use yii\data\ArrayDataProvider;
 	use backend\models\reporte\aaee\licencia\LicenciaNoEmitidaBusquedaForm;
