@@ -112,12 +112,12 @@
 					                ],
 					                'format' => 'raw',
 					                'value' => function($model) {
-													return Html::a($model['id_contribuyente'], '#', [
+													return Html::a($model->id_contribuyente, '#', [
             																'id' => 'link-id-contribuyente',
             																'data-toggle' => 'modal',
             																'data-target' => '#modal',
             																'data-url' => Url::to(['view-contribuyente-modal',
-            																							'id' => $model['id_contribuyente']]),
+            																							'id' => $model->id_contribuyente]),
             																'data-pjax' => 0,
             													]);
 												},
@@ -129,7 +129,7 @@
 					                ],
 					                'format' => 'raw',
 					                'value' => function($model) {
-													return $model['naturaleza'] . '-' . $model['cedula'] . '-' . $model['tipo'];
+													return $model->contribuyente->naturaleza . '-' . $model->contribuyente->cedula . '-' . $model->contribuyente->tipo;
 												},
 					            ],
 					            [
@@ -139,7 +139,7 @@
 					                ],
 					                'format' => 'raw',
 					                'value' => function($model) {
-													return $model['razon_social'];
+													return $model->contribuyente->razon_social;
 												},
 					            ],
 					            [
@@ -149,7 +149,7 @@
 					                ],
 					                'format' => 'raw',
 					                'value' => function($model) {
-													return $model['domicilio_fiscal'];
+													return $model->contribuyente->domicilio_fiscal;
 												},
 					            ],
 					            [
@@ -159,7 +159,7 @@
 					                ],
 					                'format' => 'raw',
 					                'value' => function($model) {
-													return $model['tlf_ofic'] . ' / ' . $model['tlf_ofic_otro'] . ' / ' . $model['tlf_celular'];
+													return $model->contribuyente->tlf_ofic . ' / ' . $model->contribuyente->tlf_ofic_otro . ' / ' . $model->contribuyente->tlf_celular;
 												},
 					            ],
 					            [
@@ -169,7 +169,7 @@
 					                ],
 					                'format' => 'raw',
 					                'value' => function($model) {
-													return $model['email'];
+													return $model->contribuyente->email;
 												},
 					            ],
 					            [
@@ -180,7 +180,7 @@
 				                    'format' => 'raw',
 				                    'value' => function($model) {
 				                    				$nota = '';
-				                    				$fuente = json_decode($model['observacion'], true);
+				                    				$fuente = json_decode($model->observacion, true);
 				                    				if ( count($fuente) > 0 ) {
 				                    					foreach ( $fuente as $key => $obs ) {
 				                    						$nota .= Html::tag('li', $obs);
