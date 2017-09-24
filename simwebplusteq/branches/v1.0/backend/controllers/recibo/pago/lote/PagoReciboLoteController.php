@@ -1,116 +1,98 @@
 <?php
 /**
- *	@copyright © by ASIS CONSULTORES 2012 - 2016
+ *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
  *
- *	> This library is free software; you can redistribute it and/or modify it under
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
- *	> any later version.
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
+ *  > any later version.
  *  >
- *	> This library is distributed in the hope that it will be usefull,
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
- *	> for more details.
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
+ *  > for more details.
  *  >
- *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
+ *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
  /**
- *	@file PagoReciboLoteController.php
+ *  @file PagoReciboLoteController.php
  *
- *	@author Jose Rafael Perez Teran
+ *  @author Jose Rafael Perez Teran
  *
- *	@date 20-04-2017
+ *  @date 20-04-2017
  *
  *  @class PagoReciboLoteController
- *	@brief Clase
+ *  @brief Clase
  *
  *
- *	@property
+ *  @property
  *
  *
- *	@method
+ *  @method
  *
  *
- *	@inherits
+ *  @inherits
  *
  */
 
 
- 	namespace backend\controllers\recibo\pago\lote;
+    namespace backend\controllers\recibo\pago\lote;
 
 
- 	use Yii;
- 	use yii\helpers\ArrayHelper;
-	use yii\filters\AccessControl;
-	use yii\web\Controller;
-	use yii\filters\VerbFilter;
-	use yii\widgets\ActiveForm;
-	use yii\web\Response;
-	use yii\helpers\Url;
-	use yii\web\NotFoundHttpException;
-	use common\conexion\ConexionController;
-	use common\mensaje\MensajeController;
-	use common\models\session\Session;
-    // use backend\controllers\mensaje\MensajeController;
-    //use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
-    //use backend\models\recibo\deposito\DepositoForm;
-    //use backend\models\recibo\depositodetalle\DepositoDetalleForm;
-    //use backend\models\recibo\depositodetalle\DepositoDetalleUsuarioForm;
-    //use backend\models\recibo\formapago\FormaPago;
-    //use backend\models\utilidad\banco\BancoSearch;
-    //use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
-    //use backend\models\recibo\tipodeposito\TipoDepositoSearch;
-    //use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
-    //use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
-    //use backend\models\recibo\pago\individual\SerialReferenciaForm;
-    //use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
-    //use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
-    //use backend\models\recibo\txt\RegistroTxtSearch;
-    //use common\models\referencia\GenerarReferenciaBancaria;
-    //use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
-    //use backend\models\recibo\pago\individual\PagoReciboIndividual;
-
+    use Yii;
+    use yii\helpers\ArrayHelper;
+    use yii\filters\AccessControl;
+    use yii\web\Controller;
+    use yii\filters\VerbFilter;
+    use yii\widgets\ActiveForm;
+    use yii\web\Response;
+    use yii\helpers\Url;
+    use yii\web\NotFoundHttpException;
+    use common\conexion\ConexionController;
+    use common\mensaje\MensajeController;
+    use common\models\session\Session;
     use backend\models\recibo\pago\lote\BusquedaArchivoTxtForm;
     use backend\models\recibo\pago\lote\ListaArchivoTxt;
     use backend\models\recibo\pago\lote\MostrarArchivoTxt;
     use backend\models\recibo\pago\lote\PagoReciboLoteSearch;
-
     use backend\models\recibo\deposito\Deposito;
+    use backend\models\usuario\AutorizacionUsuario;
 
-	session_start();		// Iniciando session
 
-	/**
-	 * Clase que gestiona el pago en lote de los recibos. Utilizando una archivo txt enviado
+    session_start();        // Iniciando session
+
+    /**
+     * Clase que gestiona el pago en lote de los recibos. Utilizando una archivo txt enviado
      * por una entidad financiera. Este archivo txt debe cunplir con las especificaciones para
      * que pueda ser detectado y analizado correctamente por el modulo que realiza dicho analisis
-	 */
-	class PagoReciboLoteController extends Controller
-	{
-		public $layout = 'layout-main';				//	Layout principal del formulario
+     */
+    class PagoReciboLoteController extends Controller
+    {
+        public $layout = 'layout-main';             //  Layout principal del formulario
 
-		private $_conn;
-		private $_conexion;
-		private $_transaccion;
-
-
+        private $_conn;
+        private $_conexion;
+        private $_transaccion;
 
 
 
-		/**
-		 * Metodo que configura las variables que permitiran la interaccion
-		 * con la base de datos.
-		 */
-		private function setConexion()
-		{
-			$this->_conexion = New ConexionController();
-			$this->_conn = $this->_conexion->initConectar('db');
-		}
+
+
+        /**
+         * Metodo que configura las variables que permitiran la interaccion
+         * con la base de datos.
+         */
+        private function setConexion()
+        {
+            $this->_conexion = New ConexionController();
+            $this->_conn = $this->_conexion->initConectar('db');
+        }
 
 
 
@@ -120,10 +102,20 @@
          * @return retorna una vista donde se debe colocar el numero de recibo
          * para consultarlo.
          */
-		public function actionIndex()
-		{
-            $this->redirect(['mostrar-form-consulta']);
-		}
+        public function actionIndex()
+        {
+            $varSessions = self::actionGetListaSessions();
+            self::actionAnularSession($varSessions);
+            $autorizacion = New AutorizacionUsuario();
+            if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+                $_SESSION['begin'] = 1;
+                $this->redirect(['mostrar-form-consulta']);
+            } else {
+                // Su perfil no esta autorizado.
+                // El usuario no esta autorizado.
+                $this->redirect(['error-operacion', 'cod' => 700]);
+            }
+        }
 
 
 
@@ -143,7 +135,7 @@
 
             $caption = Yii::t('backend', 'Procesar Pagos. Busqueda de Archivo de Pagos.');
             $model = New BusquedaArchivoTxtForm();
-            if ( $model->usuarioAutorizado($usuario) ) {
+            if ( isset($_SESSION['begin']) ) {
 
                 $formName = $model->formName();
 
@@ -233,11 +225,23 @@
                 if ( $postData['btn-back'] == 1 ) {
                     $this->redirect(['index']);
                 }
-            } elseif ( isset($postData['data-file']) && isset($postData['data-file']) ) {
-                // Mostrar archivo
-                self::actionAnularSession(['postEnviado']);
-                $_SESSION['postEnviado'] = $request->post();
-                $this->redirect(['mostrar-archivo-txt']);
+            } elseif ( isset($postData['data-file-type']) && isset($postData['data-file']) && isset($postData['data-path']) ) {
+                if ( $postData['data-file-type'] == 'file' ) {
+
+                    // Mostrar archivo
+                    self::actionAnularSession(['postEnviado']);
+                    $_SESSION['postEnviado'] = $request->post();
+                    $this->redirect(['mostrar-archivo-txt']);
+
+                } elseif ( $postData['data-file-type'] == 'file-flat' ) {
+
+                    // Mostrar archivo plano
+                    self::actionAnularSession(['postEnviado']);
+                    $_SESSION['postEnviado'] = $request->post();
+                    $this->redirect(['mostrar-archivo-txt-plano']);
+
+                }
+
             }
 
             $caption = Yii::t('backend', 'Procesar Pagos. Busqueda de Archivo de Pagos.');
@@ -271,6 +275,87 @@
 
 
         /**
+         * Metodo que permite mostrar una vista con el contenido del archivo txt enviado por el
+         * banco. Esta vista sera un representacion bruta del contenido del archivo, tal como
+         * lo mando el banco.
+         * @return view
+         */
+        public function actionMostrarArchivoTxtPlano()
+        {
+            $usuario = Yii::$app->identidad->getUsuario();
+            if ( $usuario !== null ) {
+
+                $request = Yii::$app->request;
+                $postData = ( count($request->post()) > 0 ) ? $request->post() : $_SESSION['postEnviado'];
+
+                $errorMensaje = "";
+                if ( isset($postData['btn-quit']) ) {
+                    if ( $postData['btn-quit'] == 1 ) {
+                        $this->redirect(['quit']);
+                    }
+                } elseif ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 1 ) {
+                        unset($_SESSION['postEnviado']['data-path']);
+                        unset($_SESSION['postEnviado']['data-file']);
+                        unset($_SESSION['postEnviado']['data-key']);
+                        unset($_SESSION['postEnviado']['data-file-type']);
+                        $this->redirect(['mostrar-lista-archivo']);
+                    }
+                }
+
+                if ( isset($postData['data-file']) && isset($postData['data-path']) ) {
+
+                    $model = New BusquedaArchivoTxtForm();
+                    $model->load($postData);
+
+                    $banco = $model->getBancoById($model->id_banco);
+
+                    $archivo = $postData['data-file'];
+                    $ruta = $postData['data-path'];
+                    // Fecha de pago
+                    $fecha = $postData['data-date'];
+                    $model->fecha_pago = $fecha;
+
+                    $htmlIdentidadBanco = $this->renderPartial('/recibo/pago/lote/identificar-banco-fecha',[
+                                                                        'banco' => $banco,
+                                                                        'archivo' => $archivo,
+                                                                        'model' => $model,
+                                                                        'detailView' => true,
+                                        ]);
+
+                    $mostrar = New MostrarArchivoTxt($ruta, $archivo);
+                    $mostrar->iniciarMostrarArchivo();
+                    $contenidoPlano = $mostrar->verArchivoPlano();
+                    $errorMensaje = $mostrar->getError();
+
+                    if ( !$mostrar->existeArchivo() ) {
+                        $this->layout = 'layout-main';
+                        return $this->render('/recibo/pago/lote/warnings', [
+                                                            'archivo' => $archivo,
+                                                            'mensajes' => $errorMensaje,
+                                ]);
+                    } else {
+                        $this->layout = 'layoutbase';
+                        return $this->render('/recibo/pago/lote/mostrar-archivo-txt-plano',[
+                                                            'archivo' => $archivo,
+                                                            'contenidoPlano' => $contenidoPlano,
+                                                            'htmlIdentidadBanco' => $htmlIdentidadBanco,
+                            ]);
+                    }
+                }
+
+            } else {
+                $this->redirect(['usuario-no-autorizado']);
+            }
+        }
+
+
+
+
+
+
+
+        /**
          * Metodo que permite mostrar una vista con los nombres de los archivos txt
          * encontrados, segun los parametros de consulta previamente ingresados.
          * El resultado debe ser un grid con los nombres de los archivos encontrados.
@@ -293,6 +378,7 @@
                     unset($_SESSION['postEnviado']['data-path']);
                     unset($_SESSION['postEnviado']['data-file']);
                     unset($_SESSION['postEnviado']['data-key']);
+                    unset($_SESSION['postEnviado']['data-file-type']);
                     $this->redirect(['mostrar-lista-archivo']);
                 }
             } elseif ( isset($postData['btn-analize-file']) ) {
@@ -314,11 +400,20 @@
                 $model = New BusquedaArchivoTxtForm();
                 $model->load($postData);
 
+                $banco = $model->getBancoById($model->id_banco);
+
                 $archivo = $postData['data-file'];
                 $ruta = $postData['data-path'];
                 // Fecha de pago
                 $fecha = $postData['data-date'];
                 $model->fecha_pago = $fecha;
+
+                $htmlIdentidadBanco = $this->renderPartial('/recibo/pago/lote/identificar-banco-fecha',[
+                                                                        'banco' => $banco,
+                                                                        'archivo' => $archivo,
+                                                                        'model' => $model,
+                                                                        'detailView' => true,
+                                        ]);
 
                 $mostrar = New MostrarArchivoTxt($ruta, $archivo);
                 $mostrar->iniciarMostrarArchivo();
@@ -338,6 +433,7 @@
                                                     'archivo' => $archivo,
                                                     'fecha' => $fecha,
                                                     'model' => $model,
+                                                    'htmlIdentidadBanco' => $htmlIdentidadBanco,
 
                         ]);
                 } else {
@@ -361,6 +457,7 @@
                                                         'archivo' => $archivo,
                                                         'fecha' => $fecha,
                                                         'model' => $model,
+                                                        'htmlIdentidadBanco' => $htmlIdentidadBanco,
                                 ]);
                     }
                 }
@@ -439,7 +536,6 @@
 
             // Numero de recibo de pago
             $nro = $postGet['nro'];
-//die(var_dump(Yii::$app->request));
             return $this->renderAjax('@backend/views/recibo/pago/consulta/recibo-consultado', [
                                                         'model' => $this->findModelRecibo($nro),
 
@@ -463,89 +559,97 @@
 
 
 
+        /**
+         * Metodo renderiza una vista indicando que el usuario no es valido.
+         * @return view.
+         */
+        public function actionUsuarioNoAutorizado()
+        {
+            return $this->redirect(['error-operacion', 'cod' => 999]);
+        }
+
 
 
 
         /**
-		 * Metodo salida del modulo.
-		 * @return view
-		 */
-		public function actionQuit()
-		{
-			//self::actionInicializarTemporal();
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
-		}
+         * Metodo salida del modulo.
+         * @return view
+         */
+        public function actionQuit()
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
+        }
 
 
 
-		/**
-		 * Metodo que ejecuta la anulacion de las variables de session utilizados
-		 * en el modulo.
-		 * @param  array $varSessions arreglo con los nombres de las variables de
-		 * sesion que seran anuladas.
-		 * @return none.
-		 */
-		public function actionAnularSession($varSessions)
-		{
-			Session::actionDeleteSession($varSessions);
-		}
+        /**
+         * Metodo que ejecuta la anulacion de las variables de session utilizados
+         * en el modulo.
+         * @param  array $varSessions arreglo con los nombres de las variables de
+         * sesion que seran anuladas.
+         * @return none.
+         */
+        public function actionAnularSession($varSessions)
+        {
+            Session::actionDeleteSession($varSessions);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
-		 * satisfactoriamente.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionProcesoExitoso($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista indicando que le proceso se ejecuto
+         * satisfactoriamente.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionProcesoExitoso($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista que indica que ocurrio un error en la
-		 * ejecucion del proceso.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionErrorOperacion($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista que indica que ocurrio un error en la
+         * ejecucion del proceso.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionErrorOperacion($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que permite obtener un arreglo de las variables de sesion
-		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
-		 * los nombres de las variables de sesion.
-		 * @return array retorna un arreglo de nombres.
-		 */
-		public function actionGetListaSessions()
-		{
-			return $varSession = [
-							'postData',
-							'recibo',
-							'begin',
-							'postEnviado',
-							'datosRecibo',
-							'datosBanco',
-					];
+        /**
+         * Metodo que permite obtener un arreglo de las variables de sesion
+         * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+         * los nombres de las variables de sesion.
+         * @return array retorna un arreglo de nombres.
+         */
+        public function actionGetListaSessions()
+        {
+            return $varSession = [
+                            'postData',
+                            'recibo',
+                            'begin',
+                            'postEnviado',
+                            'datosRecibo',
+                            'datosBanco',
+                    ];
 
-		}
+        }
 
 
 
-	}
+    }
 ?>
