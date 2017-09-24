@@ -49,7 +49,7 @@
 	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
 	use backend\models\recibo\estatus\EstatusDeposito;
 	use common\models\contribuyente\ContribuyenteBase;
-
+	use backend\models\recibo\planillacontable\PlanillaContable;
 
 
 	/**
@@ -121,6 +121,40 @@
 		public function getDescripcionContribuyente($idContribuyente)
 		{
 			return $descripcion = ContribuyenteBase::getContribuyenteDescripcionSegunID($idContribuyente);
+		}
+
+
+		/**
+		 * Metodo que genera un numero de proceso a partir de la fecha y hora especifica.
+		 * Si recibe una fecha hora tomara esta, sino se determinara una fecha hora.
+		 * @param string $fechaHora Fecha y hora
+		 * @return string retorna un numero de proceso.
+		 */
+		public function getNumeroProceso($fechaHora = '')
+		{
+			$numeroProceso = '0';
+			if ( trim($fechaHora) == '' ) {
+				$fechaHora = date('Y-m-d h:i:s');
+			}
+			$dia = trim(date('d', strtotime($fechaHora)));
+			$mes = trim(date('m', strtotime($fechaHora)));
+			$año = trim(date('y', strtotime($fechaHora)));
+			$hora = trim(date('h', strtotime($fechaHora)));
+			$minuto = trim(date('i', strtotime($fechaHora)));
+			$segundo = trim(date('s', strtotime($fechaHora)));
+
+			$numeroProceso = $año . $mes . $dia . $hora . $minuto . $segundo;
+			return $numeroProceso;
+		}
+
+
+		/**
+		 * Relacion con la entidad "planillas-contables".
+		 * @return active record
+		 */
+		public function getIngresoPresupuestario()
+		{
+			return $this->hasMany(PlanillaContable::className(), ['recibo' => 'recibo']);
 		}
 
 	}
