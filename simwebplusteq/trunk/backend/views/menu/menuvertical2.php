@@ -84,7 +84,7 @@
         				['label' => 'Licencias',
         					'items' => [
         						['label' => 'Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-emitida/index']],
-        						//['label' => 'Emitidas', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        						['label' => 'No Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-no-emitida/index']],
         					],
         				],
 
