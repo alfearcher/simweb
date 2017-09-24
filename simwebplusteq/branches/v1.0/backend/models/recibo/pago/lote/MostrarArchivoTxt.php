@@ -271,12 +271,12 @@
 				while(!feof($fp)) {
 					$linea = fgets($fp);
 					if ( $ct > 0 ) {
-						if ( $linea !== null ) {
-							// if ( trim($linea) == '' ) {
-							// 	$linea = ' ';
-							// }
+						if ( $linea !== null && trim($linea) !== '') {
 							//echo $linea . "<br />";
 							self::armarItemPago($linea, $ct);
+						} elseif ( trim($linea) == '' && !feof($fp) ) {
+							$mensaje = Yii::t('backend', 'La linea del archivo no cumple con las especificaciones del numero de columnas. Linea en blanco. Linea: ') . $ct;
+							self::setError($mensaje);
 						}
 					}
 					$ct++;
@@ -284,6 +284,32 @@
 				fclose($fp);
 			}
 		}
+
+
+
+
+
+		/**
+		 * Metodo que realiza la lectura del archivo
+		 * @return
+		 */
+		public function verArchivoPlano()
+		{
+			if ( self::existeArchivo() ) {
+
+				// Ruta y nonmbre del archivo
+				$ruta = self::getRutaArchivoTxt();
+
+				$fp = fopen($ruta,'r');
+				$texto = fread($fp, filesize($ruta));
+				$texto = nl2br($texto);
+				fclose($fp);
+				return $texto;
+			}
+			return '';
+		}
+
+
 
 
 

@@ -378,7 +378,6 @@
 				$archivo = $this->_mostarArchivo->getNombre();
 
 				$listaPlanilla = array_values(ArrayHelper::map($registers, 'planilla', 'planilla'));
-				//$listaPlanilla = array_values($listaPlanilla);
 				$listaJson = json_encode($listaPlanilla);
 
 				$model = New RegistroTxtRecibo();
@@ -401,8 +400,42 @@
 				$model->nro_control = self::getNroControl();
 
 				self::addItemRegistroTxt($model);
-			}
+			} else {
+				// No exite el recibo en la base de datos.
 
+				$idContribuyente = 0;
+				$mensajes = [
+					Yii::t('backend', 'No existe el recibo Nro. ') . $itemPago['recibo']
+				];
+
+				$estatus = 7;
+
+				$observacion = json_encode($mensajes);
+
+				$listaPlanilla = [];
+				$listaJson = json_encode($listaPlanilla);
+
+				$model = New RegistroTxtRecibo();
+
+				foreach ( $model->attributes as $key => $value ) {
+					if ( isset($itemPago[$key]) ) {
+						$model->$key = self::convertir($key, $itemPago[$key]);
+					} else {
+						$model->$key = '0';
+					}
+				}
+				$model->id_contribuyente = $idContribuyente;
+				$model->planillas = $listaJson;
+				$model->estatus = $estatus;
+				$model->fecha_hora = date('Y-m-d H:i:s');
+				$model->usuario = $this->_usuario;
+				$model->observacion = $observacion;
+				$model->archivo_txt = $this->_mostarArchivo->getNombre();
+				$model->nro_control = self::getNroControl();
+
+				self::addItemRegistroTxt($model);
+
+			}
 		}
 
 
