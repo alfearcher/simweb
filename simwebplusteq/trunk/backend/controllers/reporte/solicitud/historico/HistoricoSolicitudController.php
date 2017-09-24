@@ -56,6 +56,7 @@
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
 	use backend\models\reporte\solicitud\historico\HistoricoSolicitudSearch;
+	//use backend\models\usuario\AutorizacionUsuario;
 
 
 	session_start();
@@ -241,7 +242,7 @@
 			$viewDetalle = $historicoSolicitudSearch->getViewDetalleSolicitud($nroSolicitud);
 
 			// Modelo de datos de la solicitud maestro.
-			$viewMaestro = self::actionViewMaestroSolicitud($nroSolicitud);
+			$viewMaestro = self::viewMaestroSolicitud($nroSolicitud);
 
 			$caption = Yii::t('backend', 'Detalle de la Solicitud Nro. ') . $nroSolicitud;
 			$subCaption = Yii::t('backend', 'Detalle');
@@ -264,7 +265,7 @@
 	     * sobre la solicitud.
 	     * @return view.
 	     */
-	    public function actionViewMaestroSolicitud($nroSolicitud)
+	    public function viewMaestroSolicitud($nroSolicitud)
 	    {
 	    	$historicoSolicitudSearch = New HistoricoSolicitudSearch();
 	    	$model = $historicoSolicitudSearch->findDataSolicitudMaestro($nroSolicitud);
@@ -276,23 +277,6 @@
 			return null;
 	    }
 
-
-
-
-		/***/
-		public function actionGenerarPdf()
-		{
-			$request = Yii::$app->request;
-			$postData = $request->post();
-
-			if ( isset($postData['planilla']) ) {
-				$planilla = $postData['planilla'];
-				$pdf = New PlanillaPdfController($planilla);
-				$pdf->actionGenerarPlanillaPdf();
-
-			}
-
-		}
 
 
 
