@@ -99,6 +99,8 @@
 					</div>
 <!-- Fin de Buscar por Contribuyente -->
 
+
+<!-- Chebox Todos los contribuyentes -->
 					<div class="row" style="width: 100%;">
 						<?= Html::activeCheckbox($model, 'todos', [
 																	'label' => $model->getAttributeLabel('todos'),
@@ -108,6 +110,34 @@
 																]);
 						?>
 					</div>
+<!-- Fin Chebox Todos los contribuyentes -->
+
+
+<!-- Chebox Todos los contribuyentes -->
+
+
+<!-- Inicio Condicion del registro -->
+						<!-- <div class="row" style="padding-left: 40px;">
+							<div class="col-sm-2">
+								<div class="row">
+									<p><strong><?//= $model->getAttributeLabel('condicion') ?></strong></p>
+								</div>
+							</div>
+							<div class="col-sm-5">
+								<div class="row" class="condicion">
+									 <?//= $form->field($model, 'condicion')
+									          // ->dropDownList($listaCondicion, [
+		                 //                                           	'id'=> 'id-condicion',
+		                 //                                           	'prompt' => Yii::t('backend', 'Select'),
+		                 //                                           	'style' => 'width:260px;',
+		                                                           //])->label(false);
+	                                ?>
+								</div>
+							</div>
+						</div> -->
+<!-- Fin de Condicion del registro -->
+
+
 
 					<div class="row" style="padding-top: 20px;">
 						<div class="col-sm-3" style="">
