@@ -536,7 +536,8 @@
 		                ],
 	                	'format' => 'raw',
 	                    'value' => function($model) {
-										return $model->contribuyente->tlf_ofic . ' / ' . $model->contribuyente->tlf_ofic_otro . ' / ' . $model->contribuyente->tlf_celular;
+	                    				$tel = $model->contribuyente->tlf_ofic . ' / ' . $model->contribuyente->tlf_ofic_otro . ' / ' . $model->contribuyente->tlf_celular;
+										return substr(trim($tel), 0, -1);
 									},
 	                ],
 	                [
@@ -563,7 +564,7 @@
 	                    						$nota .= $obs . ' / ';
 	                    					}
 	                    				}
-										return $nota;
+										return substr(trim($nota), 0, -1);
 									},
 	                ],
 
