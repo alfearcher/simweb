@@ -283,6 +283,15 @@
 		        	]
 		        ],
 
+		         //	Recibo
+        		['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
+        			'items' => [
+        				['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
+        				['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
+        				['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
+        			]
+        		],
+
         		//	Planillas
         		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
         			'items' => [
