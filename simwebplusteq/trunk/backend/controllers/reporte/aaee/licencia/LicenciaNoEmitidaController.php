@@ -148,12 +148,13 @@
 		      			$mensajeCausa = Yii::t('backend', 'No ha seleccionado ninguna causa');
 		      		}
 		      		if ( $model->validate() && trim($mensajeCausa) == '' ) {
+		      			$subCaption = Yii::t('backend', 'Resultado de la Consulta');
 		      			$model->chkCausa = $postData['chkCausa'];
 						$model->init();
 						$dataProvider = $model->getDataProvider();
 						return $this->render('/reporte/aaee/licencia-no-emitida/licencia-no-emitida-reporte',[
-																'caption' => 'PRUEBA',
-																'subCaption' => 'PRUEBA DOS',
+																'caption' => $caption,
+																'subCaption' => $subCaption,
 																'dataProvider' => $dataProvider,
 								]);
 
@@ -238,7 +239,6 @@
 				$licenciaSearch->init();
 				$dataProvider = $licenciaSearch->getDataProvider(true);
 				$model = $dataProvider->getModels();
-//die(var_dump($model));
 				$licenciaSearch->exportarExcel($model);
 			}
 		}
