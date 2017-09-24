@@ -231,15 +231,22 @@
 		 */
 		public function actionExportarExcel()
 		{
-			$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : [];
-			if ( count($postInicial) > 0 ) {
-				$licenciaSearch = New LicenciaNoEmitidaSearch();
-				$licenciaSearch->load($postInicial);
-				$licenciaSearch->chkCausa = $postInicial['chkCausa'];
-				$licenciaSearch->init();
-				$dataProvider = $licenciaSearch->getDataProvider(true);
-				$model = $dataProvider->getModels();
-				$licenciaSearch->exportarExcel($model);
+			$autorizacion = New AutorizacionUsuario();
+			if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+				$postInicial = isset($_SESSION['postData']) ? $_SESSION['postData'] : [];
+				if ( count($postInicial) > 0 ) {
+					$licenciaSearch = New LicenciaNoEmitidaSearch();
+					$licenciaSearch->load($postInicial);
+					$licenciaSearch->chkCausa = $postInicial['chkCausa'];
+					$licenciaSearch->init();
+					$dataProvider = $licenciaSearch->getDataProvider(true);
+					$model = $dataProvider->getModels();
+					$licenciaSearch->exportarExcel($model);
+				}
+			} else {
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
 			}
 		}
 
