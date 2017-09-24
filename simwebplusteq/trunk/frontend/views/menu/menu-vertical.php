@@ -330,29 +330,6 @@
         		// 	]
         		// ],
 
-
-
-
-        		/*
-		        // 'Products' menu item will be selected as long as the route is 'product/index'
-		        ['label' => 'Books', 'icon' => 'book', 'items' => [
-		            ['label' => 'New Arrivals', 'url' => "#"],
-		            ['label' => 'Most Popular', 'url' => "#"],
-		            ['label' => 'Read Online', 'icon' => 'cloud', 'items' => [
-		                ['label' => 'Online 1', 'url' => "#"],
-		                ['label' => 'Online 2', 'url' => "#"]
-		            ]],
-		        ]],
-		        ['label' => 'Categories', 'icon' => 'tags', 'items' => [
-		            ['label' => 'Fiction', 'url' => "#"],
-		            ['label' => 'Historical', 'url' => "#"],
-		            ['label' => 'Announcements', 'icon' => 'bullhorn', 'items' => [
-		                ['label' => 'Event 1', 'url' => "#"],
-		                ['label' => 'Event 2', 'url' => "#"]
-		            ]],
-		        ]],
-		        ['label' => 'Profile', 'icon' => 'user', 'url' => "#"],
-		        */
 		    ],
 		]);
 		?>
