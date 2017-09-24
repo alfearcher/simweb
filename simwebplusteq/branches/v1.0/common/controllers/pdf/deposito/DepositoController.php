@@ -194,6 +194,8 @@
 
 	        self::cuadroFormaPago($mpdf, 13);
 
+	        $mpdf->SetFooter(date('d-m-Y') . ' '. Yii::$app->identidad->getUsuario());
+
 	       	//funciona
 	       	// $mpdf->Rect(18, 230, 100, 30, D);
 
