@@ -43,6 +43,7 @@
 	namespace backend\models\reporte\aaee\licencia;
 
  	use Yii;
+ 	use yii\helpers\Html;
 	use yii\data\ActiveDataProvider;
 	use yii\data\ArrayDataProvider;
 	use backend\models\reporte\aaee\licencia\LicenciaNoEmitidaBusquedaForm;
@@ -54,6 +55,7 @@
 	use backend\models\aaee\licencia\LicenciaSolicitud;
 	use common\models\planilla\PlanillaSearch;
 	use common\models\configuracion\solicitudplanilla\SolicitudPlanilla;
+	use backend\models\utilidad\licencia\reporte\LicenciaReporteSearch;
 
 
 	/**
@@ -70,7 +72,7 @@
 		 * @var CausaNoEmisionLicencia
 		 */
 		private $_causaNoEmision;
-
+		private $_usuario;
 
 
 		/**
@@ -79,6 +81,7 @@
 		public function __construct()
 		{
 			$this->_causaNoEmision = CausaNoEmisionLicencia::find()->all();
+			$this->_usuario = Yii::$app->identidad->getUsuario();
 		}
 
 
@@ -90,8 +93,24 @@
 		{
 			$contribuyentes = self::findContribuyente();
 			self::armarData($contribuyentes);
-///die(var_dump($this->_data));
+			return self::insertarData();
 		}
+
+
+		/**
+		 * Metodo que inserta la data
+		 * @return boolean.
+		 */
+		private function insertarData()
+		{
+			$result = false;
+			if ( count($this->_data) > 0 ) {
+				$reporteSearch = New LicenciaReporteSearch();
+				$result = $reporteSearch->insertarLote($this->_data);
+			}
+			return $result;
+		}
+
 
 
 		/**
@@ -217,7 +236,7 @@
 					$mensajes[] = self::determinarCausaNoEmision(3);
 				}
 			}
-//die(var_dump($mensajes));
+
 			return $mensajes;
 		}
 
@@ -425,28 +444,35 @@
 		}
 
 
+
+
 	    /**
 	     * Metodo que crea el data provider del historico de licencia
 	     * @return ActiveDataProvider
 	     */
 	    public function getDataProvider($export = false)
 	    {
-	    	$data = self::getData();
+	    	$query = LicenciaReporteSearch::findLicenciaReporteModel();
 	    	if ( $export ) {
-		    	$dataProvider = New ArrayDataProvider([
-					'allModels' => $data,
+		    	$dataProvider = New ActiveDataProvider([
+					'query' => $query,
 					'pagination' => false,
 				]);
 		    } else {
-		    	$dataProvider = New ArrayDataProvider([
-		    		'allModels' => $data,
+		    	$dataProvider = New ActiveDataProvider([
+		    		'query' => $query,
 		    		'pagination' => [
 		    			'pageSize' => 100,
 		    		],
 		    	]);
 		    }
+		    $query->joinWith('contribuyente C', true, 'INNER JOIN')
+		    	  ->where('usuario =:usuario',
+								[':usuario' => $this->_usuario])
+		    	  ->all();
 	    	return $dataProvider;
  	    }
+
 
 
  	    /**
@@ -462,32 +488,85 @@
                 'properties' => [
 
                 ],
+                //'setFirstTitle' => 'Hola',
     			'mode' => 'export', //default value as 'export'
     			'columns' => [
-    				[
-      					'attribute' => 'ID',
-      					'format' => 'integer',
-      				],
-
-	        //     	[
-	        //     		'attribute' => 'ID',
-	        //             'contentOptions' => [
-		       //          	'style' => 'font-size:90%;',
-		       //          ],
-	        //             'value' => function($model) {
-									// 	return $model['id_contribuyente'];
-									// },
-	        //         ],
-	        //         [
-	        //         	'attribute' => 'RIF',
-	        //         	'contentOptions' => [
-		       //          	'style' => 'font-size:90%;',
-		       //          ],
-	        //         	'format' => 'raw',
-	        //             'value' => function($model) {
-									// 	return $model['naturaleza'] . '-' . $model['cedula'] . '-' - $model['tipo'];
-									// },
-	        //         ],
+	            	[
+	            		'attribute' => 'ID',
+	                    'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                    'value' => function($model) {
+										return $model->id_contribuyente;
+									},
+	                ],
+	                [
+	                	'attribute' => 'RIF',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										return $model->contribuyente->naturaleza . '-' . $model->contribuyente->cedula . '-' . $model->contribuyente->tipo;
+									},
+	                ],
+	                [
+	                	'attribute' => 'Razon Social',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										return $model->contribuyente->razon_social;
+									},
+	                ],
+	                [
+	                	'attribute' => 'Domicilio',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										return $model->contribuyente->domicilio_fiscal;
+									},
+	                ],
+	                [
+	                	'attribute' => 'Telefono(s)',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										return $model->contribuyente->tlf_ofic . ' / ' . $model->contribuyente->tlf_ofic_otro . ' / ' . $model->contribuyente->tlf_celular;
+									},
+	                ],
+	                [
+	                	'attribute' => 'Correo Electronico',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										return $model->contribuyente->email;
+									},
+	                ],
+	                [
+	                	'attribute' => 'Causa de No Emision',
+	                	'contentOptions' => [
+		                	'style' => 'font-size:90%;',
+		                ],
+	                	'format' => 'raw',
+	                    'value' => function($model) {
+										$nota = '';
+				                    	$fuente = json_decode($model->observacion, true);
+	                    				if ( count($fuente) > 0 ) {
+	                    					foreach ( $fuente as $key => $obs ) {
+	                    						$nota .= $obs . ' / ';
+	                    					}
+	                    				}
+										return $nota;
+									},
+	                ],
 
 	        	]
 			]);
