@@ -72,7 +72,7 @@
         				['label' => 'Licencias',
         					'items' => [
         						['label' => 'Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-emitida/index']],
-        						//['label' => 'Emitidas', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        						['label' => 'No Emitidas', 'url' => ['/reporte/aaee/licencia/licencia-no-emitida/index']],
         					],
         				],
 
@@ -85,6 +85,12 @@
         				['label' => 'Solicitudes',
         					'items' => [
         						['label' => 'Historico', 'url' => ['/reporte/solicitud/historico/historico-solicitud/index']],
+        					],
+        				],
+
+        				['label' => 'Recaudación',
+        					'items' => [
+        						['label' => 'Recaudacion de Ingresos', 'url' => ['/reporte/recaudacion/recaudacion/index']],
         					],
         				],
         			]
@@ -276,15 +282,6 @@
 		        		// ],
 		        	]
 		        ],
-
-		        //	Recibo
-        		// ['label' => Icon::show('fa fa-newspaper-o',['class' => $typeLong], $typeIcon) . '&nbsp; Recibo',
-        		// 	'items' => [
-        		// 				['label' => 'Crear Recibo de Pago', 'url' => ['recibo/recibo/index']],
-        		// 				['label' => 'Consulta de Recibos', 'url' => ['recibo/recibo-consulta/index']],
-        		// 				['label' => 'Solicitar Anulación de Recibo', 'url' => ['recibo/anular-recibo/index']],
-        		// 	]
-        		// ],
 
         		//	Planillas
         		['label' => Icon::show('fa fa-indent',['class' => $typeLong], $typeIcon) . '&nbsp; Liquidacion',
