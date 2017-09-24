@@ -57,31 +57,13 @@
 	use common\conexion\ConexionController;
 	use common\mensaje\MensajeController;
 	use common\models\session\Session;
-    // use backend\controllers\mensaje\MensajeController;
-    //use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
-    //use backend\models\recibo\deposito\DepositoForm;
-    //use backend\models\recibo\depositodetalle\DepositoDetalleForm;
-    //use backend\models\recibo\depositodetalle\DepositoDetalleUsuarioForm;
-    //use backend\models\recibo\formapago\FormaPago;
-    //use backend\models\utilidad\banco\BancoSearch;
-    //use backend\models\utilidad\tipotarjeta\TipoTarjetaSearch;
-    //use backend\models\recibo\tipodeposito\TipoDepositoSearch;
-    //use backend\models\recibo\depositodetalle\VaucheDetalleUsuarioForm;
-    //use backend\models\recibo\prereferencia\PreReferenciaPlanillaForm;
-    //use backend\models\recibo\pago\individual\SerialReferenciaForm;
-    //use backend\models\recibo\pago\individual\SerialReferenciaUsuarioSearch;
-    //use backend\models\recibo\prereferencia\ReferenciaPlanillaUsuarioForm;
-    //use backend\models\recibo\txt\RegistroTxtSearch;
-    //use common\models\referencia\GenerarReferenciaBancaria;
-    //use common\models\distribucion\presupuesto\GenerarPlanillaPresupuesto;
-    //use backend\models\recibo\pago\individual\PagoReciboIndividual;
-
     use backend\models\recibo\pago\lote\BusquedaArchivoTxtForm;
     use backend\models\recibo\pago\lote\ListaArchivoTxt;
     use backend\models\recibo\pago\lote\MostrarArchivoTxt;
     use backend\models\recibo\pago\lote\PagoReciboLoteSearch;
-
     use backend\models\recibo\deposito\Deposito;
+    use backend\models\usuario\AutorizacionUsuario;
+
 
 	session_start();		// Iniciando session
 
@@ -122,7 +104,17 @@
          */
 		public function actionIndex()
 		{
-            $this->redirect(['mostrar-form-consulta']);
+            $varSessions = self::actionGetListaSessions();
+            self::actionAnularSession($varSessions);
+            $autorizacion = New AutorizacionUsuario();
+            if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+                $_SESSION['begin'] = 1;
+                $this->redirect(['mostrar-form-consulta']);
+            } else {
+                // Su perfil no esta autorizado.
+                // El usuario no esta autorizado.
+                $this->redirect(['error-operacion', 'cod' => 700]);
+            }
 		}
 
 
@@ -143,7 +135,7 @@
 
             $caption = Yii::t('backend', 'Procesar Pagos. Busqueda de Archivo de Pagos.');
             $model = New BusquedaArchivoTxtForm();
-            if ( $model->usuarioAutorizado($usuario) ) {
+            if ( isset($_SESSION['begin']) ) {
 
                 $formName = $model->formName();
 

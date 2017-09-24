@@ -67,7 +67,7 @@
 	use common\models\contribuyente\ContribuyenteBase;
 	use common\controllers\pdf\deposito\DepositoController;
 	use common\models\calculo\actualizar\ActualizarPlanilla;
-
+	use backend\models\usuario\AutorizacionUsuario;
 
 
 	session_start();		// Iniciando session
@@ -94,72 +94,79 @@
 			// Se verifica que el contribuyente haya iniciado una session.
 			self::actionAnularSession(['begin', 'planillaSeleccionadas']);
 			$usuario = Yii::$app->identidad->getUsuario();
+			$autorizacion = New AutorizacionUsuario();
+			if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
 
-			if ( isset($_SESSION['idContribuyente']) && ( trim($usuario) !== '' && $usuario !== null ) ) {
+				if ( isset($_SESSION['idContribuyente']) && ( trim($usuario) !== '' && $usuario !== null ) ) {
 
-				$idContribuyente = $_SESSION['idContribuyente'];
-				$request = Yii::$app->request;
-				$postData = $request->post();
+					$idContribuyente = $_SESSION['idContribuyente'];
+					$request = Yii::$app->request;
+					$postData = $request->post();
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
+					if ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							$this->redirect(['quit']);
+						}
 					}
+
+					$model = New DepositoForm();
+
+					$formName = $model->formName();
+
+					$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
+					$subCaption = Yii::t('frontend', 'SubTitulo');
+
+			      	// Datos generales del contribuyente.
+			      	$searchRecibo = New ReciboSearch($idContribuyente);
+			      	$findModel = $searchRecibo->findContribuyente();
+			      	$dataProvider = $searchRecibo->getDataProviderDeuda();
+
+			      	$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
+
+			  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validate($model);
+			      	}
+
+					$rutaAyuda = Yii::$app->ayuda->getRutaAyuda(999, 'backend');
+
+			      	$total = 0;
+			  		if ( isset($findModel) ) {
+			  			if ( count($dataProvider) > 0 ) {
+				  			foreach ( $dataProvider->allModels as $item ) {
+				  				$total = $item['deuda'] + $total;
+				  			}
+
+				  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
+				  			$model->totalSeleccionado = $totalSeleccionado;
+				  			$_SESSION['begin'] = 1;
+							return $this->render('@frontend/views/recibo/recibo-create-form', [
+																	'model' => $model,
+																	'caption' => $caption,
+																	'subCaption' => $subCaption,
+																	'findModel' => $findModel,
+																	'dataProvider' => $dataProvider,
+																	'total' => $total,
+																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
+																	'rutaAyuda' => $rutaAyuda,
+
+																]);
+						} else {
+							// No presenta deuda pendiente
+							$this->redirect(['error-operacion', 'cod' => 501]);
+						}
+
+			  		} else {
+			  			// No se encontraron los datos del contribuyente principal.
+			  			$this->redirect(['error-operacion', 'cod' => 938]);
+			  		}
+				} else {
+					$this->redirect(['error-operacion', 'cod' => 932]);
 				}
-
-				$model = New DepositoForm();
-
-				$formName = $model->formName();
-
-				$caption = Yii::t('frontend', 'Recibo de Pago. Crear');
-				$subCaption = Yii::t('frontend', 'SubTitulo');
-
-		      	// Datos generales del contribuyente.
-		      	$searchRecibo = New ReciboSearch($idContribuyente);
-		      	$findModel = $searchRecibo->findContribuyente();
-		      	$dataProvider = $searchRecibo->getDataProviderDeuda();
-
-		      	$providerPlanillaSeleccionada = $searchRecibo->initDataPrivider();
-
-		  		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-		      	}
-
-				$rutaAyuda = Yii::$app->ayuda->getRutaAyuda(999, 'backend');
-
-		      	$total = 0;
-		  		if ( isset($findModel) ) {
-		  			if ( count($dataProvider) > 0 ) {
-			  			foreach ( $dataProvider->allModels as $item ) {
-			  				$total = $item['deuda'] + $total;
-			  			}
-
-			  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
-			  			$model->totalSeleccionado = $totalSeleccionado;
-
-						return $this->render('@frontend/views/recibo/recibo-create-form', [
-																'model' => $model,
-																'caption' => $caption,
-																'subCaption' => $subCaption,
-																'findModel' => $findModel,
-																'dataProvider' => $dataProvider,
-																'total' => $total,
-																'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
-																'rutaAyuda' => $rutaAyuda,
-
-															]);
-					} else {
-						// No presenta deuda pendiente
-						$this->redirect(['error-operacion', 'cod' => 501]);
-					}
-
-		  		} else {
-		  			// No se encontraron los datos del contribuyente principal.
-		  			$this->redirect(['error-operacion', 'cod' => 938]);
-		  		}
 			} else {
-				$this->redirect(['error-operacion', 'cod' => 932]);
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
 			}
 		}
 

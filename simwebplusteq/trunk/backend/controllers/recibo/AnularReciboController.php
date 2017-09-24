@@ -61,7 +61,7 @@
 	use common\models\configuracion\solicitud\ParametroSolicitud;
 	use common\models\solicitudescontribuyente\SolicitudesContribuyenteForm;
 	use yii\helpers\ArrayHelper;
-
+	use backend\models\usuario\AutorizacionUsuario;
 
 	session_start();		// Iniciando session
 
@@ -85,70 +85,77 @@
 		public function actionIndex()
 		{
 			self::actionAnularSession(['recibo', 'begin']);
-			if ( isset($_SESSION['idContribuyente']) ) {
+			$autorizacion = New AutorizacionUsuario();
+			if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
 
-				$request = Yii::$app->request;
-				$postData = $request->post();
+					$request = Yii::$app->request;
+					$postData = $request->post();
 
-				$idContribuyente = $_SESSION['idContribuyente'];
-				$model = New AnularReciboForm();
-				$formName = $model->formName();
-				$model->load($postData);
+					$idContribuyente = $_SESSION['idContribuyente'];
+					$model = New AnularReciboForm();
+					$formName = $model->formName();
+					$model->load($postData);
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				} elseif ( isset($postData[$formName]) ) {
-					// Envio desde el listado
-					$datos = $postData[$formName];
-					if ( (int)$datos['id_contribuyente'] == (int)$idContribuyente ) {
-						if ( isset($postData['recibo']) ) {
-							// Se solicito la consulta de un recibo particular.
-							$_SESSION['recibo'] = $postData['recibo'];
-							$this->redirect(['mostrar-recibo-seleccionado']);
+					if ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							$this->redirect(['quit']);
+						}
+					} elseif ( isset($postData[$formName]) ) {
+						// Envio desde el listado
+						$datos = $postData[$formName];
+						if ( (int)$datos['id_contribuyente'] == (int)$idContribuyente ) {
+							if ( isset($postData['recibo']) ) {
+								// Se solicito la consulta de un recibo particular.
+								$_SESSION['recibo'] = $postData['recibo'];
+								$this->redirect(['mostrar-recibo-seleccionado']);
 
-						} elseif ( isset($postData['btn-delete-batch']) ) {
+							} elseif ( isset($postData['btn-delete-batch']) ) {
 
-							// Se solicita la anulacion de un grupo de recibos.
+								// Se solicita la anulacion de un grupo de recibos.
 
-							if ( $postData['btn-delete-batch'] == 2 ) {
+								if ( $postData['btn-delete-batch'] == 2 ) {
 
-								// Se verifica que esten seleccionados los recibos.
-								if ( isset($postData['chkRecibo']) ) {
-									if ( count($postData['chkRecibo']) > 0 ) {
-										$_SESSION['begin'] = 1;
-										$chkRecibo = $postData['chkRecibo'];
-										$depositos =  $model->findListaDeposito($chkRecibo);
+									// Se verifica que esten seleccionados los recibos.
+									if ( isset($postData['chkRecibo']) ) {
+										if ( count($postData['chkRecibo']) > 0 ) {
+											$_SESSION['begin'] = 1;
+											$chkRecibo = $postData['chkRecibo'];
+											$depositos =  $model->findListaDeposito($chkRecibo);
 
-										$result = self::actionBeginSave($depositos);
-										if ( $result ) {
-											$this->_transaccion->commit();
-											$this->_conn->close();
-											return self::actionViewSolicitud($depositos);
-										} else {
-											$this->_transaccion->rollBack();
-											$this->_conn->close();
+											$result = self::actionBeginSave($depositos);
+											if ( $result ) {
+												$this->_transaccion->commit();
+												$this->_conn->close();
+												return self::actionViewSolicitud($depositos);
+											} else {
+												$this->_transaccion->rollBack();
+												$this->_conn->close();
+											}
 										}
 									}
-								}
 
+								}
 							}
 						}
 					}
+
+					$model->id_contribuyente = $idContribuyente;
+					$model->estatus = 0;
+					$dataProvider = $model->searchListaDeposito();
+					return $this->render('@frontend/views/recibo/anulacion/_list',[
+											'model' => $model,
+											'caption' => 'Lista de Recibos Pendientes',
+											'dataProvider' => $dataProvider,
+						]);
+
+				} else {
+					$this->redirect(['error-operacion', 'cod' => 932]);
 				}
-
-				$model->id_contribuyente = $idContribuyente;
-				$model->estatus = 0;
-				$dataProvider = $model->searchListaDeposito();
-				return $this->render('@frontend/views/recibo/anulacion/_list',[
-										'model' => $model,
-										'caption' => 'Lista de Recibos Pendientes',
-										'dataProvider' => $dataProvider,
-					]);
-
 			} else {
-				$this->redirect(['error-operacion', 'cod' => 932]);
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
 			}
 		}
 

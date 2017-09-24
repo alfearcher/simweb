@@ -65,7 +65,7 @@
 	use backend\models\recibo\deposito\Deposito;
 	use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
 	use common\models\planilla\PlanillaSearch;
-
+	use backend\models\usuario\AutorizacionUsuario;
 
 
 	session_start();		// Iniciando session
@@ -101,62 +101,69 @@
 		{
 			// Se verifica que el contribuyente haya iniciado una session.
 			self::actionAnularSession(['postEnviado']);
-			if ( isset($_SESSION['idContribuyente']) ) {
+			$autorizacion = New AutorizacionUsuario();
+			if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
 
-				$idContribuyente = $_SESSION['idContribuyente'];
-				$request = Yii::$app->request;
-				$postData = $request->post();
+					$idContribuyente = $_SESSION['idContribuyente'];
+					$request = Yii::$app->request;
+					$postData = $request->post();
 
-				$model = New ReciboConsultaForm();
-				$formName = $model->formName();
+					$model = New ReciboConsultaForm();
+					$formName = $model->formName();
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				}
-
-				if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-		      	}
-
-		      	$idContribuyente = $_SESSION['idContribuyente'];
-		      	$searchRecibo = New ReciboSearch($idContribuyente);
-
-		      	if ( $model->load($postData) ) {
-
-					if ( isset($postData['btn-search-params']) ) {
-						if ( $postData['btn-search-params'] == 2 ) {
-							if ( $model->validate(['fecha_desde', 'fecha_hasta', 'estatus']) ) {
-								$_SESSION['postEnviado'] = $postData;
-								$this->redirect(['search-deposito']);
-			      			}
+					if ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							$this->redirect(['quit']);
 						}
-					} elseif ( isset($postData['btn-search-recibo']) ) {
-						if ( $postData['btn-search-recibo'] == 3 ) {
-							if ( $model->validate(['recibo']) ) {
-								$_SESSION['postEnviado'] = $postData;
-								$this->redirect(['search-deposito']);
-			      			}
-			      		}
 					}
 
+					if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+						Yii::$app->response->format = Response::FORMAT_JSON;
+						return ActiveForm::validate($model);
+			      	}
+
+			      	$idContribuyente = $_SESSION['idContribuyente'];
+			      	$searchRecibo = New ReciboSearch($idContribuyente);
+
+			      	if ( $model->load($postData) ) {
+
+						if ( isset($postData['btn-search-params']) ) {
+							if ( $postData['btn-search-params'] == 2 ) {
+								if ( $model->validate(['fecha_desde', 'fecha_hasta', 'estatus']) ) {
+									$_SESSION['postEnviado'] = $postData;
+									$this->redirect(['search-deposito']);
+				      			}
+							}
+						} elseif ( isset($postData['btn-search-recibo']) ) {
+							if ( $postData['btn-search-recibo'] == 3 ) {
+								if ( $model->validate(['recibo']) ) {
+									$_SESSION['postEnviado'] = $postData;
+									$this->redirect(['search-deposito']);
+				      			}
+				      		}
+						}
+
+					}
+
+					$searchEstatus = New EstatusDepositoSearch();
+					$lista = $searchEstatus->getListaEstatus();
+
+					$model->id_contribuyente = $idContribuyente;
+					$caption = Yii::t('frontend', 'Consulta de Recibo');
+					return $this->render('@frontend/views/recibo/consulta/consulta-recibo-form', [
+																'model' => $model,
+																'lista' => $lista,
+																'caption' => $caption,
+							]);
+
+				} else {
+					$this->redirect(['error-operacion', 'cod' => 932]);
 				}
-
-				$searchEstatus = New EstatusDepositoSearch();
-				$lista = $searchEstatus->getListaEstatus();
-
-				$model->id_contribuyente = $idContribuyente;
-				$caption = Yii::t('frontend', 'Consulta de Recibo');
-				return $this->render('@frontend/views/recibo/consulta/consulta-recibo-form', [
-															'model' => $model,
-															'lista' => $lista,
-															'caption' => $caption,
-						]);
-
 			} else {
-				$this->redirect(['error-operacion', 'cod' => 932]);
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
 			}
 		}
 
