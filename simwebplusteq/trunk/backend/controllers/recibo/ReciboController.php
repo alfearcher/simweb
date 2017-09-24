@@ -28,7 +28,7 @@
  *	@date 22-10-2016
  *
  *  @class ReciboController
- *	@brief Clase ReciboController del lado del contribuyente frontend.
+ *	@brief Clase ReciboController del lado del funcionario backend, para crear recibo.
  *
  *
  *	@property
@@ -72,7 +72,9 @@
 
 	session_start();		// Iniciando session
 
-	/***/
+	/**
+	 * Clase para gestionar la creacion de recibos.
+	 */
 	class ReciboController extends Controller
 	{
 		public $layout = 'layoutbase';				//	Layout principal del formulario
