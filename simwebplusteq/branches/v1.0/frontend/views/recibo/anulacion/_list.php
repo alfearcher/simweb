@@ -50,7 +50,7 @@
  <div class="list">
 	 <div class="row">
 		<div class="listado-recibo">
-			<?= $this->render('/recibo/anulacion/listado-recibo', [
+			<?= $this->render('@frontend/views/recibo/anulacion/listado-recibo', [
 	    							'model' => $model,
 									'dataProvider' => $dataProvider,
 									'caption' => $caption,
