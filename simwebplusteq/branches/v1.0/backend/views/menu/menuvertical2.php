@@ -321,14 +321,22 @@
         		//	PAGOS
         		['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
         			'items' => [
+        		// 				['label' => 'Recibo', 'url' => '#'],
+        		 		['label' => 'Caja', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
+        		// 				['label' => 'Elaborar Deposito', 'url' => '#'],
+        		// 				['label' => 'Pagos Anteriores', 'url' => '#'],
+        		// 				['label' => 'Exoneraciones y Exenciones', 'url' => '#'],
+        		// 				['label' => 'Cuentas Por Cobrar', 'url' => '#'],
+        		// 				['label' => 'Procesar Pagos en Lote', 'url' => '#'],
+        		// 				['label' => 'Registros TXT', 'url' => '#'],
 
-        		 	// 	['label' => 'Caja', 'url' => ['/recibo/pago/individual/pago-recibo-individual/index']],
-        				// ['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Archivo txt',
-    					   // 	'items' => [
-    					   // 		['label' => 'Procesar Pago', 'url' => ['/recibo/pago/lote/pago-recibo-lote/index']],
+        				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Archivo txt',
+    					   	'items' => [
+    					   		['label' => 'Procesar Pago', 'url' => ['/recibo/pago/lote/pago-recibo-lote/index']],
 
-		        		// 	]
-		        		// ],
+		        			]
+		        		],
+
 						['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustes',
 					   		'items' => [
 					   			['label' => 'Cuenta Recaudadora', 'url' => ['/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/index']],
@@ -337,45 +345,6 @@
 
         			]
         		],
-
-
-        		//	PAGOS
-        		// ['label' => Icon::show('fa fa-money',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos y Deudas',
-        		// 	'items' => [
-        		// 				['label' => 'Recibo', 'url' => '#'],
-        		// 				['label' => 'Caja', 'url' => '#'],
-        		// 				['label' => 'Elaborar Deposito', 'url' => '#'],
-        		// 				['label' => 'Pagos Anteriores', 'url' => '#'],
-        		// 				['label' => 'Exoneraciones y Exenciones', 'url' => '#'],
-        		// 				['label' => 'Cuentas Por Cobrar', 'url' => '#'],
-        		// 				['label' => 'Procesar Pagos en Lote', 'url' => '#'],
-        		// 				['label' => 'Registros TXT', 'url' => '#'],
-
-        		// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Deudas',
-
-    					 //   		'items' => [
-    					 //   				['label' => 'Verificar Deudas', 'url' => ['/deudas/deudascontribuyente/deudas-contribuyente/verificar-deudas-contribuyente']],
-
-
-
-
-
-		        // 					   		]
-		        // 					   	],
-
-
-	        	// 				['label' => Icon::show('fa fa-pencil',['class' => $typeLong], $typeIcon) . '&nbsp; Pagos',
-
-					   		// 		'items' => [
-					   		// 		['label' => 'Verificar Pagos', 'url' => ['/pagos/pagoscontribuyente/pagos-contribuyente/verificar-pagos-contribuyente']],
-
-
-	        	// 				   	]
-	        	// 				],
-        		// 	]
-
-        		// ],
-
 
         		//PRESUPUESTOS
         			['label' => Icon::show('fa fa-bar-chart',['class' => $typeLong], $typeIcon) . '&nbsp; Presupuestos',
