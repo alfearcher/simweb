@@ -414,13 +414,15 @@
 
 					$acumulado = 0;
 					$total = 0;
+					$montoTotalRecibo = 0;
 
 					foreach ( $chkPlanillaSeleccionadas as $key => $value ) {
-
+						$total = 0;
+						$montoTotalRecibo = 0;
 						$deudas = $searchDeuda->getAgruparDeudaPorPlanillas([$value]);
 						$deuda = $deudas[0];
 
-						$total = ( $deuda['tmonto'] + $deuda['trecargo'] + $deuda['tinteres'] ) - ( $deuda['tdescuento'] + $deuda['tmonto_reconocimiento'] );
+						$total = ( (float)$deuda['tmonto'] + (float)$deuda['trecargo'] + (float)$deuda['tinteres'] ) - ( (float)$deuda['tdescuento'] + (float)$deuda['tmonto_reconocimiento'] );
 						$acumulado = $acumulado + $total;
 
 						$modelDepPlanilla->monto = $total;
@@ -436,8 +438,9 @@
 						}
 					}
 
-					if ( (float)$model->monto !== $acumulado ) {
-						$result = false;
+					$montoTotalRecibo = (float)$model->monto;
+					if ( $montoTotalRecibo !== $acumulado ) {
+						//$result = false;
 					}
 				}
 
