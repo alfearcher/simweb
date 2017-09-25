@@ -311,6 +311,21 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
+<COLUMN ID="3876" ColName="monto_limite" PrevColName="" Pos="9" idDatatype="9" DatatypeParams="(16,2)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="0.00" Comments="Monto limite que debe tener un cheque para poder ser procesado. Si esta en cero indica que no se requiere de dicho par\225metro. Todo aquellos monto que sobre pasen este par\225metro no podr\225n ser procesados.">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="3877" ColName="fecha_limite" PrevColName="" Pos="10" idDatatype="14" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="0000-00-00" Comments="Toda fecha de pago de un cheque, que sea anterior a esta fecha no podr\225 ser procesada. Si este par\225metro no est\225 definido se asumir\225 que no existe l\237mite de fecha.">
+<OPTIONSELECTED>
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="3878" ColName="tipo_fecha" PrevColName="" Pos="11" idDatatype="1" DatatypeParams="(1)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="0" Comments="Este par\225metro indicara lo siguiente:  1 =\g La fecha de reversi\243n ser\225 la misma fecha de pago del cheque. Fecha que debe indicarse en el sistema al momento de procesar la informaci\243n proveniente del banco.  2 =\g La fecha de reversi\243n estar\225 determinada por la fecha actual.  3 =\g La fecha de reversi\243n estar\225 libre para ser colocada por el usuario. Controlando que la misma no sea mayor a la fecha actual o sea anterior a la fecha de pago.  0 =\g Si este par\225metro contiene este valor no se podr\225 procesar el cheque. Abortar la operaci\243n de reversi\243n.  ">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
 </COLUMNS>
 <INDICES>
 <INDEX ID="3758" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
