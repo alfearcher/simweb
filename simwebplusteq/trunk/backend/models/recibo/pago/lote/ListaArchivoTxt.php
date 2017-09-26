@@ -186,7 +186,7 @@
 		 */
 		public function crearListaArchivo($arregloArchivo)
 		{
-die(var_dump(scandir('/var/www/html/simwebplusteq/backend/models/recibo/pago/home/')));
+die(var_dump(scandir("/var/www/html/simwebplusteq/backend/models/recibo/pago/home")));
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
 
