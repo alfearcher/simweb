@@ -928,7 +928,7 @@
 
             $recibo = isset($getData['recibo']) ? (int)$getData['recibo'] : 0;
 
-            if ( $recibo == (int)$getData['recibo'] ) {
+            if ( $recibo == (int)$getData['recibo'] && $recibo > 0 ) {
 
                 self::actionAnularSession(['reciboRafaga']);
                 // $reciboRafaga = New ReciboRafagaController($recibo);
@@ -938,15 +938,20 @@
                 //                                             'mensajes' => $mensajes,
                 //                             ]);
 
+                if ( (int)$getData['id_contribuyente'] > 0 ) {
+                    // Controlador que gestiona la generacion del pdf.
+                    $depositoPdf = New DepositoController($recibo, (int)$getData['id_contribuyente'], (int)$getData['nro']);
+                    return $depositoPdf->actionGenerarReciboPdf();
 
-               // Controlador que gestiona la generacion del pdf.
-                $depositoPdf = New DepositoController($recibo, (int)$getData['id_contribuyente'], (int)$getData['nro']);
-                return $depositoPdf->actionGenerarReciboPdf();
-
-                return $this->render('/recibo/pago/error/error',[
-                                        'htmlMensaje' => $htmlMensaje,
-                ]);
-
+                } else {
+                    $mensajes = [Yii::t('backend','El Id del contribuyente no esta definido para el recibo ') . $recibo];
+                    $htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
+                                                             'mensajes' => $mensajes,
+                                             ]);
+                    return $this->render('/recibo/pago/error/error',[
+                                                    'htmlMensaje' => $htmlMensaje,
+                            ]);
+                }
             }
         }
 
