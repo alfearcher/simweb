@@ -17,6 +17,7 @@
 	// ];
 
 	//Linux
+	$rutaBase = '';
 	return [
 		12 => $rutaBase . '/home/bod',
 		14 => $rutaBase . '/home/bcocaroni',
