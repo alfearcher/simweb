@@ -1,63 +1,63 @@
 <?php
 /**
- *	@copyright © by ASIS CONSULTORES 2012 - 2016
+ *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
  *
- *	> This library is free software; you can redistribute it and/or modify it under
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
- *	> any later version.
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
+ *  > any later version.
  *  >
- *	> This library is distributed in the hope that it will be usefull,
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
- *	> for more details.
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
+ *  > for more details.
  *  >
- *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
+ *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
  /**
- *	@file PagoReciboIndividualController.php
+ *  @file PagoReciboIndividualController.php
  *
- *	@author Jose Rafael Perez Teran
+ *  @author Jose Rafael Perez Teran
  *
- *	@date 12-02-2017
+ *  @date 12-02-2017
  *
  *  @class PagoReciboIndividualController
- *	@brief Clase
+ *  @brief Clase
  *
  *
- *	@property
+ *  @property
  *
  *
- *	@method
+ *  @method
  *
  *
- *	@inherits
+ *  @inherits
  *
  */
 
 
- 	namespace backend\controllers\recibo\pago\individual;
+    namespace backend\controllers\recibo\pago\individual;
 
 
- 	use Yii;
- 	use yii\helpers\ArrayHelper;
-	use yii\filters\AccessControl;
-	use yii\web\Controller;
-	use yii\filters\VerbFilter;
-	use yii\widgets\ActiveForm;
-	use yii\web\Response;
-	use yii\helpers\Url;
-	use yii\web\NotFoundHttpException;
-	use common\conexion\ConexionController;
-	// use backend\controllers\mensaje\MensajeController;
-	use common\mensaje\MensajeController;
-	use common\models\session\Session;
+    use Yii;
+    use yii\helpers\ArrayHelper;
+    use yii\filters\AccessControl;
+    use yii\web\Controller;
+    use yii\filters\VerbFilter;
+    use yii\widgets\ActiveForm;
+    use yii\web\Response;
+    use yii\helpers\Url;
+    use yii\web\NotFoundHttpException;
+    use common\conexion\ConexionController;
+    // use backend\controllers\mensaje\MensajeController;
+    use common\mensaje\MensajeController;
+    use common\models\session\Session;
     use backend\models\recibo\pago\individual\BusquedaReciboForm;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use backend\models\recibo\deposito\DepositoForm;
@@ -84,37 +84,37 @@
     use backend\models\utilidad\banco\BancoCuentaReceptora;
 
 
-	session_start();		// Iniciando session
+    session_start();        // Iniciando session
 
-	/**
-	 *
-	 */
-	class PagoReciboIndividualController extends Controller
-	{
-		public $layout = 'layout-main';				//	Layout principal del formulario
+    /**
+     *
+     */
+    class PagoReciboIndividualController extends Controller
+    {
+        public $layout = 'layout-main';             //  Layout principal del formulario
 
-		private $_conn;
-		private $_conexion;
-		private $_transaccion;
+        private $_conn;
+        private $_conexion;
+        private $_transaccion;
 
-		const SCENARIO_EFECTIVO = 'efectivo';
-		const SCENARIO_CHEQUE = 'cheque';
-		const SCENARIO_DEPOSITO = 'deposito';
-		const SCENARIO_TARJETA = 'tarjeta';
-
-
+        const SCENARIO_EFECTIVO = 'efectivo';
+        const SCENARIO_CHEQUE = 'cheque';
+        const SCENARIO_DEPOSITO = 'deposito';
+        const SCENARIO_TARJETA = 'tarjeta';
 
 
 
-		/**
-		 * Metodo que configura las variables que permitiran la interaccion
-		 * con la base de datos.
-		 */
-		private function setConexion()
-		{
-			$this->_conexion = New ConexionController();
-			$this->_conn = $this->_conexion->initConectar('db');
-		}
+
+
+        /**
+         * Metodo que configura las variables que permitiran la interaccion
+         * con la base de datos.
+         */
+        private function setConexion()
+        {
+            $this->_conexion = New ConexionController();
+            $this->_conn = $this->_conexion->initConectar('db');
+        }
 
 
 
@@ -124,10 +124,10 @@
          * @return retorna una vista donde se debe colocar el numero de recibo
          * para consultarlo.
          */
-		public function actionIndex()
-		{
+        public function actionIndex()
+        {
             $this->redirect(['mostrar-form-consulta']);
-		}
+        }
 
 
 
@@ -143,7 +143,7 @@
          */
         public function actionMostrarFormConsulta()
         {
-        	self::actionAnularSession(['datosRecibo', 'recibo', 'postEnviado']);
+            self::actionAnularSession(['datosRecibo', 'recibo', 'postEnviado']);
             $model = New BusquedaReciboForm();
             if ( $model->usuarioAutorizado(Yii::$app->identidad->getUsuario()) ) {
 
@@ -164,32 +164,32 @@
                 // url para registrar las formas de pagos, para el boton del menu desplegable.
                 $urlFormaPagos = '#';
 
-          		$formName = $model->formName();
+                $formName = $model->formName();
 
                 if ( $model->load($postData) && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-				}
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                }
 
-				if ( isset($postData['btn-back']) ) {
-					if ( $postData['btn-back'] == 1 ) {
+                if ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 1 ) {
                         $varSession = self::actionGetListaSessions();
                         self::actionAnularSession($varSession);
-						$this->redirect(['index']);
-					}
-				}
+                        $this->redirect(['index']);
+                    }
+                }
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				}
+                if ( isset($postData['btn-quit']) ) {
+                    if ( $postData['btn-quit'] == 1 ) {
+                        $this->redirect(['quit']);
+                    }
+                }
 
-				if ( isset($postData['btn-forma-pago']) ) {
-					if ( $postData['btn-forma-pago'] == 2 ) {
-						$this->redirect(['registrar-formas-pago']);
-					}
-				}
+                if ( isset($postData['btn-forma-pago']) ) {
+                    if ( $postData['btn-forma-pago'] == 2 ) {
+                        $this->redirect(['registrar-formas-pago']);
+                    }
+                }
 
                 if ( isset($postData['btn-rafaga-print']) ) {
                     if ( $postData['btn-rafaga-print'] == 2 ) {
@@ -198,34 +198,34 @@
                     }
                 }
 
-				if ( $model->load($postData) ) {
+                if ( $model->load($postData) ) {
 
-					if ( $model->validate() ) {
+                    if ( $model->validate() ) {
 
                         $estatusRecibo = 0;
                         $_SESSION['reciboRafaga'] = $model->recibo;
 
-						// Se verifica que el recibo cumpla las reglas de negocio establecidas.
-						$pagoReciboSearch = New PagoReciboIndividualSearch($model->recibo);
-						$mensajes = $pagoReciboSearch->validarEvento();
-						if ( count($mensajes) == 0 ) {
-							$urlFormaPagos = Url::to(['registrar-formas-pago']);
-							$bloquearFormaPago = false;
-							$htmlMensaje = null;
-							$_SESSION['recibo'] = $model->recibo;
+                        // Se verifica que el recibo cumpla las reglas de negocio establecidas.
+                        $pagoReciboSearch = New PagoReciboIndividualSearch($model->recibo);
+                        $mensajes = $pagoReciboSearch->validarEvento();
+                        if ( count($mensajes) == 0 ) {
+                            $urlFormaPagos = Url::to(['registrar-formas-pago']);
+                            $bloquearFormaPago = false;
+                            $htmlMensaje = null;
+                            $_SESSION['recibo'] = $model->recibo;
 
-						} else {
+                        } else {
                             $modelRecibo = New BusquedaReciboForm();
                             $modelRecibo->recibo = $model->recibo;
                             $modelRecibo->id_contribuyente = 0;
                             $modelRecibo->nro_control = 0;
-							$htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
-																	'mensajes' => $mensajes,
-											]);
-						}
+                            $htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
+                                                                    'mensajes' => $mensajes,
+                                            ]);
+                        }
 
-						// Arreglo de los provider del recibo y el de las planillas.
-						$dataProviders = $pagoReciboSearch->getDataProviders();
+                        // Arreglo de los provider del recibo y el de las planillas.
+                        $dataProviders = $pagoReciboSearch->getDataProviders();
 
                         if ( count($dataProviders[0]->getModels()) > 0 ) {
                             // $dataProviders[0]->getModels(), es el modelo de la entidad "depositos".
@@ -252,45 +252,45 @@
                             self::actionAnularSession(['reciboRafaga']);
                         }
 
-						$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
+                        $totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
 
-						$result = self::actionInicializarTemporal($model->recibo);
-						$htmlRecibo = $this->renderPartial('/recibo/pago/individual/_recibo-encontrado',[
-																'dataProviderRecibo' => $dataProviders[0],
-																'dataProviderReciboPlanilla' => $dataProviders[1],
-																'totales' => $totales,
-																'htmlMensaje' => $htmlMensaje,
-																'urlFormaPagos' => $urlFormaPagos,
-																'bloquearFormaPago' => $bloquearFormaPago,
+                        $result = self::actionInicializarTemporal($model->recibo);
+                        $htmlRecibo = $this->renderPartial('/recibo/pago/individual/_recibo-encontrado',[
+                                                                'dataProviderRecibo' => $dataProviders[0],
+                                                                'dataProviderReciboPlanilla' => $dataProviders[1],
+                                                                'totales' => $totales,
+                                                                'htmlMensaje' => $htmlMensaje,
+                                                                'urlFormaPagos' => $urlFormaPagos,
+                                                                'bloquearFormaPago' => $bloquearFormaPago,
                                                                 'desactivarBotonRafaga' => $desactivarBotonRafaga,
                                                                 'modelRecibo' => $modelRecibo,
 
-											]);
+                                            ]);
 
-						$caption = Yii::t('backend', 'Pago de Recibo');
-						$subCaption = Yii::t('backend', 'Datos del Recibo');
-						return $this->render('/recibo/pago/individual/recibo', [
-													'model' => $model,
-													'htmlRecibo' => $htmlRecibo,
-													'caption' => $caption,
-													'subCaption' => $subCaption,
-													'bloquearFormaPago' => $bloquearFormaPago,
+                        $caption = Yii::t('backend', 'Pago de Recibo');
+                        $subCaption = Yii::t('backend', 'Datos del Recibo');
+                        return $this->render('/recibo/pago/individual/recibo', [
+                                                    'model' => $model,
+                                                    'htmlRecibo' => $htmlRecibo,
+                                                    'caption' => $caption,
+                                                    'subCaption' => $subCaption,
+                                                    'bloquearFormaPago' => $bloquearFormaPago,
                                                     'desactivarBotonRafaga' => $desactivarBotonRafaga,
-								]);
-					}
-				}
+                                ]);
+                    }
+                }
 
-				$caption = Yii::t('backend', 'Pago de Recibo');
-				$subCaption = Yii::t('backend', 'Datos del Recibo');
+                $caption = Yii::t('backend', 'Pago de Recibo');
+                $subCaption = Yii::t('backend', 'Datos del Recibo');
 
-				$result = self::actionInicializarTemporal();
+                $result = self::actionInicializarTemporal();
 
-				// Mostrar formulario de busqueda del recibo.
-				return $this->render('/recibo/pago/individual/_find', [
-											'model'=> $model,
-											'caption' => $caption,
-											'subCaption' => $subCaption,
-						]);
+                // Mostrar formulario de busqueda del recibo.
+                return $this->render('/recibo/pago/individual/_find', [
+                                            'model'=> $model,
+                                            'caption' => $caption,
+                                            'subCaption' => $subCaption,
+                        ]);
 
             } else {
                 // Usuario no autorizado.
@@ -308,103 +308,103 @@
          */
         public function actionRegistrarFormasPago()
         {
-        	if ( isset($_SESSION['recibo']) ) {
-        		$recibo = $_SESSION['recibo'];
+            if ( isset($_SESSION['recibo']) ) {
+                $recibo = $_SESSION['recibo'];
 
-        		$request = Yii::$app->request;
-        		$postData = $request->post();
-        		$postGet = $request->get();
-        		$htmlFormaPago = null;
+                $request = Yii::$app->request;
+                $postData = $request->post();
+                $postGet = $request->get();
+                $htmlFormaPago = null;
 
-        		if ( isset($postData['btn-back']) ) {
-        			if ( $postData['btn-back'] == 1 ) {
-        				$this->redirect(['mostrar-form-consulta']);
-        			}
-        		}
+                if ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 1 ) {
+                        $this->redirect(['mostrar-form-consulta']);
+                    }
+                }
 
-        		if ( isset($postData['btn-pre-referencia']) ) {
-        			if ( $postData['btn-pre-referencia'] == 2 ) {
-        				$this->redirect(['seleccionar-cuenta-recaudadora']);
-        			}
-        		}
+                if ( isset($postData['btn-pre-referencia']) ) {
+                    if ( $postData['btn-pre-referencia'] == 2 ) {
+                        $this->redirect(['seleccionar-cuenta-recaudadora']);
+                    }
+                }
 
-        		// Se define el formulario a utilizar
-        		if ( isset($postData['btn-cheque']) ) {
-        			if ( $postData['btn-cheque'] == 1 ) {
-        				$forma = (int)$postData['btn-cheque'];
-        				self::actionAnularSession(['guardo']);
-        			}
-        		} elseif ( isset($postData['btn-deposito']) ) {
-        			if ( $postData['btn-deposito'] == 2 ) {
-        				$forma = (int)$postData['btn-deposito'];
-        				self::actionAnularSession(['guardo']);
-        			}
-        		} elseif ( isset($postData['btn-efectivo']) ) {
-        			if ( $postData['btn-efectivo'] == 3 ) {
-        				$forma = (int)$postData['btn-efectivo'];
-        				self::actionAnularSession(['guardo']);
-        			}
-        		} elseif ( isset($postData['btn-tarjetas']) ) {
-        			if ( $postData['btn-tarjetas'] == 4 ) {
-        				$forma = (int)$postData['btn-tarjetas'];
-        				self::actionAnularSession(['guardo']);
-        			}
-        		} else {
-        			$forma = 0;
-        		}
+                // Se define el formulario a utilizar
+                if ( isset($postData['btn-cheque']) ) {
+                    if ( $postData['btn-cheque'] == 1 ) {
+                        $forma = (int)$postData['btn-cheque'];
+                        self::actionAnularSession(['guardo']);
+                    }
+                } elseif ( isset($postData['btn-deposito']) ) {
+                    if ( $postData['btn-deposito'] == 2 ) {
+                        $forma = (int)$postData['btn-deposito'];
+                        self::actionAnularSession(['guardo']);
+                    }
+                } elseif ( isset($postData['btn-efectivo']) ) {
+                    if ( $postData['btn-efectivo'] == 3 ) {
+                        $forma = (int)$postData['btn-efectivo'];
+                        self::actionAnularSession(['guardo']);
+                    }
+                } elseif ( isset($postData['btn-tarjetas']) ) {
+                    if ( $postData['btn-tarjetas'] == 4 ) {
+                        $forma = (int)$postData['btn-tarjetas'];
+                        self::actionAnularSession(['guardo']);
+                    }
+                } else {
+                    $forma = 0;
+                }
 
-        		$model = New DepositoDetalleUsuarioForm();
-        		$formName = $model->formName();
+                $model = New DepositoDetalleUsuarioForm();
+                $formName = $model->formName();
 
-        		if ( isset($postData['btn-add-forma']) ) {
-        			$forma = $postData['btn-add-forma'];
+                if ( isset($postData['btn-add-forma']) ) {
+                    $forma = $postData['btn-add-forma'];
 
-        			// Se define el scenario para la validacion.
-        			self::defineScenario($forma, $model);
+                    // Se define el scenario para la validacion.
+                    self::defineScenario($forma, $model);
 
-        			if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-						Yii::$app->response->format = Response::FORMAT_JSON;
-						return ActiveForm::validate($model);
-					}
+                    if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+                        Yii::$app->response->format = Response::FORMAT_JSON;
+                        return ActiveForm::validate($model);
+                    }
 
-					if ( $model->validate() ) {
-						// Se guarda
-						if ( !isset($_SESSION['guardo']) ) {
-							if ( (int)$forma !== 3 ) {
+                    if ( $model->validate() ) {
+                        // Se guarda
+                        if ( !isset($_SESSION['guardo']) ) {
+                            if ( (int)$forma !== 3 ) {
 
-								$result = self::actionAgregarFormaPago($postData);
-								if ( $result ) {
-									return self::actionArmarFormulario(0, $model, ['insert']);
-								} else {
-									return self::actionArmarFormulario($forma, $model, ['ERROR']);
-								}
-							} else {
-								if ( self::actionExisteFormaPago($recibo, 3) ) {
-									$result = self::actionActualizarMontoEfectivo($postData);
-								} else {
-									$result = self::actionAgregarFormaPago($postData);
-								}
-								if ( $result ) {
-									return self::actionArmarFormulario(0, $model, []);
-								} else {
-									return self::actionArmarFormulario($forma, $model, ['ERROR']);
-								}
-							}
-						} else {
-							return self::actionArmarFormulario(0, $model, []);
-						}
+                                $result = self::actionAgregarFormaPago($postData);
+                                if ( $result ) {
+                                    return self::actionArmarFormulario(0, $model, ['insert']);
+                                } else {
+                                    return self::actionArmarFormulario($forma, $model, ['ERROR']);
+                                }
+                            } else {
+                                if ( self::actionExisteFormaPago($recibo, 3) ) {
+                                    $result = self::actionActualizarMontoEfectivo($postData);
+                                } else {
+                                    $result = self::actionAgregarFormaPago($postData);
+                                }
+                                if ( $result ) {
+                                    return self::actionArmarFormulario(0, $model, []);
+                                } else {
+                                    return self::actionArmarFormulario($forma, $model, ['ERROR']);
+                                }
+                            }
+                        } else {
+                            return self::actionArmarFormulario(0, $model, []);
+                        }
 
-					} else {
-						return self::actionArmarFormulario($forma, $model, [], $postData);
-					}
+                    } else {
+                        return self::actionArmarFormulario($forma, $model, [], $postData);
+                    }
 
-        		} else {
-        			return self::actionArmarFormulario($forma, $model, []);
-        		}
-        	} else {
-        		// Recibo no valido
+                } else {
+                    return self::actionArmarFormulario($forma, $model, []);
+                }
+            } else {
+                // Recibo no valido
 
-        	}
+            }
         }
 
 
@@ -417,65 +417,65 @@
          */
         public function actionSeleccionarCuentaRecaudadora()
         {
-        	self::actionAnularSession(['datosBanco', 'postEnviado']);
-        	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
+            self::actionAnularSession(['datosBanco', 'postEnviado']);
+            $recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
 
-        	if ( $recibo > 0 ) {
-        		$request = Yii::$app->request;
-        		$postData = $request->post();
+            if ( $recibo > 0 ) {
+                $request = Yii::$app->request;
+                $postData = $request->post();
 
-        		if ( isset($postData['btn-back']) ) {
-        			if ( $postData['btn-back'] == 2 ) {
-        				$this->redirect(['registrar-formas-pago']);
-        			}
-        		}
+                if ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 2 ) {
+                        $this->redirect(['registrar-formas-pago']);
+                    }
+                }
 
-        		if ( isset($postData['btn-quit']) ) {
-        			if ( $postData['btn-quit'] == 2 ) {
-        				$this->redirect(['quit']);
-        			}
-        		}
+                if ( isset($postData['btn-quit']) ) {
+                    if ( $postData['btn-quit'] == 2 ) {
+                        $this->redirect(['quit']);
+                    }
+                }
 
-        		$model = New PreReferenciaPlanillaForm();
-        		if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($model);
-				}
+                $model = New PreReferenciaPlanillaForm();
+                if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($model);
+                }
 
-				$searchBanco = New BancoSearch();
+                $searchBanco = New BancoSearch();
 
-        		if ( $model->load($postData) ) {
+                if ( $model->load($postData) ) {
 
-        			if ( $model->validate() ) {
-        				// Se busca datos del banco con el post recibido.
-        				$banco = $searchBanco->findBanco($model->id_banco);
-        				$tipoCuenta = $postData['tipo-cuenta'];
-        				$datosBanco = $banco->toArray();
-        				$datosBanco['cuenta_recaudadora'] = $model->cuenta_recaudadora;
-        				$datosBanco['tipo_cuenta'] = $postData['tipo-cuenta'];
+                    if ( $model->validate() ) {
+                        // Se busca datos del banco con el post recibido.
+                        $banco = $searchBanco->findBanco($model->id_banco);
+                        $tipoCuenta = $postData['tipo-cuenta'];
+                        $datosBanco = $banco->toArray();
+                        $datosBanco['cuenta_recaudadora'] = $model->cuenta_recaudadora;
+                        $datosBanco['tipo_cuenta'] = $postData['tipo-cuenta'];
 
-        				$_SESSION['datosBanco'] = $datosBanco;
+                        $_SESSION['datosBanco'] = $datosBanco;
 
-        				self::actionSetearBancoCuentaReceptoraEnDetallePago($model->id_banco, $model->cuenta_recaudadora);
-        				$modelSerial = New SerialReferenciaForm();
-        				self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
-        				$this->redirect(['pre-referencia']);
-        			}
-        		}
+                        self::actionSetearBancoCuentaReceptoraEnDetallePago($model->id_banco, $model->cuenta_recaudadora);
+                        $modelSerial = New SerialReferenciaForm();
+                        self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
+                        $this->redirect(['pre-referencia']);
+                    }
+                }
 
-        		// Listado de bancos relacionados a cuentas recaudadoras.
-        		$listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
+                // Listado de bancos relacionados a cuentas recaudadoras.
+                $listaBanco = $searchBanco->getListaBancoRelacionadaCuentaReceptora();
 
-        		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
-        		$subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
-        		return $this->render('/recibo/pago/individual/seleccionar-cuenta-recaudadora-form',[
-        										'model' => $model,
-        										'caption' => $caption,
-        										'subCaption' => $subCaption,
-        										'listaBanco' => $listaBanco,
-        			]);
-        	}
+                $caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
+                $subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
+                return $this->render('/recibo/pago/individual/seleccionar-cuenta-recaudadora-form',[
+                                                'model' => $model,
+                                                'caption' => $caption,
+                                                'subCaption' => $subCaption,
+                                                'listaBanco' => $listaBanco,
+                    ]);
+            }
         }
 
 
@@ -487,164 +487,164 @@
         /***/
         public function actionPreReferencia()
         {
-        	$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
-        	if ( $recibo > 0 ) {
+            $recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+            if ( $recibo > 0 ) {
 
-        		$usuario = Yii::$app->identidad->getUsuario();
-        		$request = Yii::$app->request;
-	        	$postGet = $request->get();
-	        	$postData = $request->post();
+                $usuario = Yii::$app->identidad->getUsuario();
+                $request = Yii::$app->request;
+                $postGet = $request->get();
+                $postData = $request->post();
 
-	        	$htmlSerialForm = null;		// Formulario para cargar los seriales manuales.
+                $htmlSerialForm = null;     // Formulario para cargar los seriales manuales.
 
-	        	// Se determina la cantidad de vauches registrados en las formas de pago.
-				$cantidadDeposito = (int)self::actionCantidadDepositoRegistrado($recibo);
+                // Se determina la cantidad de vauches registrados en las formas de pago.
+                $cantidadDeposito = (int)self::actionCantidadDepositoRegistrado($recibo);
 
-				$modelSerial = New SerialReferenciaForm();
-				$model = New PreReferenciaPlanillaForm();
+                $modelSerial = New SerialReferenciaForm();
+                $model = New PreReferenciaPlanillaForm();
 
-        		if ( isset($postData['btn-back']) ) {
-	        		if ( $postData['btn-back'] == 2 ) {
-	        			self::actionAnularSession(['fecha_pago']);
-	        			$this->redirect(['seleccionar-cuenta-recaudadora']);
+                if ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 2 ) {
+                        self::actionAnularSession(['fecha_pago']);
+                        $this->redirect(['seleccionar-cuenta-recaudadora']);
 
-	        		} elseif ( $postData['btn-back'] == 9 ) {
+                    } elseif ( $postData['btn-back'] == 9 ) {
 
-	        		}
-	        	} elseif ( isset($postData['btn-find-referencia']) ) {
-	        		if ( $postData['btn-find-referencia'] == 3 ) {
+                    }
+                } elseif ( isset($postData['btn-find-referencia']) ) {
+                    if ( $postData['btn-find-referencia'] == 3 ) {
 
-	        			$formName = $model->formName();
-	        			if ( !isset($_SESSION['fecha_pago']) ) {
-	        				$_SESSION['fecha_pago'] = $model->fecha_pago;
-	        			} else {
-	        				if ( $_SESSION['fecha_pago'] !== date('Y-m-d', strtotime($postData[$formName]['fecha_pago'])) ) {
-	        					$result = self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
-	        				}
-	        			}
+                        $formName = $model->formName();
+                        if ( !isset($_SESSION['fecha_pago']) ) {
+                            $_SESSION['fecha_pago'] = $model->fecha_pago;
+                        } else {
+                            if ( $_SESSION['fecha_pago'] !== date('Y-m-d', strtotime($postData[$formName]['fecha_pago'])) ) {
+                                $result = self::actionInicializarEntidadTemporal($recibo, $usuario, $modelSerial);
+                            }
+                        }
 
-	        			$model->load($postData);
-	        			$model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
-	        			$_SESSION['fecha_pago'] = $model->fecha_pago;
+                        $model->load($postData);
+                        $model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
+                        $_SESSION['fecha_pago'] = $model->fecha_pago;
 
-	        			// Se busca las referencias que se encuentran en el registro-txt de las planillas
-	        			// pagadas en banco. Pero que no esten relacionada a ninguna pre-referencia anterior
-	        			// Se tomaran aquellos registros asociados a la fecha de pago.
-	        			$cuentaRecaudadora = $postData['cuenta_recaudadora'];
-	        			$htmlSerialForm = self::actionViewHtmlPlanillaSinReferencia($model->fecha_pago, $cuentaRecaudadora);
+                        // Se busca las referencias que se encuentran en el registro-txt de las planillas
+                        // pagadas en banco. Pero que no esten relacionada a ninguna pre-referencia anterior
+                        // Se tomaran aquellos registros asociados a la fecha de pago.
+                        $cuentaRecaudadora = $postData['cuenta_recaudadora'];
+                        $htmlSerialForm = self::actionViewHtmlPlanillaSinReferencia($model->fecha_pago, $cuentaRecaudadora);
 
-	        		}
-	        	} elseif ( isset($postData['btn-add-planilla']) ) {
-	        		if ( $postData['btn-add-planilla'] == 4 ) {
+                    }
+                } elseif ( isset($postData['btn-add-planilla']) ) {
+                    if ( $postData['btn-add-planilla'] == 4 ) {
 
-	        			$cuentaRecaudadora = $postData['cuenta_recaudadora'];
-	        			$chkIdRegistro = $postData['chkIdRegistro'];
-	        			$fechaPago = $postData['fecha_pago'];
+                        $cuentaRecaudadora = $postData['cuenta_recaudadora'];
+                        $chkIdRegistro = $postData['chkIdRegistro'];
+                        $fechaPago = $postData['fecha_pago'];
 
-	        			$model->fecha_pago = date('Y-m-d', strtotime($postData['fecha_pago']));
-	        			self::actionAgregarPlanillaComoSerial($chkIdRegistro, $fechaPago, $cuentaRecaudadora);
-	        		}
-	        	} elseif ( isset($postData['btn-add-deposito']) ) {
-	        		if ( $postData['btn-add-deposito'] == 6 ) {
+                        $model->fecha_pago = date('Y-m-d', strtotime($postData['fecha_pago']));
+                        self::actionAgregarPlanillaComoSerial($chkIdRegistro, $fechaPago, $cuentaRecaudadora);
+                    }
+                } elseif ( isset($postData['btn-add-deposito']) ) {
+                    if ( $postData['btn-add-deposito'] == 6 ) {
 
-	        			$cuentaRecaudadora = $postData['cuenta_recaudadora'];
-	        			$formName = $model->formName();
-	        			$model->load($postData);
-	        			$model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
+                        $cuentaRecaudadora = $postData['cuenta_recaudadora'];
+                        $formName = $model->formName();
+                        $model->load($postData);
+                        $model->fecha_pago = date('Y-m-d', strtotime($postData[$formName]['fecha_pago']));
 
-	        			self::actionAgregarDepositoComoSerial($recibo, $usuario, $model->fecha_pago, $cuentaRecaudadora);
-	        		}
-	        	} elseif ( isset($postData['btn-generar-pre-referencia']) ) {
-	        		if ( $postData['btn-generar-pre-referencia'] == 7 ) {
+                        self::actionAgregarDepositoComoSerial($recibo, $usuario, $model->fecha_pago, $cuentaRecaudadora);
+                    }
+                } elseif ( isset($postData['btn-generar-pre-referencia']) ) {
+                    if ( $postData['btn-generar-pre-referencia'] == 7 ) {
 
-	        			if ( self::actionVerificarReferenciaBancaria($postData['cuenta_recaudadora']) ) {
-	        				$_SESSION['postEnviado'] = $postData;
-	        				$this->redirect(['armar-resumen-pago']);
-	        			} else {
-	        				// Vista que indique que la referencia bancaria falló
-	        				$errorMensaje = Yii::t('backend', 'Las pre-referencias bancarias no se realizarón correctamente');
-	        				return $this->render('/recibo/pago/individual/error-pago', [
-	        													'errorMensaje' => $errorMensaje,
-	        						]);
-	        			}
-	        		}
+                        if ( self::actionVerificarReferenciaBancaria($postData['cuenta_recaudadora']) ) {
+                            $_SESSION['postEnviado'] = $postData;
+                            $this->redirect(['armar-resumen-pago']);
+                        } else {
+                            // Vista que indique que la referencia bancaria falló
+                            $errorMensaje = Yii::t('backend', 'Las pre-referencias bancarias no se realizarón correctamente');
+                            return $this->render('/recibo/pago/individual/error-pago', [
+                                                                'errorMensaje' => $errorMensaje,
+                                    ]);
+                        }
+                    }
 
-	        	} elseif ( isset($postData['btn-quit']) ) {
-	        		if ( $postData['btn-quit'] == 9 ) {
-	        			$this->redirect(['quit']);
-	        		}
-	        	}
+                } elseif ( isset($postData['btn-quit']) ) {
+                    if ( $postData['btn-quit'] == 9 ) {
+                        $this->redirect(['quit']);
+                    }
+                }
 
 
 
-	        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-	        	$dataProviders = $pagoReciboSearch->getDataProviders();
+                $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+                $dataProviders = $pagoReciboSearch->getDataProviders();
 
-	        	// Modelo del dataProvider relacionado a las planillas existentes en el recibo.
-	        	// DepositoPLanilla
-	        	$models = $dataProviders[1]->getModels();
-	        	$totalPlanilla = self::actionTotalizarMontoDocumento($models, 'monto');
+                // Modelo del dataProvider relacionado a las planillas existentes en el recibo.
+                // DepositoPLanilla
+                $models = $dataProviders[1]->getModels();
+                $totalPlanilla = self::actionTotalizarMontoDocumento($models, 'monto');
 
-	        	$datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
-	        	$datosRecibo = isset($_SESSION['datosRecibo']) ? $_SESSION['datosRecibo'] : [];
+                $datosBanco = isset($_SESSION['datosBanco']) ? $_SESSION['datosBanco'] : [];
+                $datosRecibo = isset($_SESSION['datosRecibo']) ? $_SESSION['datosRecibo'] : [];
 
-	        	if ( !isset($_SESSION['fecha_pago']) ) {
-        			$model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
-        		} else {
-        			$model->fecha_pago = $_SESSION['fecha_pago'];
-        		}
+                if ( !isset($_SESSION['fecha_pago']) ) {
+                    $model->fecha_pago = ( $datosRecibo[0]['estatus'] == 1 ? $datosRecibo[0]['fecha'] : date('d-m-Y') );
+                } else {
+                    $model->fecha_pago = $_SESSION['fecha_pago'];
+                }
 
-        		$model->id_banco = $datosBanco['id_banco'];
-        		$model->cuenta_recaudadora = $datosBanco['cuenta_recaudadora'];
+                $model->id_banco = $datosBanco['id_banco'];
+                $model->cuenta_recaudadora = $datosBanco['cuenta_recaudadora'];
 
-        		if ( $modelSerial->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($modelSerial);
-				}
+                if ( $modelSerial->load($postData)  && Yii::$app->request->isAjax ) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($modelSerial);
+                }
 
-				if ( isset($postData['btn-add-serial']) ) {
-					if ( $postData['btn-add-serial'] == 5 ) {
-						if ( $modelSerial->load($postData) ) {
-							$modelSerial->fecha_edocuenta = date('Y-m-d', strtotime($modelSerial->fecha_edocuenta));
-							$modelSerial->monto_edocuenta = str_replace('.', '', $modelSerial->monto_edocuenta);
-							$modelSerial->monto_edocuenta = str_replace(',', '.', $modelSerial->monto_edocuenta);
-							if ( $modelSerial->validate() ) {
-								// guardar serial
-								$modelSerial->observacion = self::actionSetObservacionSerialManual($datosBanco['cuenta_recaudadora']);
-								self::actionGuardarSerialTemporal($modelSerial);
-							}
-						}
-					}
-				}
+                if ( isset($postData['btn-add-serial']) ) {
+                    if ( $postData['btn-add-serial'] == 5 ) {
+                        if ( $modelSerial->load($postData) ) {
+                            $modelSerial->fecha_edocuenta = date('Y-m-d', strtotime($modelSerial->fecha_edocuenta));
+                            $modelSerial->monto_edocuenta = str_replace('.', '', $modelSerial->monto_edocuenta);
+                            $modelSerial->monto_edocuenta = str_replace(',', '.', $modelSerial->monto_edocuenta);
+                            if ( $modelSerial->validate() ) {
+                                // guardar serial
+                                $modelSerial->observacion = self::actionSetObservacionSerialManual($datosBanco['cuenta_recaudadora']);
+                                self::actionGuardarSerialTemporal($modelSerial);
+                            }
+                        }
+                    }
+                }
 
-				if ( $datosBanco['tipo_cuenta'] == 'NO ES CUENTA RECAUDADORA' ) {
-					$modelSerial->recibo = $recibo;
-					$modelSerial->usuario = Yii::$app->identidad->getUsuario();
-	        		$htmlSerialForm = $this->renderPartial('/recibo/pago/individual/agregar-serial-form',[
-	        																		'modelSerial' => $modelSerial,
-	        							]);
-	        	}
+                if ( $datosBanco['tipo_cuenta'] == 'NO ES CUENTA RECAUDADORA' ) {
+                    $modelSerial->recibo = $recibo;
+                    $modelSerial->usuario = Yii::$app->identidad->getUsuario();
+                    $htmlSerialForm = $this->renderPartial('/recibo/pago/individual/agregar-serial-form',[
+                                                                                    'modelSerial' => $modelSerial,
+                                        ]);
+                }
 
-	        	// Vista con los seriales-referencias agregados.
-	        	$htmlSerialAgregado = self::actionViewHtmlSerialAgregado();
+                // Vista con los seriales-referencias agregados.
+                $htmlSerialAgregado = self::actionViewHtmlSerialAgregado();
 
-        		$url = Url::to(['pre-referencia']);
-        		$caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
-        		$subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
-        		return $this->render('/recibo/pago/individual/_pre-referencia',[
-			        										'model' => $model,
-			        										'caption' => $caption,
-			        										'subCaption' => $subCaption,
-			        										'url' => $url,
-			        										'datosRecibo' => $datosRecibo,
-			        										'datosBanco' => $datosBanco,
-			        										'dataProviders' => $dataProviders,
-			        										'htmlSerialForm' => $htmlSerialForm,
-			        										'htmlSerialAgregado' => $htmlSerialAgregado,
-			        										'totalPlanilla' => $totalPlanilla,
-			        										'cantidadDeposito' => $cantidadDeposito,
-        				]);
-        	}
+                $url = Url::to(['pre-referencia']);
+                $caption = Yii::t('backend', 'Registro de Pre-Referencias Bancarias') . '. ' . Yii::t('backend', 'Recibo Nro. ') . $recibo;
+                $subCaption = Yii::t('backend', 'Elabore la referencia bancaria');
+                return $this->render('/recibo/pago/individual/_pre-referencia',[
+                                                            'model' => $model,
+                                                            'caption' => $caption,
+                                                            'subCaption' => $subCaption,
+                                                            'url' => $url,
+                                                            'datosRecibo' => $datosRecibo,
+                                                            'datosBanco' => $datosBanco,
+                                                            'dataProviders' => $dataProviders,
+                                                            'htmlSerialForm' => $htmlSerialForm,
+                                                            'htmlSerialAgregado' => $htmlSerialAgregado,
+                                                            'totalPlanilla' => $totalPlanilla,
+                                                            'cantidadDeposito' => $cantidadDeposito,
+                        ]);
+            }
         }
 
 
@@ -658,20 +658,20 @@
          */
         public function actionVerificarReferenciaBancaria($cuentaRecaudadora)
         {
-        	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
-        	if ( $recibo > 0 ) {
-        		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
-        		$modelSerial = $serialSearch->findSeriales();
+            $recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
+            if ( $recibo > 0 ) {
+                $serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+                $modelSerial = $serialSearch->findSeriales();
 
-        		$generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, $cuentaRecaudadora);
-        		$referencia = $generarReferencia->iniciarReferencia();
-        		if ( count($referencia) > 0 && count($generarReferencia->getError()) == 0 ) {
-        			return true;
-        		}
-        	}
+                $generarReferencia = New GenerarReferenciaBancaria($recibo, $modelSerial, $cuentaRecaudadora);
+                $referencia = $generarReferencia->iniciarReferencia();
+                if ( count($referencia) > 0 && count($generarReferencia->getError()) == 0 ) {
+                    return true;
+                }
+            }
 
-        	return false;
+            return false;
         }
 
 
@@ -689,31 +689,31 @@
          */
         private function actionSetearBancoCuentaReceptoraEnDetallePago($idBanco, $cuentaRecaudadora)
         {
-        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-        	$result = false;
-        	if ( $recibo > 0 ) {
-        		self::setConexion();
-        		$this->_conn->open();
-        		$this->_transaccion = $this->_conn->beginTransaction();
+            $recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+            $result = false;
+            if ( $recibo > 0 ) {
+                self::setConexion();
+                $this->_conn->open();
+                $this->_transaccion = $this->_conn->beginTransaction();
 
-        		$tabla = DepositoDetalleUsuarioForm::tableName();
-        		$arregloCondicion = [
-        			'recibo' => $recibo,
-        		];
-        		$arregloDato = [
-        			'codigo_banco' => $idBanco,
-        			'cuenta_deposito' => $cuentaRecaudadora,
-        		];
+                $tabla = DepositoDetalleUsuarioForm::tableName();
+                $arregloCondicion = [
+                    'recibo' => $recibo,
+                ];
+                $arregloDato = [
+                    'codigo_banco' => $idBanco,
+                    'cuenta_deposito' => $cuentaRecaudadora,
+                ];
 
-        		$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDato, $arregloCondicion);
-        		if ( $result ) {
-        			$this->_transaccion->commit();
-        		} else {
-        			$this->_transaccion->rollBack();
-        		}
-        		$this->_conn->close();
-        	}
-        	return $result;
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDato, $arregloCondicion);
+                if ( $result ) {
+                    $this->_transaccion->commit();
+                } else {
+                    $this->_transaccion->rollBack();
+                }
+                $this->_conn->close();
+            }
+            return $result;
 
         }
 
@@ -727,94 +727,94 @@
          */
         public function actionArmarResumenPago()
         {
-        	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
-        	if ( $recibo > 0 ) {
-        		$request = Yii::$app->request;
-        		$postGet = $request->get();
-        		$postData = $request->post();
+            $recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
+            if ( $recibo > 0 ) {
+                $request = Yii::$app->request;
+                $postGet = $request->get();
+                $postData = $request->post();
 
-				if ( isset($postData['btn-back']) ) {
-					if ( $postData['btn-back'] == 1 ) {
-						$this->redirect(['pre-referencia']);
+                if ( isset($postData['btn-back']) ) {
+                    if ( $postData['btn-back'] == 1 ) {
+                        $this->redirect(['pre-referencia']);
 
-					} elseif ( $postData['btn-back'] == 9 ) {
-						$this->redirect(['pre-referencia']);
-					}
-				}
+                    } elseif ( $postData['btn-back'] == 9 ) {
+                        $this->redirect(['pre-referencia']);
+                    }
+                }
 
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
-					}
-				}
+                if ( isset($postData['btn-quit']) ) {
+                    if ( $postData['btn-quit'] == 1 ) {
+                        $this->redirect(['quit']);
+                    }
+                }
 
-				if ( isset($postData['btn-guardar-pago']) ) {
-					if ( $postData['btn-guardar-pago'] == 9 ) {
-						// Se guarda el pago.
-						$pago = New PagoReciboIndividual($recibo, date('Y-m-d'));
-        				$result = $pago->iniciarPagoRecibo();
+                if ( isset($postData['btn-guardar-pago']) ) {
+                    if ( $postData['btn-guardar-pago'] == 9 ) {
+                        // Se guarda el pago.
+                        $pago = New PagoReciboIndividual($recibo, date('Y-m-d'));
+                        $result = $pago->iniciarPagoRecibo();
 
-        				if ( $result ) {
-        					// mostrar pago guardado
-        					$this->redirect(['pago-guardado', 'recibo' => $recibo]);
+                        if ( $result ) {
+                            // mostrar pago guardado
+                            $this->redirect(['pago-guardado', 'recibo' => $recibo]);
 
-        				} elseif ( !$result ) {
-        					$errorMensaje = Yii::t('backend', 'La operación no se ejecuto satisfactoriamente');
-        					return $this->render('/recibo/pago/individual/error-pago', [
-        													'errorMensaje' => $errorMensaje,
-        						]);
-        				}
-					}
-				}
+                        } elseif ( !$result ) {
+                            $errorMensaje = Yii::t('backend', 'La operación no se ejecuto satisfactoriamente');
+                            return $this->render('/recibo/pago/individual/error-pago', [
+                                                            'errorMensaje' => $errorMensaje,
+                                ]);
+                        }
+                    }
+                }
 
-        		$postEnviado = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : [];
+                $postEnviado = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : [];
 
-        		if ( (int)$postEnviado['recibo'] == (int)$recibo ) {
+                if ( (int)$postEnviado['recibo'] == (int)$recibo ) {
 
-        			$urlFormaPagos = '';
-        			$bloquearFormaPago = false;
-        			// Recibo y las planilas
+                    $urlFormaPagos = '';
+                    $bloquearFormaPago = false;
+                    // Recibo y las planilas
 
-					$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-					$htmlMensaje = null;
+                    $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+                    $htmlMensaje = null;
 
-					// Arreglo de los provider del recibo y el de las planillas.
-					$dataProviders = $pagoReciboSearch->getDataProviders();
+                    // Arreglo de los provider del recibo y el de las planillas.
+                    $dataProviders = $pagoReciboSearch->getDataProviders();
 
-					$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
+                    $totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
 
-					$htmlRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
-															'dataProviderRecibo' => $dataProviders[0],
-															'dataProviderReciboPlanilla' => $dataProviders[1],
-															'totales' => $totales,
+                    $htmlRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
+                                                            'dataProviderRecibo' => $dataProviders[0],
+                                                            'dataProviderReciboPlanilla' => $dataProviders[1],
+                                                            'totales' => $totales,
 
-										]);
+                                        ]);
 
-					$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
-        			$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+                    $dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+                    $montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-        			$htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
-			      								'montoAgregado' => $montoAgregado,
-			      								'dataProvider' => $dataProvider,
-			      						]);
-
-
-        			$datosBanco = $_SESSION['datosBanco'];
-        			$htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
-        													'datosBanco' => $datosBanco,
-        					]);
+                    $htmlFormaPago = $this->renderPartial('/recibo/pago/individual/resumen-forma-pago', [
+                                                'montoAgregado' => $montoAgregado,
+                                                'dataProvider' => $dataProvider,
+                                        ]);
 
 
-					$caption = Yii::t('backend', 'Resumen de pago. Recibo Nro.') . $recibo ;
-					return $this->render('/recibo/pago/individual/resumen-pago-form',[
-															'caption' => $caption,
-															'htmlRecibo' => $htmlRecibo,
-															'htmlFormaPago' => $htmlFormaPago,
-															'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
-							]);
-        		}
-        	}
+                    $datosBanco = $_SESSION['datosBanco'];
+                    $htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
+                                                            'datosBanco' => $datosBanco,
+                            ]);
+
+
+                    $caption = Yii::t('backend', 'Resumen de pago. Recibo Nro.') . $recibo ;
+                    return $this->render('/recibo/pago/individual/resumen-pago-form',[
+                                                            'caption' => $caption,
+                                                            'htmlRecibo' => $htmlRecibo,
+                                                            'htmlFormaPago' => $htmlFormaPago,
+                                                            'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
+                            ]);
+                }
+            }
         }
 
 
@@ -826,48 +826,48 @@
          */
         public function actionPagoGuardado()
         {
-        	$recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
-        	$request = Yii::$app->request;
+            $recibo = isset($_SESSION['recibo']) ?  $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
+            $request = Yii::$app->request;
 
-        	$postData = $request->post();
-        	if ( isset($postData['btn-pagar-otro']) ) {
-        		if ( $postData['btn-pagar-otro'] == 9 ) {
-        			$this->redirect(['index']);
-        		}
-        	} elseif ( isset($postData['btn-quit']) ) {
-        		if ($postData['btn-quit'] == 1 ) {
-        			$this->redirect(['quit']);
-        		}
-        	} elseif ( isset($postData['btn-rafaga-print']) ) {
+            $postData = $request->post();
+            if ( isset($postData['btn-pagar-otro']) ) {
+                if ( $postData['btn-pagar-otro'] == 9 ) {
+                    $this->redirect(['index']);
+                }
+            } elseif ( isset($postData['btn-quit']) ) {
+                if ($postData['btn-quit'] == 1 ) {
+                    $this->redirect(['quit']);
+                }
+            } elseif ( isset($postData['btn-rafaga-print']) ) {
                 if ( $postData['btn-rafaga-print'] == 2 ) {
                     $recibo = isset($_SESSION['reciboRafaga']) ? $_SESSION['reciboRafaga'] : 0;
                     $this->redirect(['mostrar-form-rafaga-print', 'recibo' => $recibo]);
                 }
             }
 
-        	if ( $recibo > 0 ) {
-        		$varSession = self::actionGetListaSessions();
-				self::actionAnularSession($varSession);
-				self::actionInicializarTemporal($recibo);
+            if ( $recibo > 0 ) {
+                $varSession = self::actionGetListaSessions();
+                self::actionAnularSession($varSession);
+                self::actionInicializarTemporal($recibo);
 
-        		$postGet = $request->get();
-        		if ( (int)$recibo == (int)$postGet['recibo'] ) {
+                $postGet = $request->get();
+                if ( (int)$recibo == (int)$postGet['recibo'] ) {
 
                     $_SESSION['reciboRafaga'] = (int)$recibo;
-        			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+                    $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
-					// Arreglo de los provider del recibo y el de las planillas.
-					$dataProviders = $pagoReciboSearch->getDataProviders();
+                    // Arreglo de los provider del recibo y el de las planillas.
+                    $dataProviders = $pagoReciboSearch->getDataProviders();
 
-					$totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
+                    $totales = $pagoReciboSearch->getTotalesReciboPlanilla($dataProviders);
 
-					$htmlRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
-															'dataProviderRecibo' => $dataProviders[0],
-															'dataProviderReciboPlanilla' => $dataProviders[1],
-															'totales' => $totales,
+                    $htmlRecibo = $this->renderPartial('/recibo/pago/individual/datos-recibo',[
+                                                            'dataProviderRecibo' => $dataProviders[0],
+                                                            'dataProviderReciboPlanilla' => $dataProviders[1],
+                                                            'totales' => $totales,
 
-										]);
+                                        ]);
 
 
                     // Datos de la formas de pago.
@@ -882,10 +882,10 @@
                     $detalleModel = $dataProviderDetalle->getModels()[0];
                     $cuenta = $detalleModel['cuenta_deposito'];
 
-        			$datosBanco = self::datoBancoCuentaReceptora($cuenta);
-        			$htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
-        													'datosBanco' => $datosBanco,
-        					                   ]);
+                    $datosBanco = self::datoBancoCuentaReceptora($cuenta);
+                    $htmlCuentaRecaudadora = $this->renderPartial('/recibo/pago/individual/resumen-cuenta-recaudadora',[
+                                                            'datosBanco' => $datosBanco,
+                                               ]);
 
 
                     $model = New BusquedaReciboForm();
@@ -895,23 +895,23 @@
 
 
                     $desactivarBotonRafaga = false;
-					$caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro. ') . $recibo ;
-					return $this->render('/recibo/pago/individual/resumen-pago-efectuado-form',[
-															'caption' => $caption,
-															'htmlRecibo' => $htmlRecibo,
-															'htmlFormaPago' =>  $htmlDepositoDetalle,
-															'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
+                    $caption = Yii::t('backend', 'Resumen de pago guardado. Recibo Nro. ') . $recibo ;
+                    return $this->render('/recibo/pago/individual/resumen-pago-efectuado-form',[
+                                                            'caption' => $caption,
+                                                            'htmlRecibo' => $htmlRecibo,
+                                                            'htmlFormaPago' =>  $htmlDepositoDetalle,
+                                                            'htmlCuentaRecaudadora' => $htmlCuentaRecaudadora,
                                                             'desactivarBotonRafaga' => $desactivarBotonRafaga,
                                                             'modelRecibo' => $model,
                                                             'codigo' => 100,
-							]);
-        		} else {
+                            ]);
+                } else {
                     // La informacion del recibo a pagar no coincide con la enviada.
                     $this->redirect(['error-operacion', 'cod' => 724]);
                 }
-        	} else {
-        		$this->redirect(['index']);
-        	}
+            } else {
+                $this->redirect(['index']);
+            }
         }
 
 
@@ -928,7 +928,7 @@
 
             $recibo = isset($getData['recibo']) ? (int)$getData['recibo'] : 0;
 
-            if ( $recibo == (int)$getData['recibo'] ) {
+            if ( $recibo == (int)$getData['recibo'] && $recibo > 0 ) {
 
                 self::actionAnularSession(['reciboRafaga']);
                 // $reciboRafaga = New ReciboRafagaController($recibo);
@@ -938,15 +938,20 @@
                 //                                             'mensajes' => $mensajes,
                 //                             ]);
 
+                if ( (int)$getData['id_contribuyente'] > 0 ) {
+                    // Controlador que gestiona la generacion del pdf.
+                    $depositoPdf = New DepositoController($recibo, (int)$getData['id_contribuyente'], (int)$getData['nro']);
+                    return $depositoPdf->actionGenerarReciboPdf();
 
-               // Controlador que gestiona la generacion del pdf.
-                $depositoPdf = New DepositoController($recibo, (int)$getData['id_contribuyente'], (int)$getData['nro']);
-                return $depositoPdf->actionGenerarReciboPdf();
-
-                return $this->render('/recibo/pago/error/error',[
-                                        'htmlMensaje' => $htmlMensaje,
-                ]);
-
+                } else {
+                    $mensajes = [Yii::t('backend','El Id del contribuyente no esta definido para el recibo ') . $recibo];
+                    $htmlMensaje = $this->renderPartial('/recibo/pago/individual/warnings',[
+                                                             'mensajes' => $mensajes,
+                                             ]);
+                    return $this->render('/recibo/pago/error/error',[
+                                                    'htmlMensaje' => $htmlMensaje,
+                            ]);
+                }
             }
         }
 
@@ -959,26 +964,26 @@
          */
         public function actionArmarReferenciaBancaria($postEnviado)
         {
-        	$cuentaRecaudadora = $postEnviado['cuenta_recaudadora'];
-        	$result = false;
-        	$referencia = null;
-        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
+            $cuentaRecaudadora = $postEnviado['cuenta_recaudadora'];
+            $result = false;
+            $referencia = null;
+            $recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
 
-    		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
-    		$dataProvider = $serialSearch->getDataProvider();
+            $serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+            $dataProvider = $serialSearch->getDataProvider();
 
-    		// Retorna un arreglo con los datos del modelo, sino encuentra nada
-    		// el arreglo llega vacion
-    		$models = $dataProvider->getModels();
+            // Retorna un arreglo con los datos del modelo, sino encuentra nada
+            // el arreglo llega vacion
+            $models = $dataProvider->getModels();
 
-    		$generar = New GenerarReferenciaBancaria($recibo, $models, self::actionSetObservacionSerialManual($cuentaRecaudadora));
-    		$referencia = $generar->iniciarReferencia();
-    		if ( count($generar->getError()) == 0 ) {
-    			return $referencia;
-    		} else {
-    			return $referencia = [];
-    		}
+            $generar = New GenerarReferenciaBancaria($recibo, $models, self::actionSetObservacionSerialManual($cuentaRecaudadora));
+            $referencia = $generar->iniciarReferencia();
+            if ( count($generar->getError()) == 0 ) {
+                return $referencia;
+            } else {
+                return $referencia = [];
+            }
 
         }
 
@@ -993,11 +998,11 @@
          */
         private function actionCantidadDepositoRegistrado($recibo)
         {
-        	return $registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
-        								 	 									[':recibo' => $recibo])
-        								 						  ->andWhere('id_forma =:id_forma',
-        								 						  				[':id_forma' => 2])
-        	                             						  ->count();
+            return $registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
+                                                                                [':recibo' => $recibo])
+                                                                  ->andWhere('id_forma =:id_forma',
+                                                                                [':id_forma' => 2])
+                                                                  ->count();
         }
 
 
@@ -1014,37 +1019,37 @@
          */
         public function actionAgregarDepositoComoSerial($recibo, $usuario, $fechaPago, $cuentaRecaudadora)
         {
-        	$registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
-        								 	 							[':recibo' => $recibo])
-        								 				   ->andWhere('id_forma =:id_forma',
-        								 						  		[':id_forma' => 2])
-        								 				   ->asArray()
-        	                         				       ->all();
-        	if ( count($registers) > 0 ) {
+            $registers = DepositoDetalleUsuarioForm::find()->where('recibo =:recibo',
+                                                                        [':recibo' => $recibo])
+                                                           ->andWhere('id_forma =:id_forma',
+                                                                        [':id_forma' => 2])
+                                                           ->asArray()
+                                                           ->all();
+            if ( count($registers) > 0 ) {
 
-        		$modelSerial = New SerialReferenciaForm();
-        		foreach ( $registers as $register ) {
+                $modelSerial = New SerialReferenciaForm();
+                foreach ( $registers as $register ) {
 
-        			// Se busca el numero de deposito en los seriles existente para no repetirlo.
-        			$resultado = $modelSerial->find()->where('serial =:serial',
-        														[':serial' => $register['deposito']])
-        										     ->exists();
-        			if ( !$resultado ) {
+                    // Se busca el numero de deposito en los seriles existente para no repetirlo.
+                    $resultado = $modelSerial->find()->where('serial =:serial',
+                                                                [':serial' => $register['deposito']])
+                                                     ->exists();
+                    if ( !$resultado ) {
 
-        				$modelSerial->recibo = $recibo;
-			        	$modelSerial->serial = $register['deposito'];
-			        	$modelSerial->fecha_edocuenta = $register['fecha'];
-			        	$modelSerial->monto_edocuenta = $register['monto'];
-			        	$modelSerial->estatus = 0;
-			        	$modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
-			        	$modelSerial->usuario = $usuario;
+                        $modelSerial->recibo = $recibo;
+                        $modelSerial->serial = $register['deposito'];
+                        $modelSerial->fecha_edocuenta = $register['fecha'];
+                        $modelSerial->monto_edocuenta = $register['monto'];
+                        $modelSerial->estatus = 0;
+                        $modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
+                        $modelSerial->usuario = $usuario;
 
-			        	$result = self::actionGuardarSerialTemporal($modelSerial);
-        			}
-				}
-        	}
+                        $result = self::actionGuardarSerialTemporal($modelSerial);
+                    }
+                }
+            }
 
-        	$this->redirect(['pre-referencia']);
+            $this->redirect(['pre-referencia']);
         }
 
 
@@ -1061,33 +1066,33 @@
          */
         private function actionInicializarEntidadTemporal($recibo, $usuario, $model)
         {
-        	$results = null;
-        	$cancel = false;
+            $results = null;
+            $cancel = false;
 
-        	self::setConexion();
-        	$this->_conn->open();
-        	$this->_transaccion = $this->_conn->beginTransaction();
+            self::setConexion();
+            $this->_conn->open();
+            $this->_transaccion = $this->_conn->beginTransaction();
 
-        	$arregloCondicion = ['recibo' => $recibo];
-			$results[] = self::actionSuprimirDetalleTemporal($model, $arregloCondicion);
-			$arregloCondicion = ['usuario' => $usuario];
-			$results[] = self::actionSuprimirDetalleTemporal($model, $arregloCondicion);
+            $arregloCondicion = ['recibo' => $recibo];
+            $results[] = self::actionSuprimirDetalleTemporal($model, $arregloCondicion);
+            $arregloCondicion = ['usuario' => $usuario];
+            $results[] = self::actionSuprimirDetalleTemporal($model, $arregloCondicion);
 
-			foreach ( $results as $key => $value ) {
-				if ( !$value ) {
-					$cancel = true;
-					break;
-				}
-			}
+            foreach ( $results as $key => $value ) {
+                if ( !$value ) {
+                    $cancel = true;
+                    break;
+                }
+            }
 
-			if ( !$cancel ) {
-				$this->_transaccion->commit();
-			} else {
-				$this->_transaccion->rollBack();
-			}
-			$this->_conn->close();
+            if ( !$cancel ) {
+                $this->_transaccion->commit();
+            } else {
+                $this->_transaccion->rollBack();
+            }
+            $this->_conn->close();
 
-			return $cancel;
+            return $cancel;
         }
 
 
@@ -1101,19 +1106,19 @@
          */
         public function actionViewHtmlPlanillaSinReferencia($fechaPago, $cuentaRecaudadora)
         {
-        	$txtSearch = New RegistroTxtReciboSearch();
-        	$txtSearch->setFechaPago($fechaPago);
-        	$dataProvider = $txtSearch->getDataProviderPlanillaSinRferenciaByFecha();
-        	$models = $dataProvider->getModels();
+            $txtSearch = New RegistroTxtReciboSearch();
+            $txtSearch->setFechaPago($fechaPago);
+            $dataProvider = $txtSearch->getDataProviderPlanillaSinRferenciaByFecha();
+            $models = $dataProvider->getModels();
 
-        	$totalizar = self::actionTotalizarMontoDocumento($models, 'monto_recibo');
+            $totalizar = self::actionTotalizarMontoDocumento($models, 'monto_recibo');
 
-        	return $this->renderPartial('/recibo/pago/individual/lista-planilla-sin-referencia', [
-        														'dataProvider' => $dataProvider,
-        														'totalizar' => $totalizar,
-        														'fechaPago' => $fechaPago,
-        														'cuentaRecaudadora' => $cuentaRecaudadora,
-        		]);
+            return $this->renderPartial('/recibo/pago/individual/lista-planilla-sin-referencia', [
+                                                                'dataProvider' => $dataProvider,
+                                                                'totalizar' => $totalizar,
+                                                                'fechaPago' => $fechaPago,
+                                                                'cuentaRecaudadora' => $cuentaRecaudadora,
+                ]);
         }
 
 
@@ -1126,7 +1131,7 @@
          */
         public function actionSetObservacionSerialManual($nroCuentaRecaudadora)
         {
-        	return 'SERIAL MANUAL, Cuenta Recaudadora: ' . $nroCuentaRecaudadora;
+            return 'SERIAL MANUAL, Cuenta Recaudadora: ' . $nroCuentaRecaudadora;
         }
 
 
@@ -1143,32 +1148,32 @@
          */
         public function actionAgregarPlanillaComoSerial($chkIdRegistro = [], $fechaPago, $cuentaRecaudadora)
         {
-        	$rsult = false;
-        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
+            $rsult = false;
+            $recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
 
-        	$txtSearch = New RegistroTxtReciboSearch();
-        	foreach ( $chkIdRegistro as $key => $value ) {
+            $txtSearch = New RegistroTxtReciboSearch();
+            foreach ( $chkIdRegistro as $key => $value ) {
 
-	        	$register = $txtSearch->findRegistroTxtById($value)->toArray();
+                $register = $txtSearch->findRegistroTxtById($value)->toArray();
 
-	        	if ( count($register) > 0 ) {
+                if ( count($register) > 0 ) {
 
-		        	$modelSerial = New SerialReferenciaForm();
+                    $modelSerial = New SerialReferenciaForm();
 
-		        	$modelSerial->recibo = $recibo;
-		        	$modelSerial->serial = $register['recibo'];
-		        	$modelSerial->fecha_edocuenta = $register['fecha_pago'];
-		        	$modelSerial->monto_edocuenta = $register['monto_recibo'];
-		        	$modelSerial->estatus = 0;
-		        	$modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
-		        	$modelSerial->usuario = $usuario;
+                    $modelSerial->recibo = $recibo;
+                    $modelSerial->serial = $register['recibo'];
+                    $modelSerial->fecha_edocuenta = $register['fecha_pago'];
+                    $modelSerial->monto_edocuenta = $register['monto_recibo'];
+                    $modelSerial->estatus = 0;
+                    $modelSerial->observacion = self::actionSetObservacionSerialManual($cuentaRecaudadora);
+                    $modelSerial->usuario = $usuario;
 
-		        	$result = self::actionGuardarSerialTemporal($modelSerial);
-		        }
-        	}
+                    $result = self::actionGuardarSerialTemporal($modelSerial);
+                }
+            }
 
-        	$this->redirect(['pre-referencia']);
+            $this->redirect(['pre-referencia']);
         }
 
 
@@ -1182,23 +1187,23 @@
          */
         public function actionViewHtmlSerialAgregado()
         {
-        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
-    		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
-    		$dataProvider = $serialSearch->getDataProvider();
+            $recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
+            $serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+            $dataProvider = $serialSearch->getDataProvider();
 
-    		// Totalizar los montos de los seriales agregados.
-    		$totalizar = 0;
+            // Totalizar los montos de los seriales agregados.
+            $totalizar = 0;
 
-    		// Retorna un arreglo con los datos del modelo, sino encuentra nada
-    		// el arreglo llega vacion
-    		$models = $dataProvider->getModels();
+            // Retorna un arreglo con los datos del modelo, sino encuentra nada
+            // el arreglo llega vacion
+            $models = $dataProvider->getModels();
 
-    		$totalizar = self::actionTotalizarMontoDocumento($models, 'monto_edocuenta');
-    		return $this->renderPartial('/recibo/pago/individual/serial-agregado-form',[
-    													'dataProvider' => $dataProvider,
-    													'totalizar' => $totalizar,
-    			]);
+            $totalizar = self::actionTotalizarMontoDocumento($models, 'monto_edocuenta');
+            return $this->renderPartial('/recibo/pago/individual/serial-agregado-form',[
+                                                        'dataProvider' => $dataProvider,
+                                                        'totalizar' => $totalizar,
+                ]);
         }
 
 
@@ -1213,11 +1218,11 @@
          */
         private function actionTotalizarMontoDocumento($model, $nombreCampo)
         {
-        	$totalizado = 0;
-        	foreach ( $model as $item ) {
-        		$totalizado = $totalizado + $item->$nombreCampo;
-        	}
-        	return $totalizado;
+            $totalizado = 0;
+            foreach ( $model as $item ) {
+                $totalizado = $totalizado + $item->$nombreCampo;
+            }
+            return $totalizado;
         }
 
 
@@ -1231,30 +1236,30 @@
          */
         public function actionSuprimirSerialAgregado()
         {
-        	$result = false;
-        	$request = Yii::$app->request;
-        	$postGet = $request->get();
+            $result = false;
+            $request = Yii::$app->request;
+            $postGet = $request->get();
 
-        	$idSerial = isset($postGet['id']) ? $postGet['id'] : 0;
+            $idSerial = isset($postGet['id']) ? $postGet['id'] : 0;
 
-        	if ( $idSerial > 0 ) {
-	        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-	        	$usuario = Yii::$app->identidad->getUsuario();
-	    		$serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
+            if ( $idSerial > 0 ) {
+                $recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+                $usuario = Yii::$app->identidad->getUsuario();
+                $serialSearch = New SerialReferenciaUsuarioSearch($recibo, $usuario);
 
-	        	self::setConexion();
-				$this->_transaccion = $this->_conn->beginTransaction();
-				$this->_conn->open();
+                self::setConexion();
+                $this->_transaccion = $this->_conn->beginTransaction();
+                $this->_conn->open();
 
-				$result = $serialSearch->suprimirSerialById($idSerial, $this->_conn, $this->_conexion);
-				if ( $result ) {
-					$this->_transaccion->commit();
-				} else {
-					$this->_transaccion->rollBack();
-				}
-				$this->_conn->close();
-			}
-			$this->redirect(['pre-referencia']);
+                $result = $serialSearch->suprimirSerialById($idSerial, $this->_conn, $this->_conexion);
+                if ( $result ) {
+                    $this->_transaccion->commit();
+                } else {
+                    $this->_transaccion->rollBack();
+                }
+                $this->_conn->close();
+            }
+            $this->redirect(['pre-referencia']);
         }
 
 
@@ -1269,21 +1274,21 @@
          */
         private function actionGuardarSerialTemporal($model)
         {
-        	$result = false;
-        	self::setConexion();
-        	$this->_transaccion = $this->_conn->beginTransaction();
-        	$this->_conn->open();
+            $result = false;
+            self::setConexion();
+            $this->_transaccion = $this->_conn->beginTransaction();
+            $this->_conn->open();
 
-        	$tabla = $model->tableName();
+            $tabla = $model->tableName();
 
-        	$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
-        	if ( $result ) {
-        		$this->_transaccion->commit();
-        	} else {
-        		$this->_transaccion->rollBack();
-        	}
-        	$this->_conn->close();
-        	return $result;
+            $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+            if ( $result ) {
+                $this->_transaccion->commit();
+            } else {
+                $this->_transaccion->rollBack();
+            }
+            $this->_conn->close();
+            return $result;
         }
 
 
@@ -1297,13 +1302,13 @@
          */
         public function actionListarCuentaRecaudadora()
         {
-        	$request = Yii::$app->request;
-        	$postGet = $request->get();
-        	$postData = $request->post();
+            $request = Yii::$app->request;
+            $postGet = $request->get();
+            $postData = $request->post();
 
-        	$searchBanco = New BancoSearch();
-        	$id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
-        	return $searchBanco->generarViewListaCuentaRecaudadora($id);
+            $searchBanco = New BancoSearch();
+            $id = isset($postGet['id']) ? (int)$postGet['id'] : 0;
+            return $searchBanco->generarViewListaCuentaRecaudadora($id);
 
         }
 
@@ -1318,20 +1323,20 @@
          */
         public function actionDeterminarCuentaRecaudadora()
         {
-        	$request = Yii::$app->request;
-        	$postGet = $request->get();
-        	$postData = $request->post();
+            $request = Yii::$app->request;
+            $postGet = $request->get();
+            $postData = $request->post();
 
-        	$listaCuentasRecaudadoras = Yii::$app->ente->getCuentaRecaudadora();
-        	if ( isset($postGet['cuenta']) && isset($postGet['id-banco']) ) {
-        		if ( in_array($postGet['cuenta'], $listaCuentasRecaudadoras) ) {
-        			echo "CUENTA RECAUDADORA";
-        		} else {
-        			echo "NO ES CUENTA RECAUDADORA";
-        		}
-        	} else {
-        		echo "NO ES CUENTA RECAUDADORA";
-        	}
+            $listaCuentasRecaudadoras = Yii::$app->ente->getCuentaRecaudadora();
+            if ( isset($postGet['cuenta']) && isset($postGet['id-banco']) ) {
+                if ( in_array($postGet['cuenta'], $listaCuentasRecaudadoras) ) {
+                    echo "CUENTA RECAUDADORA";
+                } else {
+                    echo "NO ES CUENTA RECAUDADORA";
+                }
+            } else {
+                echo "NO ES CUENTA RECAUDADORA";
+            }
         }
 
 
@@ -1401,40 +1406,40 @@
          */
         public function actionSuprimirFormaPago()
         {
-        	if ( isset($_SESSION['recibo']) ) {
-        		$recibo = $_SESSION['recibo'];
-        		$htmlFormaPago = null;
+            if ( isset($_SESSION['recibo']) ) {
+                $recibo = $_SESSION['recibo'];
+                $htmlFormaPago = null;
 
-		      	$request = Yii::$app->request;
-		      	if ( $request->isGet ) {
+                $request = Yii::$app->request;
+                if ( $request->isGet ) {
 
-        			$postGet = $request->get();
-        			$arregloCondicion = [
-        				'linea' => $postGet['l'],
-        			];
+                    $postGet = $request->get();
+                    $arregloCondicion = [
+                        'linea' => $postGet['l'],
+                    ];
 
-        			self::setConexion();
-        			$this->_transaccion = $this->_conn->beginTransaction();
-        			$this->_conn->open();
+                    self::setConexion();
+                    $this->_transaccion = $this->_conn->beginTransaction();
+                    $this->_conn->open();
 
-        			$modelDepositoDetalle = New DepositoDetalleUsuarioForm();
-	        		$result = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
-        			if ( $postGet['forma'] == 2 ) {
-	        			if ( $result ) {
-	        				$modelVauche = New VaucheDetalleUsuarioForm();
-	        				$result = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
-	        			}
-	        		}
-        			if ( $result ) {
-        				$this->_transaccion->commit();
-        			} else {
-        				$this->_transaccion->rollBack();
-        			}
-					$this->_conn->close();
-        		}
+                    $modelDepositoDetalle = New DepositoDetalleUsuarioForm();
+                    $result = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
+                    if ( $postGet['forma'] == 2 ) {
+                        if ( $result ) {
+                            $modelVauche = New VaucheDetalleUsuarioForm();
+                            $result = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+                        }
+                    }
+                    if ( $result ) {
+                        $this->_transaccion->commit();
+                    } else {
+                        $this->_transaccion->rollBack();
+                    }
+                    $this->_conn->close();
+                }
 
-		      	$this->redirect(['registrar-formas-pago']);
-		    }
+                $this->redirect(['registrar-formas-pago']);
+            }
         }
 
 
@@ -1447,42 +1452,42 @@
          */
         public function actionSuprimirDetalleVauche()
         {
-        	if ( isset($_SESSION['recibo']) ) {
-        		$recibo = $_SESSION['recibo'];
+            if ( isset($_SESSION['recibo']) ) {
+                $recibo = $_SESSION['recibo'];
 
-		      	$request = Yii::$app->request;
-		      	if ( $request->isGet ) {
+                $request = Yii::$app->request;
+                if ( $request->isGet ) {
 
-		      		$postGet = $request->get();
-		      		if ( (int)$postGet['recibo'] == (int)$recibo ) {
+                    $postGet = $request->get();
+                    if ( (int)$postGet['recibo'] == (int)$recibo ) {
 
-	        			$arregloCondicion = [
-	        				'id_vauche' => $postGet['id'],
-	        			];
+                        $arregloCondicion = [
+                            'id_vauche' => $postGet['id'],
+                        ];
 
-	        			self::setConexion();
-	        			$this->_transaccion = $this->_conn->beginTransaction();
-	        			$this->_conn->open();
+                        self::setConexion();
+                        $this->_transaccion = $this->_conn->beginTransaction();
+                        $this->_conn->open();
 
-	        			$pagoReciboSearch = New PagoReciboIndividualSearch($postGet['recibo']);
-	        			$modelVauche = $pagoReciboSearch->findEspecificoDetalleVauche($postGet['id']);
-		        		$result = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+                        $pagoReciboSearch = New PagoReciboIndividualSearch($postGet['recibo']);
+                        $modelVauche = $pagoReciboSearch->findEspecificoDetalleVauche($postGet['id']);
+                        $result = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
 
-	        			if ( $result ) {
-	        				$result = self::actionActualizarMontoDeposito($modelVauche, 'restar');
-	        			}
+                        if ( $result ) {
+                            $result = self::actionActualizarMontoDeposito($modelVauche, 'restar');
+                        }
 
-	        			if ( $result) {
-	        				$this->_transaccion->commit();
-	        			} else {
-	        				$this->_transaccion->rollBack();
-	        			}
-						$this->_conn->close();
-					}
-        		}
-        		$this->redirect(['update', 'l' => (int)$postGet['l']]);
+                        if ( $result) {
+                            $this->_transaccion->commit();
+                        } else {
+                            $this->_transaccion->rollBack();
+                        }
+                        $this->_conn->close();
+                    }
+                }
+                $this->redirect(['update', 'l' => (int)$postGet['l']]);
 
-		    }
+            }
         }
 
 
@@ -1492,14 +1497,14 @@
         /***/
         public function actionFindEspecificoRegistroTemporal($linea)
         {
-        	if ( isset($_SESSION['recibo']) ) {
-        		$recibo = $_SESSION['recibo'];
-				$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+            if ( isset($_SESSION['recibo']) ) {
+                $recibo = $_SESSION['recibo'];
+                $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
-				// Retorna registro encontrado, instancia de la clase DepositoDetalleUsuarioForm
-				return $registers = $pagoReciboSearch->findEspecificoDepositoDetalleUsuarioTemp($linea);
-			}
-			return null;
+                // Retorna registro encontrado, instancia de la clase DepositoDetalleUsuarioForm
+                return $registers = $pagoReciboSearch->findEspecificoDepositoDetalleUsuarioTemp($linea);
+            }
+            return null;
         }
 
 
@@ -1509,72 +1514,72 @@
         /***/
         public function actionUpdate()
         {
-        	if ( isset($_SESSION['recibo']) ) {
-        		$recibo = $_SESSION['recibo'];
+            if ( isset($_SESSION['recibo']) ) {
+                $recibo = $_SESSION['recibo'];
 
-		      	$request = Yii::$app->request;
-		      	if ( $request->isGet ) {
-        			$postGet = $request->get();
+                $request = Yii::$app->request;
+                if ( $request->isGet ) {
+                    $postGet = $request->get();
 
-        			// Se busca el registro selccionado. Clase DepositoDetalleUsuarioForm
-		      		$registers = self::actionFindEspecificoRegistroTemporal((int)$postGet['l']);
+                    // Se busca el registro selccionado. Clase DepositoDetalleUsuarioForm
+                    $registers = self::actionFindEspecificoRegistroTemporal((int)$postGet['l']);
 
-		      		if ( $registers ) {
-		      			$forma = $registers->id_forma;
+                    if ( $registers ) {
+                        $forma = $registers->id_forma;
 
-		      			$model = New DepositoDetalleUsuarioForm();
-        				$formName = $model->formName();
+                        $model = New DepositoDetalleUsuarioForm();
+                        $formName = $model->formName();
 
-        				// Se define el scenario para la validacion.
-	        			self::defineScenario($forma, $model);
+                        // Se define el scenario para la validacion.
+                        self::defineScenario($forma, $model);
 
-	        			$model->attributes = $registers->toArray();
+                        $model->attributes = $registers->toArray();
 
-	        			return self::actionArmarFormulario($forma, $model, []);
+                        return self::actionArmarFormulario($forma, $model, []);
 
-		      		}
-        		} else {
-        			$postData = $request->post();
-        			if ( isset($postData['btn-add-forma']) ) {
-	        			$forma = $postData['btn-add-forma'];
+                    }
+                } else {
+                    $postData = $request->post();
+                    if ( isset($postData['btn-add-forma']) ) {
+                        $forma = $postData['btn-add-forma'];
 
-	        			$model = New DepositoDetalleUsuarioForm();
-        				$formName = $model->formName();
+                        $model = New DepositoDetalleUsuarioForm();
+                        $formName = $model->formName();
 
-	        			// Se define el scenario para la validacion.
-	        			self::defineScenario($forma, $model);
+                        // Se define el scenario para la validacion.
+                        self::defineScenario($forma, $model);
 
-	        			if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
-							Yii::$app->response->format = Response::FORMAT_JSON;
-							return ActiveForm::validate($model);
-						}
+                        if ( $model->load($postData)  && Yii::$app->request->isAjax ) {
+                            Yii::$app->response->format = Response::FORMAT_JSON;
+                            return ActiveForm::validate($model);
+                        }
 
-						if ( $model->validate() ) {
-							// Se guarda
-							$arregloCondicion = [
-								'linea' => $model->linea,
-							];
+                        if ( $model->validate() ) {
+                            // Se guarda
+                            $arregloCondicion = [
+                                'linea' => $model->linea,
+                            ];
 
-							$model->fecha = date('Y-m-d', strtotime($model->fecha));
-							$model->monto = str_replace(',','.', $model->monto);
+                            $model->fecha = date('Y-m-d', strtotime($model->fecha));
+                            $model->monto = str_replace(',','.', $model->monto);
 
-							$result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $model->attributes);
-							if ( $result ) {
-								return self::actionArmarFormulario(0, $model, []);
-							} else {
-								return self::actionArmarFormulario($forma, $model, ['ERROR']);
-							}
-						} else {
-							return self::actionArmarFormulario($forma, $model, [], $postData);
-						}
+                            $result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $model->attributes);
+                            if ( $result ) {
+                                return self::actionArmarFormulario(0, $model, []);
+                            } else {
+                                return self::actionArmarFormulario($forma, $model, ['ERROR']);
+                            }
+                        } else {
+                            return self::actionArmarFormulario($forma, $model, [], $postData);
+                        }
 
-	        		} else {
-	        			return self::actionArmarFormulario($forma, $model, []);
-	        		}
-        		}
-		    }
+                    } else {
+                        return self::actionArmarFormulario($forma, $model, []);
+                    }
+                }
+            }
 
-		    $this->redirect(['registrar-formas-pago']);
+            $this->redirect(['registrar-formas-pago']);
 
         }
 
@@ -1590,30 +1595,30 @@
          */
         public function actionArmarFormulario($forma, $model, $operacion, $postEnviado = null)
         {
-        	if ( isset($_SESSION['recibo']) ) {
-        		$recibo = $_SESSION['recibo'];
-        		$htmlFormaPago = null;
+            if ( isset($_SESSION['recibo']) ) {
+                $recibo = $_SESSION['recibo'];
+                $htmlFormaPago = null;
 
-				// Se define el scenario para la validacion.
-    			self::defineScenario($forma, $model);
+                // Se define el scenario para la validacion.
+                self::defineScenario($forma, $model);
 
-    			$htmlFormaPago = self::actionShowViewFormaPago($forma, $model, $postEnviado, $operacion);
-    			$htmlResumenReciboFormaPago = self::actionViewResumenReciboFormaPago();
-		      	$htmlFormaPagoContabilizada = self::actionShowViewFormaPagoContabilizada();
+                $htmlFormaPago = self::actionShowViewFormaPago($forma, $model, $postEnviado, $operacion);
+                $htmlResumenReciboFormaPago = self::actionViewResumenReciboFormaPago();
+                $htmlFormaPagoContabilizada = self::actionShowViewFormaPagoContabilizada();
 
-		      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-		      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-		      	$rutaAyuda = Url::to(['ruta-ayuda']);
-		      	return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
-		      								'caption' => $caption,
-		      								'captionRecibo' => $captionRecibo,
-		      								'htmlFormaPago' => $htmlFormaPago,
-		      								'htmlResumenReciboFormaPago' => $htmlResumenReciboFormaPago,
-		      								'htmlFormaPagoContabilizada' => $htmlFormaPagoContabilizada,
-		      								'operacion' => $operacion,
-		      								'rutaAyuda' => $rutaAyuda,
-		      			]);
-        	}
+                $captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+                $caption = Yii::t('backend', 'Registrar Formas de Pago');
+                $rutaAyuda = Url::to(['ruta-ayuda']);
+                return $this->render('/recibo/pago/individual/_registrar-formas-pago', [
+                                            'caption' => $caption,
+                                            'captionRecibo' => $captionRecibo,
+                                            'htmlFormaPago' => $htmlFormaPago,
+                                            'htmlResumenReciboFormaPago' => $htmlResumenReciboFormaPago,
+                                            'htmlFormaPagoContabilizada' => $htmlFormaPagoContabilizada,
+                                            'operacion' => $operacion,
+                                            'rutaAyuda' => $rutaAyuda,
+                        ]);
+            }
         }
 
 
@@ -1622,28 +1627,28 @@
         /***/
         public function actionViewResumenReciboFormaPago()
         {
-			$recibo = $_SESSION['recibo'];
-        	$usuario = Yii::$app->identidad->getUsuario();
-        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+            $recibo = $_SESSION['recibo'];
+            $usuario = Yii::$app->identidad->getUsuario();
+            $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
 
-        	$datosRecibo = $pagoReciboSearch->getDeposito();
+            $datosRecibo = $pagoReciboSearch->getDeposito();
 
-			$_SESSION['datosRecibo'] = $datosRecibo;
-	      	$formasPago = FormaPago::find()->all();
-	      	$listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
+            $_SESSION['datosRecibo'] = $datosRecibo;
+            $formasPago = FormaPago::find()->all();
+            $listaForma = ArrayHelper::map($formasPago, 'id_forma', 'descripcion');
 
-	      	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+            $montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-	      	$montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
-	      	$captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
-	      	$caption = Yii::t('backend', 'Registrar Formas de Pago');
-	      	return $this->renderPartial('/recibo/pago/individual/resumen-recibo-forma-pago', [
-			      								'caption' => $caption,
-			      								'captionRecibo' => $captionRecibo,
-			      								'datosRecibo' => $datosRecibo,
-			      								'listaForma' => $listaForma,
-			      								'montoSobrante' => $montoSobrante,
-			      			]);
+            $montoSobrante = $datosRecibo[0]['monto'] - $montoAgregado;
+            $captionRecibo = Yii::t('backend', 'Recibo Nro') . '. ' . $recibo;
+            $caption = Yii::t('backend', 'Registrar Formas de Pago');
+            return $this->renderPartial('/recibo/pago/individual/resumen-recibo-forma-pago', [
+                                                'caption' => $caption,
+                                                'captionRecibo' => $captionRecibo,
+                                                'datosRecibo' => $datosRecibo,
+                                                'listaForma' => $listaForma,
+                                                'montoSobrante' => $montoSobrante,
+                            ]);
         }
 
 
@@ -1657,17 +1662,17 @@
          */
         public function actionShowViewFormaPagoContabilizada()
         {
-        	$recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
-        	$usuario = Yii::$app->identidad->getUsuario();
-        	$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-        	$dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
+            $recibo = isset($_SESSION['recibo']) ? $_SESSION['recibo'] : 0;
+            $usuario = Yii::$app->identidad->getUsuario();
+            $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+            $dataProvider = $pagoReciboSearch->getDataProviderRegistroTemp($usuario);
 
-        	$montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
+            $montoAgregado = $pagoReciboSearch->getTotalFormaPagoAgregado($usuario);
 
-        	return $this->renderPartial('/recibo/pago/individual/forma-pago-contabilizada', [
-			      								'montoAgregado' => $montoAgregado,
-			      								'dataProvider' => $dataProvider,
-			      		]);
+            return $this->renderPartial('/recibo/pago/individual/forma-pago-contabilizada', [
+                                                'montoAgregado' => $montoAgregado,
+                                                'dataProvider' => $dataProvider,
+                        ]);
         }
 
 
@@ -1681,17 +1686,17 @@
          */
         private function defineScenario($forma, $model)
         {
-        	if ( $forma == 1 ) {
-	        	$model->scenario = self::SCENARIO_CHEQUE;
-			} elseif ( $forma == 2 ) {
-	        	$model->scenario = self::SCENARIO_DEPOSITO;
-	        } elseif ( $forma == 3 ) {
-	        	$model->scenario = self::SCENARIO_EFECTIVO;
-	        } elseif ( $forma == 4 ) {
-	        	$model->scenario = self::SCENARIO_TARJETA;
-	        }
+            if ( $forma == 1 ) {
+                $model->scenario = self::SCENARIO_CHEQUE;
+            } elseif ( $forma == 2 ) {
+                $model->scenario = self::SCENARIO_DEPOSITO;
+            } elseif ( $forma == 3 ) {
+                $model->scenario = self::SCENARIO_EFECTIVO;
+            } elseif ( $forma == 4 ) {
+                $model->scenario = self::SCENARIO_TARJETA;
+            }
 
-	        return $model;
+            return $model;
         }
 
 
@@ -1706,116 +1711,116 @@
          */
         public function actionShowViewFormaPago($forma, $model, $postData = null, $operacion = [])
         {
-        	$recibo = $_SESSION['recibo'];
-        	$usuario = Yii::$app->identidad->getUsuario();
+            $recibo = $_SESSION['recibo'];
+            $usuario = Yii::$app->identidad->getUsuario();
 
-        	if ( $forma == 1 ) {
+            if ( $forma == 1 ) {
 
-        		if ( $postData !== null ) {
-        			$model->load($postData);
-        			//$model->validate();
+                if ( $postData !== null ) {
+                    $model->load($postData);
+                    //$model->validate();
 
-        		} else {
-	        		$model->recibo = $recibo;
-	        		$model->id_forma = $forma;
-	        		$model->deposito = 0;
-	        		$model->conciliado = 0;
-	        		$model->estatus = 0;
-	        		$model->codigo_banco = 0;
-	        		$model->cuenta_deposito = '';
-	        		$model->usuario = $usuario;
-	        		$model->id_banco = 0;
-	        		$model->fecha = date('Y-m-d');
-	        	}
-        		return $this->renderPartial('/recibo/pago/individual/forma-cheque', [
-        										'model' => $model,
-        										'caption' => 'Cheque',
-        										'operacion' => $operacion,
-        		]);
+                } else {
+                    $model->recibo = $recibo;
+                    $model->id_forma = $forma;
+                    $model->deposito = 0;
+                    $model->conciliado = 0;
+                    $model->estatus = 0;
+                    $model->codigo_banco = 0;
+                    $model->cuenta_deposito = '';
+                    $model->usuario = $usuario;
+                    $model->id_banco = 0;
+                    $model->fecha = date('Y-m-d');
+                }
+                return $this->renderPartial('/recibo/pago/individual/forma-cheque', [
+                                                'model' => $model,
+                                                'caption' => 'Cheque',
+                                                'operacion' => $operacion,
+                ]);
 
-        	} elseif ( $forma == 2 ) {
+            } elseif ( $forma == 2 ) {
 
-        		if ( $postData !== null ) {
-        			$model->load($postData);
-        		} else {
-	        		$model->recibo = $recibo;
-	        		$model->id_forma = $forma;
-	        		$model->cuenta = '';
-	        		$model->cheque = '';
-	        		$model->conciliado = 0;
-	        		$model->estatus = 0;
-	        		$model->codigo_banco = 0;
-	        		$model->cuenta_deposito = '';
-	        		$model->usuario = $usuario;
-					$model->id_banco = 0;
-				}
+                if ( $postData !== null ) {
+                    $model->load($postData);
+                } else {
+                    $model->recibo = $recibo;
+                    $model->id_forma = $forma;
+                    $model->cuenta = '';
+                    $model->cheque = '';
+                    $model->conciliado = 0;
+                    $model->estatus = 0;
+                    $model->codigo_banco = 0;
+                    $model->cuenta_deposito = '';
+                    $model->usuario = $usuario;
+                    $model->id_banco = 0;
+                }
 
-    			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-				$dataProvider = $pagoReciboSearch->getDataProviderRegistroVaucheTemp($usuario, $model->linea);
+                $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+                $dataProvider = $pagoReciboSearch->getDataProviderRegistroVaucheTemp($usuario, $model->linea);
 
-        		return $this->renderPartial('/recibo/pago/individual/forma-deposito', [
-        										'model' => $model,
-        										'caption' => 'Deposito',
-        										'operacion' => $operacion,
-        										'dataProvider' => $dataProvider,
+                return $this->renderPartial('/recibo/pago/individual/forma-deposito', [
+                                                'model' => $model,
+                                                'caption' => 'Deposito',
+                                                'operacion' => $operacion,
+                                                'dataProvider' => $dataProvider,
 
-        		]);
+                ]);
 
-        	} elseif ( $forma == 3 ) {
+            } elseif ( $forma == 3 ) {
 
-        		if ( $postData !== null ) {
-        			$model->load($postData);
-        		} else {
-	        		$model->recibo = $recibo;
-	        		$model->id_forma = $forma;
-	        		$model->cuenta = '';
-	        		$model->cheque = '';
-	        		$model->conciliado = 0;
-	        		$model->estatus = 0;
-	        		$model->codigo_banco = 0;
-	        		$model->cuenta_deposito = '';
-	        		$model->usuario = $usuario;
-					$model->id_banco = 0;
-				}
-        		return $this->renderPartial('/recibo/pago/individual/forma-efectivo', [
-        										'model' => $model,
-        										'caption' => 'Efectivo',
-        										'operacion' => $operacion,
-        		]);
+                if ( $postData !== null ) {
+                    $model->load($postData);
+                } else {
+                    $model->recibo = $recibo;
+                    $model->id_forma = $forma;
+                    $model->cuenta = '';
+                    $model->cheque = '';
+                    $model->conciliado = 0;
+                    $model->estatus = 0;
+                    $model->codigo_banco = 0;
+                    $model->cuenta_deposito = '';
+                    $model->usuario = $usuario;
+                    $model->id_banco = 0;
+                }
+                return $this->renderPartial('/recibo/pago/individual/forma-efectivo', [
+                                                'model' => $model,
+                                                'caption' => 'Efectivo',
+                                                'operacion' => $operacion,
+                ]);
 
-        	} elseif ( $forma == 4 ) {
+            } elseif ( $forma == 4 ) {
 
-        		$searchBanco = New BancoSearch();
-        		$listaBanco = $searchBanco->getListaBanco();
+                $searchBanco = New BancoSearch();
+                $listaBanco = $searchBanco->getListaBanco();
 
-        		$searchTipoTarjeta = New TipoTarjetaSearch();
-        		$listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
+                $searchTipoTarjeta = New TipoTarjetaSearch();
+                $listaTipoTarjeta = $searchTipoTarjeta->getListaTipoTarjetaDescripcion();
 
-        		if ( $postData !== null ) {
-        			$model->load($postData);
-        		} else {
-	        		$model->recibo = $recibo;
-	        		$model->id_forma = $forma;
-	        		$model->deposito = '';
-	        		$model->cheque = '';
-	        		$model->conciliado = 0;
-	        		$model->estatus = 0;
-	        		$model->codigo_banco = 0;
-	        		$model->cuenta_deposito = '';
-	        		$model->usuario = $usuario;
-					$model->id_banco = 0;
-					$model->fecha = date('Y-m-d');
-				}
-        		return $this->renderPartial('/recibo/pago/individual/forma-tarjeta', [
-        										'model' => $model,
-        										'caption' => 'Tarjeta',
-        										'listaBanco' => $listaBanco,
-        										'listaTipoTarjeta' => $listaTipoTarjeta,
-        										'operacion' => $operacion,
-        		]);
-        	} else {
-        		return null;
-        	}
+                if ( $postData !== null ) {
+                    $model->load($postData);
+                } else {
+                    $model->recibo = $recibo;
+                    $model->id_forma = $forma;
+                    $model->deposito = '';
+                    $model->cheque = '';
+                    $model->conciliado = 0;
+                    $model->estatus = 0;
+                    $model->codigo_banco = 0;
+                    $model->cuenta_deposito = '';
+                    $model->usuario = $usuario;
+                    $model->id_banco = 0;
+                    $model->fecha = date('Y-m-d');
+                }
+                return $this->renderPartial('/recibo/pago/individual/forma-tarjeta', [
+                                                'model' => $model,
+                                                'caption' => 'Tarjeta',
+                                                'listaBanco' => $listaBanco,
+                                                'listaTipoTarjeta' => $listaTipoTarjeta,
+                                                'operacion' => $operacion,
+                ]);
+            } else {
+                return null;
+            }
         }
 
 
@@ -1829,16 +1834,16 @@
          */
         public function actionExisteFormaPago($recibo, $idForma)
         {
-        	$result = false;
+            $result = false;
 
-			$usuario = Yii::$app->identidad->getUsuario();
-    		$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-    		$registers = $pagoReciboSearch->findFormaPago($idForma, $usuario);
-    		if ( count($registers) > 0 ) {
-    			$result = true;
-    		}
+            $usuario = Yii::$app->identidad->getUsuario();
+            $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+            $registers = $pagoReciboSearch->findFormaPago($idForma, $usuario);
+            if ( count($registers) > 0 ) {
+                $result = true;
+            }
 
-    		return $result;
+            return $result;
         }
 
 
@@ -1854,47 +1859,47 @@
          */
         public function actionActualizarMontoEfectivo($postEnviado)
         {
-        	$result = false;
-        	$model = New DepositoDetalleUsuarioForm();
-			$formName = $model->formName();
+            $result = false;
+            $model = New DepositoDetalleUsuarioForm();
+            $formName = $model->formName();
 
-        	if ( $postEnviado[$formName]['id_forma'] == 3 ) {
+            if ( $postEnviado[$formName]['id_forma'] == 3 ) {
 
-				$recibo = $postEnviado[$formName]['recibo'];
-				$usuario = Yii::$app->identidad->getUsuario();
-        		$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-        		$registers = $pagoReciboSearch->findFormaPago((int)$postEnviado[$formName]['id_forma'], $usuario);
+                $recibo = $postEnviado[$formName]['recibo'];
+                $usuario = Yii::$app->identidad->getUsuario();
+                $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+                $registers = $pagoReciboSearch->findFormaPago((int)$postEnviado[$formName]['id_forma'], $usuario);
 
-        		if ( count($registers) > 0 ) {
-        			$montoEnviado = str_replace(',', '.', $postEnviado[$formName]['monto']);
-        			$monto = $montoEnviado + $registers[0]['monto'];
-        			$linea = $registers[0]['linea'];
+                if ( count($registers) > 0 ) {
+                    $montoEnviado = str_replace(',', '.', $postEnviado[$formName]['monto']);
+                    $monto = $montoEnviado + $registers[0]['monto'];
+                    $linea = $registers[0]['linea'];
 
-        			$model->load($postEnviado);
+                    $model->load($postEnviado);
 
-        			$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
-	 			    $model->conciliado = 0;
-	 			    $model->cuenta = '';
-	 			    $model->cheque = '';
-	 			    $model->estatus = 0;
-	 			    $model->deposito = 0;
-	 			    $model->codigo_banco = 0;
-	 			    $model->cuenta_deposito = '';
+                    $model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+                    $model->conciliado = 0;
+                    $model->cuenta = '';
+                    $model->cheque = '';
+                    $model->estatus = 0;
+                    $model->deposito = 0;
+                    $model->codigo_banco = 0;
+                    $model->cuenta_deposito = '';
 
-	 			    $arregloCondicion = [
-	 			    	'linea' => $linea,
-	 			    ];
+                    $arregloCondicion = [
+                        'linea' => $linea,
+                    ];
 
-	 			    $arregloDatos = [
-	 			    	'monto' => $monto,
-	 			    ];
+                    $arregloDatos = [
+                        'monto' => $monto,
+                    ];
 
-	 			    $result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $arregloDatos);
+                    $result = self::actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $arregloDatos);
 
-        		}
-        	}
+                }
+            }
 
-        	return $result;
+            return $result;
         }
 
 
@@ -1907,79 +1912,79 @@
          */
         public function actionAgregarFormaPago($postEnviado)
         {
-        	$result = false;
-        	$model = New DepositoDetalleUsuarioForm();
-        	$formName = $model->formName();
+            $result = false;
+            $model = New DepositoDetalleUsuarioForm();
+            $formName = $model->formName();
 
-        	self::setConexion();
- 			$this->_conn->open();
- 			$this->_transaccion = $this->_conn->beginTransaction();
+            self::setConexion();
+            $this->_conn->open();
+            $this->_transaccion = $this->_conn->beginTransaction();
 
- 			if ( $postEnviado[$formName]['id_forma'] == 1 ) {
+            if ( $postEnviado[$formName]['id_forma'] == 1 ) {
 
- 				$model->scenario = self::SCENARIO_CHEQUE;
-				$model->load($postEnviado);
-				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
- 			    $model->conciliado = 0;
- 			    $model->estatus = 0;
- 			    $model->deposito = 0;
- 			    $model->codigo_banco = 0;
- 			    $model->cuenta_deposito = '';
- 			    $model->id_banco = 0;
+                $model->scenario = self::SCENARIO_CHEQUE;
+                $model->load($postEnviado);
+                $model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+                $model->conciliado = 0;
+                $model->estatus = 0;
+                $model->deposito = 0;
+                $model->codigo_banco = 0;
+                $model->cuenta_deposito = '';
+                $model->id_banco = 0;
 
- 			} elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
+            } elseif ( $postEnviado[$formName]['id_forma'] == 2 ) {
 
- 				$model->scenario = self::SCENARIO_DEPOSITO;
- 				$model->load($postEnviado);
- 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
- 			    $model->conciliado = 0;
- 			    $model->cuenta = '';
- 			    $model->cheque = '';
- 			    $model->estatus = 0;
- 			    $model->codigo_banco = 0;
- 			    $model->cuenta_deposito = '';
- 			    $model->id_banco = 0;
- 			    $model->monto = 0;
+                $model->scenario = self::SCENARIO_DEPOSITO;
+                $model->load($postEnviado);
+                $model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+                $model->conciliado = 0;
+                $model->cuenta = '';
+                $model->cheque = '';
+                $model->estatus = 0;
+                $model->codigo_banco = 0;
+                $model->cuenta_deposito = '';
+                $model->id_banco = 0;
+                $model->monto = 0;
 
- 			} elseif ( $postEnviado[$formName]['id_forma'] == 3 ) {
+            } elseif ( $postEnviado[$formName]['id_forma'] == 3 ) {
 
- 				$model->scenario = self::SCENARIO_EFECTIVO;
- 				$model->load($postEnviado);
- 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
- 			    $model->conciliado = 0;
- 			    $model->cuenta = '';
- 			    $model->cheque = '';
- 			    $model->estatus = 0;
- 			    $model->deposito = 0;
- 			    $model->codigo_banco = 0;
- 			    $model->cuenta_deposito = '';
- 			    $model->id_banco = 0;
+                $model->scenario = self::SCENARIO_EFECTIVO;
+                $model->load($postEnviado);
+                $model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+                $model->conciliado = 0;
+                $model->cuenta = '';
+                $model->cheque = '';
+                $model->estatus = 0;
+                $model->deposito = 0;
+                $model->codigo_banco = 0;
+                $model->cuenta_deposito = '';
+                $model->id_banco = 0;
 
- 			} elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
+            } elseif ( $postEnviado[$formName]['id_forma'] == 4 ) {
 
- 				$model->scenario = self::SCENARIO_TARJETA;
- 				$model->load($postEnviado);
- 				$model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
- 			    $model->conciliado = 0;
- 			    $model->estatus = 0;
- 			    $model->deposito = 0;
- 			    $model->codigo_banco = 0;
- 			    $model->cuenta_deposito = '';
- 			    $model->id_banco = 0;
- 			}
+                $model->scenario = self::SCENARIO_TARJETA;
+                $model->load($postEnviado);
+                $model->fecha = date('Y-m-d', strtotime($postEnviado[$formName]['fecha']));
+                $model->conciliado = 0;
+                $model->estatus = 0;
+                $model->deposito = 0;
+                $model->codigo_banco = 0;
+                $model->cuenta_deposito = '';
+                $model->id_banco = 0;
+            }
 
- 			$model->monto = str_replace(',','.', $model->monto);
+            $model->monto = str_replace(',','.', $model->monto);
 
- 			$result = self::actionBeginSaveFormaPagoTemp($model);
- 			if ( $result ) {
- 				$_SESSION['guardo'] = 1;
- 				$this->_transaccion->commit();
- 			} else {
- 				$this->_transaccion->rollBack();
- 			}
+            $result = self::actionBeginSaveFormaPagoTemp($model);
+            if ( $result ) {
+                $_SESSION['guardo'] = 1;
+                $this->_transaccion->commit();
+            } else {
+                $this->_transaccion->rollBack();
+            }
 
- 			$this->_conn->close();
- 			return $result;
+            $this->_conn->close();
+            return $result;
         }
 
 
@@ -1994,10 +1999,10 @@
          */
         private function actionBeginSaveFormaPagoTemp($model)
         {
-        	$d = $model->attributes;
-        	$tabla = $model->tableName();
+            $d = $model->attributes;
+            $tabla = $model->tableName();
 
-        	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+            return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
 
         }
 
@@ -2009,8 +2014,8 @@
          * @param DepositioDetalleUsuarioForm $model modelo de la clase.
          * @param array $arregloCondicion arreglo que posee el where condicion de la actualizacion
          * Estructura del arreglos:
-         * 	[
-         *  	'campo' => valor del campo,
+         *  [
+         *      'campo' => valor del campo,
          *  ]
          * @param array $arregloDatos arreglo de datos que seran actualizados.
          * @return boolean retorna true si ejecuta la operacion satisfactorimente, false en caso
@@ -2018,24 +2023,24 @@
          */
         private function actionBeginActualizarFormaPagoTemp($model, $arregloCondicion, $arregloDatos)
         {
-        	self::setConexion();
-        	$this->_conn->open();
+            self::setConexion();
+            $this->_conn->open();
 
-        	$model->fecha = date('Y-m-d', strtotime($model->fecha));
-        	//$arregloDatos = $model->attributes;
-        	$tabla = $model->tableName();
-        	$this->_transaccion = $this->_conn->beginTransaction();
+            $model->fecha = date('Y-m-d', strtotime($model->fecha));
+            //$arregloDatos = $model->attributes;
+            $tabla = $model->tableName();
+            $this->_transaccion = $this->_conn->beginTransaction();
 
-        	$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
-        	if ( $result ) {
-        		$_SESSION['guardo'] = 1;
- 				$this->_transaccion->commit();
- 			} else {
- 				$this->_transaccion->rollBack();
- 			}
-			$this->_conn->close();
+            $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+            if ( $result ) {
+                $_SESSION['guardo'] = 1;
+                $this->_transaccion->commit();
+            } else {
+                $this->_transaccion->rollBack();
+            }
+            $this->_conn->close();
 
-			return $result;
+            return $result;
         }
 
 
@@ -2047,31 +2052,31 @@
          * de la caja.
          * @param array $arregloCondicion arreglo de datos con la estructura:
          *  [
-         *  	campo => valor de campo,
+         *      campo => valor de campo,
          *  ]
          * @return boolean retorna true si ejecuta la operacion satisfactoriamente o false en caso
          * contrario.
          */
         private function actionSuprimirRegistroTemporal($arregloCondicion)
         {
-        	$result = false;
-        	$model = New DepositoDetalleUsuarioForm();
-        	$tabla = $model->tableName();
+            $result = false;
+            $model = New DepositoDetalleUsuarioForm();
+            $tabla = $model->tableName();
 
-        	self::setConexion();
-        	$this->_conn->open();
- 			$this->_transaccion = $this->_conn->beginTransaction();
+            self::setConexion();
+            $this->_conn->open();
+            $this->_transaccion = $this->_conn->beginTransaction();
 
- 			$result = $this->_conexion->eliminarRegistro($this->_conn, $tabla, $arregloCondicion);
+            $result = $this->_conexion->eliminarRegistro($this->_conn, $tabla, $arregloCondicion);
 
- 			if ( $result ) {
- 				$this->_transaccion->commit();
- 			} else {
- 				$this->_transaccion->rollBack();
- 			}
-			$this->_conn->close();
+            if ( $result ) {
+                $this->_transaccion->commit();
+            } else {
+                $this->_transaccion->rollBack();
+            }
+            $this->_conn->close();
 
-			return $result;
+            return $result;
         }
 
 
@@ -2088,10 +2093,10 @@
          */
         private function actionSuprimirDetalleTemporal($model, $arregloCondicion)
         {
-        	$result = false;
-        	$tabla = $model->tableName();
+            $result = false;
+            $tabla = $model->tableName();
 
- 			return $result = $this->_conexion->eliminarRegistro($this->_conn, $tabla, $arregloCondicion);
+            return $result = $this->_conexion->eliminarRegistro($this->_conn, $tabla, $arregloCondicion);
         }
 
 
@@ -2106,49 +2111,49 @@
          */
         public function actionInicializarTemporal($recibo = 0)
         {
-        	$procesoExitoso = false;
-        	$result = [];
-        	$modelDepositoDetalle = New DepositoDetalleUsuarioForm();
-        	$modelVauche = New VaucheDetalleUsuarioForm();
-        	$modelSerial = New SerialReferenciaForm();
+            $procesoExitoso = false;
+            $result = [];
+            $modelDepositoDetalle = New DepositoDetalleUsuarioForm();
+            $modelVauche = New VaucheDetalleUsuarioForm();
+            $modelSerial = New SerialReferenciaForm();
 
-        	self::setConexion();
-        	$this->_conn->open();
-        	$this->_transaccion = $this->_conn->beginTransaction();
+            self::setConexion();
+            $this->_conn->open();
+            $this->_transaccion = $this->_conn->beginTransaction();
 
-        	$arregloCondicion = [
-    			'usuario' => Yii::$app->identidad->getUsuario(),
-    		];
+            $arregloCondicion = [
+                'usuario' => Yii::$app->identidad->getUsuario(),
+            ];
 
-    		$result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
-        	$result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
-        	$result[] = self::actionSuprimirDetalleTemporal($modelSerial, $arregloCondicion);
+            $result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+            $result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
+            $result[] = self::actionSuprimirDetalleTemporal($modelSerial, $arregloCondicion);
 
-        	if ( $recibo > 0 ) {
-        		$arregloCondicion = [
-        			'recibo' => $recibo,
-        		];
-        		$result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
-        		$result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
-        		$result[] = self::actionSuprimirDetalleTemporal($modelSerial, $arregloCondicion);
-        	}
+            if ( $recibo > 0 ) {
+                $arregloCondicion = [
+                    'recibo' => $recibo,
+                ];
+                $result[] = self::actionSuprimirDetalleTemporal($modelVauche, $arregloCondicion);
+                $result[] = self::actionSuprimirDetalleTemporal($modelDepositoDetalle, $arregloCondicion);
+                $result[] = self::actionSuprimirDetalleTemporal($modelSerial, $arregloCondicion);
+            }
 
-        	$cancel = false;
-        	foreach ( $result as $key => $value ) {
-        		if ( $value === false ) {
-        			$cancel = true;
-        		}
-        	}
+            $cancel = false;
+            foreach ( $result as $key => $value ) {
+                if ( $value === false ) {
+                    $cancel = true;
+                }
+            }
 
-        	if ( !$cancel ) {
-        		$this->_transaccion->commit();
-        		$procesoExitoso = true;
-        	} else {
-        		$this->_transaccion->rollBack();
-        	}
-        	$this->_conn->close();
+            if ( !$cancel ) {
+                $this->_transaccion->commit();
+                $procesoExitoso = true;
+            } else {
+                $this->_transaccion->rollBack();
+            }
+            $this->_conn->close();
 
-        	return $procesoExitoso;
+            return $procesoExitoso;
         }
 
 
@@ -2159,14 +2164,14 @@
          * para registrar las formas de pagos de un recibo.
          * @param array $arregloCondicion arreglo de datos con la estructura:
          *  [
-         *  	campo => valor de campo,
+         *      campo => valor de campo,
          *  ]
          * @return boolean retorna true si ejecuta la operacion satisfactoriamente o
          * false en caso contrario.
          */
         private function actionSuprimir($arregloCondicion)
         {
-        	return $result = self::actionSuprimirRegistroTemporal($arregloCondicion);
+            return $result = self::actionSuprimirRegistroTemporal($arregloCondicion);
         }
 
 
@@ -2182,68 +2187,68 @@
          */
         public function actionViewAgregarDetalleDeposito()
         {
-			$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+            $recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
 
-			$usuario = Yii::$app->identidad->getUsuario();
-			$searchTipoDeposito = New TipoDepositoSearch();
-			$listaTipoDeposito = $searchTipoDeposito->getListaTipoDeposito();
+            $usuario = Yii::$app->identidad->getUsuario();
+            $searchTipoDeposito = New TipoDepositoSearch();
+            $listaTipoDeposito = $searchTipoDeposito->getListaTipoDeposito();
 
-        	$request = Yii::$app->request;
-        	$modelVauche = New VaucheDetalleUsuarioForm();
-        	$formName = $modelVauche->formName();
+            $request = Yii::$app->request;
+            $modelVauche = New VaucheDetalleUsuarioForm();
+            $formName = $modelVauche->formName();
 
-        	if ( $request->isGet ) {
-        		// Viene de seleccionar el numero de deposito para cargar los detalles
-        		// del mismo.
+            if ( $request->isGet ) {
+                // Viene de seleccionar el numero de deposito para cargar los detalles
+                // del mismo.
 
-        		if ( (int)$request->get('recibo') === $recibo ) {
-        			$modelVauche->linea = (int)$request->get('linea');
-        			$modelVauche->recibo = (int)$request->get('recibo');
-        			$modelVauche->deposito = (int)$request->get('deposito');
-        			$modelVauche->usuario = $usuario;
+                if ( (int)$request->get('recibo') === $recibo ) {
+                    $modelVauche->linea = (int)$request->get('linea');
+                    $modelVauche->recibo = (int)$request->get('recibo');
+                    $modelVauche->deposito = (int)$request->get('deposito');
+                    $modelVauche->usuario = $usuario;
 
-		        	return $this->renderAjax('/recibo/pago/individual/agregar-detalle-deposito-form', [
-		        													'modelVauche' => $modelVauche,
-		        													'listaTipoDeposito' => $listaTipoDeposito,
-		        													'url' => Url::to(['view-agregar-detalle-deposito']),
-		        		]);
-		        }
-        	} else {
+                    return $this->renderAjax('/recibo/pago/individual/agregar-detalle-deposito-form', [
+                                                                    'modelVauche' => $modelVauche,
+                                                                    'listaTipoDeposito' => $listaTipoDeposito,
+                                                                    'url' => Url::to(['view-agregar-detalle-deposito']),
+                        ]);
+                }
+            } else {
 
-        		$postData = $request->post();
+                $postData = $request->post();
 
-        		if ( $modelVauche->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($modelVauche);
-				}
+                if ( $modelVauche->load($postData)  && Yii::$app->request->isAjax ) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($modelVauche);
+                }
 
-				if ( $modelVauche->load($postData) ) {
+                if ( $modelVauche->load($postData) ) {
 
-					if ( $modelVauche->validate() ) {
-						// Se guarda el detalle del deposito.
+                    if ( $modelVauche->validate() ) {
+                        // Se guarda el detalle del deposito.
 
-						self::setConexion();
-						$this->_conn->open();
-						$this->_transaccion = $this->_conn->beginTransaction();
+                        self::setConexion();
+                        $this->_conn->open();
+                        $this->_transaccion = $this->_conn->beginTransaction();
 
-						$result = self::actionBeginAgregarDetalleDeposito($modelVauche, $postData);
-						if ( $result ) {
-							// Se actualiza el maestro del vaucher.
-							$result = self::actionActualizarMontoDeposito($modelVauche, 'sumar');
-							if ( $result ) {
-								$this->_transaccion->commit();
-							} else {
-								$this->_transaccion->rollBack();
-							}
+                        $result = self::actionBeginAgregarDetalleDeposito($modelVauche, $postData);
+                        if ( $result ) {
+                            // Se actualiza el maestro del vaucher.
+                            $result = self::actionActualizarMontoDeposito($modelVauche, 'sumar');
+                            if ( $result ) {
+                                $this->_transaccion->commit();
+                            } else {
+                                $this->_transaccion->rollBack();
+                            }
 
-						} else {
-							$this->_transaccion->rollBack();
-						}
-						$this->_conn->close();
-					}
-				}
-        	}
-        	$this->redirect(['registrar-formas-pago']);
+                        } else {
+                            $this->_transaccion->rollBack();
+                        }
+                        $this->_conn->close();
+                    }
+                }
+            }
+            $this->redirect(['registrar-formas-pago']);
         }
 
 
@@ -2252,39 +2257,39 @@
         /***/
         public function actionViewAgregarSerialForm()
         {
-			$recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
+            $recibo = isset($_SESSION['recibo']) ? (int)$_SESSION['recibo'] : 0;
 
-			$usuario = Yii::$app->identidad->getUsuario();
-			$modelSerial = New SerialReferenciaForm();
-			$formName = $modelSerial->formName();
+            $usuario = Yii::$app->identidad->getUsuario();
+            $modelSerial = New SerialReferenciaForm();
+            $formName = $modelSerial->formName();
 
-        	$request = Yii::$app->request;
+            $request = Yii::$app->request;
 
-        	if ( $request->isGet ) {
-        		// Viene de seleccionar el numero de deposito para cargar los detalles
-        		// del mismo.
-	        	return $this->renderAjax('/recibo/pago/individual/agregar-serial-form', [
-	        													'modelSerial' => $modelSerial,
-	        													'url' => Url::to(['view-agregar-serial-form']),
-	        			]);
+            if ( $request->isGet ) {
+                // Viene de seleccionar el numero de deposito para cargar los detalles
+                // del mismo.
+                return $this->renderAjax('/recibo/pago/individual/agregar-serial-form', [
+                                                                'modelSerial' => $modelSerial,
+                                                                'url' => Url::to(['view-agregar-serial-form']),
+                        ]);
 
-        	} else {
+            } else {
 
-        		$postData = $request->post();
+                $postData = $request->post();
 
-        		if ( $modelSerial->load($postData)  && Yii::$app->request->isAjax ) {
-					Yii::$app->response->format = Response::FORMAT_JSON;
-					return ActiveForm::validate($modelSerial);
-				}
+                if ( $modelSerial->load($postData)  && Yii::$app->request->isAjax ) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return ActiveForm::validate($modelSerial);
+                }
 
-				if ( $modelSerial->load($postData) ) {
+                if ( $modelSerial->load($postData) ) {
 
-					if ( $modelSerial->validate() ) {
-						// Se guarda el detalle del deposito.
+                    if ( $modelSerial->validate() ) {
+                        // Se guarda el detalle del deposito.
 
-					}
-				}
-        	}
+                    }
+                }
+            }
         }
 
 
@@ -2301,10 +2306,10 @@
          */
         private function actionBeginAgregarDetalleDeposito($model, $postEnviado)
         {
-        	$result = false;
-        	$tabla = $model->tableName();
-        	$model->monto = str_replace(',', '.', $model->monto);
-        	return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
+            $result = false;
+            $tabla = $model->tableName();
+            $model->monto = str_replace(',', '.', $model->monto);
+            return $result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $model->attributes);
 
         }
 
@@ -2320,37 +2325,37 @@
          */
         private function actionActualizarMontoDeposito($model, $operacion)
         {
-        	$result = false;
-        	$monto = 0;
-        	$recibo = isset($model->recibo) ? $model->recibo : 0;
-			$pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
-			$model->monto = str_replace(',', '.', $model->monto);
+            $result = false;
+            $monto = 0;
+            $recibo = isset($model->recibo) ? $model->recibo : 0;
+            $pagoReciboSearch = New PagoReciboIndividualSearch($recibo);
+            $model->monto = str_replace(',', '.', $model->monto);
 
-			$monto = $pagoReciboSearch->contabilizarVaucheDetalleDepositoUsuario($model->usuario, $model->deposito);
-			if ( $monto >= 0 ) {
-				$modelUsuario = New DepositoDetalleUsuarioForm();
-				$tabla = $modelUsuario->tableName();
+            $monto = $pagoReciboSearch->contabilizarVaucheDetalleDepositoUsuario($model->usuario, $model->deposito);
+            if ( $monto >= 0 ) {
+                $modelUsuario = New DepositoDetalleUsuarioForm();
+                $tabla = $modelUsuario->tableName();
 
-				$arregloCondicion = [
-					'recibo' => $model->recibo,
-					'deposito' => $model->deposito,
-					'usuario' => $model->usuario,
-				];
+                $arregloCondicion = [
+                    'recibo' => $model->recibo,
+                    'deposito' => $model->deposito,
+                    'usuario' => $model->usuario,
+                ];
 
-				if ( $operacion == 'sumar' ) {
-					$arregloDatos = [
-						'monto' => $monto + $model->monto,
-					];
-				} elseif ( $operacion == 'restar' ) {
-					$arregloDatos = [
-						'monto' => $monto - $model->monto,
-					];
-				}
+                if ( $operacion == 'sumar' ) {
+                    $arregloDatos = [
+                        'monto' => $monto + $model->monto,
+                    ];
+                } elseif ( $operacion == 'restar' ) {
+                    $arregloDatos = [
+                        'monto' => $monto - $model->monto,
+                    ];
+                }
 
-				$result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
-			}
+                $result = $this->_conexion->modificarRegistro($this->_conn, $tabla, $arregloDatos, $arregloCondicion);
+            }
 
-			return $result;
+            return $result;
         }
 
 
@@ -2390,86 +2395,86 @@
 
 
         /**
-		 * Metodo salida del modulo.
-		 * @return view
-		 */
-		public function actionQuit()
-		{
-			self::actionInicializarTemporal();
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
-		}
+         * Metodo salida del modulo.
+         * @return view
+         */
+        public function actionQuit()
+        {
+            self::actionInicializarTemporal();
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
+        }
 
 
 
-		/**
-		 * Metodo que ejecuta la anulacion de las variables de session utilizados
-		 * en el modulo.
-		 * @param  array $varSessions arreglo con los nombres de las variables de
-		 * sesion que seran anuladas.
-		 * @return none.
-		 */
-		public function actionAnularSession($varSessions)
-		{
-			Session::actionDeleteSession($varSessions);
-		}
+        /**
+         * Metodo que ejecuta la anulacion de las variables de session utilizados
+         * en el modulo.
+         * @param  array $varSessions arreglo con los nombres de las variables de
+         * sesion que seran anuladas.
+         * @return none.
+         */
+        public function actionAnularSession($varSessions)
+        {
+            Session::actionDeleteSession($varSessions);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
-		 * satisfactoriamente.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionProcesoExitoso($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista indicando que le proceso se ejecuto
+         * satisfactoriamente.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionProcesoExitoso($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista que indica que ocurrio un error en la
-		 * ejecucion del proceso.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionErrorOperacion($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista que indica que ocurrio un error en la
+         * ejecucion del proceso.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionErrorOperacion($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que permite obtener un arreglo de las variables de sesion
-		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
-		 * los nombres de las variables de sesion.
-		 * @return array retorna un arreglo de nombres.
-		 */
-		public function actionGetListaSessions()
-		{
-			return $varSession = [
-							'postData',
-							'recibo',
-							'begin',
-							'postEnviado',
-							'datosRecibo',
-							'datosBanco',
+        /**
+         * Metodo que permite obtener un arreglo de las variables de sesion
+         * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+         * los nombres de las variables de sesion.
+         * @return array retorna un arreglo de nombres.
+         */
+        public function actionGetListaSessions()
+        {
+            return $varSession = [
+                            'postData',
+                            'recibo',
+                            'begin',
+                            'postEnviado',
+                            'datosRecibo',
+                            'datosBanco',
                             'reciboRafaga',
-					];
+                    ];
 
-		}
+        }
 
 
 
-	}
+    }
 ?>
