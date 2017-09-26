@@ -8,10 +8,18 @@
 	// 16/lote/archivo/banesco/
 	// 14/lote/archivo/caroni/
 	$rutaBase = dirname(__DIR__);
-	//$rutaBase = '';
+
+	// Windows
 	return [
-		12 => $rutaBase . '/home/bod/',
-		14 => $rutaBase . '/home/caroni/',
-		16 => $rutaBase . '/home/banesco/',
+		12 => $rutaBase . '/lote/archivo/bod/',
+		14 => $rutaBase . '/lote/archivo/caroni/',
+		16 => $rutaBase . '/lote/archivo/banesco/',
 	];
+
+	// //Linux
+	// return [
+	// 	12 => $rutaBase . '/home/bod/',
+	// 	14 => $rutaBase . '/home/caroni/',
+	// 	16 => $rutaBase . '/home/banesco/',
+	// ];
  ?>
