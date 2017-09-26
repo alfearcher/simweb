@@ -186,9 +186,10 @@
 		 */
 		public function crearListaArchivo($arregloArchivo)
 		{
+die(var_dump(self::getRuta()));
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
-die(var_dump(self::getRuta()));
+
 				// Permite mostrar el contenido del direcorio y lo muestra en un arreglo
 				// cada item encontrado sera un elemento del arreglo.
 				//$ficheros1  = scandir(self::getRuta());
