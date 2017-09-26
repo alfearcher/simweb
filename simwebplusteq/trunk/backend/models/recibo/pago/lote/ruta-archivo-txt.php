@@ -18,8 +18,8 @@
 
 	//Linux
 	return [
-		12 => $rutaBase . '/home/bod/',
-		14 => $rutaBase . '/home/bcocaroni/',
-		16 => $rutaBase . '/home/banesco/',
+		12 => $rutaBase . '/home/bod',
+		14 => $rutaBase . '/home/bcocaroni',
+		16 => $rutaBase . '/home/banesco',
 	];
  ?>
