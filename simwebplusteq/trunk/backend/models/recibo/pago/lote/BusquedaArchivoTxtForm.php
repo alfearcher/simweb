@@ -143,7 +143,9 @@
 	    	// identificadores de los bancos que seran mostrados en el combo del formulario
 	    	// de consulta. Estos identificadores corresponden a los bancos que envian
 	    	// los archivos txt de pagos.
-	    	return $listaIdBanco = [12, 14, 16];
+	    	$alias = require('alias-banco-archivo-txt.php');
+			return array_keys($alias);
+	    	//return $listaIdBanco = [12, 14, 16];
 	    }
 
 
