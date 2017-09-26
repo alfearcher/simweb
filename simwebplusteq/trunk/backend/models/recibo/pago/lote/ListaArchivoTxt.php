@@ -186,7 +186,13 @@
 		 */
 		public function crearListaArchivo($arregloArchivo)
 		{
-die(var_dump(scandir("/var/www/html/simwebplusteq/backend/models/recibo/pago/home")));
+//die(var_dump(scandir("/var/www/html/simwebplusteq/backend/models/recibo/pago/home")));
+$directorio = "/var/www/html/simwebplusteq/backend/models/recibo/pago/home";
+$gestor_dir = opendir($directorio);
+while (false !== ($nombre_fichero = readdir($gestor_dir))) {
+    $ficheros[] = $nombre_fichero;
+}
+die(var_dump($ficheros));
 			if ( is_dir(self::getRuta()) ) {
 				$gestor = opendir(self::getRuta());
 
