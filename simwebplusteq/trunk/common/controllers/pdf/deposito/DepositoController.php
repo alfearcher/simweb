@@ -233,7 +233,7 @@
 			$mpdf->SetY(180);
 			$mpdf->SetFont('Arial', 'N', 7);
 			$coletilla = Yii::t('backend', '"El depositante declara que los fondos utilizados en esta operación tienen un origen y un destino lícito, y que no provienen de ninguna actividad ilícita de las contempladas en la Ley Orgánica contra El Tráfico Ilícito y El Consumo de Sustancias Estupefacientes y Psicotrópicas y demás Leyes Penales Vigentes en la República Bolivariana de Venezuela. Los depósitos y pagos efectuados quedan sometidos a las condiciones generales vigentes en cada caso a la presente fecha, así como aquellas que en el futuro las modifique total o parcialmente, las cuales se encuentran a disposición del cliente en las Agencias Bancarias. El Banco no asumirá responsabilidad alguna por errores en que incurriere el depositante al momento de completar el formulario".');
-			$mpdf->MultiCell(0, 2, utf8_decode((utf8_encode($coletilla))), 0, 'J', false);
+			$mpdf->MultiCell(0, 3, utf8_decode((utf8_encode($coletilla))), 0, 'J', false);
 			return;
 		}
 
