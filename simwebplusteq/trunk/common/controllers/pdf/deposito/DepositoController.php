@@ -194,8 +194,7 @@
 
 	        self::coletilla($mpdf, 13);
 	        self::cuadroFormaPago($mpdf, 13);
-
-	        $mpdf->SetFooter(date('d-m-Y') . ' '. Yii::$app->identidad->getUsuario());
+	        self::identidadUsuarioPrint($mpdf, 13);
 
 	       	//funciona
 	       	// $mpdf->Rect(18, 230, 100, 30, D);
@@ -220,6 +219,26 @@
 	       	$mpdf->Output($nombre, 'I');
 	       	exit;
 		}
+
+
+
+		/**
+		 * Metodo que retorna la informacion del usuario que esta imprimiendo el
+		 * documento.
+		 * @param mPDF $mpdf instancia de la clase mPDF
+		 * @param integer $y valor vertical de la vista.
+		 * @return view
+		 */
+		public function identidadUsuarioPrint(mPDF $mpdf, $y)
+		{
+			//$identidadUsuario = date('d-m-Y') . ' - '. Yii::$app->identidad->getUsuario();
+			$identidadUsuario = date('d-m-Y') . ' - '. 'joseperez320@gmail.com';
+			$mpdf->SetFont('Verdana', 'N', 8);
+			$mpdf->Text(16, 268, $identidadUsuario);
+			//$mpdf->SetFooter(date('d-m-Y') . ' '. Yii::$app->identidad->getUsuario());
+			return;
+		}
+
 
 
 		/**
