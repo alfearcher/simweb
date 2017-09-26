@@ -10,17 +10,17 @@
 	$rutaBase = dirname(__DIR__);
 
 	// Windows
-	// return [
-	// 	12 => $rutaBase . '/lote/archivo/bod/',
-	// 	14 => $rutaBase . '/lote/archivo/caroni/',
-	// 	16 => $rutaBase . '/lote/archivo/banesco/',
-	// ];
+	return [
+		12 => $rutaBase . '/lote/archivo/bod/',
+		14 => $rutaBase . '/lote/archivo/caroni/',
+		16 => $rutaBase . '/lote/archivo/banesco/',
+	];
 
 	//Linux
-	$rutaBase = '';
-	return [
-		12 => $rutaBase . '/home/bod',
-		14 => $rutaBase . '/home/bcocaroni',
-		16 => $rutaBase . '/home/banesco',
-	];
+	// $rutaBase = '';
+	// return [
+	// 	12 => $rutaBase . '/home/bod',
+	// 	14 => $rutaBase . '/home/bcocaroni',
+	// 	16 => $rutaBase . '/home/banesco',
+	// ];
  ?>
