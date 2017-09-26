@@ -334,7 +334,7 @@
 
 			if ( (int)$this->todos_contribuyentes == 1 ) {
 				// La consulta se realiza sobre un lote
-				$results = $findModel->asArray()->limit(205)->all();
+				$results = $findModel->asArray()->all();
 			} else {
 				// La consulta se realiza sobre uno
 				if ( (int)$this->id_contribuyente > 0 ) {
