@@ -9,14 +9,15 @@
 	// 14/lote/archivo/caroni/
 	$rutaBase = dirname(__DIR__);
 
-	// // Windows
+	// Windows
 	// return [
 	// 	12 => $rutaBase . '/lote/archivo/bod/',
 	// 	14 => $rutaBase . '/lote/archivo/caroni/',
 	// 	16 => $rutaBase . '/lote/archivo/banesco/',
 	// ];
 
-	//Linux
+	// Linux
+	$rutaBase = '';
 	return [
 		12 => $rutaBase . '/home/bod/',
 		14 => $rutaBase . '/home/bcocaroni/',
