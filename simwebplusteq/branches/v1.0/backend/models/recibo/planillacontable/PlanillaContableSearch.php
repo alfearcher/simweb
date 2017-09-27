@@ -59,7 +59,7 @@
 		private $_conexion;
 
 		private $_errores;
-
+		private $_fecha_pago;
 
 
 		/**
@@ -67,12 +67,16 @@
 		 * @param integer $recibo numero de recibo de pago.
 		 * @param ConexionController $conexion instancia de la clase.
 		 * @param connection $conn
+		 * @param string $fechaPago fecha de pago de la transaccion, este valor se debe
+		 * asignar cuando se esta efectuando el pago, para los casos donde se este contabilizando
+		 * nuevamente no es necesario asignarlo.
 		 */
-		public function __construct($recibo, $conexion, $conn)
+		public function __construct($recibo, $conexion, $conn, $fechaPago = null)
 		{
 			$this->_recibo = $recibo;
 			$this->_conexion = $conexion;
 			$this->_conn = $conn;
+			$this->_fecha_pago = ( $fechaPago !== null ) ? date('Y-m-d', strtotime($fechaPago)) : null;
 		}
 
 
@@ -181,7 +185,7 @@
 		 */
 		private function generarPlanillaPresupuesto()
 		{
-			$generar = New GenerarPlanillaPresupuesto($this->_recibo);
+			$generar = New GenerarPlanillaPresupuesto($this->_recibo, $this->_fecha_pago);
 			$distribucion = $generar->iniciarPlanillaPresupuesto();
 			if ( count($generar->getError()) > 0 ) {
 				$distribucion = [];
