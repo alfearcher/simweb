@@ -82,6 +82,7 @@
     use common\controllers\pdf\deposito\DepositoController;
     use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
     use backend\models\utilidad\banco\BancoCuentaReceptora;
+    use backend\models\usuario\AutorizacionUsuario;
 
 
     session_start();        // Iniciando session
@@ -126,7 +127,17 @@
          */
         public function actionIndex()
         {
-            $this->redirect(['mostrar-form-consulta']);
+            $varSessions = self::actionGetListaSessions();
+            self::actionAnularSession($varSessions);
+            $autorizacion = New AutorizacionUsuario();
+            if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+                $_SESSION['begin'] = 1;
+                $this->redirect(['mostrar-form-consulta']);
+            } else {
+                // Su perfil no esta autorizado.
+                // El usuario no esta autorizado.
+                $this->redirect(['error-operacion', 'cod' => 700]);
+            }
         }
 
 
@@ -145,7 +156,7 @@
         {
             self::actionAnularSession(['datosRecibo', 'recibo', 'postEnviado']);
             $model = New BusquedaReciboForm();
-            if ( $model->usuarioAutorizado(Yii::$app->identidad->getUsuario()) ) {
+            if ( isset($_SESSION['begin']) ) {
 
                 $request = Yii::$app->request;
                 $postData = $request->post();
@@ -294,6 +305,7 @@
 
             } else {
                 // Usuario no autorizado.
+                $this->redirect(['error-operacion', 'cod' => 700]);
             }
         }
 
@@ -2463,17 +2475,15 @@
         public function actionGetListaSessions()
         {
             return $varSession = [
-                            'postData',
-                            'recibo',
-                            'begin',
-                            'postEnviado',
-                            'datosRecibo',
-                            'datosBanco',
-                            'reciboRafaga',
+                        'postData',
+                        'recibo',
+                        'begin',
+                        'postEnviado',
+                        'datosRecibo',
+                        'datosBanco',
+                        'reciboRafaga',
                     ];
-
         }
-
 
 
     }
