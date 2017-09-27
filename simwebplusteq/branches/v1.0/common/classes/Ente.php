@@ -87,7 +87,7 @@
 		protected $municipio = 'Guaicaipuro';
 
 		protected $cuentaRecaudadora = [
-						'1234-1234-99-1234567890'
+						'01280063186300031652',
 					];
 
 		// identificador dentro del sistema, generado por el mismo.
@@ -98,6 +98,16 @@
 
 		public function __construct()
 		{
+		}
+
+
+		/**
+		 * Metodo que retorna el arreglo con todos los numeros de la cuentas recaudadoras
+		 * @return array
+		 */
+		public function getCuentaRecaudadora()
+		{
+			return $this->cuentaRecaudadora;
 		}
 
 
