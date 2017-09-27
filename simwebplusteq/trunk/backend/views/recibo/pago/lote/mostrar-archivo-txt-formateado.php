@@ -199,10 +199,10 @@
                         'name' => 'chkRecibo',
                         'multiple' => false,
                         'checkboxOptions' => function ($model, $key, $index, $column) {
-                        	return [
-            					'onClick' => 'javascript: return false;',
-	                            'checked' => true,
-            				];
+                //         	return [
+            				// 	'onClick' => 'javascript: return false;',
+	               //              'checked' => true,
+            				// ];
                         	if ( $model['estatus'] > 0 ) {
                 				return [
                 					'disabled' => 'disabled',
