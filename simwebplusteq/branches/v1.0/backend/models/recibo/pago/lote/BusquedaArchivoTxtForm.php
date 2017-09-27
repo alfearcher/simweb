@@ -57,6 +57,7 @@
 		public $fecha_desde;
 		public $fecha_hasta;
 		public $fecha_pago;
+		public $sin_formato;
 
 		private $rangoValido;
 
@@ -81,17 +82,17 @@
 	        	[['id_banco', 'fecha_desde', 'fecha_hasta'],
 	        	  'required',
 	        	  'message' => Yii::t('backend', '{attribute} is required')],
-	        	[['id_banco',],
+	        	[['id_banco', 'sin_formato'],
 	        	  'integer',
 	        	  'message' => Yii::t('backend', 'El banco no es valido')],
-	        	['fecha_desde',
-	        	 'compare',
-	        	 'compareAttribute' => 'fecha_hasta',
-	        	 'operator' => '<=',
-	        	 'enableClientValidation' => false
-	        	],
+	        	// ['fecha_desde',
+	        	//  'compare',
+	        	//  'compareAttribute' => 'fecha_hasta',
+	        	//  'operator' => '<=',
+	        	//  'enableClientValidation' => false
+	        	// ],
 	        	['fecha_desde' , 'validarRango'],
-	        	[['fecha_pago',],'safe'],
+	        	[['fecha_pago', 'sin_formato'],'safe'],
 	        ];
 	    }
 
@@ -124,6 +125,7 @@
 	        	'id_banco' => Yii::t('backend', 'Banco'),
 	        	'fecha_desde' => Yii::t('backend', 'Desde'),
 	        	'fecha_hasta' => Yii::t('backend', 'Hasta'),
+	        	'sin_formato' => Yii::t('backend', 'Ver sin formato'),
 
 	        ];
 	    }
@@ -157,6 +159,23 @@
 	    	$bancoSearch = New BancoSearch();
 	    	return $bancoSearch->getListaBancoById(self::getListaIdBancoTxt());
 	    }
+
+
+
+
+	    /**
+	     * Metodo que realiza la busqueda de los datos del banco segun
+	     * su identificador.
+	     * @param  integer $idBanco identificador del banco en la entidad.
+	     * @return Banco.
+	     */
+	    public function getBancoById($idBanco)
+	    {
+	    	$bancoSearch = New BancoSearch();
+	    	return $bancoSearch->findBanco($idBanco);
+	    }
+
+
 
 
 	    /**
