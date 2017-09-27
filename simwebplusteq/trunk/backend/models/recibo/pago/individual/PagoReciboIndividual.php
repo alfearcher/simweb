@@ -232,7 +232,7 @@
 
 			// Distribucion de los ingresos presupuestarios.
 			if ( $result ) {
-				$planillaContableSearch = New PlanillaContableSearch($this->_recibo, $this->_conexion, $this->_conn);
+				$planillaContableSearch = New PlanillaContableSearch($this->_recibo, $this->_conexion, $this->_conn, $this->_fecha_pago);
 				$result = $planillaContableSearch->iniciarDistribucionPresupuestaria();
 			}
 
