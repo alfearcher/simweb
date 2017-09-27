@@ -247,13 +247,13 @@
 					// Significa que los seriales a tomar para las referencias son las mismas planillas.
 					foreach ( $this->_depositoPlanilla as $key => $value ) {
 
-						$this->_modelSerial[$key]->recibo = $value['recibo'];
-						$this->_modelSerial[$key]->serial = $value['planilla'];
-						$this->_modelSerial[$key]->fecha_edocuenta = $this->_deposito['fecha'];
-						$this->_modelSerial[$key]->monto_edocuenta = $value['monto'];
-						$this->_modelSerial[$key]->estatus = 0;
-						$this->_modelSerial[$key]->observacion = $this->_observacion;
-						$this->_modelSerial[$key]->usuario = Yii::$app->identidad->getUsuario();
+						$this->_modelSerial[$key]['recibo'] = $value['recibo'];
+						$this->_modelSerial[$key]['serial'] = $value['planilla'];
+						$this->_modelSerial[$key]['fecha_edocuenta'] = $this->_deposito['fecha'];
+						$this->_modelSerial[$key]['monto_edocuenta'] = $value['monto'];
+						$this->_modelSerial[$key]['estatus'] = 0;
+						$this->_modelSerial[$key]['observacion'] = $this->_observacion;
+						$this->_modelSerial[$key]['usuario'] = Yii::$app->identidad->getUsuario();
 
 						self::relacionar($this->_modelSerial[$key], $value);
 					}
@@ -332,13 +332,13 @@
 				'planilla' => $datoPlanilla['planilla'],
 				'monto_planilla' => $datoPlanilla['monto'],
 				'id_contribuyente' => $this->_deposito['id_contribuyente'],
-				'fecha_edocuenta' => $datoSerial->fecha_edocuenta,
-				'serial_edocuenta' => $datoSerial->serial,
-				'debito' => ( $datoSerial->monto_edocuenta < 0 ) ? $datoSerial->monto_edocuenta : 0,
-				'credito' => ( $datoSerial->monto_edocuenta >= 0 ) ? $datoSerial->monto_edocuenta : 0,
-				'estatus' => $datoSerial->estatus,
-				'observacion' => $datoSerial->observacion,
-				'usuario' => $datoSerial->usuario,
+				'fecha_edocuenta' => $datoSerial['fecha_edocuenta'],
+				'serial_edocuenta' => $datoSerial['serial'],
+				'debito' => ( $datoSerial['monto_edocuenta'] < 0 ) ? $datoSerial['monto_edocuenta'] : 0,
+				'credito' => ( $datoSerial['monto_edocuenta'] >= 0 ) ? $datoSerial['monto_edocuenta'] : 0,
+				'estatus' => $datoSerial['estatus'],
+				'observacion' => $datoSerial['observacion'],
+				'usuario' => $datoSerial['usuario'],
 				'fecha_hora' => date('Y-m-d H:i:s'),
 
 			];
