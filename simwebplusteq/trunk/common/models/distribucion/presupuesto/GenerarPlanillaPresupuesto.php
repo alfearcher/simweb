@@ -57,6 +57,7 @@
 	{
 
 		private $_recibo;
+		private $_fecha_pago;
 
 		/**
 		 * Variable que contiene los datos del contribuyente.
@@ -90,10 +91,14 @@
 		/**
 		 * Metodo constructor de la clase.
 		 * @param integer $recibo numero del recibo de pago.
+		 * @param string $fechaPago fecha de pago de la transaccion, este valor se debe
+		 * asignar cuando se esta efectuando el pago, para los casos donde se este contabilizando
+		 * nuevamente no es necesario asignarlo.
 		 */
-		public function __construct($recibo)
+		public function __construct($recibo, $fechaPago = null)
 		{
 			$this->_recibo = $recibo;
+			$this->_fecha_pago = ( $fechaPago !== null ) ? date('Y-m-d', strtotime($fechaPago)) : null;
 		}
 
 
@@ -273,18 +278,19 @@
 			$montoReconocimiento = $detallePlanilla['monto_reconocimiento'];
 			$impuestoDescripcion = $detallePlanilla['descripcion_impuesto'];
 
+			$fechaPago = ( $this->_fecha_pago !== null ) ? $this->_fecha_pago : date('Y-m-d', strtotime($detallePlanilla['fecha_pago']));
 			$primeraVez = true;
 
 			// Lista de codigos presupuestarios
 			$listaCodigo = self::getRelacionImpuestoPresupuesto();
 
 			$codigo = isset($listaCodigo[$detallePlanilla['impuesto']]) ? $listaCodigo[$detallePlanilla['impuesto']] : '';
-
+//die(var_dump( $fechaPago >= date('Y-m-d', strtotime('2011-01-01'))));
 			// Se comienza con la distribucion.
 			$listaIdimpuesto1 = [171, 517, 652, 654, 1120];
-			if ( $detallePlanilla['impuesto'] <= 7 ) {
-				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
-					if ( date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) >= date('Y-m-d', strtotime('2011-01-01'))  ) {
+			if ( (int)$detallePlanilla['impuesto'] <= 7 ) {
+				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($fechaPago)) ) {
+					if ( $fechaPago >= date('Y-m-d', strtotime('2011-01-01'))  ) {
 
 						// Deuda morosa
 						$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
@@ -325,7 +331,7 @@
 					}
 				}
 
-			} elseif ( (int)$detallePlanilla['impuesto'] == 10 && date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) > date('Y-m-d', strtotime('2013-01-03')) && in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto1) ) {
+			} elseif ( (int)$detallePlanilla['impuesto'] == 10 && $fechaPago > date('Y-m-d', strtotime('2013-01-03')) && in_array($detallePlanilla['id_impuesto'], $listaIdimpuesto1) ) {
 				// Activado el 08-04-2013
 
 				// Reparo fiscales
@@ -338,10 +344,10 @@
 				}
 
 			} elseif ( $detallePlanilla['impuesto'] == 12 ) {
-				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
+				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($fechaPago)) ) {
 
 					$montoAplicar = $monto - ( $descuento + $montoReconocimiento );
-					if ( date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) >= date('Y-m-d', strtotime('2011-01-01')) ) {
+					if ( $fechaPago >= date('Y-m-d', strtotime('2011-01-01')) ) {
 
 						$codigo = self::getCodigoPresupuestarioDeudaMorosa();
 						self::relacionar($detallePlanilla, $datoContribuyente, $codigo, $montoAplicar);
@@ -376,7 +382,7 @@
 
 			} else {
 
-				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($detallePlanilla['fecha_pago'])) ) {
+				if ( (int)$detallePlanilla['ano_impositivo'] < (int)date('Y', strtotime($fechaPago)) ) {
 
 					// Concepto de Cuentas por Cobrar.
 					$listaIdimpuesto2 = [190, 433];
@@ -392,7 +398,7 @@
 
 					} else {
 						if ( $detallePlanilla['impuesto'] == 9 ) {
-							if ( date('Y-m-d', strtotime($detallePlanilla['fecha_pago'])) >= date('Y-m-d', strtotime('2014-03-01')) ) {
+							if ( $fechaPago >= date('Y-m-d', strtotime('2014-03-01')) ) {
 
 								// Deuda morosa por tasa.
 								$codigo = self::getCodigoPresupuestarioDeudaMorosaPorTasa();
