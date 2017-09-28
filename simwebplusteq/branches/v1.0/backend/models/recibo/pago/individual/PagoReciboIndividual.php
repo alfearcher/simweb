@@ -520,6 +520,7 @@
 				if ( self::seteoReciboPlanilla($planilla) ) {
 					$result = self::seteoPago($planilla);
 				} else {
+					$result =  false;
 					break;
 				}
 				if ( !$result ) { break; }
