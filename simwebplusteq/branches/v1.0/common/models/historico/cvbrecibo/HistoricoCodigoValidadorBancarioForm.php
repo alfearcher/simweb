@@ -86,7 +86,7 @@
   			$this->_conn = $this->_conexion->initConectar('db');
 
   			// Instancia del generador de codigo validador bancario.
-  			$this->_validador = New GenerarValidadorRecibo($this->_model);
+  			$this->_validador = New GenerarValidadorReciboTresDigito($this->_model);
 		}
 
 
