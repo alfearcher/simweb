@@ -398,6 +398,7 @@
 			      	// Inicio de la transaccion.
 					$this->_transaccion = $this->_conn->beginTransaction();
 					$nroSolicitud = self::actionCreateSolicitud($this->_conexion, $this->_conn);
+
 					if ( $nroSolicitud > 0 ) {
 
 						$model->nro_solicitud = $nroSolicitud;
@@ -429,7 +430,6 @@
 							$this->envioCorreo = self::actionEnviarEmail($model);
 
 						}
-
 					}
 
 				} else {
@@ -675,6 +675,7 @@
 		{
 			$id = isset($_SESSION['idContribuyente']) ? $_SESSION['idContribuyente'] : null;
 			$nro = isset($_SESSION['nro_solicitud']) ? $_SESSION['nro_solicitud'] : null;
+
 
 			$modelSearch = New InscripcionPropagandaSearch($id);
 			$model = $modelSearch->findSolicitudInscripcionPropaganda($nro);
