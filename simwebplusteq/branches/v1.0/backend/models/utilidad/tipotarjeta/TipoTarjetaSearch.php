@@ -96,7 +96,6 @@
 			return $result->descripcion;
 		}
 
-
 	}
 
 ?>
