@@ -1662,7 +1662,6 @@
 
 
 
-
         /**
          * Metodo que renderiza una vista con la informacion de las formas de
          * pagos registradas (grid view) con la totalizacion de los registros.
