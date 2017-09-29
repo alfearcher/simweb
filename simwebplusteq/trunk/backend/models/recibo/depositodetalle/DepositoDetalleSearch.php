@@ -44,6 +44,7 @@
 
  	use Yii;
 	use backend\models\recibo\depositodetalle\DepositoDetalle;
+	use backend\models\utilidad\banco\BancoCuentaReceptora;
 	use yii\data\ArrayDataProvider;
 	use yii\data\ActiveDataProvider;
 
@@ -98,6 +99,14 @@
 				$arregloDato['linea'] = null;
 			}
 
+			// Se determina el identificador del banco de la cuenta recaudadora.
+			if ( (int)$arregloDato['codigo_banco'] == 0 ) {
+				$bancoCuenta = self::determinarBancoSegunCuentaReceptora($arregloDato['cuenta_deposito']);
+				if ( count($bancoCuenta) > 0 ) {
+					$arregloDato['codigo_banco'] = (int)$bancoCuenta['id_banco'];
+				}
+			}
+
 			$result = false;
 			$tabla = $this->tableName();
 			$result = $this->_conexion->guardarRegistro($this->_conn, $tabla, $arregloDato);
@@ -138,6 +147,46 @@
 			]);
 			$query->all();
 			return $dataProvider;
+		}
+
+
+
+		/**
+		 * Metodo que determinara el identificador de la entidad bancaria origen
+		 * del deposito a traves de la cuenta recaudadora. Esta cuenta recaudadora
+		 * es la que viene en el archivo de conciliacion y se tomara para determinar
+		 * esta informacion. Se Hara una consulta global sobre la entidad que relaciona
+		 * las cuentas recaudadoras y los bancos, con la cuenta recaudadora se filtra
+		 * esta consulta para luego obtener el identificador del banco.
+		 * @param string $cuentaReceptora cuenta recaudadora.
+		 * @return array registro de la entidad "bancos-cuentas-receptoras".
+		 */
+		public function determinarBancoSegunCuentaReceptora($cuentaReceptora)
+		{
+			$bancoCuenta = [];
+			$findModel = self::findBancoCuentaReceptoraModel();
+			$registers = $findModel->where(['inactivo' => 0])->asArray()->all();
+			if ( count($registers) > 0 ) {
+				foreach ( $registers as $register ) {
+					if ( strpos(trim($cuentaReceptora), trim($register['cuenta'])) ) {
+						// significa que encontro el registro.
+						$bancoCuenta = $register;
+					}
+				}
+			}
+
+			return $bancoCuenta;
+		}
+
+
+
+		/**
+		 * Metodo que retorna el modelo de consulta de la clase BancoCuentaReceptora.
+		 * @return BancoCuentaRecpetora.
+		 */
+		public function findBancoCuentaReceptoraModel()
+		{
+			return $findModel = BancoCuentaReceptora::find()->alias('C');
 		}
 
 	}
