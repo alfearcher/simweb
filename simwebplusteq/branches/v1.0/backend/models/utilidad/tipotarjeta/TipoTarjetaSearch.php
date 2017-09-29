@@ -89,6 +89,7 @@
 		}
 
 
+
 		/***/
 		public function getDescripcionTarjeta($tipo)
 		{
