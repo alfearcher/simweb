@@ -55,9 +55,9 @@
 	use yii\widgets\MaskedInput;
 
 	$typeIcon = Icon::FA;
-    $typeLong = 'fa-2x';
+  $typeLong = 'fa-2x';
 
-    Icon::map($this, $typeIcon);
+  Icon::map($this, $typeIcon);
 
  ?>
 
@@ -91,7 +91,6 @@
                                		return $data['formaPago']['descripcion'];
         			           },
                 ],
-
                 [
                     'contentOptions' => [
                           'style' => 'font-size: 90%;',
@@ -101,7 +100,6 @@
                                		return date('d-m-Y', strtotime($data['fecha']));
         			           },
                 ],
-
                 [
                     'contentOptions' => [
                           'style' => 'font-size: 100%;font-weight:bold;',
@@ -128,7 +126,6 @@
                     				}
         			           },
                 ],
-
                 [
                     'contentOptions' => [
                           'style' => 'font-size: 90%;',
@@ -144,7 +141,6 @@
                                		}
         			           },
                 ],
-
                 [
                     'contentOptions' => [
                           'style' => 'font-size: 90%;',
@@ -160,7 +156,6 @@
                                		}
         			           },
                 ],
-
                 [
                     'contentOptions' => [
                           'style' => 'font-size: 100%;
@@ -172,7 +167,16 @@
                     				return Yii::$app->formatter->asDecimal($data['monto'], 2);
         			           },
                 ],
-
+                [
+                    'contentOptions' => [
+                          'style' => 'font-size: 100%;
+                                      text-align:center;',
+                    ],
+                    'label' => Yii::t('frontend', 'Cuenta Recaudadora'),
+                    'value' => function($data) {
+                            return $data['cuenta_deposito'];
+                         },
+                ],
         	]
     	]);?>
     </div>
