@@ -231,7 +231,7 @@
 		 */
 		public function identidadUsuarioPrint(mPDF $mpdf, $y)
 		{
-			$identidadUsuario = date('d-m-Y') . ' - '. Yii::$app->identidad->getUsuario();
+			$identidadUsuario = date('d-m-Y H:i:s') . ' - '. Yii::$app->identidad->getUsuario();
 			$mpdf->SetFont('Verdana', 'N', 8);
 			$mpdf->Text(16, 268, $identidadUsuario);
 			//$mpdf->SetFooter(date('d-m-Y') . ' '. Yii::$app->identidad->getUsuario());
