@@ -54,7 +54,9 @@
 
 
 	/**
-	* Clase
+	* Clase que permite realizar las consultas sobre las entidades de pre-refencias
+	* y sobre la entidad que guarda los registros en bruto del archivo de conciliacion
+	* enviado por los bancos.
 	*/
 	class RegistroTxtReciboSearch extends RegistroTxtRecibo
 	{
@@ -84,6 +86,15 @@
 			return $this->_fecha_pago;
 		}
 
+
+		/**
+		 * Metodo setter del numero de recibo
+		 * @param integer $recibo numero de recibo de pago.
+		 */
+		public function setNumeroRecibo($recibo)
+		{
+			$this->_recibo = $recibo;
+		}
 
 
 		/**
@@ -293,6 +304,30 @@
 		}
 
 
+		/**
+		 * Metodo que genera y retorna el data provider de la entidad "registros-txt-recibos"
+		 * segun el numero de recibo.
+		 * @return ActiveDataProvider
+		 */
+		public function getDataProviderByRecibo()
+		{
+			if ( $this->_recibo > 0 ) {
+				$query = $this->find()->alias('T')->where('T.recibo =:recibo',
+						 										[':recibo' => $this->_recibo]);
+			} else {
+				$query = $this->find()->alias('T')->where('T.recibo =:recibo',
+																[':recibo' => 0]);
+			}
+
+			$dataProvider = New ActiveDataProvider([
+				'key' => 'id_registro_recibo',
+				'query' => $query,
+				'pagination' => false,
+			]);
+
+			$query->all();
+			return $dataProvider;
+		}
 
 
 	}
