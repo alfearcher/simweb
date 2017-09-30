@@ -558,7 +558,7 @@ $this->registerJs(
         $.get(
             $(this).data("url"),
             function (data) {
-                $(".detalle").html(data);
+                $(".detalle1").html(data);
                 $("#modal").modal();
             }
         );
@@ -585,7 +585,7 @@ Modal::begin([
 
 //echo "<div class='well'></div>";
 Pjax::begin();
-echo "<div class='detalle'></div>";
+echo "<div class='detalle1'></div>";
 Pjax::end();
 Modal::end();
 ?>
