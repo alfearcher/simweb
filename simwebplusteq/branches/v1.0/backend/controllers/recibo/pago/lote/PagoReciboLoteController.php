@@ -66,6 +66,7 @@
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use common\models\planilla\PlanillaSearch;
     use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
+    use backend\models\recibo\txt\RegistroTxtReciboSearch;
 
 
     session_start();        // Iniciando session
@@ -561,10 +562,20 @@
                                                                 'dataProviderDetalle' => $dataProviderDetalle,
             ]);
 
+
+            // Informacion de la corrida del txt guardada referente al recibo
+            $registroTxtRecibo = New RegistroTxtReciboSearch();
+            $registroTxtRecibo->setNumeroRecibo($nro);
+            $dataProviderRegistroTxtRecibo = $registroTxtRecibo->getDataProviderByRecibo();
+            $htmlRegistroTxtRecibo = $this->renderPartial('/recibo/txt/recibo/registro-txt-recibo-resumen',[
+                                                                'dataProviderRegistroTxtRecibo' => $dataProviderRegistroTxtRecibo,
+            ]);
+
             // Resumen
             return $this->renderAjax('/recibo/pago/consulta/recibo-consultado', [
                                                         'htmlDatoRecibo'=> $htmlDatoRecibo,
                                                         'htmlDepositoDetalle' => $htmlDepositoDetalle,
+                                                        'htmlRegistroTxtRecibo' => $htmlRegistroTxtRecibo,
                                                         'recibo' => $nro,
             ]);
         }
