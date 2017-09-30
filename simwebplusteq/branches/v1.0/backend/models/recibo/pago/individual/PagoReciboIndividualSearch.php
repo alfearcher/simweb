@@ -206,13 +206,13 @@
 
        			// Condicion del recibo.
        			if ( (int)$results[0]['deposito']['estatus'] !== 0 ) {
-       				$mensaje[] = Yii::t('backend', 'El estatus del recibo no permite su pago, condición actual: ' . $results[0]['deposito']['estatus']);
+       				$mensaje[] = Yii::t('backend', 'El estatus del recibo no permite su pago, condicion actual: ' . $results[0]['deposito']['estatus']);
        			}
 
 				// Condicion de las planillas asociadas al recibo.
        			foreach ( $results as $result ) {
        				if ((int)$result['estatus'] !== 0 ) {
-       					$mensaje[] = Yii::t('backend', 'El estatus de la planilla: ' . $result['planilla'] . ', no permite su pago, condición actual: ' . $result['estatus']);
+       					$mensaje[] = Yii::t('backend', 'El estatus de la planilla: ' . $result['planilla'] . ', no permite su pago, condicion actual: ' . $result['estatus']);
        				}
        			}
 
