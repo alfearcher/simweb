@@ -70,6 +70,10 @@
     <div class="row" style="width: 100%;margin:0px;padding:0px;margin-left:10px;">
         <?=$htmlDepositoDetalle;?>
     </div>
+
+    <div class="row" style="width: 100%;margin:0px;padding:0px;margin-left:10px;">
+        <?=$htmlRegistroTxtRecibo;?>
+    </div>
 </div>
 
 <?php ActiveForm::end(); ?>
