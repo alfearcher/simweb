@@ -40,50 +40,37 @@
  *
  */
 
- 	use yii\web\Response;
- 	use yii\grid\GridView;
-	use yii\helpers\Html;
-	use yii\helpers\Url;
-	//use yii\widgets\ActiveForm;
-	use yii\web\View;
-	use yii\widgets\DetailView;
+    use yii\web\Response;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\ActiveForm;
+    use yii\web\View;
  ?>
 
+<?php
+    $form = ActiveForm::begin([
+        'id' => 'id-recibo-consultado',
+        'method' => 'post',
+        //'action' => '#',
+        'enableClientValidation' => true,
+        'enableAjaxValidation' => false,
+        'enableClientScript' => false,
+    ]);
+?>
 
-<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;padding-top: 0px;">
-	<h4><strong><?=Html::encode(Yii::t('backend', 'Recibo de pago Nro. ') . $model->recibo)?></strong></h4>
+<div class="row" style="width:100%;margin:0px;padding:0px;margin-left:15px;">
+    <div class="row" style="width: 100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;">
+        <h4><strong><?=Html::encode(Yii::t('backend', 'Recibo de pago Nro. ') . $recibo)?></strong></h4>
+    </div>
+
+    <div class="row" style="width: 100%;margin:0px;padding:0px;margin-left:10px;">
+        <?=$htmlDatoRecibo;?>
+    </div>
+
+    <div class="row" style="width: 100%;margin:0px;padding:0px;margin-left:10px;">
+        <?=$htmlDepositoDetalle;?>
+    </div>
 </div>
 
-<div class="row">
-	<div class="row" style="padding-left: 15px; width: 100%;">
-		<?= DetailView::widget([
-				'model' => $model,
-    			'attributes' => [
-
-    				[
-    					'label' => Yii::t('backend', 'Recibo'),
-    					'value' => $model['recibo'],
-    				],
-    				// [
-    				// 	'label' => $model->getAttributeLabel('dni'),
-    				// 	'value' => $datosRecibido['dni'],
-    				// ],
-    				// [
-    				// 	'label' => $model->getAttributeLabel('razon_social'),
-    				// 	'value' => $datosRecibido['razon_social'],
-    				// ],
-    				// [
-    				// 	'label' => $model->getAttributeLabel('domicilio_fiscal_v'),
-    				// 	'value' => $model['domicilio_fiscal_v'],
-    				// ],
-    				// [
-    				// 	'label' => $model->getAttributeLabel('domicilio_fiscal_new'),
-    				// 	'value' => $model['domicilio_fiscal_new'],
-    				// ],
-    			],
-			])
-		?>
-	</div>
-</div>
-
+<?php ActiveForm::end(); ?>
 
