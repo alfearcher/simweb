@@ -63,6 +63,9 @@
     use backend\models\recibo\pago\lote\PagoReciboLoteSearch;
     use backend\models\recibo\deposito\Deposito;
     use backend\models\usuario\AutorizacionUsuario;
+    use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
+    use common\models\planilla\PlanillaSearch;
+    use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
 
 
     session_start();        // Iniciando session
@@ -423,7 +426,7 @@
                 $montoTotal = $mostrar->calcularTotalByRenglon($models, 'monto_total');
                 $totalRegistro = $dataProvider->getTotalCount();
 
-                $this->layout = 'layoutbase';
+                //$this->layout = 'layoutbase';
                 if ( $model->sin_formato == 1 ) {
                     return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
                                                     'dataProvider' => $dataProvider,
@@ -529,18 +532,74 @@
          * el cotenido del archivo de conciliacion y que estan relacionada al recibo.
          * @return View
          */
-        public function actionViewReciboModal()
+        public function actionViewReciboModal($nro)
         {
             $request = Yii::$app->request;
             $postGet = $request->get();
 
             // Numero de recibo de pago
             $nro = $postGet['nro'];
-            return $this->renderAjax('@backend/views/recibo/pago/consulta/recibo-consultado', [
-                                                        'model' => $this->findModelRecibo($nro),
 
-                   ]);
+            $pagoIndividualSearch = New PagoReciboIndividualSearch($nro);
+
+            // $dataProviders[0]->getModels(), es el modelo de la entidad "depositos".
+            // $dataProviders[1]->getModels(), es el modelo de la entidad "depositos-planillas"
+            $dataProviders = $pagoIndividualSearch->getDataProviders();
+
+            $totales = $pagoIndividualSearch->getTotalesReciboPlanilla($dataProviders);
+            $htmlDatoRecibo = $this->renderPartial('/recibo/pago/consulta/datos-recibo-planilla', [
+                                                                'dataProviderRecibo' => $dataProviders[0],
+                                                                'dataProviderReciboPlanilla' => $dataProviders[1],
+                                                                'totales' => $totales,
+            ]);
+
+
+            // Datos de la formas de pago.
+            $detalleSearch = New DepositoDetalleSearch();
+            $dataProviderDetalle = $detalleSearch->getDataProviderDepositoDetalle($nro);
+            $htmlDepositoDetalle = $this->renderPartial('@backend/views/recibo/deposito-detalle/deposito-detalle-forma-pago',[
+                                                                'dataProviderDetalle' => $dataProviderDetalle,
+            ]);
+
+            // Resumen
+            return $this->renderAjax('/recibo/pago/consulta/recibo-consultado', [
+                                                        'htmlDatoRecibo'=> $htmlDatoRecibo,
+                                                        'htmlDepositoDetalle' => $htmlDepositoDetalle,
+                                                        'recibo' => $nro,
+            ]);
         }
+
+
+
+        /**
+         * Metodo que permite renderizar una vista de los detalles de la planilla
+         * que se encuentran en la solicitud.
+         * @return View Retorna una vista que contiene un grid con los detalles de la
+         * planilla.
+         */
+        public function actionViewPlanilla()
+        {
+            $request = Yii::$app->request;
+            $getData = $request->get();
+
+            $planilla = $getData['p'];
+            $planillaSearch = New PlanillaSearch($planilla);
+            $dataProvider = $planillaSearch->getArrayDataProviderPlanilla();
+
+            // Se determina si la peticion viene de un listado que contiene mas de una
+            // pagina de registros. Esto sucede cuando los detalles de un listado contienen
+            // mas de los manejados para una pagina en la vista.
+            if ( isset($request->queryParams['page']) ) {
+                $planillaSearch->load($request->queryParams);
+            }
+            $url = Url::to(['generar-pdf']);
+            return $this->renderAjax('@backend/views/planilla/planilla-detalle', [
+                                            'dataProvider' => $dataProvider,
+                                            'caption' => 'Planilla: ' . $planilla,
+                                            'p' => $planilla,
+            ]);
+        }
+
 
 
 
