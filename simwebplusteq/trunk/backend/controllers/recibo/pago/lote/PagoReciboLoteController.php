@@ -423,7 +423,7 @@
                 $montoTotal = $mostrar->calcularTotalByRenglon($models, 'monto_total');
                 $totalRegistro = $dataProvider->getTotalCount();
 
-                $this->layout = 'layoutbase';
+                //$this->layout = 'layoutbase';
                 if ( $model->sin_formato == 1 ) {
                     return $this->render('/recibo/pago/lote/mostrar-archivo-txt',[
                                                     'dataProvider' => $dataProvider,
@@ -529,11 +529,11 @@
          * el cotenido del archivo de conciliacion y que estan relacionada al recibo.
          * @return View
          */
-        public function actionViewReciboModal()
+        public function actionViewReciboModal($nro)
         {
             $request = Yii::$app->request;
             $postGet = $request->get();
-
+//die(var_dump($request->get()));
             // Numero de recibo de pago
             $nro = $postGet['nro'];
             return $this->renderAjax('@backend/views/recibo/pago/consulta/recibo-consultado', [
