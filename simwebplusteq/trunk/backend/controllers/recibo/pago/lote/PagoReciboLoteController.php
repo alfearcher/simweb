@@ -65,6 +65,7 @@
     use backend\models\usuario\AutorizacionUsuario;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
     use common\models\planilla\PlanillaSearch;
+    use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
 
 
 	session_start();		// Iniciando session
@@ -551,11 +552,21 @@
                                                                 'dataProviderReciboPlanilla' => $dataProviders[1],
                                                                 'totales' => $totales,
             ]);
-            return $this->renderAjax('/recibo/pago/consulta/recibo-consultado', [
-                                                        'htmlDatoRecibo'=> $htmlDatoRecibo,
-                                                        'recibo' => $nro,
+
+
+            // Datos de la formas de pago.
+            $detalleSearch = New DepositoDetalleSearch();
+            $dataProviderDetalle = $detalleSearch->getDataProviderDepositoDetalle($nro);
+            $htmlDepositoDetalle = $this->renderPartial('@backend/views/recibo/deposito-detalle/deposito-detalle-forma-pago',[
+                                                                'dataProviderDetalle' => $dataProviderDetalle,
             ]);
 
+            // Resumen
+            return $this->renderAjax('/recibo/pago/consulta/recibo-consultado', [
+                                                        'htmlDatoRecibo'=> $htmlDatoRecibo,
+                                                        'htmlDepositoDetalle' => $htmlDepositoDetalle,
+                                                        'recibo' => $nro,
+            ]);
         }
 
 
