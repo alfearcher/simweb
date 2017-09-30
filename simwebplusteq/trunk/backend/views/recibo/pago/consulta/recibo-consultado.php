@@ -58,13 +58,17 @@
     ]);
 ?>
 
-<div class="row" style="width:100%;margin:0px;padding:0px;margin-left:10px;">
+<div class="row" style="width:100%;margin:0px;padding:0px;margin-left:15px;">
     <div class="row" style="width: 100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;">
         <h4><strong><?=Html::encode(Yii::t('backend', 'Recibo de pago Nro. ') . $recibo)?></strong></h4>
     </div>
 
     <div class="row" style="width: 100%;margin:0px;padding:0px;margin-left:10px;">
         <?=$htmlDatoRecibo;?>
+    </div>
+
+    <div class="row" style="width: 100%;margin:0px;padding:0px;margin-left:10px;">
+        <?=$htmlDepositoDetalle;?>
     </div>
 </div>
 
