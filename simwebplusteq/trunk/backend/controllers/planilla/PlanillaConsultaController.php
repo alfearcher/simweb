@@ -62,6 +62,7 @@
 	use backend\models\planilla\consulta\PlanillaConsultaForm;
 	use common\models\planilla\PlanillaSearch;
 	use common\controllers\pdf\planilla\PlanillaPdfController;
+	use backend\models\usuario\AutorizacionUsuario;
 
 
 	if ( !isset($_SESSION) ) {
@@ -77,63 +78,75 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que inicia, retorna una vista con un listado de los impuesto
+		 * que tiene registradas deudas, por parte del contribuyente.
+		 * @return view
+		 */
 		public function actionIndex()
 		{
+			$autorizacion = New AutorizacionUsuario();
+			//$r = $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']);
+			$r = true;
+			if ( $r ) {
+				if ( isset($_SESSION['idContribuyente']) ) {
 
-			if ( isset($_SESSION['idContribuyente']) ) {
+					$idContribuyente = $_SESSION['idContribuyente'];
 
-				$idContribuyente = $_SESSION['idContribuyente'];
+					$request = Yii::$app->request;
+					$postData = $request->post();
 
-				$request = Yii::$app->request;
-				$postData = $request->post();
-
-				if ( isset($postData['btn-quit']) ) {
-					if ( $postData['btn-quit'] == 1 ) {
-						$this->redirect(['quit']);
+					if ( isset($postData['btn-quit']) ) {
+						if ( $postData['btn-quit'] == 1 ) {
+							$this->redirect(['quit']);
+						}
 					}
+
+
+					$model = New PlanillaConsultaForm();
+					$model->load($postData);
+
+					$formName = $model->formName();
+
+					if ( isset($postData['btn-search-planillas']) ) {
+						if ( $postData['btn-search-planillas'] == 5 ) {
+
+						}
+					} elseif ( isset($postData['btn-search-objeto']) ) {
+						if ( $postData['btn-search-objeto'] == 3 ) {
+
+						}
+					}
+
+					$model->id_contribuyente = $idContribuyente;
+					$deudaSearch = New DeudaSearch($idContribuyente);
+
+					// Crea un arreglo de impuestos que indica donde existen deudas del contribuyente.
+					$listaImpuesto = $deudaSearch->getImpuestoConDeuda();
+
+					$collapseDeuda = $model->generarCollapseDeuda();
+
+					$caption = Yii::t('frontend', 'Consulta de Planilla(s)');
+					$subCaption = Yii::t('frontend', 'Seleccione el Impuesto');
+
+					return $this->render('@frontend/views/planilla/consulta/_view-consulta',[
+													'model' => $model,
+													'caption' => $caption,
+													'subCaption' => $subCaption,
+													'listaImpuesto' => $listaImpuesto,
+													'collapseDeuda' => $collapseDeuda,
+													'url' => Url::to(['generar-pdf']),
+							]);
+
+
+				} else {
+					// No esta definida la session del contribuyente.
+					$this->redirect(['quit']);
 				}
-
-
-				$model = New PlanillaConsultaForm();
-				$model->load($postData);
-
-				$formName = $model->formName();
-
-				if ( isset($postData['btn-search-planillas']) ) {
-					if ( $postData['btn-search-planillas'] == 5 ) {
-
-					}
-				} elseif ( isset($postData['btn-search-objeto']) ) {
-					if ( $postData['btn-search-objeto'] == 3 ) {
-
-					}
-				}
-
-				$model->id_contribuyente = $idContribuyente;
-				$deudaSearch = New DeudaSearch($idContribuyente);
-
-				// Crea un arreglo de impuestos que indica donde existen deudas del contribuyente.
-				$listaImpuesto = $deudaSearch->getImpuestoConDeuda();
-
-				$collapseDeuda = $model->generarCollapseDeuda();
-
-				$caption = Yii::t('frontend', 'Consulta de Planilla(s)');
-				$subCaption = Yii::t('frontend', 'Seleccione el Impuesto');
-
-				return $this->render('@frontend/views/planilla/consulta/_view-consulta',[
-												'model' => $model,
-												'caption' => $caption,
-												'subCaption' => $subCaption,
-												'listaImpuesto' => $listaImpuesto,
-												'collapseDeuda' => $collapseDeuda,
-												'url' => Url::to(['generar-pdf']),
-						]);
-
-
 			} else {
-				// No esta definida la session del contribuyente.
-				$this->redirect(['quit']);
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
 			}
 		}
 
