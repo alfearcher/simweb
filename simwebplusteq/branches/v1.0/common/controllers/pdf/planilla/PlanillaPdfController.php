@@ -149,6 +149,7 @@
 		 */
 		public function actionGenerarPlanillaPdf()
 		{
+			return;
 			if ( $this->_planilla > 0 ) {
 
 				$this->_actualizarPlanilla->iniciarActualizacion();
