@@ -21,7 +21,7 @@
 
 ?>
 
-<div class="col-xs-3">
+<div class="col-xs-3" style="width: 30%;">
 	<div class="menu-funcionario" style="margin-left:-110px;">
 		<?=
 		  SideNav::widget([
@@ -333,8 +333,37 @@
 		    ],
 		]);
 		?>
+	</div>
+</div>
 
-
+<div class="col-xs-3" style="width: 45%;padding-left: 55px;">
+	<div class="well well-sm" style="padding:10px;">
+		<div class="list-group" style="padding-left: 20px;font-size: 110%;">
+			<strong><h3 class="list-group-item-heading" style="color:blue;"><?=Yii::t('backend', 'Notificación');?></h3></strong>
+			<p class="list-group-item-text">
+				<?=Html::tag('li', Yii::t('frontend', 'A partir del 01-10-2017 entrará en vigencia el nuevo instrumento de pago,denominado <strong>Recibo de Pago"</strong>.')); ?>
+				<?=Html::tag('li', Yii::t('frontend', 'En este nuevo instrumento de pago podrá incluir todas las planillas pendientes que desea saldar (pagar).')); ?>
+				<?=Html::tag('li', Yii::t('frontend', 'Las planillas serán actualizadas antes de ser mostradas en el listado de <strong>"Deuda - Detalle"</strong>.'),
+										 [
+										 	'style' => 'color:blue;background-color:#F5F7F8;'
+										 ]);
+				?>
+				<?=Html::tag('li', Yii::t('frontend', '<strong>Podrá crear su recibo de pago a través de la opción:</strong>')); ?>
+				<ol>
+					<?=Html::tag('li', Yii::t('frontend', 'Solicitudes')); ?>
+					<?=Html::tag('li', Yii::t('frontend', 'Recibo')); ?>
+					<?=Html::tag('li', Yii::t('frontend', 'Crear Recibo de Pago')); ?>
+				</ol>
+				<?=Html::tag('li', Yii::t('frontend', 'Si lo desea descargue la ayuda ') .
+								Html::a(Yii::t('frontend', 'aquí'),
+						   		Yii::$app->ayuda->getRutaAyuda(999, 'frontend') . 'CREAR RECIBO.pdf',
+						   		[
+						   			'target' => '_blank',
+						   		])
+						   	)
+				 ?>
+			</p>
+		</div>
 	</div>
 </div>
 
