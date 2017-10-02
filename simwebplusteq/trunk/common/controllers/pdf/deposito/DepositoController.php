@@ -208,10 +208,15 @@
 	       	$mpdf->Text(60,258,"Validacion terminal caja");
 
 
+	       	$documento = Yii::t('backend', 'RECIBO');
 	       	// se coloca la rafaga en el documento.
 	       	if ( $deposito->estatus == 1 ) {
 	       		self::getPrintRafaga($mpdf);
+	       		$documento = Yii::t('backend', 'RAFAGA RECIBO');
 	       	}
+
+	       	// Guardar Historico de impresion
+            self::guardarHistoricoImpresion($deposito, $documento, $mensajeCVB);
 
 	       	// Se coloca el QR
 	       	$mpdf->WriteFixedPosHTML($htmlQR, 112, 225, 120, 30);
@@ -465,18 +470,31 @@
 
 
 
-		/***/
-        public function guardarHistoricoImpresion(Deposito $deposito)
+		/**
+		 * Metodo que guarda el historico de impresion del recibo, segun estatus.
+		 * Metodo que retorna el resultado, true o false.
+		 * @param  Deposito $deposito modelo de la clase
+		 * @param  string  $documento nombre del documento que se esta guardando.
+		 * @param  string  $nota observacin adicional.
+		 * @return boolean
+		 */
+        public function guardarHistoricoImpresion(Deposito $deposito, $documento, $nota = '')
         {
             $result = false;
 
+            if ( (int)$deposito['estatus'] == 1 ) {
+            	$fuenteJson = json_encode(self::getRafagaActual());
+            } else {
+            	$fuenteJson = json_encode($deposito->toArray());
+            }
+
             $impresionModel = New HistoricoImpresion();
-            $impresionModel->documento = 'RECIBO';
+            $impresionModel->documento = $documento;
             $impresionModel->nro_documento = $deposito['recibo'];
             $impresionModel->usuario = Yii::$app->identidad->getUsuario();
             $impresionModel->fecha_hora = date('Y-m-d H:i:s');
-            $impresionModel->fuente_json = json_encode($deposito);
-            $impresionModel->observacion = '';
+            $impresionModel->fuente_json = $fuenteJson;
+            $impresionModel->observacion = $nota;
             $impresionModel->nro_control = 0;
             $impresionModel->ip_maquina = isset(Yii::$app->request->userIP) ? Yii::$app->request->userIP : '';
             $impresionModel->host_name = isset(Yii::$app->request->userHost) ? Yii::$app->request->userHost : '';
