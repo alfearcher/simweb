@@ -65,6 +65,27 @@
 			return $total;
 		}
 
+
+		/***/
+		public static function totalizarPlanilla($provider)
+		{
+			$totalMonto = 0;
+			$totalRecargo = 0;
+			$totalInteres = 0;
+			$totalDescuento = 0;
+			$totalMontoRec = 0;
+			$total = 0;
+
+			$totalMonto = self::getTotalizar($provider, 'monto');
+			$totalRecargo = self::getTotalizar($provider, 'recargo');
+			$totalInteres = self::getTotalizar($provider, 'interes');
+			$totalDescuento = self::getTotalizar($provider, 'descuento');
+			$totalMontoRec = self::getTotalizar($provider, 'monto_reconocimiento');
+
+			$total = $totalMonto + $totalRecargo + $totalInteres + $totalDescuento + $totalMontoRec;
+			return $total;
+		}
+
 	}
 
 ?>
