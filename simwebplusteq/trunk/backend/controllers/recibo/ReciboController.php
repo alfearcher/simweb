@@ -447,7 +447,7 @@
 					}
 
 					if ( (float)$model->monto !== $acumulado ) {
-						$result = false;
+						//$result = false;
 					}
 				}
 
