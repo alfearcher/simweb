@@ -242,10 +242,10 @@
 
        		$suma = 0;
        		foreach ( $results as $result ) {
-       			$suma = $result['monto'] + $suma;
+       			$suma = (float)$result['monto'] + (float)$suma;
        		}
 
-       		if ( (float)$montoRecibo !== (float)$suma ) {
+       		if ( (float)round($montoRecibo, 2) !== (float)round($suma, 2) ) {
        			$mensaje[] = Yii::t('backend','El monto del recibo no coincide con la suma de los montos de las planillas');
        		}
 
@@ -274,7 +274,7 @@
        				$mensaje[] = Yii::t('backend', 'La planilla: ' . $detalles['planilla'] .  ', no esta disponible para su pago');
        			} else {
        				$suma = self::sumaDetellePlanilla($detalles);
-       				if ( (float)$suma !== (float)$result['monto'] ) {
+       				if ( (float)round($suma, 2) !== (float)round($result['monto'], 2) ) {
        					$mensaje[] = Yii::t('backend', 'El monto de la planilla:' . $result['planilla'] . ', no coincide con el registrado al momento de crear el recibo');
        				}
        			}
