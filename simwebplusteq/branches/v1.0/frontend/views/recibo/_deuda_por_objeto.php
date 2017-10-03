@@ -108,7 +108,7 @@
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
                                 $u = Yii::$app->urlManager
-                                              ->createUrl('recibo/recibo/buscar-deuda-detalle') . '&idO=' . $model['id_impuesto'] . '&objeto=' . $model['objeto'] . '&view=3' . '&i=' . $model['impuesto'] . '&idC=' . $model['id_contribuyente'] . '&tipo=' . $model['tipo'];
+                                              ->createUrl('recibo/recibo/buscar-deuda-detalle') . '&idO=' . $model['id_impuesto'] . '&objeto=' . urlencode($model['objeto']) . '&view=3' . '&i=' . $model['impuesto'] . '&idC=' . $model['id_contribuyente'] . '&tipo=' . $model['tipo'];
                                 return Html::submitButton('<div class="item-list" style="color: #000000;"><center>'. Yii::$app->formatter->asDecimal($model['deuda'], 2) .'</center></div>',
                                 [
                                     'id' => 'id-deuda-por-objeto',
