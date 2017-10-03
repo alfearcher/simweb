@@ -21,15 +21,14 @@
  */
 
  /**
- *  @file view_solicitud_seleccionada.php
+ *  @file planilla-detalle.php
  *
  *  @author Jose Rafael Perez Teran
  *
  *  @date 21-04-2016
  *
- *  @view view_solicitud_seleccionada.php
- *  @brief vista del formualario que se utilizara para mostrar los datos principales
- *  de la solicitud seleccionada y los datos basicos del contribuyente.
+ *  @view planilla-detalle.php
+ *  @brief vista que muestra los detalle de la planilla, en lo referente a montos
  *
  *
  *  @property
@@ -53,11 +52,17 @@
 	use yii\web\View;
 	use yii\bootstrap\Modal;
 	use backend\controllers\menu\MenuController;
+	use common\models\totalizar\TotalizarGrid;
 
     $typeIcon = Icon::FA;
     $typeLong = 'fa-2x';
 
     Icon::map($this, $typeIcon);
+    $models = $dataProvider->getModels();
+    $totalizar = 0;
+ 	foreach ( $models as $mod ) {
+ 		$totalizar += $mod['monto'] + $mod['recargo'] + $mod['interes'];
+ 	}
 
 ?>
 <div class="planilla-detalle">
@@ -84,20 +89,25 @@
         </div>
 		<div class="panel-body">
 			<div class="container-fluid">
-				<div class="col-sm-12">
-					<div class="row">
+				<div class="col-sm-12" style="100%;padding: 0px;margin: 0px;">
+					<div class="row" style="100%;padding: 0px;margin: 0px;">
 						<small><strong><?= Yii::t('backend', 'Planilla') ?></strong></small>
 					</div>
 
-					<div class="row">
+					<div class="row" style="100%;padding: 0px;margin: 0px;">
 						<div class="grid-detalle" id="grid-detalle">
 							 <?= GridView::widget([
 					         		'id' => 'grid-detalle-planilla',
 					               	'dataProvider' => $dataProvider,
 					               	'headerRowOptions' => ['class' => 'primary'],
+					               	'showFooter' => true,
+									'footerRowOptions' => [
+										'style' => 'font-size:100%;font-weight: bold;text-align:right;',
+										'class' => 'success',
+									],
 									'rowOptions' => function($data) {
 											if ( $data['pago'] == 0 ) {
-		    									return ['class' => 'danger'];
+		    									return ['class' => 'default'];
 											} elseif ( $data['pago'] == 1 ) {
 												return ['class' => 'success'];
 											}
@@ -135,30 +145,35 @@
 				                            'value' => function($data) {
 				                            	return $data['monto'];
 				                            },
+				                            'footer' => Yii::$app->formatter->asDecimal(TotalizarGrid::getTotalizar($dataProvider, 'monto'), 2),
 				                        ],
 				                        [
 				                            'label' => 'Recargo',
 				                            'value' => function($data) {
 				                            	return $data['recargo'];
 				                            },
+				                            'footer' => Yii::$app->formatter->asDecimal(TotalizarGrid::getTotalizar($dataProvider, 'recargo'), 2),
 				                        ],
 				                        [
 				                            'label' => 'Interes',
 				                            'value' => function($data) {
 				                            	return $data['interes'];
 				                            },
+				                            'footer' => Yii::$app->formatter->asDecimal(TotalizarGrid::getTotalizar($dataProvider, 'interes'), 2),
 				                        ],
 				                        [
 				                            'label' => 'Descuento',
 				                            'value' => function($data) {
 				                            	return $data['descuento'];
 				                            },
+				                            'footer' => Yii::$app->formatter->asDecimal(TotalizarGrid::getTotalizar($dataProvider, 'descuento'), 2),
 				                        ],
 				                        [
 				                            'label' => 'Recon.',
 				                            'value' => function($data) {
 				                            	return $data['monto_reconocimiento'];
 				                            },
+				                            'footer' => Yii::$app->formatter->asDecimal(TotalizarGrid::getTotalizar($dataProvider, 'monto_reconocimiento'), 2),
 				                        ],
 				                         [
 				                            'label' => 'Observacion',
@@ -210,6 +225,17 @@
 				                            	}
 				                            },
 				                        ],
+				                        [
+							                'label' => Yii::t('backend', 'Total'),
+							                'contentOptions' => [
+							                	'style' => 'font-size:90%;text-align:right;font-weight: bold;',
+							                ],
+							                'value' => function($model, $subTotal) {
+							                				$subTotal = ( $model['monto'] + $model['recargo'] + $model['interes'] ) - ( $model['descuento'] + $model['monto_reconocimiento']);
+															return Yii::$app->formatter->asDecimal($subTotal, 2);
+														},
+											'footer' => Yii::$app->formatter->asDecimal(TotalizarGrid::totalizarPlanilla($dataProvider), 2),
+							            ],
 					               ]
 					            ]);
 					        ?>
