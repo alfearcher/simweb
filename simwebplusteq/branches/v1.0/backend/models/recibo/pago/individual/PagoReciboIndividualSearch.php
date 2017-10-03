@@ -40,14 +40,14 @@
  *
  */
 
-	namespace backend\models\recibo\pago\individual;
+      namespace backend\models\recibo\pago\individual;
 
- 	use Yii;
-	use yii\base\Model;
-	use yii\data\ActiveDataProvider;
-	use backend\models\recibo\deposito\Deposito;
-	use backend\models\recibo\depositoplanilla\DepositoPlanilla;
-	use common\models\planilla\PlanillaSearch;
+      use Yii;
+      use yii\base\Model;
+      use yii\data\ActiveDataProvider;
+      use backend\models\recibo\deposito\Deposito;
+      use backend\models\recibo\depositoplanilla\DepositoPlanilla;
+      use common\models\planilla\PlanillaSearch;
       use backend\models\recibo\depositodetalle\DepositoDetalleUsuario;
       use backend\models\recibo\depositodetalle\DepositoDetalle;
       use yii\data\ArrayDataProvider;
@@ -55,76 +55,76 @@
       use backend\models\recibo\depositodetalle\VaucheDetalleUsuario;
 
 
-	/**
-	* Clase que permite gestionar el pago de un recibo por caja.
-	*/
-	class PagoReciboIndividualSearch
-	{
+      /**
+      * Clase que permite gestionar el pago de un recibo por caja.
+      */
+      class PagoReciboIndividualSearch
+      {
 
-		private $_recibo;
-
-
-		/**
-		 * Metodo constructor de la clase.
-		 * @param integer $recibo numero del recibo de pago.
-		 */
-		public function __construct($recibo)
-		{
-			$this->_recibo = $recibo;
-		}
+            private $_recibo;
 
 
+            /**
+             * Metodo constructor de la clase.
+             * @param integer $recibo numero del recibo de pago.
+             */
+            public function __construct($recibo)
+            {
+                  $this->_recibo = $recibo;
+            }
 
-		/**
-		 * Metodo que genera el modelo principal de consulta sobre el recibo
-		 * para el pago. Entidad "depositos"
-		 * @return Deposito.
-		 */
-		private function findDepositoModel()
-		{
-			return Deposito::find()->alias('D')
-			                       ->where('recibo =:recibo',
-							     [':recibo' => $this->_recibo])
+
+
+            /**
+             * Metodo que genera el modelo principal de consulta sobre el recibo
+             * para el pago. Entidad "depositos"
+             * @return Deposito.
+             */
+            private function findDepositoModel()
+            {
+                  return Deposito::find()->alias('D')
+                                         ->where('recibo =:recibo',
+                                               [':recibo' => $this->_recibo])
                                          ->joinWith('condicion C', true, 'INNER JOIN');
-		}
+            }
 
 
 
-		/**
-		 * Metodo que genera el modelo de consulta para la entidad "depositos-planillas",
-		 * planillas asociadas al recibo de pago.
-		 * @return Deposito.
-		 */
-       	private function findDepositoPlanillaModel()
-       	{
-       		return $findModel = DepositoPlanilla::find()->alias('DP')
-		        							  ->joinWith('deposito D', true, 'INNER JOIN')
-									        ->where('D.recibo =:recibo',
-									  		           [':recibo' => $this->_recibo])
-										  ->orderBy([
-										        'planilla' => SORT_ASC,
-									         ]);
-       	}
+            /**
+             * Metodo que genera el modelo de consulta para la entidad "depositos-planillas",
+             * planillas asociadas al recibo de pago.
+             * @return Deposito.
+             */
+            private function findDepositoPlanillaModel()
+            {
+                  return $findModel = DepositoPlanilla::find()->alias('DP')
+                                                              ->joinWith('deposito D', true, 'INNER JOIN')
+                                                              ->where('D.recibo =:recibo',
+                                                                             [':recibo' => $this->_recibo])
+                                                              ->orderBy([
+                                                                    'planilla' => SORT_ASC,
+                                                               ]);
+            }
 
 
 
 
-       	/**
-       	 * Metodo que genera el proveedor de datos para el recibo.
-       	 * @return ActiveDataProvider.
-       	 */
-       	public function getDataProviderDeposito()
-       	{
-       		$query = self::findDepositoModel();
+            /**
+             * Metodo que genera el proveedor de datos para el recibo.
+             * @return ActiveDataProvider.
+             */
+            public function getDataProviderDeposito()
+            {
+                  $query = self::findDepositoModel();
 
-       		$dataProvider = New ActiveDataProvider([
-       			'query' => $query,
-       		]);
+                  $dataProvider = New ActiveDataProvider([
+                        'query' => $query,
+                  ]);
 
-       		$query->all();
+                  $query->all();
 
-       		return $dataProvider;
-       	}
+                  return $dataProvider;
+            }
 
 
 
@@ -191,169 +191,169 @@
 
 
 
-       	/**
-       	 * Metodo que permite determinar si el recibo y las planillas asociadoas al mismo
-       	 * estan en condicon de pendiente para ser pagados. Esta condicion es primordial
-       	 * para poder pagar el recibo y sus respectivas planillas.
-       	 * @param array $results arreglo con los datos del recibo y las planillas
-       	 * (DepositoPlanilla::find()).
-       	 * @return array
-       	 */
-       	public function condicionPendiente($results)
-       	{
-       		$mensaje = [];
-       		if ( count($results) > 0 ) {
+            /**
+             * Metodo que permite determinar si el recibo y las planillas asociadoas al mismo
+             * estan en condicon de pendiente para ser pagados. Esta condicion es primordial
+             * para poder pagar el recibo y sus respectivas planillas.
+             * @param array $results arreglo con los datos del recibo y las planillas
+             * (DepositoPlanilla::find()).
+             * @return array
+             */
+            public function condicionPendiente($results)
+            {
+                  $mensaje = [];
+                  if ( count($results) > 0 ) {
 
-       			// Condicion del recibo.
-       			if ( (int)$results[0]['deposito']['estatus'] !== 0 ) {
-       				$mensaje[] = Yii::t('backend', 'El estatus del recibo no permite su pago, condicion actual: ' . $results[0]['deposito']['estatus']);
-       			}
+                        // Condicion del recibo.
+                        if ( (int)$results[0]['deposito']['estatus'] !== 0 ) {
+                              $mensaje[] = Yii::t('backend', 'El estatus del recibo no permite su pago, condicion actual: ' . $results[0]['deposito']['estatus']);
+                        }
 
-				// Condicion de las planillas asociadas al recibo.
-       			foreach ( $results as $result ) {
-       				if ((int)$result['estatus'] !== 0 ) {
-       					$mensaje[] = Yii::t('backend', 'El estatus de la planilla: ' . $result['planilla'] . ', no permite su pago, condicion actual: ' . $result['estatus']);
-       				}
-       			}
+                        // Condicion de las planillas asociadas al recibo.
+                        foreach ( $results as $result ) {
+                              if ((int)$result['estatus'] !== 0 ) {
+                                    $mensaje[] = Yii::t('backend', 'El estatus de la planilla: ' . $result['planilla'] . ', no permite su pago, condicion actual: ' . $result['estatus']);
+                              }
+                        }
 
-       		} else {
-       			// No existe el recibo.
-       			$mensaje[] = Yii::t('backend', 'El recibo no existe');
-       		}
+                  } else {
+                        // No existe el recibo.
+                        $mensaje[] = Yii::t('backend', 'El recibo no existe');
+                  }
 
-       		return $mensaje;
+                  return $mensaje;
 
-       	}
-
-
-
-
-       	/**
-       	 * Metodo que determina si la suma de los detalles del recibo (planillas)
-       	 * coinciden con el total del monto del recibo.
-       	 * @param array $results arreglo con los datos del recibo y las planillas
-       	 * (DepositoPlanilla::find()).
-       	 * @return string
-       	 */
-       	public function montoCorrecto($results)
-       	{
-       		$mensaje = [];
-       		$montoRecibo = $results[0]['deposito']['monto'];
-
-       		$suma = 0;
-       		foreach ( $results as $result ) {
-       			$suma = $result['monto'] + $suma;
-       		}
-
-       		if ( (float)$montoRecibo !== (float)$suma ) {
-       			$mensaje[] = Yii::t('backend','El monto del recibo no coincide con la suma de los montos de las planillas');
-       		}
-
-       		return $mensaje;
-       	}
+            }
 
 
 
 
-       	/**
-       	 * Metodo que compara el monto de la planilla. Comparación entre el detalle
-       	 * del recibo y el monto que posee en la entidad "pagos-detalle".
-       	 * @param array $results arreglo con los datos del recibo y las planillas
-       	 * (DepositoPlanilla::find()).
-       	 * @return array
-       	 */
-       	public function montoCorrectoPlanilla($results)
-       	{
-       		$mensaje = [];
-       		foreach ( $results as $result ) {
-       			$suma = 0;
-       			$planillaSearch = New PlanillaSearch($result['planilla']);
-       			$detalles = $planillaSearch->getResumenGeneral();
+            /**
+             * Metodo que determina si la suma de los detalles del recibo (planillas)
+             * coinciden con el total del monto del recibo.
+             * @param array $results arreglo con los datos del recibo y las planillas
+             * (DepositoPlanilla::find()).
+             * @return string
+             */
+            public function montoCorrecto($results)
+            {
+                  $mensaje = [];
+                  $montoRecibo = $results[0]['deposito']['monto'];
 
-       			if ( (int)$detalles['pago'] !== 0 ) {
-       				$mensaje[] = Yii::t('backend', 'La planilla: ' . $detalles['planilla'] .  ', no esta disponible para su pago');
-       			} else {
-       				$suma = self::sumaDetellePlanilla($detalles);
-       				if ( (float)$suma !== (float)$result['monto'] ) {
-       					$mensaje[] = Yii::t('backend', 'El monto de la planilla:' . $result['planilla'] . ', no coincide con el registrado al momento de crear el recibo');
-       				}
-       			}
-       		}
+                  $suma = 0;
+                  foreach ( $results as $result ) {
+                        $suma = (float)$result['monto'] + (float)$suma;
+                  }
 
-       		return $mensaje;
+                  if ( (float)round($montoRecibo, 2) !== (float)round($suma, 2) ) {
+                        $mensaje[] = Yii::t('backend','El monto del recibo no coincide con la suma de los montos de las planillas');
+                  }
 
-       	}
+                  return $mensaje;
+            }
 
 
 
 
-       	/**
-       	 * Metodo que realiza la contabilizacin de los subtotales de la planilla.
-       	 * @param array $detalles resultado de la coonsulta con la estructura:
-       	 * array(12) {
-  		 *	    ["planilla"]=>
-  		 * 		string(6) "999999"
-		 *	  	["id_contribuyente"]=>
-		 *	  	string(3) "99999"
-		 *	  	["sum_monto"]=>
-		 *	  	string(6) "9999.99"
-		 *	  	["sum_recargo"]=>
-		 *	  	string(4) "0.00"
-	     *		["sum_interes"]=>
-		 *	  	string(4) "0.00"
-		 *	  	["sum_descuento"]=>
-		 *	  	string(4) "0.00"
-		 *	  	["sum_monto_reconocimiento"]=>
-		 *	  	string(4) "0.00"
-		 *	  	["pago"]=>
-		 *	  	string(1) "1"
-		 *	  	["descripcion_impuesto"]=>
-		 *	  	string(5) "TASAS"
-		 *	  	["descripcion"]=>
-		 *	  	string(70) "Descripcion."
-		 *	  	["unidad"]=>
-		 *	  	string(8) "Variable"
-		 *	  	["estatus"]=>
-		 *	  	string(6) "PAGADO"
-		 *	}
-       	 * @return double
-       	 */
-       	private function sumaDetellePlanilla($detalles)
-       	{
-       		return $suma = ( $detalles['sum_monto'] + $detalles['sum_recargo'] + $detalles['sum_interes'] ) - ( $detalles['sum_descuento'] + $detalles['sum_monto_reconocimiento'] );
-       	}
+            /**
+             * Metodo que compara el monto de la planilla. Comparación entre el detalle
+             * del recibo y el monto que posee en la entidad "pagos-detalle".
+             * @param array $results arreglo con los datos del recibo y las planillas
+             * (DepositoPlanilla::find()).
+             * @return array
+             */
+            public function montoCorrectoPlanilla($results)
+            {
+                  $mensaje = [];
+                  foreach ( $results as $result ) {
+                        $suma = 0;
+                        $planillaSearch = New PlanillaSearch($result['planilla']);
+                        $detalles = $planillaSearch->getResumenGeneral();
+
+                        if ( (int)$detalles['pago'] !== 0 ) {
+                              $mensaje[] = Yii::t('backend', 'La planilla: ' . $detalles['planilla'] .  ', no esta disponible para su pago');
+                        } else {
+                              $suma = self::sumaDetellePlanilla($detalles);
+                              if ( (float)round($suma, 2) !== (float)round($result['monto'], 2) ) {
+                                    $mensaje[] = Yii::t('backend', 'El monto de la planilla:' . $result['planilla'] . ', no coincide con el registrado al momento de crear el recibo');
+                              }
+                        }
+                  }
+
+                  return $mensaje;
+
+            }
 
 
 
 
-       	/**
-       	 * Metodo que determina si el recibo esta vencido.
-       	 * * @param array $results arreglo con los datos del recibo y las planillas
-       	 * (DepositoPlanilla::find()).
-       	 * @return string
-       	 */
-       	public function reciboVencido($results)
-       	{
-       		$mensaje = null;
-       		if ( $results[0]['deposito']['fecha'] !== date('Y-m-d') ) {
-       			$mensaje = Yii::t('backend', 'El recibo se encuentra vencido. Fecha actual: ' . date('d-m-Y'));
-       		}
-       		return $mensaje;
-       	}
+            /**
+             * Metodo que realiza la contabilizacin de los subtotales de la planilla.
+             * @param array $detalles resultado de la coonsulta con la estructura:
+             * array(12) {
+             *        ["planilla"]=>
+             *          string(6) "999999"
+             *          ["id_contribuyente"]=>
+             *          string(3) "99999"
+             *          ["sum_monto"]=>
+             *          string(6) "9999.99"
+             *          ["sum_recargo"]=>
+             *          string(4) "0.00"
+           *            ["sum_interes"]=>
+             *          string(4) "0.00"
+             *          ["sum_descuento"]=>
+             *          string(4) "0.00"
+             *          ["sum_monto_reconocimiento"]=>
+             *          string(4) "0.00"
+             *          ["pago"]=>
+             *          string(1) "1"
+             *          ["descripcion_impuesto"]=>
+             *          string(5) "TASAS"
+             *          ["descripcion"]=>
+             *          string(70) "Descripcion."
+             *          ["unidad"]=>
+             *          string(8) "Variable"
+             *          ["estatus"]=>
+             *          string(6) "PAGADO"
+             *    }
+             * @return double
+             */
+            private function sumaDetellePlanilla($detalles)
+            {
+                  return $suma = ( $detalles['sum_monto'] + $detalles['sum_recargo'] + $detalles['sum_interes'] ) - ( $detalles['sum_descuento'] + $detalles['sum_monto_reconocimiento'] );
+            }
+
+
+
+
+            /**
+             * Metodo que determina si el recibo esta vencido.
+             * * @param array $results arreglo con los datos del recibo y las planillas
+             * (DepositoPlanilla::find()).
+             * @return string
+             */
+            public function reciboVencido($results)
+            {
+                  $mensaje = null;
+                  if ( $results[0]['deposito']['fecha'] !== date('Y-m-d') ) {
+                        $mensaje = Yii::t('backend', 'El recibo se encuentra vencido. Fecha actual: ' . date('d-m-Y'));
+                  }
+                  return $mensaje;
+            }
 
 
 
 
 
-       	/**
-       	 * Metodo que permite aplicar las politicas de validacion del modulo
-       	 * para evitar que el proceso no se ejecute correctamente.
-       	 * @return array
-     	       */
-       	public function validarEvento()
-       	{
-       		$mensajes = [];
-       		$results = self::findDepositoPlanillaModel()->asArray()->all();
+            /**
+             * Metodo que permite aplicar las politicas de validacion del modulo
+             * para evitar que el proceso no se ejecute correctamente.
+             * @return array
+             */
+            public function validarEvento()
+            {
+                  $mensajes = [];
+                  $results = self::findDepositoPlanillaModel()->asArray()->all();
 
                   if ( count($results) == 0 ) {
                         $mensajes[] = Yii::t('backend', 'El recibo no existe o sus detalles estan incompleto');
@@ -410,7 +410,7 @@
                   }
 
                   return $mensajes;
-       	}
+            }
 
 
 
@@ -899,6 +899,6 @@
                   }
                   return $suma;
             }
-	}
+      }
 
 ?>
