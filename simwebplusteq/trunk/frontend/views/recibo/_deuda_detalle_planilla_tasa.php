@@ -64,7 +64,7 @@
         'action'=> Url::to(['index-create']),
         'enableClientValidation' => false,
  			  'enableAjaxValidation' => false,
- 			  'enableClientScript' => true,
+ 			  'enableClientScript' => false,
  		]);
  	?>
 
@@ -157,23 +157,31 @@
 
                                       'id' => 'id-chkSeleccionDeuda',
                                       'onClick' => 'if ( $(this).is(":checked") ) {
+                                                        var total = 0;
 
-                                                        var suma = parseFloat($( "#id-suma" ).val());
-                                                        var item = parseFloat(' . $model['t'] . ');
-                                                        if ( isNaN(suma) ) { suma = 0; }
-                                                        var total =  parseFloat(suma + item).toFixed(2);
+                                                        var suma = parseFloat($( "#id-suma" ).val()).toFixed(2);
+                                                        var suma1 = Number(suma.replace(/[^0-9\.-]+/g,""));
+                                                        var item = parseFloat(' . $model['t'] . ').toFixed(2);
+                                                        var item1 = Number(item.replace(/[^0-9\.-]+/g,""));
+                                                        if ( isNaN(suma1) ) { suma = 0; }
+                                                        var total = parseFloat(suma1 + item1).toFixed(2);
+                                                        //alert(total);
                                                         $( "#id-suma" ).val(total);
                                                     } else {
-                                                        var suma = parseFloat($( "#id-suma" ).val());
-                                                        var item = parseFloat(' . $model['t'] . ');
-                                                        if ( suma > 0 ) {
-                                                            var total = parseFloat(suma - item).toFixed(2);
+                                                        var suma = parseFloat($( "#id-suma" ).val()).toFixed(2);
+                                                        var suma1 = Number(suma.replace(/[^0-9\.-]+/g,""));
+                                                        var item = parseFloat(' . $model['t'] . ').toFixed(2);
+                                                        var item1 = Number(item.replace(/[^0-9\.-]+/g,""));
+
+                                                        if ( isNaN(suma1) ) { suma = 0; }
+                                                        if ( suma1 > 0 ) {
+                                                            var total = parseFloat(suma1 - item1).toFixed(2);
                                                             $( "#id-suma" ).val(total);
                                                         }
                                                     }
-                                                    var n = $( "#id-suma" ).val();
-                                                    var total = $( "#id-total" ).val();
-                                                    var s = parseFloat(n) + parseFloat(total);
+                                                    var n = parseFloat($( "#id-suma" ).val()).toFixed(2);
+                                                    var total = parseFloat($( "#id-total" ).val()).toFixed(2);
+                                                    var s = parseFloat(n).toFixed(2) + parseFloat(total).toFixed(2);
 
                                                     //$( "#id-sub-total" ).val(s);
 
@@ -197,9 +205,19 @@
                               'style' => 'font-size: 90%;',
                         ],
                         'label' => Yii::t('frontend', 'planilla'),
+                        'format' => 'raw',
                         'value' => function($data) {
-                                      return $data['planilla'];
-            			                 },
+                                    return $data['planilla'];
+                                    // return Html::a($data['planilla'], '#', [
+                                    //                     'id' => 'link-view-planilla',
+                                    //                     //'class' => 'btn btn-success',
+                                    //                     'data-toggle' => 'modal',
+                                    //                     'data-target' => '#modal',
+                                    //                     'data-url' => Url::to(['view-planilla', 'p' => $data['planilla']]),
+                                    //                     'data-planilla' => $data['planilla'],
+                                    //                     'data-pjax' => '0',
+                                    //       ]);
+                        },
                         //'visible' => ( $periodoMayorCero ) ? false : true,
                     ],
 
@@ -438,25 +456,6 @@
       <h4><strong><p>Suma Seleccion id-suma:</p></strong></h4>
     </div>
 
-
-    <!-- <div class="col-sm-4" style="width:20%;padding:0px;">
-       <?//= Html::textInput('prueba', Yii::$app->formatter->asDecimal(0, 2),
-                      // [
-                      //   'id' => 'id-prueba',
-                      //   'class' => 'form-control',
-                      //   'style' => 'width:200px;
-                      //          background-color:white;
-                      //          text-align:right;
-                      //          font-size:120%;',
-                      //   'readOnly' => true
-                      // ]);
-      ?>
-    </div> -->
-
-
-
-
-
     <div class="col-sm-3" id="suma-seleccion" style="width:30%;text-align: right;background-color: #F1F1F1;">
       <h3><strong><p><?= MaskedInput::widget([
                               'name' => 'suma',
@@ -499,44 +498,42 @@
       ?>
     </div>
   </div>
-
-
-  <div class="row" >
-      <!-- <div class="row" style="width: 39%;background-color: #F1F1F1;padding-left:0px;margin-left:0px;">
-          <div class="col-sm-3" style="width: 40%;">
-              <h6><strong><p>+ Total Seleccionado id-sub-total:</p></strong></h6>
-          </div>
-          <div class="col-sm-3" id="id-sub-totales" style="width: 60%;">
-              <h3><strong><p><?//= MaskedInput::widget([
-                              /*'name' => 'subtotal',
-                              'id' => 'id-sub-total',
-                              'options' => [
-                                  'class' => 'form-control',
-                                  'style' => 'width:100%;text-align: right;font-size:90%;background-color:#FFFFFF;',
-                                  'readonly' => true,
-                                  'placeholder' => '0,00',
-
-                              ],
-                                  'clientOptions' => [
-                                      'alias' =>  'decimal',
-                                      'digits' => 2,
-                                      'digitsOptional' => false,
-                                      'groupSeparator' => '.',
-                                      'removeMaskOnSubmit' => true,
-                                      // 'allowMinus'=>false,
-                                      //'groupSize' => 3,
-                                      'radixPoint'=> ",",
-                                      'autoGroup' => true,
-                                      'decimalSeparator' => ',',
-                                ],*/
-
-                        //]);?></p></strong></h3>
-          </div>
-      </div> -->
-  </div>
-
-
 	<?php ActiveForm::end();?>
 
 </div>
+<?php
+$this->registerJs(
+    '$(document).on("click", "#link-view-planilla", (function() {
+        $.get(
+            $(this).data("url"),
+            function (data) {
+                //$(".modal-body").html(data);
+                $(".planilla").html(data);
+                $("#modal").modal();
+            }
+        );
+    }));'
+); ?>
 
+<style type="text/css">
+  .modal-content  {
+      margin-top: 150px;
+      margin-left: -180px;
+      width: 150%;
+  }
+</style>
+
+<?php
+Modal::begin([
+    'id' => 'modal',
+    //'header' => '<h4 class="modal-title">Complete</h4>',
+    'size' => 'modal-lg',
+    'footer' => '<a href="#" class="btn btn-primary" data-dismiss="modal">Cerrar</a>',
+]);
+
+//echo "<div class='well'></div>";
+Pjax::begin();
+echo "<div class='planilla'></div>";
+Pjax::end();
+Modal::end();
+?>
