@@ -422,19 +422,21 @@
 						                        ]);?>
 						    </p></strong></h3>
 
-							<div class="col-sm-3" style="width: 100%;">
-								<div class="form-group">
-									<?= Html::submitButton(Yii::t('frontend', 'Crear Recibo'),
-																			  [
-																				'id' => 'btn-create',
-																				'class' => 'btn btn-primary',
-																				'value' => 1,
-																				'style' => 'width: 100%;font-size:110%;font-weight:bold;',
-																				'name' => 'btn-create',
-																			  ])
-									?>
+							<?php if ( $habilitarCrear ) { ?>
+								<div class="col-sm-3" style="width: 100%;">
+									<div class="form-group">
+										<?= Html::submitButton(Yii::t('frontend', 'Crear Recibo'),
+																				  [
+																					'id' => 'btn-create',
+																					'class' => 'btn btn-primary',
+																					'value' => 1,
+																					'style' => 'width: 100%;font-size:110%;font-weight:bold;',
+																					'name' => 'btn-create',
+																				  ])
+										?>
+									</div>
 								</div>
-							</div>
+							<?php } ?>
 						</div>
 
 					</div>
