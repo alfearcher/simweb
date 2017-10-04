@@ -89,6 +89,8 @@ return [
 	'996' => [Yii::t('backend', 'This Stickers lot has already been asigned'), 'danger', 'fa fa-exclamation-triangle'],
 	'997' => [Yii::t('backend', 'This Car already has a sticker asigned'), 'danger', 'fa fa-exclamation-triangle'],
 	'998' => [Yii::t('backend', 'The year you selected is not available'), 'danger', 'fa fa-exclamation-triangle'],
+
+	'901' => [Yii::t('backend', 'La session no es valida o ya finalizó'), 'danger', 'fa fa-exclamation-triangle'],
 	'899' => [Yii::t('backend', 'At least 1 officer still have a sticker lot asigned'), 'danger', 'fa fa-exclamation-triangle'],
 
 	'404' => [Yii::t('backend', 'The requested page does not exist.'), 'danger', 'fa fa-times'],
