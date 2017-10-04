@@ -163,7 +163,7 @@
 
 			} else {
 				// Session no valida.
-				$this->redirect(['']);
+				$this->redirect(['session-no-valida']);
 			}
 		}
 
@@ -209,7 +209,7 @@
 
 					$searchEstatus = New EstatusDepositoSearch();
 					$listaEstatus = $searchEstatus->getListaEstatus();
-//die(var_dump($dataProvider->getModels()));
+
 					$caption = Yii::t('backend', 'Reporte de Recibos');
 					return $this->render('/reporte/recaudacion/recibo/reporte-general-recibo', [
 												'caption' => $caption,
@@ -219,11 +219,11 @@
 					]);
 				} else {
 					// Session no valida.
-					$this->redirect(['']);
+					$this->redirect(['session-no-valida']);
 				}
 			} else {
 				// Session no valida.
-				$this->redirect(['']);
+				$this->redirect(['session-no-valida']);
 			}
 		}
 
@@ -386,6 +386,16 @@
 		}
 
 
+		/**
+		 * Metodo que indica que la session ha terminado.
+		 * @return view, con mensaje.
+		 */
+		public function actionSessionNoValida()
+		{
+			return MensajeController::actionMensaje(901);
+		}
+
+
 
 		/**
 		 * Metodo que permite obtener un arreglo de las variables de sesion
@@ -397,6 +407,7 @@
 		{
 			return $varSession = [
 						'postData',
+						'postEnviado',
 						'begin',
 					];
 		}
