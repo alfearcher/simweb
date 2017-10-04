@@ -6,6 +6,7 @@
   	use kartik\sidenav\SideNav;
   	use kartik\icons\Icon;
   	use yii\helpers\Url;
+  	use yii\web\View;
   	//use rmrevin\yii\fontawesome\FontAwesome;
 
 
@@ -20,7 +21,7 @@
 
 
 ?>
-
+<?php if ( strlen(Yii::$app->identidad->getUsuario()) > 0 ) { ?>
 <div class="col-xs-3" style="width: 30%;">
 	<div class="menu-funcionario" style="margin-left:-110px;">
 		<?=
@@ -388,7 +389,9 @@
 		</div>
 	</div>
 </div>
-
+<?php } else {
+	Yii::$app->getResponse()->redirect(array('site/logout'));
+}?>
 
 
 
