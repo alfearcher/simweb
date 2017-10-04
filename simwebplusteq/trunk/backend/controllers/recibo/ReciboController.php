@@ -140,6 +140,8 @@
 				  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
 				  			$model->totalSeleccionado = $totalSeleccionado;
 				  			$_SESSION['begin'] = 1;
+				  			$habilitarCrear = self::habilitarBotonCrearRecibo($providerPlanillaSeleccionada);
+
 							return $this->render('@frontend/views/recibo/recibo-create-form', [
 																	'model' => $model,
 																	'caption' => $caption,
@@ -149,6 +151,7 @@
 																	'total' => $total,
 																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
 																	'rutaAyuda' => $rutaAyuda,
+																	'habilitarCrear' => $habilitarCrear,
 
 																]);
 						} else {
@@ -276,6 +279,7 @@
 
 			  			$totalSeleccionado = self::actionTotalSeleccionado($providerPlanillaSeleccionada);
 			  			$model->totalSeleccionado = $totalSeleccionado;
+			  			$habilitarCrear = self::habilitarBotonCrearRecibo($providerPlanillaSeleccionada);
 
 						return $this->render('@frontend/views/recibo/recibo-create-form',
 																[
@@ -287,6 +291,7 @@
 																	'total' => $total,
 																	'providerPlanillaSeleccionada' => $providerPlanillaSeleccionada,
 																	'rutaAyuda' => $rutaAyuda,
+																	'habilitarCrear' => $habilitarCrear,
 
 																]);
 					} else {
@@ -304,6 +309,24 @@
 			}
 		}
 
+
+
+		/**
+		 * Metodo que utilizando el data provider de las planillas seleccionadas
+		 * determina si existen o no planillas en el listado de la s ya seleccionadas,
+		 * de ser asi, se envia un set de la variable indicando que se active.
+		 * @param ArrayDataProvider|ActiveDataProvider $providerPlanillaSeleccionada
+		 * data provider de las planillas seleccionadas para crear el recibo.
+		 * @return boolean
+		 */
+		private function habilitarBotonCrearRecibo($providerPlanillaSeleccionada)
+		{
+			$models = $providerPlanillaSeleccionada->getModels();
+			if ( count($models) > 0 ) {
+				return true;
+			}
+			return false;
+		}
 
 
 
