@@ -201,10 +201,98 @@
 						</div>
 					</div>
 
+					<?php
+						foreach ( $listaEstatus as $key => $value ) {
+							$totalRecibo[$value] = 0;
+						}
+
+						$models = $dataProvider->getModels();
+						foreach ( $models as $deposito ) {
+							$register = $deposito->toArray();
+							foreach ( $listaEstatus as $key => $value ) {
+								if ( (int)$register['estatus'] == (int)$key ) {
+									$totalRecibo[$value] += (float)$register['monto'];
+								}
+							}
+						}
+					?>
+
+					<div class="row" style="width: 100%;">
+						<div class="col-sm-2" style="width: 45%;">
+							<h4><strong><?=Html::label(Yii::t('backend', 'TOTAL POR RECIBO PAGADO'))?></strong></h4>
+						</div>
+						<div class="col-sm-2" style="width: 30%;">
+							<?=Html::textInput('total-recibo-pagado',
+												Yii::$app->formatter->asDecimal($totalRecibo['PAGADO'], 2),
+												[
+													'class' => 'form-control',
+													'style' => 'width:100%;
+																font-size:140%;
+																font-weight: bold;
+																text-align:right;',
+													'readOnly' => true,
+												])
+							?>
+						</div>
+					</div>
+
+					<div class="row" style="width: 100%;">
+						<div class="col-sm-2" style="width: 45%;">
+							<h4><strong><?=Html::label(Yii::t('backend', 'TOTAL POR RECIBO PENDIENTE'))?></strong></h4>
+						</div>
+						<div class="col-sm-2" style="width: 30%;">
+							<?=Html::textInput('total-recibo-pendiente',
+												Yii::$app->formatter->asDecimal($totalRecibo['PENDIENTE'], 2),
+												[
+													'class' => 'form-control',
+													'style' => 'width:100%;
+																font-size:140%;
+																font-weight: bold;
+																text-align:right;',
+													'readOnly' => true,
+												])
+							?>
+						</div>
+					</div>
+
+					<div class="row" style="width: 100%;">
+						<div class="col-sm-2" style="width: 45%;">
+							<h4><strong><?=Html::label(Yii::t('backend', 'TOTAL POR RECIBO ANULADO'))?></strong></h4>
+						</div>
+						<div class="col-sm-2" style="width: 30%;">
+							<?=Html::textInput('total-recibo-anulado',
+												Yii::$app->formatter->asDecimal($totalRecibo['ANULADO'], 2),
+												[
+													'class' => 'form-control',
+													'style' => 'width:100%;
+																font-size:140%;
+																font-weight: bold;
+																text-align:right;',
+													'readOnly' => true,
+												])
+							?>
+						</div>
+					</div>
+
+
 					<div class="row">
 						<div class="col-sm-3" style="width:20%;padding-top: 15px;">
 							<div class="form-group">
-								<?= Html::submitButton(Yii::t('frontend', 'Back'),
+								<?= Html::submitButton(Yii::t('backend', 'Quit'),
+																		[
+																			'id' => 'btn-quit',
+																			'class' => 'btn btn-danger',
+																			'value' => 1,
+																			'style' => 'width: 100%',
+																			'name' => 'btn-quit',
+																		])
+								?>
+							</div>
+						</div>
+
+						<div class="col-sm-3" style="width:20%;padding-top: 15px;">
+							<div class="form-group">
+								<?= Html::submitButton(Yii::t('backend', 'Back'),
 																		[
 																			'id' => 'btn-back',
 																			'class' => 'btn btn-danger',
@@ -222,44 +310,6 @@
 	</div>
 	<?php ActiveForm::end(); ?>
 </div>
-
-<?php
-	foreach ( $listaEstatus as $key => $value ) {
-		$$value = 0;
-	}
-	$totalRecibo = [];
-	$models = $dataProvider->getModels()->toArray();
-	foreach ( $models as $deposito ) {
-		foreach ( $listaEstatus as $key => $value ) {
-			if ( (int)$deposito['estatus'] == (int)$key ) {
-				$$value += (float)$deposito['monto'];
-			}
-		}
-	}
-	foreach ( $listaEstatus as $key => $value ) {
-		$totalRecibo = [$value => $$value];
-	}
-die(var_dump($totalRecibo));
-?>
-
-<div class="row" style="width: 100%;">
-	<div class="col-sm-2" style="width: 45%;">
-		<h4><strong><?=Html::label(Yii::t('backend', 'TOTAL POR RECIBO PAGADO'))?></strong></h4>
-	</div>
-	<div class="col-sm-2" style="width: 30%;">
-		<?=Html::textInput('total-recibo-pagado',
-							Yii::$app->formatter->asDecimal($totalRecibo['pagado'], 2),
-							[
-								'class' => 'form-control',
-								'style' => 'width:100%;
-											font-size:140%;
-											font-weight: bold;
-											text-align:right;'
-							])
-		?>
-	</div>
-</div>
-
 
 
 

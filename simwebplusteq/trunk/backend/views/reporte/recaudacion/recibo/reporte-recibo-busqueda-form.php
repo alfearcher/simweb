@@ -133,7 +133,7 @@
 
 								<div class="row" id="condicion">
 									<div class="col-sm-2" style="width: 30%;">
-										<h5><strong><?=Html::encode(Yii::t('backend', 'Condicon'))?></strong></h5>
+										<h5><strong><?=Html::encode(Yii::t('backend', 'Condicion'))?></strong></h5>
 									</div>
 									<div class="col-sm-3" style="width: 50%;padding: 0px;margin:0px;">
 										<?= $form->field($model, 'estatus')->dropDownList($lista,[
