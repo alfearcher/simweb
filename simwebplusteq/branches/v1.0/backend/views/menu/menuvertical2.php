@@ -91,6 +91,7 @@
         				['label' => 'Recaudación',
         					'items' => [
         						['label' => 'Recaudacion de Ingresos', 'url' => ['/reporte/recaudacion/recaudacion/index']],
+        						['label' => 'Recibos', 'url' => ['/reporte/recaudacion/recibo/reporte-recibo/index']],
         					],
         				],
         			]
