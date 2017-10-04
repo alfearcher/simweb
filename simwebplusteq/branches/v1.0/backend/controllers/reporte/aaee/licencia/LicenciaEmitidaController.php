@@ -61,6 +61,7 @@
 	use backend\models\aaee\licencia\tipolicencia\TipoLicenciaSearch;
 	use backend\models\aaee\licencia\LicenciaSolicitudSearch;
 	use backend\models\buscargeneral\BuscarGeneral;
+	use backend\models\usuario\AutorizacionUsuario;
 
 
 
@@ -86,10 +87,17 @@
 		 */
 		public function actionIndex()
 		{
-			$varSessions = self::actionGetListaSessions();
-			self::actionAnularSession($varSessions);
-			$_SESSION['begin'] = 1;
-			$this->redirect(['mostrar-form-consulta-licencia-emitida']);
+			$autorizacion = New AutorizacionUsuario();
+			if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+				$varSessions = self::actionGetListaSessions();
+				self::actionAnularSession($varSessions);
+				$_SESSION['begin'] = 1;
+				$this->redirect(['mostrar-form-consulta-licencia-emitida']);
+			} else {
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
+			}
 		}
 
 
@@ -104,7 +112,7 @@
 			$model = New LicenciaEmitidaSearch();
 			$formName = $model->formName();
 
-			if ( $model->estaAutorizado($usuario) ) {
+			if ( isset($_SESSION['begin']) ) {
 
 				$request = Yii::$app->request;
 
