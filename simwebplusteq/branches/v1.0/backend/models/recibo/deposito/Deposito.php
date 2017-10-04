@@ -50,6 +50,7 @@
 	use backend\models\recibo\estatus\EstatusDeposito;
 	use common\models\contribuyente\ContribuyenteBase;
 	use backend\models\recibo\planillacontable\PlanillaContable;
+	use backend\models\funcionario\Funcionario;
 
 
 	/**
@@ -156,6 +157,27 @@
 		{
 			return $this->hasMany(PlanillaContable::className(), ['recibo' => 'recibo']);
 		}
+
+
+		/**
+		 * Relacion con la entidad "funcionarios"
+		 * @return
+		 */
+		public function getUsuarioPagoRecibo()
+		{
+			return $this->hasOne(Funcionario::className(), ['login' => 'usuario']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "funcionarios"
+		 * @return
+		 */
+		public function getUsuarioCreoRecibo()
+		{
+			return $this->hasOne(Funcionario::className(), ['login' => 'usuario_creador']);
+		}
+
 
 	}
 
