@@ -60,6 +60,7 @@
 	use backend\models\reporte\contribuyente\general\ContribuyenteGeneralSearch;
 	use backend\models\buscargeneral\BuscarGeneral;
 	use backend\models\reporte\propaganda\general\PropagandaReporteSearch;
+	use backend\models\usuario\AutorizacionUsuario;
 
 
 	session_start();
@@ -81,10 +82,17 @@
 		 */
 		public function actionIndex()
 		{
-			$varSessions = self::actionGetListaSessions();
-			self::actionAnularSession($varSessions);
-			$_SESSION['begin'] = 1;
-			$this->redirect(['mostrar-form-consulta-contribuyente']);
+			$autorizacion = New AutorizacionUsuario();
+			if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
+				$varSessions = self::actionGetListaSessions();
+				self::actionAnularSession($varSessions);
+				$_SESSION['begin'] = 1;
+				$this->redirect(['mostrar-form-consulta-contribuyente']);
+			} else {
+				// Su perfil no esta autorizado.
+				// El usuario no esta autorizado.
+            	$this->redirect(['error-operacion', 'cod' => 700]);
+			}
 		}
 
 
@@ -100,7 +108,7 @@
 
 			$formName = $propagandaSearch->formName();
 
-			if ( $propagandaSearch->estaAutorizado($usuario) ) {
+			if ( isset($_SESSION['begin']) ) {
 
 				$request = Yii::$app->request;
 
