@@ -43,6 +43,7 @@
 	use yii\web\View;
 	use yii\widgets\MaskedInput;
 
+//die(var_dump($dataProviderRecibo->getModels()[0]));
 ?>
 
 
@@ -125,6 +126,14 @@
 			;?>
 		</div>
 	</div>
+
+	<?php if ( strlen($dataProviderRecibo->getModels()[0]['observacion']) > 0 || (int)$dataProviderRecibo->getModels()[0]['estatus'] == 9 ) { ?>
+		<div class="row" style="width: 100%;">
+			<div class="well well-sm" style="color:red;font-weight:bold;">
+				<?=Html::encode($dataProviderRecibo->getModels()[0]['observacion']);?>
+			</div>
+		</div>
+	<?php } ?>
 
 	<div class="row" style="width:100%;border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding:0px;margin-top: 15px;">
 		<h4><strong><?=Html::encode(Yii::t('frontend', 'Planillas Relacionadas al Recibo'))?></strong></h4>
