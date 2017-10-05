@@ -64,6 +64,7 @@
     use backend\models\recibo\depositodetalle\DepositoDetalleSearch;
     use backend\models\recibo\txt\RegistroTxtReciboSearch;
     use backend\models\buscargeneral\BuscarGeneral;
+    use common\models\totalizar\TotalizarGrid;
 
 
 	session_start();		// Iniciando session
@@ -204,18 +205,24 @@
 
 					if ( isset($postEnviado['page']) ) {
 						$postEnviado = $_SESSION['postEnviado'];
-						$model->load($postEnviado);
+						$reporteReciboSearch->load($postEnviado);
 					}
 
 					$searchEstatus = New EstatusDepositoSearch();
 					$listaEstatus = $searchEstatus->getListaEstatus();
 
+					$totalRecibo = $reporteReciboSearch->totalizarPorCondicion($listaEstatus);
+
 					$caption = Yii::t('backend', 'Reporte de Recibos');
+
+					$subCaption = Yii::t('backend', "Rango de Consulta, desde: {$reporteReciboSearch->fecha_desde} - hasta: {$reporteReciboSearch->fecha_hasta}");
 					return $this->render('/reporte/recaudacion/recibo/reporte-general-recibo', [
 												'caption' => $caption,
+												'subCaption' => $subCaption,
 												'dataProvider' => $dataProvider,
 												'model' => $reporteReciboSearch,
 												'listaEstatus' => $listaEstatus,
+												'totalRecibo' => $totalRecibo,
 					]);
 				} else {
 					// Session no valida.
