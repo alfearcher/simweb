@@ -152,7 +152,7 @@
 			$dataProvider = New ActiveDataProvider([
 				'query' => $query,
 				'pagination' => [
-					'pageSize' => 10,
+					'pageSize' => 100,
 				],
 			]);
 			$query->alias('D')
