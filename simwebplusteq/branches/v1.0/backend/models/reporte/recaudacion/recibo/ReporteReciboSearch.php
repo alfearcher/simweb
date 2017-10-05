@@ -51,11 +51,12 @@
 	use backend\models\recibo\deposito\Deposito;
 
 
-	/***/
+
+	/**
+	 * Clase para gestionar el reporte de recibos.
+	 */
 	class ReporteReciboSearch extends ReporteReciboBusquedaForm
 	{
-
-
 
 
 		/**
@@ -125,7 +126,7 @@
 		 */
 		private function findUsuarioCreadorRecibo()
 		{
-			$findModel = self::findDepositoModel();
+			$findModel = $this->findDepositoModel();
 			return $model = $findModel->select([
 											'usuario_creador',
 											'CONCAT(apellidos, " ", nombres) as nombre',
@@ -151,7 +152,7 @@
 		 */
 		private function findUsuarioPagoRecibo()
 		{
-			$findModel = self::findDepositoModel();
+			$findModel =  $this->findDepositoModel();
 			return $model = $findModel->select([
 											'usuario',
 											'CONCAT(apellidos, " ", nombres) as nombre',
@@ -190,15 +191,36 @@
 		}
 
 
-		/**
-		 * Metodo que retorna el modelo basico de consulta de la entidad "depostos"
-		 * @return Deposito.
-		 */
-		private function findDepositoModel()
-		{
-			return Deposito::find()->alias('D');
-		}
 
+		/**
+		 * Metodo para totalizar los monto por extatus de los registros.
+		 * Si el estatus esta entre los registros encontrados se contabilizara
+		 * para ese grupo.
+		 * @param array $listaEstatus modelo de la entidad EstatusDeposito.
+		 * @return array
+		 */
+		public function totalizarPorCondicion($listaEstatus)
+		{
+			$findModel = $this->armarConsultaModel();
+
+			// Inicializar los contadores en cero.
+			foreach ( $listaEstatus as $key => $value ) {
+				$totalRecibo[$value] = 0;
+			}
+
+			// Todo los registros de la consulta inicial
+			$registers = $findModel->asArray()->all();
+			if ( count($registers) > 0 ) {
+				foreach ( $registers as $key => $register ) {
+					foreach ( $listaEstatus as $key => $value ) {
+						if ( (int)$register['estatus'] == (int)$key ) {
+							$totalRecibo[$value] += (float)$register['monto'];
+						}
+					}
+				}
+			}
+			return $totalRecibo;
+		}
 
 	}
 ?>
