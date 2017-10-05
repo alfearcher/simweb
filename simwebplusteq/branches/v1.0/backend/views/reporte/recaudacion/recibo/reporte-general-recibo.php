@@ -65,6 +65,9 @@
  		]);
  	?>
 
+
+	<!-- <?//=$form->field($model, 'fecha_desde')->hiddenInput(['value' => $model->fecha_desde])->label(false);?> -->
+
 	<meta http-equiv="refresh">
     <div class="panel panel-primary"  style="width: 95%;margin: auto;">
         <div class="panel-heading">
@@ -79,7 +82,7 @@
 
 					<div class="row" style="width: 100%;margin-top: 10px;">
 						<div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding-left: 5px;padding-top: 0px;">
-							<h4><?=Html::encode($caption)?></h4>
+							<h4><?=Html::encode($subCaption)?></h4>
 						</div>
 
 						<div class="row" id="id-reporte-general-recibo">
@@ -200,22 +203,6 @@
 
 						</div>
 					</div>
-
-					<?php
-						foreach ( $listaEstatus as $key => $value ) {
-							$totalRecibo[$value] = 0;
-						}
-
-						$models = $dataProvider->getModels();
-						foreach ( $models as $deposito ) {
-							$register = $deposito->toArray();
-							foreach ( $listaEstatus as $key => $value ) {
-								if ( (int)$register['estatus'] == (int)$key ) {
-									$totalRecibo[$value] += (float)$register['monto'];
-								}
-							}
-						}
-					?>
 
 					<div class="row" style="width: 100%;">
 						<div class="col-sm-2" style="width: 45%;">
