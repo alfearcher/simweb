@@ -86,6 +86,22 @@
 			return $total;
 		}
 
+
+		/***/
+		public static function totalizarCondicional($provider, $columna, $columnaCondicion,  $valorCondicion)
+		{
+			$total = (float)0;
+			$models = $provider->getModels();
+			foreach ( $models as $key => $model ) {
+				if ( $model[$columnaCondicion] == $valorCondicion ) {
+					$total += (float)$model[$columna];
+				}
+			}
+			return $total;
+		}
+
+
+
 	}
 
 ?>
