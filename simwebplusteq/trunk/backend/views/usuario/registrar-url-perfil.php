@@ -12,7 +12,7 @@ use backend\models\usuario\RutaAccesoMenu;
 /* @var $this yii\web\View */
 /* @var $model backend\models\InscripcionInmueblesUrbanosForm */
 /* @var $form ActiveForm */
-$this->title = Yii::t('backend', 'Perfil del Usuario'); 
+$this->title = Yii::t('backend', 'Perfil del Usuario (Creacion de Ruta)'); 
 ?>
 
 
@@ -38,16 +38,16 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                         
                     <div class="row" class="informacion-contribuyente" id="informacion-contribuyente">
                         <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 25px;">
-                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Nombre del Grupo Perfil'))?></strong></h4>
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Nombre del Url Perfil'))?></strong></h4>
                         </div>
                         
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="col-sm-4">
                                 
-                            <?= $form->field($model, 'descripcion')->textinput( [ 
+                            <?= $form->field($model, 'menu')->textinput( [ 
                                                                                                             'id'=> 'parametro', 
                                                                                                             'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:180px;',
+                                                                                                            'style' => 'width:580px;',
                                                                                                            ])->label(false);
                                                                                                            ?>
                             </div>
@@ -58,16 +58,17 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                         
                     <div class="row" class="informacion-contribuyente2" id="informacion-contribuyente2">
                         <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 25px;">
-                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Acceso al menu'))?></strong></h4>
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Ruta Acceso al menu'))?></strong></h4>
                         </div>
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="col-sm-4">
                             
 
-                            <?= $form->field($model, 'ruta')-> Checkboxlist($rutas,[
-                                            'id' => 'id-lista-menu',
-                                            'style' => 'width:380px;',
-                                        ])->label(false); ?>
+                            <?= $form->field($model, 'ruta')->textinput( [ 
+                                                                                                            'id'=> 'parametro', 
+                                                                                                            'prompt' => Yii::t('backend', 'Select'),
+                                                                                                            'style' => 'width:580px;',
+                                                                                                           ])->label(false);?>
                             </div> 
                         </div>
                         </div>
@@ -75,7 +76,7 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                         
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="form-group"> 
-                            <?= Html::submitButton(Yii::t('backend', 'Añadir Grupo Perfil'), ['class' => 'btn btn-success',
+                            <?= Html::submitButton(Yii::t('backend', 'Añadir Ruta Url'), ['class' => 'btn btn-success',
                                       'data' => [
                                                   'confirm' => Yii::t('app', 'Estas seguro de guardar la siguiente informacion?'),
                                                   'method' => 'post',],]) ?>

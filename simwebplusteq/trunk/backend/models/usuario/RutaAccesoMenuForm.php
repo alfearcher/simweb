@@ -74,7 +74,7 @@
 	    public function rules()
 	    {
 	        return [
-	        	[['ruta','menu','id_ruta_acceso_menu'],'required','message' => Yii::t('backend','{attribute} is required')],
+	        	[['ruta','menu'],'required','message' => Yii::t('backend','{attribute} is required')],
 	        	[['id_ruta_acceso_menu'], 'integer', 'message' => Yii::t('backend','{attribute} must be a number')],
 	        	[['menu'], 'string', 'message' => Yii::t('backend','{attribute} must be a string')],
 	        ];

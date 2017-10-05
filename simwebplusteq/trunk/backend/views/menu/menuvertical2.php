@@ -52,6 +52,7 @@
 		        							['label' => 'Añadir Permisos a Usuarios','url' =>['/usuario/registrar-perfil-usuario/registrar-perfil']],
 		        							['label' => 'Añadir Permisos a Usuarios por Grupo','url' =>['/usuario/registrar-perfil-usuario-grupo/registrar-perfil']],
 		        							['label' => 'Crear Grupo de Permisos a Usuarios','url' =>['/usuario/registrar-grupo-perfil-usuario/registrar-grupo-perfil']],
+		        							['label' => 'Crear Url Perfil','url' =>['/usuario/registrar-url-perfil-usuario/registrar-url-perfil']],
 		        				]
 		        			],
 

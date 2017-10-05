@@ -21,13 +21,13 @@
  */
 
  /**    
- *  @file RegistrarPerfilUsuarioGrupoController.php
+ *  @file RegistrarUrlPerfilUsuarioController.php
  *  
  *  @author Alvaro Jose Fernandez Archer
  * 
  *  @date 27-08-2017
  * 
- *  @class RegistrarPerfilUsuarioGrupoController
+ *  @class RegistrarUrlPerfilUsuarioController
  *  @brief Clase que permite controlar el registro o inscripcion de inmuebles urbanos,
  *
  * 
@@ -80,16 +80,16 @@ use common\models\configuracion\solicitud\SolicitudProcesoEvento;
 
 use backend\models\usuario\PerfilUsuarioForm;
 use backend\models\usuario\PerfilUsuario;
+use backend\models\usuario\GrupoPerfilUsuarioForm;
+use backend\models\usuario\GrupoPerfilUsuario;
 use backend\models\usuario\AutorizacionUsuario;
 use backend\models\usuario\RutaAccesoMenu;
 use backend\models\usuario\RutaAccesoMenuForm;
-use backend\models\usuario\GrupoPerfilUsuarioForm;
-use backend\models\usuario\GrupoPerfilUsuario;
 session_start();
 /*********************************************************************************************************
  * InscripcionInmueblesUrbanosController implements the actions for InscripcionInmueblesUrbanosForm model.
  *********************************************************************************************************/
-class RegistrarPerfilUsuarioGrupoController extends Controller
+class RegistrarUrlPerfilUsuarioController extends Controller
 {
     public $layout="layout-main";
     public $conn;
@@ -102,7 +102,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
      *Metodo para crear las cuentas de usuarios de los funcionarios
      *@return model 
      **/
-     public function actionRegistrarPerfil()
+     public function actionRegistrarUrlPerfil()
      { 
        
          
@@ -114,9 +114,8 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
          if ( $autorizado ) {
 
          //Creamos la instancia con el model de validación
-         $model = new PerfilUsuarioForm();
-         $modelRuta = new RutaAccesoMenuForm();
-         $modelGrupo = new GrupoPerfilUsuarioForm();
+         $model = new RutaAccesoMenuForm();
+         
          //Mostrará un mensaje en la vista cuando el usuario se haya registrado
          $msg = null;
          $url = null; 
@@ -135,15 +134,12 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
 
                  //condicionales     
                    
-               
-
-                $rutas = self::actionBuscarRuta($model);
 
                  
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
-                     $guardo = self::GuardarInscripcion($model, $rutas);
+                     $guardo = self::GuardarInscripcion($model);
 
                      if($guardo == true){ 
 
@@ -167,9 +163,9 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
               }
          }
 
-               $modelParametros = $modelGrupo->getListaGrupoAcceso();                                 
+               //$modelParametros = $modelRuta->getListaRutaAccesoId();                                 
                //$listaParametros = ArrayHelper::map($modelParametros,'ruta','menu'); 
-              return $this->render('/usuario/registrar-perfil-grupo', ['model' => $model, 'rutas' => $modelParametros,'searchModel' => $modelRuta,]);  
+              return $this->render('/usuario/registrar-url-perfil', ['model' => $model,]); // 'rutas' => $modelParametros,'searchModel' => $modelRuta,]);  
 
         }  else {
                     $this->redirect(['error-operacion', 'cod' => 700]);
@@ -185,12 +181,12 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarInscripcion($model, $rutas)
+     public function GuardarInscripcion($model)
      {
-       
+          
 
             try {
-            $tableName1 = 'perfil_usuario';
+            $tableName1 = 'ruta_acceso_menu'; 
 
              
             // $arrayDatos1 = [  'username' => $model->username,
@@ -205,29 +201,29 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
             $transaccion = $conexion->beginTransaction();
 
 
-             foreach ( $model['username'] as $funcionario ) { 
-               $arregloDatos['username'] = $funcionario;
-            foreach ( $rutas as $ruta ) {
-                $arregloDatos['ruta'] = $ruta[0]['ruta'];
+            // foreach ( $model['username'] as $funcionario ) { apertura del for each
+            //   $arregloDatos['username'] = $funcionario;
+           // foreach ( $model['ruta'] as $ruta ) {
+            //    $arregloDatos['ruta'] = $ruta;
 
-                 $arrayDatos1 = [  'username' => $arregloDatos['username'],
-                               'ruta' => $arregloDatos['ruta'], 
+                 $arrayDatos1 = [  'menu' => $model->menu,
+                               'ruta' => $model->ruta, 
                                'inactivo' => 0,
                                'usuario' =>Yii::$app->user->identity->username,
                                'fecha_hora'=>date('Y-m-d H:i:s'),
                                'operacion' => 'ASIGNACION',
-                          ]; 
+                          ];  
 
                 // Se inactiva cualquier solicitud que tenga el funcionario y que coincida con la que se guardara.
-                $result = self::actionInactivarFuncionarioRuta($arregloDatos['username'], $arregloDatos['ruta'], $tableName1, $conn, $conexion);
-                if ( $result ) {
+                //$result = self::actionInactivarFuncionarioRuta($model['username'], $ruta, $tableName1, $conn, $conexion);
+                //if ( $result ) {
                     $result = $conn->guardarRegistro($conexion, $tableName1, $arrayDatos1);
-                if ( !$result ) { break; }
-                } else {
-                    break;
-                }
-            } 
-          } //cierre for each
+               // if ( !$result ) { break; }
+                //} else {
+                //    break;
+                //}
+           // } 
+          //} cierre for each
             if ( $result ){  
                 
                
@@ -237,7 +233,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
                               $tipoError = 0; 
                               return true; 
 
-            } else {
+            } else { 
             
                               $transaccion->rollBack(); 
                               $conexion->close(); 
@@ -280,7 +276,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
          }
 
 
-     }
+     } 
 
      /**
      * [actionInactivarFuncionarioSolicitud description]
@@ -294,18 +290,23 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
     public function actionInactivarFuncionarioRuta($Funcionario, $ruta, $tabla, $conexionLocal, $conexion)
     {
 
-     
+// clasificacion de los grupos
+$perfil = PerfilUsuario::find()
+->where("inactivo=:activate", [":activate" => 0])
+->groupBy('username')
+->all();
+
       $result = false;
       $arregloCondicion = [
           'username' => $Funcionario,
           'ruta'=>$ruta,
           'inactivo' => 0,
-      ]; 
+      ];
       $arregloDatos = ['inactivo' => 1]; 
       $result = $conexionLocal->modificarRegistro($conexion, $tabla, $arregloDatos, $arregloCondicion);
 
       return $result;
-    } 
+    }
 
 
     /**
@@ -347,32 +348,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
     }
 
 
-    /**
-     * [actionInactivarFuncionarioSolicitud description]
-     * @param  [type] $idFuncionario [description]
-     * @param  [type] $tipoSolicitud [description]
-     * @param  [type] $tabla         [description]
-     * @param  [type] $conexionLocal [description]
-     * @param  [type] $connLocal     [description]
-     * @return [type]                [description]
-     */
-    public function actionBuscarRuta($model)
-    {
-
-     
-      $grupo = GrupoPerfilUsuario::find()
-                      ->where("descripcion=:descripcion", [":descripcion" => $model->ruta])->orderBy('ruta')
-                      ->all();
-
-      foreach ( $grupo as $ruta ) { 
-               $arregloDatos[] = RutaAccesoMenu::find()
-                      ->where("id_ruta_acceso_menu=:ruta", [":ruta" => $ruta['ruta']])
-                      ->all();
-
-      }
-
-      return $arregloDatos;
-    }
+      
      
      
 
