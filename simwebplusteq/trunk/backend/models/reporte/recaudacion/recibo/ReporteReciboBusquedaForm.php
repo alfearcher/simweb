@@ -147,39 +147,14 @@
 	     */
 		public function searchDeposito()
 		{
-			$query = Deposito::find();
+			$query = self::armarConsultaModel();
 
 			$dataProvider = New ActiveDataProvider([
 				'query' => $query,
 				'pagination' => [
-					'pageSize' => 100,
+					'pageSize' => 10,
 				],
 			]);
-
-			if ( $this->recibo > 0 ) {
-				$query->where('recibo =:recibo',[':recibo' => $this->recibo]);
-
-			} elseif ( $this->fecha_desde !== '' && $this->fecha_hasta !== '' ) {
-				$this->fecha_desde = self::formatFecha($this->fecha_desde);
-				$this->fecha_hasta = self::formatFecha($this->fecha_hasta);
-
-				$query->where(['BETWEEN', 'fecha', $this->fecha_desde, $this->fecha_hasta]);
-
-				if ( strlen($this->estatus) > 0 ) {
-					$query->andwhere('D.estatus =:estatus',
-											[':estatus' => $this->estatus]);
-				}
-
-				if ( strlen($this->usuario) > 0 ) {
-					$query->andwhere('usuario =:usuario',
-											[':usuario' => $this->usuario]);
-				}
-
-				if ( strlen($this->usuario_creador) > 0 ) {
-					$query->andwhere('usuario_creador =:usuario_creador',
-											[':usuario_creador' => $this->usuario_creador]);
-				}
-			}
 			$query->alias('D')
 				  ->joinWith('condicion E', true, 'INNER JOIN');
 
@@ -187,6 +162,45 @@
 
 		}
 
+
+
+		/***/
+		public function armarConsultaModel()
+		{
+			$findModel = self::findDepositoModel();
+			if ( $this->recibo > 0 ) {
+				$findModel->where('recibo =:recibo',[':recibo' => $this->recibo]);
+
+			} elseif ( $this->fecha_desde !== '' && $this->fecha_hasta !== '' ) {
+				$this->fecha_desde = self::formatFecha($this->fecha_desde);
+				$this->fecha_hasta = self::formatFecha($this->fecha_hasta);
+
+				$findModel->where(['BETWEEN', 'fecha', $this->fecha_desde, $this->fecha_hasta]);
+
+				if ( strlen($this->estatus) > 0 ) {
+					$findModel->andwhere('D.estatus =:estatus',
+											[':estatus' => $this->estatus]);
+				}
+
+				if ( strlen($this->usuario) > 0 ) {
+					$findModel->andwhere('usuario =:usuario',
+											[':usuario' => $this->usuario]);
+				}
+
+				if ( strlen($this->usuario_creador) > 0 ) {
+					$findModel->andwhere('usuario_creador =:usuario_creador',
+											[':usuario_creador' => $this->usuario_creador]);
+				}
+			}
+			return $findModel;
+		}
+
+
+		/***/
+		public function findDepositoModel()
+		{
+			return Deposito::find()->alias('D');
+		}
 
 
 
