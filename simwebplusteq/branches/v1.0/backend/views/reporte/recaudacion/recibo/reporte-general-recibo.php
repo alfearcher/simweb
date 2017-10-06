@@ -109,6 +109,7 @@
 					                	'contentOptions' => [
 					                    	'style' => 'font-size: 90%;text-align:center;width:12%;',
 					                	],
+					                	'attribute' => 'recibo',
 					                	'format' => 'raw',
 					                	'label' => Yii::t('backend', 'Recibo'),
 				                    	'value' => function($model) {
@@ -138,6 +139,7 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;text-align:right;',
 				                        ],
+				                        'attribute' => 'monto',
 				                        'label' => Yii::t('backend', 'Monto'),
 				                        'value' => function($model) {
 				                                    	return Yii::$app->formatter->asDecimal($model['monto'], 2);
@@ -156,6 +158,7 @@
 				                        'contentOptions' => [
 				                              'style' => 'font-size: 90%;',
 				                        ],
+				                        'attribute' => 'usuario',
 				                        'label' => $model->getAttributeLabel('usuario'),
 				                        'value' => function($model) {
 				                                    	return $model['usuario'];
