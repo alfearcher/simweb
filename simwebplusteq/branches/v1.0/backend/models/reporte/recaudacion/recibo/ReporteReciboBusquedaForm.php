@@ -154,10 +154,32 @@
 				'pagination' => [
 					'pageSize' => 100,
 				],
+				'sort' => [
+        			'defaultOrder' => [
+            				'recibo' => SORT_ASC,
+            				//'usuario' => SORT_ASC,
+        			]
+    			],
 			]);
 			$query->alias('D')
 				  ->joinWith('condicion E', true, 'INNER JOIN');
 
+			$dataProvider->setSort([
+				'attributes' => [
+					'recibo' => [
+						'asc' => ['recibo' => SORT_ASC],
+						'desc' => ['recibo' => SORT_DESC],
+					],
+					'monto' => [
+						'asc' => ['monto' => SORT_ASC],
+						'desc' => ['monto' => SORT_DESC],
+					],
+					'usuario' => [
+						'asc' => ['usuario' => SORT_ASC],
+						'desc' => ['usuario' => SORT_DESC],
+					],
+				],
+			]);
 			return $dataProvider;
 
 		}
