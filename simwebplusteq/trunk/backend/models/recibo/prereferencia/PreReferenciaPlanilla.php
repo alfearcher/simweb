@@ -48,7 +48,7 @@
 	use backend\models\recibo\estatus\EstatusDeposito;
 	use backend\models\recibo\deposito\Deposito;
 	use common\models\planilla\Pago;
-
+	use backend\models\recibo\depositodetalle\DepositoDetalle;
 
 
 	/**
@@ -111,6 +111,15 @@
 			return $this->hasOne(EstatusDeposito::className(), ['estatus' => 'estatus']);
 		}
 
+
+		/**
+		 * Relacion con la entidad "depositos-detalle"
+		 * @return
+		 */
+		public function getDepositoDetalle()
+		{
+			return $this->hasOne(DepositoDetalle::className(), ['recibo' => 'recibo']);
+		}
 
 	}
 
