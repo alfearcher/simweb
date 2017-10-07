@@ -263,10 +263,10 @@
 					foreach ( $this->_depositoPlanilla as $itemPlanilla ) {
 
 						if ( count($this->_depositoPlanilla) == 1 ) {
-							self::cicloSerialPorPlanillla($itemPlanilla, false);
+							self::cicloSerialPorPlanilla($itemPlanilla, false);
 
 						} elseif ( count($this->_depositoPlanilla) > 1 ) {
-							self::cicloSerialPorPlanillla($itemPlanilla, true);
+							self::cicloSerialPorPlanilla($itemPlanilla, true);
 
 						}
 					}
@@ -286,7 +286,7 @@
 		 * con el monto de la planilla.
 		 * @return
 		 */
-		private function cicloSerialPorPlanillla($datoPlanilla, $igualdadMonto)
+		private function cicloSerialPorPlanilla($datoPlanilla, $igualdadMonto)
 		{
 			if ( count($this->_modelSerial) > 0 ) {
 				if (count($this->_modelSerial) == 1 ) {
@@ -297,7 +297,7 @@
 				} else {
 					foreach ( $this->_modelSerial as $serial ) {
 						if ( $igualdadMonto ) {
-							if ( (float)$datoPlanilla['monto'] === (float)$serial['monto_edocuenta'] ) {
+							if ( (float)round($datoPlanilla['monto'], 2) === (float)round($serial['monto_edocuenta'], 2) ) {
 								self::relacionar($serial, $datoPlanilla);
 								break;
 							}
@@ -335,7 +335,7 @@
 				'fecha_edocuenta' => $datoSerial['fecha_edocuenta'],
 				'serial_edocuenta' => $datoSerial['serial'],
 				'debito' => ( $datoSerial['monto_edocuenta'] < 0 ) ? $datoSerial['monto_edocuenta'] : 0,
-				'credito' => ( $datoSerial['monto_edocuenta'] >= 0 ) ? $datoSerial['monto_edocuenta'] : 0,
+				'credito' => ( $datoSerial['monto_edocuenta'] >= 0 ) ? $datoPlanilla['monto'] : 0,
 				'estatus' => $datoSerial['estatus'],
 				'observacion' => $datoSerial['observacion'],
 				'usuario' => $datoSerial['usuario'],
