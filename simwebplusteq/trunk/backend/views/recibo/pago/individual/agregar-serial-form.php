@@ -53,7 +53,7 @@
  	<?php
 
  		$form = ActiveForm::begin([
- 			'id' => 'id-agregar*serial-form',
+ 			'id' => 'id-agregar-serial-form',
  			'method' => 'post',
  			//'action' => $url,
  			'enableClientValidation' => true,
