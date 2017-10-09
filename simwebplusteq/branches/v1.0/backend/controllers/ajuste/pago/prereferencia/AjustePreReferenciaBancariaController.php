@@ -1,62 +1,62 @@
 <?php
 /**
- *	@copyright © by ASIS CONSULTORES 2012 - 2016
+ *  @copyright © by ASIS CONSULTORES 2012 - 2016
  *  All rights reserved - SIMWebPLUS
  */
 
  /**
  *
- *	> This library is free software; you can redistribute it and/or modify it under
- *	> the terms of the GNU Lesser Gereral Public Licence as published by the Free
- *	> Software Foundation; either version 2 of the Licence, or (at your opinion)
- *	> any later version.
+ *  > This library is free software; you can redistribute it and/or modify it under
+ *  > the terms of the GNU Lesser Gereral Public Licence as published by the Free
+ *  > Software Foundation; either version 2 of the Licence, or (at your opinion)
+ *  > any later version.
  *  >
- *	> This library is distributed in the hope that it will be usefull,
- *	> but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
- *	> or fitness for a particular purpose. See the GNU Lesser General Public Licence
- *	> for more details.
+ *  > This library is distributed in the hope that it will be usefull,
+ *  > but WITHOUT ANY WARRANTY; without even the implied warranty of merchantability
+ *  > or fitness for a particular purpose. See the GNU Lesser General Public Licence
+ *  > for more details.
  *  >
- *	> See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
+ *  > See [LICENSE.TXT](../../LICENSE.TXT) file for more information.
  *
  */
 
  /**
- *	@file AjustePreReferenciaBancariaController.php
+ *  @file AjustePreReferenciaBancariaController.php
  *
- *	@author Jose Rafael Perez Teran
+ *  @author Jose Rafael Perez Teran
  *
- *	@date 04-10-2017
+ *  @date 04-10-2017
  *
  *  @class AjustePreReferenciaBancariaController
- *	@brief Clase
+ *  @brief Clase
  *
  *
- *	@property
+ *  @property
  *
  *
- *	@method
+ *  @method
  *
  *
- *	@inherits
+ *  @inherits
  *
  */
 
 
- 	namespace backend\controllers\ajuste\pago\prereferencia;
+    namespace backend\controllers\ajuste\pago\prereferencia;
 
 
- 	use Yii;
- 	use yii\helpers\ArrayHelper;
-	use yii\filters\AccessControl;
-	use yii\web\Controller;
-	use yii\filters\VerbFilter;
-	use yii\widgets\ActiveForm;
-	use yii\web\Response;
-	use yii\helpers\Url;
-	use yii\web\NotFoundHttpException;
-	use common\conexion\ConexionController;
-	use common\mensaje\MensajeController;
-	use common\models\session\Session;
+    use Yii;
+    use yii\helpers\ArrayHelper;
+    use yii\filters\AccessControl;
+    use yii\web\Controller;
+    use yii\filters\VerbFilter;
+    use yii\widgets\ActiveForm;
+    use yii\web\Response;
+    use yii\helpers\Url;
+    use yii\web\NotFoundHttpException;
+    use common\conexion\ConexionController;
+    use common\mensaje\MensajeController;
+    use common\models\session\Session;
     use backend\models\usuario\AutorizacionUsuario;
     use backend\models\pago\consulta\ConsultaGeneralPagoForm;
     use backend\models\recibo\pago\individual\PagoReciboIndividualSearch;
@@ -70,39 +70,39 @@
     use backend\models\utilidad\tipo\ajusteprereferencia\TipoAjustePreReferenciaBancaria;
 
 
-	session_start();		// Iniciando session
+    session_start();        // Iniciando session
 
-	/**
-	 *
-	 */
-	class AjustePreReferenciaBancariaController extends Controller
-	{
-		public $layout = 'layout-main';				//	Layout principal del formulario
+    /**
+     *
+     */
+    class AjustePreReferenciaBancariaController extends Controller
+    {
+        public $layout = 'layout-main';             //  Layout principal del formulario
 
-		private $_conn;
-		private $_conexion;
-		private $_transaccion;
+        private $_conn;
+        private $_conexion;
+        private $_transaccion;
 
         const SCENARIO_RECIBO = 'recibo';
         const SCENARIO_FECHA = 'fecha';
 
 
 
-		/**
-		 * Metodo que configurationa las variables que permitiran la interaccion
-		 * con la base de datos.
-		 */
-		private function setConexion()
-		{
-			$this->_conexion = New ConexionController();
-			$this->_conn = $this->_conexion->initConectar('db');
-		}
+        /**
+         * Metodo que configurationa las variables que permitiran la interaccion
+         * con la base de datos.
+         */
+        private function setConexion()
+        {
+            $this->_conexion = New ConexionController();
+            $this->_conn = $this->_conexion->initConectar('db');
+        }
 
 
 
         /***/
-		public function actionIndex()
-		{
+        public function actionIndex()
+        {
             $autorizacion = New AutorizacionUsuario();
             if ( $autorizacion->estaAutorizado(Yii::$app->identidad->getUsuario(), $_GET['r']) ) {
                 $varSessions = self::actionGetListaSessions();
@@ -114,7 +114,7 @@
                 // El usuario no esta autorizado.
                 $this->redirect(['error-operacion', 'cod' => 700]);
             }
-		}
+        }
 
 
 
@@ -160,10 +160,10 @@
 
                 if ( $model->load($postData) ) {
                     if ( $model->validate() ) {
-                    	self::actionAnularSession(['begin']);
-                    	$_SESSION['begin'] = 2;
-                    	$_SESSION['postEnviado'] = $postData;
-                    	$this->redirect(['mostrar-listado-pre-referencia']);
+                        self::actionAnularSession(['begin']);
+                        $_SESSION['begin'] = 2;
+                        $_SESSION['postEnviado'] = $postData;
+                        $this->redirect(['mostrar-listado-pre-referencia']);
 
                     }
                 }
@@ -243,24 +243,24 @@
          */
         public function actionMostrarListadoPreReferencia()
         {
-        	if ( isset($_SESSION['begin']) ) {
-				if ( $_SESSION['begin'] == 2 ) {
+            if ( isset($_SESSION['begin']) ) {
+                if ( $_SESSION['begin'] == 2 ) {
 
                     $mensajeSeleccion = '';
-					$request = Yii::$app->request;
+                    $request = Yii::$app->request;
                     $postEnviado = isset($_SESSION['postEnviado']) ? $_SESSION['postEnviado'] : [];
-					$model = New BusquedaPreReferenciaBancariaForm();
-					$formName = $model->formName();
+                    $model = New BusquedaPreReferenciaBancariaForm();
+                    $formName = $model->formName();
 
                     $modelAjusteForm = New AjustePreReferenciaBancariaForm();
 
                     if ( isset($postEnviado['btn-search-request']) ) {
-	                    if ( trim($postEnviado[$formName]['recibo']) !== '' && $postEnviado[$formName]['recibo'] > 0 ) {
-	                        $model->scenario = self::SCENARIO_RECIBO;
-	                    } else {
-	                        $model->scenario = self::SCENARIO_FECHA;
-	                    }
-	                }
+                        if ( trim($postEnviado[$formName]['recibo']) !== '' && $postEnviado[$formName]['recibo'] > 0 ) {
+                            $model->scenario = self::SCENARIO_RECIBO;
+                        } else {
+                            $model->scenario = self::SCENARIO_FECHA;
+                        }
+                    }
 
                     $postData = $request->post();
 
@@ -282,19 +282,17 @@
                                 $idReferencias = isset($postData['chkIdReferencia']) ? $postData['chkIdReferencia'] : [];
 
                                 if ( count($idReferencias) > 0 ) {
-
-                                    $ajuste = New AjustePreReferenciaBancaria($tipo, 'PRUEBA');
+                                    $nota = Yii::t('backend', 'modificado por:') . ' ' . Yii::$app->identidad->getUsuario() . ' / ' . date('Y-m-d h:i:s');
+                                    $ajuste = New AjustePreReferenciaBancaria($tipo, $nota);
                                     $ajuste->iniciarAjuste($idReferencias);
                                     if ( count($ajuste->getErrores()) == 0 ) {
                                         // No hubo errores. Se muestra los registros procesados.
-
 
                                     } else {
                                         // Mostrar errores ocurridos.
                                         return $this->render('/ajuste/pago/prereferencia/errores', [
                                                                             'mensajes' => $ajuste->getErrores(),
                                             ]);
-
                                     }
 
                                 } else {
@@ -305,55 +303,55 @@
                     }
 
                     $model->load($postEnviado);
-					$dataProvider = $model->getDataProvider();
-					$request = Yii::$app->request;
+                    $dataProvider = $model->getDataProvider();
+                    $request = Yii::$app->request;
 
-					if ( $request->post('btn-quit') !== null ) {
-						if ( $request->post('btn-quit') == 1 ) {
-							$this->redirect(['quit']);
-						}
-					} elseif ( $request->post('btn-back') !== null ) {
-						if ( $request->post('btn-back') == 2 ) {
-							$this->redirect(['index']);
-						}
-					}
+                    if ( $request->post('btn-quit') !== null ) {
+                        if ( $request->post('btn-quit') == 1 ) {
+                            $this->redirect(['quit']);
+                        }
+                    } elseif ( $request->post('btn-back') !== null ) {
+                        if ( $request->post('btn-back') == 2 ) {
+                            $this->redirect(['index']);
+                        }
+                    }
 
-					if ( $request->isGet ) {
-						$postEnviado = $request->get();
-					} else {
+                    if ( $request->isGet ) {
+                        $postEnviado = $request->get();
+                    } else {
                         if ( !isset($postData['btn-ajustar-pre-referencia']) ) {
                             $postEnviado = $request->post() !== null ? $request->post() : $_SESSION['postEnviado'];
                             $_SESSION['postEnviado'] = $postEnviado;
                         }
-					}
+                    }
 
-					if ( isset($postEnviado['page']) ) {
-						$postEnviado = $_SESSION['postEnviado'];
-						$model->load($postEnviado);
-					}
+                    if ( isset($postEnviado['page']) ) {
+                        $postEnviado = $_SESSION['postEnviado'];
+                        $model->load($postEnviado);
+                    }
 
-					$caption = Yii::t('backend', 'Caption');
-					$subCaption = Yii::t('backend', 'SubCaption');
+                    $caption = Yii::t('backend', 'Ajuste de Pre-Referencias');
+                    $subCaption = Yii::t('backend', 'Listado de Pre-Referencias y Tipos de Ajustes');
 
                     $listaTipoAjuste = $modelAjusteForm->listaTipoAjustePreReferencia();
-					// Listado de consulta.
-					return $this->render('/ajuste/pago/prereferencia/listado-pre-referencia', [
-													'caption' => $caption,
-													'subCaption' => $subCaption,
-													'dataProvider' => $dataProvider,
-													'model' => $model,
+                    // Listado de consulta.
+                    return $this->render('/ajuste/pago/prereferencia/listado-pre-referencia', [
+                                                    'caption' => $caption,
+                                                    'subCaption' => $subCaption,
+                                                    'dataProvider' => $dataProvider,
+                                                    'model' => $model,
                                                     'listaTipoAjuste' => $listaTipoAjuste,
                                                     'modelAjusteForm' => $modelAjusteForm,
                                                     'mensajeSeleccion' => $mensajeSeleccion,
-							]);
-				} else {
-					// Session no valida.
-					$this->redirect(['session-no-valida']);
-				}
-			} else {
-				// Session no valida.
-				$this->redirect(['session-no-valida']);
-			}
+                            ]);
+                } else {
+                    // Session no valida.
+                    $this->redirect(['session-no-valida']);
+                }
+            } else {
+                // Session no valida.
+                $this->redirect(['session-no-valida']);
+            }
         }
 
 
@@ -416,47 +414,47 @@
 
 
         /**
-		 * Metodo que permite renderizar una vista con la informacion preliminar de
-		 * la licencia segun el numero de solicitud de la misma.
-		 * @return View
-		 */
-		public function actionViewContribuyenteModal()
-		{
-			$request = Yii::$app->request;
-			$postGet = $request->get();
+         * Metodo que permite renderizar una vista con la informacion preliminar de
+         * la licencia segun el numero de solicitud de la misma.
+         * @return View
+         */
+        public function actionViewContribuyenteModal()
+        {
+            $request = Yii::$app->request;
+            $postGet = $request->get();
 
-			// Identificador del contribuyente
-			$id = (int)$postGet['id'];
+            // Identificador del contribuyente
+            $id = (int)$postGet['id'];
 
-			return $this->renderAjax('@backend/views/buscar-general/view', [
-			            	'model' => $this->findModel($id),
-			       ]);
-		}
-
-
-
-		/**
-    	 * Metodo que realiza la consulta para obtener los datos del contribuyente con
-    	 * la informacion de su afiliacion. Retorna la informacion de ambas entidades.
-    	 * @param integer $idContribuyente identificador del contribuyente
-    	 * @return BuscarGeneral
-    	 */
-    	protected function findModel($idContribuyente)
-    	{
-  			$model = BuscarGeneral::find()->alias('B')
-  			                              ->where('B.id_contribuyente =:id_contribuyente',
-  			                          					[':id_contribuyente' => $idContribuyente])
-  			                              ->one();
-
-  			if ( $model !== null ) {
-  				return $model;
-  			} else {
-  				throw new NotFoundHttpException('The requested page does not exist.');
-  			}
-    	}
+            return $this->renderAjax('@backend/views/buscar-general/view', [
+                            'model' => $this->findModel($id),
+                   ]);
+        }
 
 
-    	/**
+
+        /**
+         * Metodo que realiza la consulta para obtener los datos del contribuyente con
+         * la informacion de su afiliacion. Retorna la informacion de ambas entidades.
+         * @param integer $idContribuyente identificador del contribuyente
+         * @return BuscarGeneral
+         */
+        protected function findModel($idContribuyente)
+        {
+            $model = BuscarGeneral::find()->alias('B')
+                                          ->where('B.id_contribuyente =:id_contribuyente',
+                                                        [':id_contribuyente' => $idContribuyente])
+                                          ->one();
+
+            if ( $model !== null ) {
+                return $model;
+            } else {
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+        }
+
+
+        /**
          * Metodo que permite renderizar una vista de los detalles de la planilla
          * que se encuentran en la solicitud.
          * @return View Retorna una vista que contiene un grid con los detalles de la
@@ -503,91 +501,91 @@ die(var_dump($postGet));
 
 
         /**
-		 * Metodo que indica que la session ha terminado.
-		 * @return view, con mensaje.
-		 */
-		public function actionSessionNoValida()
-		{
-			return MensajeController::actionMensaje(901);
-		}
+         * Metodo que indica que la session ha terminado.
+         * @return view, con mensaje.
+         */
+        public function actionSessionNoValida()
+        {
+            return MensajeController::actionMensaje(901);
+        }
 
 
         /**
-		 * Metodo salida del modulo.
-		 * @return view
-		 */
-		public function actionQuit()
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
-		}
+         * Metodo salida del modulo.
+         * @return view
+         */
+        public function actionQuit()
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return Yii::$app->getResponse()->redirect(array('/menu/vertical'));
+        }
 
 
 
-		/**
-		 * Metodo que ejecuta la anulacion de las variables de session utilizados
-		 * en el modulo.
-		 * @param  array $varSessions arreglo con los nombres de las variables de
-		 * sesion que seran anuladas.
-		 * @return none.
-		 */
-		public function actionAnularSession($varSessions)
-		{
-			Session::actionDeleteSession($varSessions);
-		}
+        /**
+         * Metodo que ejecuta la anulacion de las variables de session utilizados
+         * en el modulo.
+         * @param  array $varSessions arreglo con los nombres de las variables de
+         * sesion que seran anuladas.
+         * @return none.
+         */
+        public function actionAnularSession($varSessions)
+        {
+            Session::actionDeleteSession($varSessions);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista indicando que le proceso se ejecuto
-		 * satisfactoriamente.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionProcesoExitoso($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista indicando que le proceso se ejecuto
+         * satisfactoriamente.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionProcesoExitoso($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que renderiza una vista que indica que ocurrio un error en la
-		 * ejecucion del proceso.
-		 * @param  integer $cod codigo que permite obtener la descripcion del
-		 * codigo de la operacion.
-		 * @return view.
-		 */
-		public function actionErrorOperacion($cod)
-		{
-			$varSession = self::actionGetListaSessions();
-			self::actionAnularSession($varSession);
-			return MensajeController::actionMensaje($cod);
-		}
+        /**
+         * Metodo que renderiza una vista que indica que ocurrio un error en la
+         * ejecucion del proceso.
+         * @param  integer $cod codigo que permite obtener la descripcion del
+         * codigo de la operacion.
+         * @return view.
+         */
+        public function actionErrorOperacion($cod)
+        {
+            $varSession = self::actionGetListaSessions();
+            self::actionAnularSession($varSession);
+            return MensajeController::actionMensaje($cod);
+        }
 
 
 
-		/**
-		 * Metodo que permite obtener un arreglo de las variables de sesion
-		 * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
-		 * los nombres de las variables de sesion.
-		 * @return array retorna un arreglo de nombres.
-		 */
-		public function actionGetListaSessions()
-		{
-			return $varSession = [
-						'postData',
-						'begin',
-						'postEnviado',
+        /**
+         * Metodo que permite obtener un arreglo de las variables de sesion
+         * que seran utilizadas en el modulo, aqui se pueden agregar o quitar
+         * los nombres de las variables de sesion.
+         * @return array retorna un arreglo de nombres.
+         */
+        public function actionGetListaSessions()
+        {
+            return $varSession = [
+                        'postData',
+                        'begin',
+                        'postEnviado',
                         'scenario',
                         'seleccion',
-					];
+                    ];
 
-		}
+        }
 
-	}
+    }
 ?>
