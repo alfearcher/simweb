@@ -62,8 +62,8 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
     public $salt;
-  
-  
+	
+	
     private $_user = false;
 
 
@@ -82,15 +82,15 @@ class LoginForm extends Model
             ['password', 'validatePassword'],
         ];
     }
-  /*
-   *  Metodo que retorna los nombres de los atributos
-   */
-  public function attributeLabels()
+	/*
+	 *  Metodo que retorna los nombres de los atributos
+	 */
+	public function attributeLabels()
 { 
     return [
       'username' => Yii::t('backend', 'Username'),
       'password' => Yii::t('backend', 'Password'),
-    'rememberMe' => Yii::t('backend', 'RememberMe'),
+	  'rememberMe' => Yii::t('backend', 'RememberMe'),
               ];
 }
 
@@ -100,11 +100,11 @@ class LoginForm extends Model
      */
     public function validatePassword($attribute, $params)
     {   
-     
-      //-----salt-------
-    $password = $this->password + $this->salt;
-    
-    if (!$this->hasErrors()) {
+	   
+	    //-----salt-------
+		//$password = $this->password;
+		
+		if (!$this->hasErrors()) {
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) { 
