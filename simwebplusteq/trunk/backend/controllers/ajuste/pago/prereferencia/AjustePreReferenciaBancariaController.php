@@ -282,19 +282,17 @@
                                 $idReferencias = isset($postData['chkIdReferencia']) ? $postData['chkIdReferencia'] : [];
 
                                 if ( count($idReferencias) > 0 ) {
-
-                                    $ajuste = New AjustePreReferenciaBancaria($tipo, 'PRUEBA');
+                                    $nota = Yii::t('backend', 'modificado por:') . ' ' . Yii::$app->identidad->getUsuario() . ' / ' . date('Y-m-d h:i:s');
+                                    $ajuste = New AjustePreReferenciaBancaria($tipo, $nota);
                                     $ajuste->iniciarAjuste($idReferencias);
                                     if ( count($ajuste->getErrores()) == 0 ) {
                                         // No hubo errores. Se muestra los registros procesados.
-
 
                                     } else {
                                         // Mostrar errores ocurridos.
                                         return $this->render('/ajuste/pago/prereferencia/errores', [
                                                                             'mensajes' => $ajuste->getErrores(),
                                             ]);
-
                                     }
 
                                 } else {
@@ -332,8 +330,8 @@
 						$model->load($postEnviado);
 					}
 
-					$caption = Yii::t('backend', 'Caption');
-					$subCaption = Yii::t('backend', 'SubCaption');
+					$caption = Yii::t('backend', 'Ajuste de Pre-Referencias');
+					$subCaption = Yii::t('backend', 'Listado de Pre-Referencias y Tipos de Ajustes');
 
                     $listaTipoAjuste = $modelAjusteForm->listaTipoAjustePreReferencia();
 					// Listado de consulta.
