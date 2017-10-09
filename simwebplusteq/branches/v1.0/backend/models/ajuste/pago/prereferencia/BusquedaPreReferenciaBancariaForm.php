@@ -123,7 +123,7 @@
 		{
 			$findModel = self::findPreReferenciaModel()->joinWith('depositoDetalle D', true, 'LEFT JOIN');
 			if ( $this->recibo > 0 ) {
-				$findModel->where('recibo =:recibo', [':recibo' => $this->recibo]);
+				$findModel->where('R.recibo =:recibo', [':recibo' => $this->recibo]);
 
 			} elseif ( $this->fecha_desde !== '' && $this->fecha_hasta !== '' ) {
 				$this->fecha_desde = $this->formatFecha($this->fecha_desde);
