@@ -45,7 +45,7 @@
  	use Yii;
 	use yii\db\ActiveRecord;
 	use backend\models\recibo\estatus\EstatusDeposito;
-
+	use backend\models\recibo\deposito\Deposito;
 
 
 	/**
@@ -83,6 +83,16 @@
 		public function getEstatusDeposito()
 		{
 			return $this->hasOne(EstatusDeposito::className(), ['estatus' => 'estatus']);
+		}
+
+
+		/**
+		 * Relacion con la entidad "depositos"
+		 * @return
+		 */
+		public function getDeposito()
+		{
+			return $this->hasOne(Deposito::className(), ['recibo' => 'recibo']);
 		}
 
 
