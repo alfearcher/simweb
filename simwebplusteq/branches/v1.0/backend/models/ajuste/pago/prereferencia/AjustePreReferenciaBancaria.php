@@ -149,8 +149,6 @@
 		 */
 		public function iniciarAjuste($idReferencias)
 		{
-			self::setError('Error de prueba 1');
-			self::setError('Error de prueba 2');
 			$model = [];	// modelo de las pre-refrencias
 			if ( (int)$this->_tipo_ajuste > 0 ) {
 				if ( is_array($idReferencias) ) {
