@@ -341,6 +341,7 @@
 						['label' => Icon::show('fa fa-pencil-square-o',['class' => $typeLong], $typeIcon) . '&nbsp; Ajustes',
 					   		'items' => [
 					   			['label' => 'Cuenta Recaudadora', 'url' => ['/ajuste/pago/cuentarecaudadora/ajuste-cuenta-recaudadora/index']],
+					   			['label' => 'Pre-Referencia Bancaria', 'url' => ['/ajuste/pago/prereferencia/ajuste-pre-referencia-bancaria/index']],
 					   		]
 	        			],
 
