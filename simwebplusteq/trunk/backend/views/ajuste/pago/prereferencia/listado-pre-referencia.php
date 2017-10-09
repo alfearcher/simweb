@@ -346,6 +346,7 @@
                 																'data-pjax' => 0,
                 													]);
 													},
+										'visible' => false,
 				                    ],
 					        	]
 							]);?>
