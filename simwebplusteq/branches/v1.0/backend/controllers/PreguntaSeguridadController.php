@@ -77,7 +77,7 @@ class PreguntaSeguridadController extends Controller
 /***************************** ASIGNAR PREGUNTAS SECRETAS DE FUNCIONARIOS *******************************
 *
 * Metodo para asignar las preguntas secretas de las cuentas de usuarios funcionarios
-*
+* ruta: pregunta-seguridad/asignarpreguntasecreta
 *********************************************************************************************************/
      public function actionAsignarpreguntasecreta()
      {
