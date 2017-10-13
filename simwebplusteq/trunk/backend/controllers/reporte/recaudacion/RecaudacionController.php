@@ -304,7 +304,7 @@
 
 				if ( count($results) > 0 ) {
 					$dataProvider = $recaudacionSearch->getDataProvider($results);
-					if ( $laspo == 3 ) {
+					if ( $lapso == 3 ) {
 						$htmlRecaudacion[] = $this->renderPartial('/reporte/recaudacion/detallada/reporte-recaudacion-detallada-nota-debito', [
 							      										'dataProvider' => $dataProvider,
 							      										'model' => $results,
