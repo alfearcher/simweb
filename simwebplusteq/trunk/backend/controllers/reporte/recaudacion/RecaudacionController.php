@@ -155,7 +155,7 @@
 			      			}
 
 			      			// Unir las consultas en una sola.
-			      			$results = array_merge($recaudacion[1], $recaudacion[2], $recaudacion[3]);
+			      			$results = array_merge($recaudacion[1], $recaudacion[2]);
 
 			      			// Retorna un arreglo con la totalizacion por atributos.
 			      			$totalRecaudado = $recaudacionSearch->totalizarResultado($results);
@@ -165,7 +165,7 @@
 			      			//$dataProvider = $recaudacionSearch->getDataProvider($data);
 
 			      			$totalChequeRecuperado = $recaudacionSearch->totalizarChequeRecuperado($results);
-			      			$totalNotaDebito = $recaudacionSearch->totalizarNotaDebito($results);
+			      			$totalNotaDebito = $recaudacionSearch->totalizarNotaDebito($recaudacion[3]);
 
 			      			$htmlTotalRecaudado = $this->renderPartial('/reporte/recaudacion/detallada/total-resumen-general', [
 			      																'totalRecaudado' => $totalRecaudado,
@@ -261,7 +261,16 @@
 
 
 
-		/***/
+		/**
+		 * Metodo que genera la vistas del detalle de la recaudacion por codigo presupuetario-lapso
+		 * @param array $arregloCodigo arraeglo de codigo presupuestario
+		 * @param integer $lapso indicativo del tipo de deuda:
+		 * - 1 => deuda actual
+		 * - 2 => deuda morosa
+		 * - 3 => monto negativo.
+		 * @param RecaudacionGeneralSearch $recaudacionSearch instancia de la clase.
+		 * @return view con las columnas y detalles de los montos.
+		 */
 		public function actionViewDetalleRecaudacionByLapso($arregloCodigo, $lapso, $recaudacionSearch)
 		{
 			$htmlRecaudacion = [];
@@ -284,24 +293,35 @@
 				// Totalizacion, en este caso totaliza por codigo presupuestario.
 				$totalizar = $recaudacionSearch->totalizarResultado($results);
 
-				$totalLapso['monto'] = $totalizar['monto'] + $totalLapso['monto'];
-				$totalLapso['recargo'] = $totalizar['recargo'] + $totalLapso['recargo'];
-				$totalLapso['interes'] = $totalizar['interes'] + $totalLapso['interes'];
-				$totalLapso['descuento'] = $totalizar['descuento'] + $totalLapso['descuento'];
-				$totalLapso['monto_reconocimiento'] = $totalizar['monto_reconocimiento'] + $totalLapso['monto_reconocimiento'];
+				$totalLapso['monto'] += $totalizar['monto'];
+				$totalLapso['recargo'] += $totalizar['recargo'];
+				$totalLapso['interes'] += $totalizar['interes'];
+				$totalLapso['descuento'] += $totalizar['descuento'];
+				$totalLapso['monto_reconocimiento'] += $totalizar['monto_reconocimiento'];
 
 				// Impuesto - ( Descuento + Recon/Ret)
 				$totalCodigo = $totalizar['monto'] - ( $totalizar['descuento'] + $totalizar['monto_reconocimiento'] );
 
 				if ( count($results) > 0 ) {
 					$dataProvider = $recaudacionSearch->getDataProvider($results);
-					$htmlRecaudacion[] = $this->renderPartial('/reporte/recaudacion/detallada/reporte-recaudacion-detallada-item', [
-						      										'dataProvider' => $dataProvider,
-						      										'model' => $results,
-						      										'lapso' => $lapso,
-						      										'totalizar' => $totalizar,
-						      										'totalCodigo' => $totalCodigo,
-					]);
+					if ( $laspo == 3 ) {
+						$htmlRecaudacion[] = $this->renderPartial('/reporte/recaudacion/detallada/reporte-recaudacion-detallada-nota-debito', [
+							      										'dataProvider' => $dataProvider,
+							      										'model' => $results,
+							      										'lapso' => $lapso,
+							      										'totalizar' => $totalizar,
+							      										'totalCodigo' => $totalCodigo,
+						]);
+
+					} else {
+						$htmlRecaudacion[] = $this->renderPartial('/reporte/recaudacion/detallada/reporte-recaudacion-detallada-item', [
+							      										'dataProvider' => $dataProvider,
+							      										'model' => $results,
+							      										'lapso' => $lapso,
+							      										'totalizar' => $totalizar,
+							      										'totalCodigo' => $totalCodigo,
+						]);
+					}
 				}
 			}
 			$htmlRecaudacion[] = self::actionViewTotalByLapso($totalLapso, $lapso);
