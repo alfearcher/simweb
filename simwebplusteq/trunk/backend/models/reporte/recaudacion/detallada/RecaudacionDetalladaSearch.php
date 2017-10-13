@@ -337,7 +337,8 @@
 			$total = (float)0;
 			if ( count($results) > 0 ) {
 				foreach ( $results as $result ) {
-					if ( (int)$result['lapso'] == $lapso && (float)$result['monto'] < 0 ) {
+					//(int)$result['lapso'] == $lapso &&
+					if ( (float)$result['monto'] < 0 ) {
 						$total += (float)$result['monto'];
 					}
 				}
