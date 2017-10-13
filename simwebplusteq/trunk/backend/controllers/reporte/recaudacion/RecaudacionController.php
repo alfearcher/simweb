@@ -324,7 +324,9 @@
 					}
 				}
 			}
-			$htmlRecaudacion[] = self::actionViewTotalByLapso($totalLapso, $lapso);
+			if ( $lapso !== 3 ) {
+				$htmlRecaudacion[] = self::actionViewTotalByLapso($totalLapso, $lapso);
+			}
 
 			return $htmlRecaudacion;
 		}
