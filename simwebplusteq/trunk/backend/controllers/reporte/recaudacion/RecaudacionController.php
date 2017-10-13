@@ -145,7 +145,7 @@
 			      			$arregloCodigo = $recaudacionSearch->findDetalleAgrupadoByCodigo();
 
 			      			// Deuda actual y morosa.
-			      			$lapsos = [1, 2];
+			      			$lapsos = [1, 2, 3];
 
 			      			foreach ( $lapsos as $key => $value ) {
 			      				$htmlRecaudacion[$value] = self::actionViewDetalleRecaudacionByLapso($arregloCodigo, $value, $recaudacionSearch);
@@ -155,7 +155,7 @@
 			      			}
 
 			      			// Unir las consultas en una sola.
-			      			$results = array_merge($recaudacion[1], $recaudacion[2]);
+			      			$results = array_merge($recaudacion[1], $recaudacion[2], $recaudacion[3]);
 
 			      			// Retorna un arreglo con la totalizacion por atributos.
 			      			$totalRecaudado = $recaudacionSearch->totalizarResultado($results);
