@@ -119,8 +119,8 @@ class GrupoPerfilUsuarioForm extends Model{
     {
 
         return [
-             [['descripcion', 'ruta'], 'required', 'message' => Yii::t('backend', 'Es requerido llenar el campo')],
-             [['descripcion',], 'string', 'max' => 100],
+             [['descripcion'], 'required', 'message' => Yii::t('backend', 'Es requerido llenar el campo')],
+             [['descripcion'], 'string', 'max' => 100],
              [['inactivo'], 'integer','message' => Yii::t('backend', 'solo numero entero')],
         ]; 
     }

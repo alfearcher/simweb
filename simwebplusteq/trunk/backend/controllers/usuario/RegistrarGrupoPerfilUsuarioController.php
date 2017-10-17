@@ -72,6 +72,7 @@ use common\conexion\ConexionController;
 
 use common\enviaremail\PlantillaEmail;
 use common\mensaje\MensajeController;
+use yii\helpers\ArrayHelper;
 use frontend\models\inmueble\ConfiguracionTiposSolicitudes;
 use common\models\configuracion\solicitud\ParametroSolicitud;
 use common\models\configuracion\solicitud\DocumentoSolicitud;
@@ -135,11 +136,11 @@ class RegistrarGrupoPerfilUsuarioController extends Controller
                  //condicionales     
                    
 
-                 
+               
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
-                     $guardo = self::GuardarInscripcion($model);
+                     $guardo = self::GuardarInscripcion(Yii::$app->request->post(),$modelRuta);
 
                      if($guardo == true){ 
 
@@ -181,10 +182,10 @@ class RegistrarGrupoPerfilUsuarioController extends Controller
       * @param [type] $model [description] arreglo de datos del formulario de inscripcion del
       * inmueble
       */
-     public function GuardarInscripcion($model)
+     public function GuardarInscripcion($model,$modelRuta)
      {
           
-
+            
             try {
             $tableName1 = 'grupos_perfiles_usuarios'; 
 
@@ -203,10 +204,10 @@ class RegistrarGrupoPerfilUsuarioController extends Controller
 
             // foreach ( $model['username'] as $funcionario ) { apertura del for each
             //   $arregloDatos['username'] = $funcionario;
-            foreach ( $model['ruta'] as $ruta ) {
-                $arregloDatos['ruta'] = $ruta;
-
-                 $arrayDatos1 = [  'descripcion' => $model['descripcion'],
+            foreach ( $model["chk-ruta"] as $ruta ) {
+                
+                $arregloDatos['ruta'] = $ruta; //$modelRuta->getRutaAccesoId($ruta); 
+                $arrayDatos1 = [  'descripcion' => $model["GrupoPerfilUsuarioForm"]['descripcion'],
                                'ruta' => $arregloDatos['ruta'], 
                                'inactivo' => 0,
                                'usuario' =>Yii::$app->user->identity->username,

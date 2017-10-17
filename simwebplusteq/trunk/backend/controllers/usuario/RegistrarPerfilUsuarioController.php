@@ -303,20 +303,20 @@ class RegistrarPerfilUsuarioController extends Controller
 
 
     /**
-     * [actionListaImpuestoSolicitud description]
+     * [actionListaSolicitud description]
      * @return [type] [description]
      */
-    public function actionListaImpuestoSolicitud()
+    public function actionListaSolicitud()
     {
       $caption = Yii::t('backend', 'List of Request');
       $request = Yii::$app->request;
       $getData = $request->get();
-      $impuesto = $getData['id'];   // Indice del combo impuesto.
+      $datos = $getData['id'];   // Indice del combo impuesto.
       $modelSolicitud = New TipoSolicitudSearch();
       $modelSolicitud->load($getData);
-      $dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($impuesto);
+      $dataProvider = $modelSolicitud->getDataProviderSolicitudImpuesto($datos);
 
-      return $this->renderAjax('/funcionario/solicitud/lista-impuesto-solicitud', [
+      return $this->renderAjax('/funcionario/solicitud/lista-solicitud', [
                             'modelSolicitud' => $modelSolicitud,
                             'dataProvider' => $dataProvider,
                             'caption' => $caption,

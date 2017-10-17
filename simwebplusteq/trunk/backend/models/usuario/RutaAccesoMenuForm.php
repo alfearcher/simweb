@@ -108,11 +108,13 @@
 	    {
 	    	$dataProvider = null;
 
-	    	$query = RutaAccesoMenu::find()->where(['inactivo'=>0])->all();
+	    	$query = RutaAccesoMenu::find()->where(['inactivo'=>0]);
 
 	    	$dataProvider = New ActiveDataProvider([
             	'query' => $query,
+
         	]);
+        	$query->all();
         	$this->load($params);
         	// if ( is_array($params) ) {
         	// 	$query->where(['in', 'id_ruta_acceso_menu', $array]);
@@ -156,7 +158,7 @@
 	    public function getListaRutaAcceso($inactivo = 0, $array = [])
 	    {
 	    	$lista = null;
-	    	$model = $this->findRuta($array);
+	    	$model = $this->getDataProvider($array); //findRuta
 	    	if ( isset($model) ) {
 	    		// Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
 	    		if ( count($model) > 0 ) {
@@ -173,12 +175,10 @@
 	    public function getListaRutaAccesoId($inactivo = 0, $array = [])
 	    {
 	    	$lista = null;
-	    	$model = $this->findRuta($array);
+	    	$model = $this->getDataProvider($array); //findRuta
 	    	if ( isset($model) ) {
-	    		// Se convierte el modelo encontrado en un arreglo de datos para facilitar pasarlo a una lista.
-	    		if ( count($model) > 0 ) {
-	    			$lista = ArrayHelper::map($model, 'id_ruta_acceso_menu', 'menu');
-	    		}
+	    		
+	    		return $model;
 	    	}
 	    	return $lista;
 	    }
@@ -192,6 +192,15 @@
 	    	$model = self::findImpuesto($id_ruta_acceso_menu);
 			return $model->menu;
 	    }
+
+	     /***/
+	    public function getRutaAccesoId($id)
+	    {
+	    	settype($id_ruta_acceso_menu, 'integer');
+	    	$model = RutaAccesoMenu::find()->where(['inactivo'=>0,'id_ruta_acceso_menu'=>$id])->all();
+	    	
+			return $model[0]->ruta;
+	    } //id_ruta_acceso_menu, menu, ruta, inactivo, usuario, fecha_hora, operacion
 
 	}
 ?>
