@@ -209,7 +209,8 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
 
              foreach ( $model["chk-funcionario"] as $funcionario ) { 
                
-               $buscarUsers = users::find()->where(['id_funcionario'=>$funcionario])->all();
+               $buscarUsers = users::find()->where(['id_funcionario'=>$funcionario])
+                                           ->andWhere(['activate'=>1])->all();
 
                $arregloDatos['username'] = $buscarUsers[0]['username'];
             foreach ( $rutas as $ruta ) {
