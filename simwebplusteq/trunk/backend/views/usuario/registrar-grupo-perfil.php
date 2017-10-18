@@ -1,10 +1,12 @@
 <?php
 
+
 use yii\helpers\Html;
+use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
-use yii\grid\GridView;
+use kartik\icons\Icon;
 
 use common\models\Users;
 use common\models\User;
@@ -61,17 +63,36 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                             <h4><strong><?=Html::encode(Yii::t('frontend', 'Acceso al menu'))?></strong></h4>
                         </div>
                         <div class="row" style="margin-left:20px; margin-top:20px;">
-                            <div class="col-sm-4">
+                            <div class="col-sm-10">
                             
+                            <?= GridView::widget([
+                                'id' => 'id-lista-ruta',
+                                'dataProvider' => $rutas,
+                                //'filterModel' => $model,
+                                'headerRowOptions' => ['class' => 'success'],
+                                //'caption' => Yii::t('backend', 'Lista de Accesos al Menú'),
+                                //'summary' => '',
+                                'columns' => [
+           
+                                    //'id_ruta_acceso_menu',
+                                    'menu',
+                                    'ruta',
+                                    
+                                    [
+                                        'class' => 'yii\grid\CheckboxColumn',
+                                        'name' => 'chk-ruta',
+                                        'multiple' => true,
+                                    ],
 
-                            <?= $form->field($model, 'ruta')-> Checkboxlist($rutas,[
-                                            'id' => 'id-lista-menu',
-                                            'style' => 'width:380px;',
-                                        ])->label(false); ?>
+                                ],
+                            ]);
+                        ?>
+
+                            
                             </div> 
                         </div>
-                        </div>
-                    </div> 
+                    </div>
+                </div> 
                         
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="form-group"> 
@@ -88,13 +109,6 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
         </div>
     </div>
 </div>
-<!-- Campos ocultos -->   
-<?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
-<?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
-<?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
 
 
 <?php ActiveForm::end(); ?> 
@@ -102,4 +116,4 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
 
 </div><!-- inscripcionInmueblesUrbanos -->
 
-  
+ 

@@ -28,7 +28,7 @@ $this->title = Yii::t('backend', 'Perfil del Usuario (Creacion de Ruta)');
 
 
 <div class="container" style="width:1280px">
- <div class="col-sm-15" style="width:900px">
+ <div class="col-sm-5" style="width:900px">
         <div class="panel panel-primary" style="width: 100%;">
             <div class="panel-heading">
                 <?= $this->title ?>
@@ -36,9 +36,9 @@ $this->title = Yii::t('backend', 'Perfil del Usuario (Creacion de Ruta)');
             <div class="panel-body" >
                 
                         
-                    <div class="row" class="informacion-contribuyente" id="informacion-contribuyente">
+                    <div class="row" >
                         <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 25px;">
-                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Nombre del Url Perfil'))?></strong></h4>
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Nombre u Opción del Menú'))?></strong></h4>
                         </div>
                         
                         <div class="row" style="margin-left:20px; margin-top:20px;">
@@ -52,13 +52,13 @@ $this->title = Yii::t('backend', 'Perfil del Usuario (Creacion de Ruta)');
                                                                                                            ?>
                             </div>
                         </div>
-                        </div> 
+                    </div> 
                     
 
                         
-                    <div class="row" class="informacion-contribuyente2" id="informacion-contribuyente2">
+                    <div class="row">
                         <div class="row" style="border-bottom: 1px solid #ccc;background-color:#F1F1F1;padding: 0px;width: 100%;padding-left: 25px;">
-                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Ruta Acceso al menu'))?></strong></h4>
+                            <h4><strong><?=Html::encode(Yii::t('frontend', 'Ruta Acceso al Menú'))?></strong></h4>
                         </div>
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="col-sm-4">
@@ -71,8 +71,8 @@ $this->title = Yii::t('backend', 'Perfil del Usuario (Creacion de Ruta)');
                                                                                                            ])->label(false);?>
                             </div> 
                         </div>
-                        </div>
-                    </div> 
+                    </div>
+            </div> 
                         
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="form-group"> 
@@ -89,13 +89,7 @@ $this->title = Yii::t('backend', 'Perfil del Usuario (Creacion de Ruta)');
         </div>
     </div>
 </div>
-<!-- Campos ocultos -->   
-<?= $form->field($model, 'manzana_limite')->hiddenInput(['value' => 130])->label(false) ?> 
-<?= $form->field($model, 'id_habitante')->hiddenInput(['value' => 123456])->label(false) ?>
-<?= $form->field($model, 'liquidado')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'nivel')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'catastro')->hiddenInput(['value' => 0])->label(false) ?>
-<?= $form->field($model, 'tlf_hab')->hiddenInput(['style' => 'width:80px;','value' =>0])->label(false) ?>
+
 
 
 <?php ActiveForm::end(); ?> 

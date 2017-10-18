@@ -5,6 +5,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveField;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
+use kartik\icons\Icon;
 
 use common\models\Users;
 use common\models\User;
@@ -40,17 +42,35 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
                             <?= Yii::t('backend', 'Nombre de usuario:') ?>
                             </div> 
                         
-                            <div class="col-sm-4">
-                                <?php
-                                    $modelParametros = Users::find()->where(['activate'=>1])->asArray()->all();                                         
-                                    $listaParametros = ArrayHelper::map($modelParametros,'username','username'); 
-                                ?> 
-                            <?= $form->field($model, 'username')->Checkboxlist($listaParametros, [ 
-                                                                                                            'id'=> 'parametro', 
-                                                                                                            'prompt' => Yii::t('backend', 'Select'),
-                                                                                                            'style' => 'width:100px;',
-                                                                                                           ])->label(false);
-                                                                                                           ?>
+                            <div class="col-sm-12">
+                                
+
+                                <?= GridView::widget([
+                                'id' => 'id-lista-funcionario',
+                                'dataProvider' => $funcionarios,
+                                //'filterModel' => $model,
+                                'headerRowOptions' => ['class' => 'success'],
+
+                                //'caption' => Yii::t('backend', 'Lista de Accesos al Menú'),
+                                'summary' => '',
+                                'columns' => [
+           
+                                    //'id_funcionario',
+                                    'ci',
+                                    'apellidos',
+                                    'nombres',
+                                    'login',
+                                    
+                                    [
+                                        'class' => 'yii\grid\CheckboxColumn',
+                                        'name' => 'chk-funcionario',
+                                        'multiple' => true,
+                                    ],
+
+                                ],
+                            ]);
+                        ?>
+                            
                             </div> 
                         </div> 
 
@@ -64,10 +84,25 @@ $this->title = Yii::t('backend', 'Perfil del Usuario');
 
                             <?= $form->field($model, 'ruta')-> dropDownList($rutas,[
                                             'id' => 'id-lista-menu',
+                                            'prompt' => 'Seleccionar',
                                             'style' => 'width:380px;',
+                                            'onchange' =>
+                                                                              '$.post( "' . Yii::$app->urlManager
+                     ->createUrl('/usuario/registrar-perfil-usuario-grupo/lista-acceso-menu') . '&id=' . '" + $(this).val(),
+                     function( data ) {
+                           $( "#lista-acceso-menu" ).html( data );
+                     });return false;'
+                                                                            
                                         ])->label(false); ?>
                             </div> 
                         </div> 
+
+                        <div class="row" style="border-bottom: 0.5px solid #ccc;">
+                    <?php Pjax::begin()?>
+                        <div class="lista-acceso-menu" id="lista-acceso-menu">
+                        </div>
+                    <?php Pjax::end()?>
+                    </div>
                         
                         <div class="row" style="margin-left:20px; margin-top:20px;">
                             <div class="form-group"> 

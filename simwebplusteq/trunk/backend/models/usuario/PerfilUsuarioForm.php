@@ -98,8 +98,13 @@ use yii\base\Model;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 use common\conexion\ConexionController;
 use backend\models\usuario\PerfilUsuario;
+use common\models\Users;
+use common\models\User;
+use common\models\funcionario\Funcionario;
+use backend\models\usuario\RutaAccesoMenu;
 
 class PerfilUsuarioForm extends Model{
     
@@ -165,6 +170,90 @@ class PerfilUsuarioForm extends Model{
             'unidad_catastro' => Yii::t('backend', 'Unit'),
         ];
     }
+
+
+    /**
+         * Metodo que retorna un dataProvider
+         * @param  array  $arrayImpuesto si el array esta vacio se aume que debe regeresar todos.
+         * @return [type]              [description]
+         */
+        public function getDataProviderFuncionario1($params)
+        {
+            $dataProvider = null;
+            $date = date("Y-m-d");
+            $query = users::find()  
+                                    ->where(['activate'=>1]) 
+                                  //->INNERJOIN(['funcionarios', 'funcionarios.id_funcionario'=>'id_funcionario',['id_funcionario','ci'] ])
+                                    ->join('INNER JOIN', 'funcionarios','funcionarios.id_funcionario = users.id_funcionario')      
+                                    ->andWhere(['funcionarios.status_funcionario'=> 0])
+                                    ->andWhere('"'.$date.'"'.'<= funcionarios.vigencia');
+                                   //->all();
+//die(var_dump($query));
+            $dataProvider = New ActiveDataProvider([
+                'query' => $query,
+
+            ]);
+            $query->all();
+            $this->load($params);
+            // if ( is_array($params) ) {
+            //  $query->where(['in', 'id_ruta_acceso_menu', $array]);
+            // }
+            return $dataProvider;
+        }
+
+
+        /***/
+        public function getDataProviderFuncionario($params)
+        {
+            $date = date("Y-m-d");
+            $query = Funcionario::find()->andWhere('"'.$date.'"'.'<= funcionarios.vigencia')
+                                        ->andWhere(['funcionarios.status_funcionario'=> 0])
+                                        ->join('INNER JOIN', 'users','funcionarios.id_funcionario = users.id_funcionario')
+                                        ->andWhere(['users.activate'=> 1]);
+                                        //->join('LEFT OUTER JOIN', 'users','users.id_funcionario =funcionarios.id_funcionario');
+                                        //->INNERjOIN(['users', 'users.id_funcionario' => 'id_funcionario'])->all(); //date('Y-m-d')<= 'vigencia', 'clave11'!= null, 'status_funcionario'=> 0, 
+//die(var_dump($query));
+
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+            ]);
+
+            $this->load($params);
+
+            if (!$this->validate()) {
+                // uncomment the following line if you do not want to return any records when validation fails
+                // $query->where('0=1');
+                return $dataProvider;
+            }
+
+
+            $query->andFilterWhere(['like', 'id_funcionario', $this->id_funcionario])
+                  ->andFilterWhere(['like', 'ci', $this->ci])
+                  ->andFilterWhere(['like', 'apellidos', $this->apellidos])
+                  ->andFilterWhere(['like', 'nombres', $this->nombres]);
+
+
+            return $dataProvider;
+        }
+
+        /**
+         * Metodo que permite obtener una lista de la entidad "rutas",
+         * para luego utilizarlo en lista de combo.
+         */
+        public function getListaFuncionarios($inactivo = 0, $array = [])
+        {
+            $lista = null;
+            $model = $this->getDataProviderFuncionario($array); //findRuta
+            
+            if ( isset($model) ) {
+                
+                return $model;
+            }
+            return $lista;
+        }
+
+
+
 
    
    

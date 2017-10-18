@@ -176,6 +176,7 @@
 	    {
 	    	$lista = null;
 	    	$model = $this->getDataProvider($array); //findRuta
+	    	
 	    	if ( isset($model) ) {
 	    		
 	    		return $model;

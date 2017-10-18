@@ -98,9 +98,13 @@ use yii\base\Model;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 use common\conexion\ConexionController;
 use backend\models\usuario\PerfilUsuario;
 use backend\models\usuario\GrupoPerfilUsuario;
+use common\models\Users;
+use common\models\User;
+use backend\models\usuario\RutaAccesoMenu;
 
 class GrupoPerfilUsuarioForm extends Model{
     
@@ -172,19 +176,23 @@ class GrupoPerfilUsuarioForm extends Model{
          * @param  array  $arrayImpuesto si el array esta vacio se aume que debe regeresar todos.
          * @return [type]              [description]
          */
-        public function getDataProvider($params)
+        public function getDataProvider($d, $params)
         {
             $dataProvider = null;
 
-            $query = GrupoPerfilUsuario::find()->orderBy(['descripcion'])->all();
+            $query = RutaAccesoMenu::find()->join('INNER JOIN', 'grupos_perfiles_usuarios','grupos_perfiles_usuarios.ruta = ruta_acceso_menu.id_ruta_acceso_menu')
+                                           ->where(['grupos_perfiles_usuarios.descripcion'=>$d]);
+                                           
 
             $dataProvider = New ActiveDataProvider([
                 'query' => $query,
             ]);
+            $query->all(); 
             $this->load($params);
             // if ( is_array($params) ) {
             //  $query->where(['in', 'id_ruta_acceso_menu', $array]);
             // }
+            
             return $dataProvider;
         }
 
@@ -254,11 +262,11 @@ class GrupoPerfilUsuarioForm extends Model{
 
 
         /***/
-        public function getDescripcionRutaAcceso($id_ruta_acceso_menu)
+        public function getDescripcionRutaAcceso($d, $array = [])
         {
-            settype($id_ruta_acceso_menu, 'integer');
-            $model = self::findImpuesto($id_ruta_acceso_menu);
-            return $model->menu;
+            //settype($id_ruta_acceso_menu, 'integer');
+            $model = self::getDataProvider($d, $array);
+            return $model;
         }
 
    

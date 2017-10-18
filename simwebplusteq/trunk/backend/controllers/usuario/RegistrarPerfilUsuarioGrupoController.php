@@ -166,10 +166,12 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
                    $model->getErrors(); 
               }
          }
+              // $modelParametros = Users::find()->where(['activate'=>1])->asArray()->all(); 
 
-               $modelParametros = $modelGrupo->getListaGrupoAcceso();                                 
+               $modelParametros = $modelGrupo->getListaGrupoAcceso(); //descripcion
+               $dataProviderFuncionario = $model->getListaFuncionarios();                                
                //$listaParametros = ArrayHelper::map($modelParametros,'ruta','menu'); 
-              return $this->render('/usuario/registrar-perfil-grupo', ['model' => $model, 'rutas' => $modelParametros,'searchModel' => $modelRuta,]);  
+              return $this->render('/usuario/registrar-perfil-grupo', ['model' => $model, 'rutas' => $modelParametros,'searchModel' => $modelRuta, 'funcionarios'=>$dataProviderFuncionario]);  
 
         }  else {
                     $this->redirect(['error-operacion', 'cod' => 700]);
@@ -308,27 +310,7 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
     } 
 
 
-    /**
-     * [actionListaSolicitud description]
-     * @return [type] [description]
-     */
-    public function actionListaSolicitud()
-    {
-      $caption = Yii::t('backend', 'List of Request');
-      $request = Yii::$app->request;
-      $getData = $request->get();
-      $datos = $getData['id'];   // Indice del combo impuesto.
-      $modelSolicitud = New TipoSolicitudSearch();
-      $modelSolicitud->load($getData);
-      $dataProvider = $modelSolicitud->getDataProviderSolicitud($datos);
-
-      return $this->renderAjax('/funcionario/solicitud/lista-solicitud', [
-                            'modelSolicitud' => $modelSolicitud,
-                            'dataProvider' => $dataProvider,
-                            'caption' => $caption,
-        ]);
-
-    } 
+  
 
 
 
@@ -373,6 +355,32 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
 
       return $arregloDatos;
     }
+
+
+
+     /**
+         * [actionListaImpuestoSolicitud description]
+         * @return [type] [description]
+         */
+        public function actionListaAccesoMenu()
+        {
+            $caption = Yii::t('backend', 'Listado de Accesos al Menu del Grupo Seleccionado');
+            $request = Yii::$app->request;
+            $getData = $request->get();
+            $grupo = $getData['id'];    // Indice del combo impuesto.
+            $modelAcceso = New GrupoPerfilUsuarioForm();
+            //$modelAcceso->getDescripcionRutaAcceso($getData);
+            $dataProvider = $modelAcceso->getDescripcionRutaAcceso($grupo);
+
+            return $this->renderAjax('/usuario/lista-acceso-menu', [
+                                                        'modelSolicitud' => $modelAcceso,
+                                                        'dataProvider' => $dataProvider,
+                                                        'caption' => $caption,
+                ]);
+
+        }
+
+     
      
      
 
