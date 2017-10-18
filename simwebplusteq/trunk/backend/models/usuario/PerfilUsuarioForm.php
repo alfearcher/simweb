@@ -123,7 +123,7 @@ class PerfilUsuarioForm extends Model{
     {
 
         return [
-             [['username', 'ruta'], 'required', 'message' => Yii::t('backend', 'Es requerido llenar el campo')],
+             [[ 'ruta'], 'required', 'message' => Yii::t('backend', 'Es requerido llenar el campo')],
              //[['username',], 'string', 'max' => 100],
              [['inactivo'], 'integer','message' => Yii::t('backend', 'solo numero entero')],
         ]; 

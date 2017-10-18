@@ -137,13 +137,13 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
                    
                
 
-                $rutas = self::actionBuscarRuta($model);
+                $rutas = self::actionBuscarRuta(Yii::$app->request->post());
 
                  
                 if (!\Yii::$app->user->isGuest){                                    
                       
 
-                     $guardo = self::GuardarInscripcion($model, $rutas);
+                     $guardo = self::GuardarInscripcion(Yii::$app->request->post(), $rutas);
 
                      if($guardo == true){ 
 
@@ -207,8 +207,11 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
             $transaccion = $conexion->beginTransaction();
 
 
-             foreach ( $model['username'] as $funcionario ) { 
-               $arregloDatos['username'] = $funcionario;
+             foreach ( $model["chk-funcionario"] as $funcionario ) { 
+               
+               $buscarUsers = users::find()->where(['id_funcionario'=>$funcionario])->all();
+
+               $arregloDatos['username'] = $buscarUsers[0]['username'];
             foreach ( $rutas as $ruta ) {
                 $arregloDatos['ruta'] = $ruta[0]['ruta'];
 
@@ -341,9 +344,9 @@ class RegistrarPerfilUsuarioGrupoController extends Controller
     public function actionBuscarRuta($model)
     {
 
-     
+      $ruta = $model["PerfilUsuarioForm"]["ruta"];
       $grupo = GrupoPerfilUsuario::find()
-                      ->where("descripcion=:descripcion", [":descripcion" => $model->ruta])->orderBy('ruta')
+                      ->where("descripcion=:descripcion", [":descripcion" => $ruta])->orderBy('ruta')
                       ->all();
 
       foreach ( $grupo as $ruta ) { 
